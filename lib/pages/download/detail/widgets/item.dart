@@ -142,7 +142,7 @@ class DetailItem extends StatelessWidget {
               });
             }
           } else {
-            final curDownload = downloadService.curDownload.value;
+            final curDownload = downloadService.curDownload;
             if (curDownload != null &&
                 curDownload.cid == cid &&
                 curDownload.status.isDownloading) {
@@ -344,7 +344,7 @@ class DetailItem extends StatelessWidget {
                                 child: Obx(
                                   () {
                                     final curDownload =
-                                        downloadService.curDownload.value;
+                                        downloadService.curDownload;
                                     if (curDownload != null) {
                                       final status = curDownload.status;
                                       final color =

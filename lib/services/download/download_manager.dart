@@ -59,7 +59,7 @@ class DownloadManager {
     Response<ResponseBody> response;
     try {
       response = await Request.dio.get<ResponseBody>(
-        url.http2https,
+        (url as String?).http2https,
         options: Options(
           headers: {'range': 'bytes=$received-'},
           responseType: ResponseType.stream,

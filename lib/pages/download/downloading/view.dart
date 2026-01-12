@@ -113,7 +113,7 @@ class _DownloadingPageState extends State<DownloadingPage>
         SmartDialog.showLoading();
         final allChecked = this.allChecked.toSet();
         final isDownloading =
-            _downloadService.curDownload.value?.status ==
+            _downloadService.curDownload?.status ==
             DownloadStatus.downloading;
         for (final entry in allChecked) {
           await _downloadService.deleteDownload(
@@ -123,7 +123,7 @@ class _DownloadingPageState extends State<DownloadingPage>
           );
         }
         _downloadService.waitDownloadQueue.removeWhere(allChecked.contains);
-        if (isDownloading && _downloadService.curDownload.value == null) {
+        if (isDownloading && _downloadService.curDownload == null) {
           _downloadService.nextDownload();
         }
         if (enableMultiSelect.value) {

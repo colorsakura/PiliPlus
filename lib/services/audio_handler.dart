@@ -10,6 +10,7 @@ import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:PiliPlus/services/interfaces/audio_service_interface.dart';
 
 Future<VideoPlayerServiceHandler> initAudioService() {
   return AudioService.init(
@@ -27,13 +28,24 @@ Future<VideoPlayerServiceHandler> initAudioService() {
   );
 }
 
-class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
+class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler implements IAudioService {
   static final List<MediaItem> _item = [];
   bool enableBackgroundPlay = Pref.enableBackgroundPlay;
 
   Function? onPlay;
   Function? onPause;
   Function(Duration position)? onSeek;
+
+  @override
+  Future<void> initialize() async {
+    // 初始化逻辑
+  }
+
+  @override
+  Future<void> dispose() async {
+    // 释放资源
+    await AudioService.stop();
+  }
 
   @override
   Future<void> play() async {
@@ -122,10 +134,11 @@ class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
     setPlaybackState(status, isBuffering, isLive);
   }
 
+  @override
   void onVideoDetailChange(
     dynamic data,
     int cid,
-    String herotag, {
+    String heroTag, {
     String? artist,
     String? cover,
   }) {
@@ -137,7 +150,7 @@ class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
     if (!PlPlayerController.instanceExists()) return;
     if (data == null) return;
 
-    late final id = '$cid$herotag';
+    late final id = '$cid$heroTag';
     MediaItem? mediaItem;
     if (data is VideoDetailData) {
       if ((data.pages?.length ?? 0) > 1) {
@@ -210,11 +223,11 @@ class VideoPlayerServiceHandler extends BaseAudioHandler with SeekHandler {
     setMediaItem(mediaItem);
   }
 
-  void onVideoDetailDispose(String herotag) {
+  void onVideoDetailDispose(String heroTag) {
     if (!enableBackgroundPlay) return;
 
     if (_item.isNotEmpty) {
-      _item.removeWhere((item) => item.id.endsWith(herotag));
+      _item.removeWhere((item) => item.id.endsWith(heroTag));
     }
     if (_item.isNotEmpty) {
       playbackState.add(
