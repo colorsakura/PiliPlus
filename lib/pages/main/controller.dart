@@ -243,7 +243,7 @@ class MainController extends GetxController
     }
   }
 
-  void checkUnread([bool shouldCheck = false]) {
+  Future<void> checkUnread([bool shouldCheck = false]) async {
     if (accountService.isLogin.value &&
         hasHome &&
         msgBadgeMode != DynamicBadgeMode.hidden) {
@@ -254,7 +254,7 @@ class MainController extends GetxController
       int now = DateTime.now().millisecondsSinceEpoch;
       if (now - lastCheckUnreadAt >= _period) {
         lastCheckUnreadAt = now;
-        queryUnreadMsg();
+        await queryUnreadMsg();
       }
     }
   }

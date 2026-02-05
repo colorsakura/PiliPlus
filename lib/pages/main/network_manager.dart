@@ -27,7 +27,7 @@ class NetworkManager {
     if (currentNav == NavigationBarType.home) {
       await Future.wait([
         controller.checkUnreadDynamic(),
-        controller.queryUnreadMsg(),
+        controller.checkUnread(false),
         controller.checkDefaultSearch(),
       ]);
     }
