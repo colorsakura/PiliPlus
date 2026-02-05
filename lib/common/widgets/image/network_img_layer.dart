@@ -80,6 +80,8 @@ class NetworkImgLayer extends StatelessWidget {
       fadeOutDuration: fadeOutDuration,
       fadeInDuration: fadeInDuration,
       filterQuality: FilterQuality.low,
+      maxWidthDiskCache: isEmote ? 400 : (width * 1.5).toInt(),
+      maxHeightDiskCache: isEmote ? 300 : (height * 1.5).toInt(),
       placeholder: (_, _) =>
           getPlaceHolder?.call() ??
           _placeholder(context, isEmote: isEmote, isAvatar: isAvatar),
