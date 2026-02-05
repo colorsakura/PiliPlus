@@ -72,10 +72,6 @@ class _MainAppState extends PopScopeState<MainApp>
   @override
   void didPopNext() {
     WidgetsBinding.instance.addObserver(this);
-    _mainController
-      ..checkUnreadDynamic()
-      ..checkDefaultSearch(true)
-      ..checkUnread(_mainController.useBottomNav);
     super.didPopNext();
   }
 
@@ -87,12 +83,7 @@ class _MainAppState extends PopScopeState<MainApp>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _mainController
-        ..checkUnreadDynamic()
-        ..checkDefaultSearch(true)
-        ..checkUnread(_mainController.useBottomNav);
-    }
+    // Periodic checks are now handled by NetworkManager
   }
 
   @override
