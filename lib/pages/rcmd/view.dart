@@ -137,9 +137,13 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
     };
   }
 
-  Widget get _buildSkeleton => SliverGrid.builder(
+  Widget get _buildSkeleton => SliverGrid(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) => const VideoCardVSkeleton(),
+      childCount: 10,
+      addAutomaticKeepAlives: true,
+      addRepaintBoundaries: true,
+    ),
     gridDelegate: gridDelegate,
-    itemBuilder: (context, index) => const VideoCardVSkeleton(),
-    itemCount: 10,
   );
 }
