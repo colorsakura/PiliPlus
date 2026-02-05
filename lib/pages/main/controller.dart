@@ -9,6 +9,7 @@ import 'package:PiliPlus/models/common/msg/msg_unread_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/pages/dynamics/controller.dart';
 import 'package:PiliPlus/pages/home/controller.dart';
+import 'package:PiliPlus/pages/main/network_manager.dart';
 import 'package:PiliPlus/pages/mine/view.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
@@ -65,6 +66,8 @@ class MainController extends GetxController
   static const _period = 5 * 60 * 1000;
   late int _lastSelectTime = 0;
 
+  NetworkManager? _networkManager;
+
   @override
   void onInit() {
     super.onInit();
@@ -104,6 +107,10 @@ class MainController extends GetxController
         queryUnreadMsg();
       }
     }
+
+    // Start periodic network checks
+    _networkManager = NetworkManager(this);
+    _networkManager!.startPeriodicChecks();
   }
 
   Future<int> _msgUnread() async {
@@ -178,15 +185,14 @@ class MainController extends GetxController
     }
   }
 
-  void getUnreadDynamic() {
+  Future<void> getUnreadDynamic() async {
     if (!accountService.isLogin.value || !hasDyn) {
       return;
     }
-    DynGrpc.dynRed().then((res) {
-      if (res != null) {
-        setDynCount(res);
-      }
-    });
+    final res = await DynGrpc.dynRed();
+    if (res != null) {
+      setDynCount(res);
+    }
   }
 
   void setDynCount([int count = 0]) {
@@ -194,7 +200,7 @@ class MainController extends GetxController
     dynCount.value = count;
   }
 
-  void checkUnreadDynamic() {
+  Future<void> checkUnreadDynamic() async {
     if (!hasDyn ||
         !accountService.isLogin.value ||
         dynamicBadgeMode == DynamicBadgeMode.hidden ||
@@ -204,7 +210,7 @@ class MainController extends GetxController
     int now = DateTime.now().millisecondsSinceEpoch;
     if (now - _lastCheckDynamicAt >= dynamicPeriod) {
       _lastCheckDynamicAt = now;
-      getUnreadDynamic();
+      await getUnreadDynamic();
     }
   }
 
@@ -223,7 +229,7 @@ class MainController extends GetxController
     selectedIndex.value = Pref.defaultHomePageIndex;
   }
 
-  void checkDefaultSearch([bool shouldCheck = false]) {
+  Future<void> checkDefaultSearch([bool shouldCheck = false]) async {
     if (hasHome && homeController.enableSearchWord) {
       if (shouldCheck &&
           navigationBars[selectedIndex.value] != NavigationBarType.home) {
@@ -231,14 +237,13 @@ class MainController extends GetxController
       }
       int now = DateTime.now().millisecondsSinceEpoch;
       if (now - homeController.lateCheckSearchAt >= _period) {
-        homeController
-          ..lateCheckSearchAt = now
-          ..querySearchDefault();
+        homeController.lateCheckSearchAt = now;
+        await homeController.querySearchDefault();
       }
     }
   }
 
-  void checkUnread([bool shouldCheck = false]) {
+  Future<void> checkUnread([bool shouldCheck = false]) async {
     if (accountService.isLogin.value &&
         hasHome &&
         msgBadgeMode != DynamicBadgeMode.hidden) {
@@ -249,7 +254,7 @@ class MainController extends GetxController
       int now = DateTime.now().millisecondsSinceEpoch;
       if (now - lastCheckUnreadAt >= _period) {
         lastCheckUnreadAt = now;
-        queryUnreadMsg();
+        await queryUnreadMsg();
       }
     }
   }
@@ -323,6 +328,7 @@ class MainController extends GetxController
   void onClose() {
     showBottomBar?.close();
     controller.dispose();
+    _networkManager?.dispose();
     super.onClose();
   }
 

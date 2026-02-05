@@ -64,63 +64,70 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
       Loading() => _buildSkeleton,
       Success(:final response) =>
         response != null && response.isNotEmpty
-            ? SliverGrid.builder(
+            ? SliverGrid(
                 gridDelegate: gridDelegate,
-                itemBuilder: (context, index) {
-                  if (index == response.length - 1) {
-                    controller.onLoadMore();
-                  }
-                  if (controller.lastRefreshAt != null) {
-                    if (controller.lastRefreshAt == index) {
-                      return GestureDetector(
-                        onTap: () => controller
-                          ..animateToTop()
-                          ..onRefresh(),
-                        child: Card(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const .symmetric(horizontal: 10),
-                            child: Text(
-                              '上次看到这里\n点击刷新',
-                              textAlign: .center,
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    if (index == response.length - 1) {
+                      controller.onLoadMore();
+                    }
+                    if (controller.lastRefreshAt != null) {
+                      if (controller.lastRefreshAt == index) {
+                        return GestureDetector(
+                          key: ValueKey('refresh_tip_$index'),
+                          onTap: () => controller
+                            ..animateToTop()
+                            ..onRefresh(),
+                          child: Card(
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const .symmetric(horizontal: 10),
+                              child: Text(
+                                '上次看到这里\n点击刷新',
+                                textAlign: .center,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        );
+                      }
+                      final actualIndex = index > controller.lastRefreshAt!
+                          ? index - 1
+                          : index;
+                      return VideoCardV(
+                        key: ValueKey('video_${response[actualIndex].aid}'),
+                        videoItem: response[actualIndex],
+                        onRemove: () {
+                          if (controller.lastRefreshAt != null &&
+                              actualIndex < controller.lastRefreshAt!) {
+                            controller.lastRefreshAt =
+                                controller.lastRefreshAt! - 1;
+                          }
+                          controller.loadingState
+                            ..value.data!.removeAt(actualIndex)
+                            ..refresh();
+                        },
+                      );
+                    } else {
+                      return VideoCardV(
+                        key: ValueKey('video_${response[index].aid}'),
+                        videoItem: response[index],
+                        onRemove: () => controller.loadingState
+                          ..value.data!.removeAt(index)
+                          ..refresh(),
                       );
                     }
-                    final actualIndex = index > controller.lastRefreshAt!
-                        ? index - 1
-                        : index;
-                    return VideoCardV(
-                      videoItem: response[actualIndex],
-                      onRemove: () {
-                        if (controller.lastRefreshAt != null &&
-                            actualIndex < controller.lastRefreshAt!) {
-                          controller.lastRefreshAt =
-                              controller.lastRefreshAt! - 1;
-                        }
-                        controller.loadingState
-                          ..value.data!.removeAt(actualIndex)
-                          ..refresh();
-                      },
-                    );
-                  } else {
-                    return VideoCardV(
-                      videoItem: response[index],
-                      onRemove: () => controller.loadingState
-                        ..value.data!.removeAt(index)
-                        ..refresh(),
-                    );
-                  }
-                },
-                itemCount: controller.lastRefreshAt != null
-                    ? response.length + 1
-                    : response.length,
+                  },
+                  childCount: controller.lastRefreshAt != null
+                      ? response.length + 1
+                      : response.length,
+                  addAutomaticKeepAlives: true,
+                  addRepaintBoundaries: true,
+                ),
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
@@ -130,9 +137,13 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
     };
   }
 
-  Widget get _buildSkeleton => SliverGrid.builder(
+  Widget get _buildSkeleton => SliverGrid(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) => const VideoCardVSkeleton(),
+      childCount: 10,
+      addAutomaticKeepAlives: true,
+      addRepaintBoundaries: true,
+    ),
     gridDelegate: gridDelegate,
-    itemBuilder: (context, index) => const VideoCardVSkeleton(),
-    itemCount: 10,
   );
 }
