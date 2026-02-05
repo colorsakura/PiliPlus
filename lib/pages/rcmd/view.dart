@@ -73,6 +73,7 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                   if (controller.lastRefreshAt != null) {
                     if (controller.lastRefreshAt == index) {
                       return GestureDetector(
+                        key: ValueKey('refresh_tip_$index'),
                         onTap: () => controller
                           ..animateToTop()
                           ..onRefresh(),
@@ -97,6 +98,7 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                         ? index - 1
                         : index;
                     return VideoCardV(
+                      key: ValueKey('video_${response[actualIndex].aid}'),
                       videoItem: response[actualIndex],
                       onRemove: () {
                         if (controller.lastRefreshAt != null &&
@@ -111,6 +113,7 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                     );
                   } else {
                     return VideoCardV(
+                      key: ValueKey('video_${response[index].aid}'),
                       videoItem: response[index],
                       onRemove: () => controller.loadingState
                         ..value.data!.removeAt(index)
