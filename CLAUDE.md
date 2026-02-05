@@ -6,30 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **PiliPlus** is a Flutter-based third-party Bilibili client (unofficial) built with:
 - **Dart SDK**: >=3.10.0
-- **Flutter**: 3.38.6 (managed via FVM)
+- **Flutter**: 3.38.6
 - **State Management**: GetX (MVC/MVVM pattern)
 - **Platforms**: Android, iOS, Windows, Linux, macOS
 
 ## Development Commands
 
-### Flutter Version Management
-This project uses FVM to manage the Flutter version. Use `fvm` before all Flutter commands:
+### Common Commands
 
 ```bash
-fvm flutter pub get              # Install dependencies
-fvm flutter run                  # Run app
-fvm flutter build apk            # Build Android APK
-fvm flutter build ios            # Build iOS
-fvm flutter build windows        # Build Windows
-fvm flutter build linux          # Build Linux
-fvm flutter build macos          # Build macOS
-fvm flutter analyze              # Static analysis
+flutter pub get                  # Install dependencies
+flutter run                      # Run app
+flutter build apk                # Build Android APK
+flutter build ios                # Build iOS
+flutter build windows            # Build Windows
+flutter build linux              # Build Linux
+flutter build macos              # Build macOS
+flutter test                     # Run tests
+flutter analyze                  # Static analysis
 dart format .                    # Format code
-```
-
-### Testing
-```bash
-fvm flutter test                 # Run tests
 ```
 
 ### Build Distribution
@@ -190,7 +185,7 @@ The project uses strict linting rules in `analysis_options.yaml`:
 - Requires return types, const constructors, and other strict patterns
 - Formatter preserves trailing commas
 
-Run `fvm flutter analyze` before committing.
+Run `flutter analyze` before committing.
 
 ## Multi-Account Considerations
 
