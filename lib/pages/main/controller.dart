@@ -185,15 +185,14 @@ class MainController extends GetxController
     }
   }
 
-  void getUnreadDynamic() {
+  Future<void> getUnreadDynamic() async {
     if (!accountService.isLogin.value || !hasDyn) {
       return;
     }
-    DynGrpc.dynRed().then((res) {
-      if (res != null) {
-        setDynCount(res);
-      }
-    });
+    final res = await DynGrpc.dynRed();
+    if (res != null) {
+      setDynCount(res);
+    }
   }
 
   void setDynCount([int count = 0]) {
@@ -201,7 +200,7 @@ class MainController extends GetxController
     dynCount.value = count;
   }
 
-  void checkUnreadDynamic() {
+  Future<void> checkUnreadDynamic() async {
     if (!hasDyn ||
         !accountService.isLogin.value ||
         dynamicBadgeMode == DynamicBadgeMode.hidden ||
@@ -211,7 +210,7 @@ class MainController extends GetxController
     int now = DateTime.now().millisecondsSinceEpoch;
     if (now - _lastCheckDynamicAt >= dynamicPeriod) {
       _lastCheckDynamicAt = now;
-      getUnreadDynamic();
+      await getUnreadDynamic();
     }
   }
 
@@ -230,7 +229,7 @@ class MainController extends GetxController
     selectedIndex.value = Pref.defaultHomePageIndex;
   }
 
-  void checkDefaultSearch([bool shouldCheck = false]) {
+  Future<void> checkDefaultSearch([bool shouldCheck = false]) async {
     if (hasHome && homeController.enableSearchWord) {
       if (shouldCheck &&
           navigationBars[selectedIndex.value] != NavigationBarType.home) {
@@ -238,9 +237,8 @@ class MainController extends GetxController
       }
       int now = DateTime.now().millisecondsSinceEpoch;
       if (now - homeController.lateCheckSearchAt >= _period) {
-        homeController
-          ..lateCheckSearchAt = now
-          ..querySearchDefault();
+        homeController.lateCheckSearchAt = now;
+        await homeController.querySearchDefault();
       }
     }
   }

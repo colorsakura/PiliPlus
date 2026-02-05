@@ -25,10 +25,11 @@ class NetworkManager {
     // Only check if on home tab
     final currentNav = controller.navigationBars[controller.selectedIndex.value];
     if (currentNav == NavigationBarType.home) {
-      controller
-        ..checkUnreadDynamic()
-        ..checkDefaultSearch();
-      await controller.queryUnreadMsg();
+      await Future.wait([
+        controller.checkUnreadDynamic(),
+        controller.queryUnreadMsg(),
+        controller.checkDefaultSearch(),
+      ]);
     }
   }
 
