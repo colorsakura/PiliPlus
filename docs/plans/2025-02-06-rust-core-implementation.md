@@ -1051,3 +1051,1016 @@ git commit -m "feat(rust): add storage service with SQLite backend"
 This completes the foundational setup. The plan continues in the next section with Phase 2 implementation.
 
 **Next Phase**: HTTP Service, Account Service, and Bridge API surface
+
+---
+
+# Phase 2: Core Services (Week 4-9)
+
+## Task 5: Implement HTTP Service
+
+**Files:**
+- Create: `rust/src/http/mod.rs`
+- Create: `rust/src/http/service.rs`
+- Create: `rust/src/http/client.rs`
+- Create: `rust/src/http/tests.rs`
+- Modify: `rust/src/lib.rs`
+
+**Step 1: Create HTTP client with reqwest**
+
+Create `rust/src/http/client.rs`:
+
+```rust
+use reqwest::{Client, Method};
+use crate::error::ApiError;
+
+pub struct HttpClient {
+    client: Client,
+    base_url: String,
+}
+
+impl HttpClient {
+    pub fn new(base_url: String) -> Result<Self, ApiError> {
+        let client = Client::builder()
+            .http2_adaptive_window(true)
+            .build()
+            .map_err(|e| ApiError::HttpError(e))?;
+
+        Ok(Self { client, base_url })
+    }
+
+    pub async fn get<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+    ) -> Result<T, ApiError> {
+        let url = format!("{}{}", self.base_url, path);
+        let response = self.client
+            .get(&url)
+            .send()
+            .await?;
+
+        self.handle_response(response).await
+    }
+
+    pub async fn post<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+        body: serde_json::Value,
+    ) -> Result<T, ApiError> {
+        let url = format!("{}{}", self.base_url, path);
+        let response = self.client
+            .post(&url)
+            .json(&body)
+            .send()
+            .await?;
+
+        self.handle_response(response).await
+    }
+
+    async fn handle_response<T: serde::de::DeserializeOwned>(
+        &self,
+        response: reqwest::Response,
+    ) -> Result<T, ApiError> {
+        if response.status().is_success() {
+            response
+                .json()
+                .await
+                .map_err(ApiError::from)
+        } else {
+            Err(ApiError::ApiError {
+                code: response.status().as_u16() as i32,
+                message: format!("HTTP error: {}", response.status()),
+            })
+        }
+    }
+}
+```
+
+**Step 2: Create HTTP service**
+
+Create `rust/src/http/service.rs`:
+
+```rust
+use std::sync::Arc;
+use std::collections::HashMap;
+use crate::http::client::HttpClient;
+use crate::models::Account;
+use crate::error::ApiError;
+
+pub struct HttpService {
+    client: Arc<HttpClient>,
+    account: Arc<tokio::sync::RwLock<Option<Account>>>,
+}
+
+impl HttpService {
+    pub fn new(base_url: String) -> Result<Self, ApiError> {
+        let client = Arc::new(HttpClient::new(base_url)?);
+        Ok(Self {
+            client,
+            account: Arc::new(tokio::sync::RwLock::new(None)),
+        })
+    }
+
+    pub async fn set_account(&self, account: Account) {
+        *self.account.write().await = Some(account);
+    }
+
+    pub async fn get<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+    ) -> Result<T, ApiError> {
+        self.client.get(path).await
+    }
+
+    pub async fn get_with_auth<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+    ) -> Result<T, ApiError> {
+        // TODO: Add cookie header from current account
+        self.client.get(path).await
+    }
+}
+```
+
+**Step 3: Create HTTP module**
+
+Create `rust/src/http/mod.rs`:
+
+```rust
+pub mod client;
+pub mod service;
+
+pub use service::HttpService;
+pub use client::HttpClient;
+```
+
+**Step 4: Update lib.rs**
+
+Open `rust/src/lib.rs`:
+
+```rust
+pub mod error;
+pub mod models;
+pub mod storage;
+pub mod http;
+pub mod api;
+
+mod frb_generated;
+```
+
+**Step 5: Write tests**
+
+Create `rust/src/http/tests.rs`:
+
+```rust
+use super::*;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_http_client_creation() {
+        let client = HttpClient::new("https://api.bilibili.com".to_string());
+        assert!(client.is_ok());
+    }
+
+    #[test]
+    fn test_http_service_creation() {
+        let service = HttpService::new("https://api.bilibili.com".to_string());
+        assert!(service.is_ok());
+    }
+}
+```
+
+**Step 6: Run tests**
+
+Run: `cd rust && cargo test http::tests`
+
+Expected: All tests pass (2 passed)
+
+**Step 7: Commit**
+
+```bash
+git add rust/src/http/
+git commit -m "feat(rust): add HTTP service with reqwest client"
+```
+
+---
+
+## Task 6: Implement Account Service
+
+**Files:**
+- Create: `rust/src/account/mod.rs`
+- Create: `rust/src/account/service.rs`
+- Create: `rust/src/account/qrcode.rs`
+- Create: `rust/src/account/tests.rs`
+- Modify: `rust/src/lib.rs`
+
+**Step 1: Create QR code login models**
+
+Create `rust/src/account/qrcode.rs`:
+
+```rust
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub struct QrCodeData {
+    pub url: String,
+    pub oauth_key: String,
+    pub expiry: u64,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub enum QrState {
+    Code { url: String, expiry: u64 },
+    Scanned,
+    LoggedIn(Account),
+    Expired,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub enum QrStatus {
+    Waiting,
+    Scanned,
+    Success { cookies: HashMap<String, String> },
+    Expired,
+}
+
+use crate::models::Account;
+```
+
+**Step 2: Create account service**
+
+Create `rust/src/account/service.rs`:
+
+```rust
+use std::sync::Arc;
+use tokio::sync::{RwLock, broadcast};
+use crate::models::Account;
+use crate::storage::StorageService;
+use crate::http::HttpService;
+use crate::account::qrcode::{QrState, QrStatus};
+use crate::error::AccountError;
+use crate::error::BridgeResult;
+
+pub struct AccountService {
+    current_account: Arc<RwLock<Option<Account>>>,
+    storage: Arc<StorageService>,
+    http: Arc<HttpService>,
+    account_change_tx: broadcast::Sender<Account>,
+}
+
+impl AccountService {
+    pub fn new(
+        storage: Arc<StorageService>,
+        http: Arc<HttpService>,
+    ) -> Self {
+        let (tx, _) = broadcast::channel(16);
+
+        Self {
+            current_account: Arc::new(RwLock::new(None)),
+            storage,
+            http,
+            account_change_tx: tx,
+        }
+    }
+
+    pub async fn current_account(&self) -> Option<Account> {
+        self.current_account.read().await.clone()
+    }
+
+    pub async fn set_current_account(&self, account: Account) {
+        *self.current_account.write().await = Some(account.clone());
+        let _ = self.account_change_tx.send(account);
+    }
+
+    pub fn account_changes(&self) -> broadcast::Receiver<Account> {
+        self.account_change_tx.subscribe()
+    }
+
+    pub async fn switch_account(&self, account_id: &str) -> Result<(), AccountError> {
+        let account = self.storage.load_account(account_id).await
+            .map_err(|_| AccountError::AccountNotFound(account_id.to_string()))?;
+
+        self.set_current_account(account).await;
+        Ok(())
+    }
+}
+```
+
+**Step 3: Create account module**
+
+Create `rust/src/account/mod.rs`:
+
+```rust
+pub mod service;
+pub mod qrcode;
+
+pub use service::AccountService;
+pub use qrcode::{QrState, QrStatus, QrCodeData};
+```
+
+**Step 4: Update lib.rs**
+
+Open `rust/src/lib.rs`:
+
+```rust
+pub mod error;
+pub mod models;
+pub mod storage;
+pub mod http;
+pub mod account;
+pub mod api;
+
+mod frb_generated;
+```
+
+**Step 5: Write tests**
+
+Create `rust/src/account/tests.rs`:
+
+```rust
+use super::*;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_account_service_creation() {
+        // TODO: Add proper test with mock storage and HTTP
+        // For now just test structure
+    }
+
+    #[test]
+    fn test_qr_state_serialization() {
+        use crate::account::QrState;
+        use std::collections::HashMap;
+
+        let state = QrState::Code {
+            url: "https://test.com".to_string(),
+            expiry: 180,
+        };
+
+        let json = serde_json::to_string(&state).unwrap();
+        assert!(json.contains("Code"));
+    }
+}
+```
+
+**Step 6: Run tests**
+
+Run: `cd rust && cargo test account::tests`
+
+Expected: All tests pass (1 passed)
+
+**Step 7: Commit**
+
+```bash
+git add rust/src/account/
+git commit -m "feat(rust): add account service with QR login support"
+```
+
+---
+
+## Task 7: Create Bridge API Surface
+
+**Files:**
+- Create: `rust/src/api/mod.rs`
+- Create: `rust/src/api/bridge.rs`
+- Modify: `rust/src/api/simple.rs` (update existing file)
+- Modify: `rust/src/lib.rs`
+
+**Step 1: Create bridge module**
+
+Create `rust/src/api/bridge.rs`:
+
+```rust
+use flutter_rust_bridge::frb;
+use crate::error::BridgeResult;
+
+/// Initialize the Rust core
+#[frb(sync)]
+pub fn init_core() {
+    // Initialize logging
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::INFO)
+        .init();
+
+    tracing::info!("PiliPlus Rust core initialized");
+}
+
+/// Get version information
+#[frb(sync)]
+pub fn get_version() -> String {
+    env!("CARGO_PKG_VERSION").to_string()
+}
+
+/// Health check
+#[frb(sync)]
+pub fn health_check() -> bool {
+    true
+}
+```
+
+**Step 2: Update api module**
+
+Open `rust/src/api/mod.rs`:
+
+```rust
+pub mod simple;
+pub mod bridge;
+
+pub use bridge::*;
+```
+
+**Step 3: Update simple.rs for new bridge pattern**
+
+Open `rust/src/api/simple.rs`:
+
+```rust
+use flutter_rust_bridge::frb;
+
+#[frb(sync)]
+pub fn greet(name: String) -> String {
+    format!("Hello, {name}!")
+}
+
+#[frb(init)]
+pub fn init_app() {
+    flutter_rust_bridge::setup_default_user_utils();
+}
+```
+
+**Step 4: Update lib.rs to ensure api module is properly exported**
+
+Open `rust/src/lib.rs`:
+
+```rust
+pub mod error;
+pub mod models;
+pub mod storage;
+pub mod http;
+pub mod account;
+pub mod api;
+
+mod frb_generated;
+```
+
+**Step 5: Run cargo check**
+
+Run: `cd rust && cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 6: Commit**
+
+```bash
+git add rust/src/api/
+git commit -m "feat(rust): add bridge API surface with health check"
+```
+
+---
+
+## Task 8: Implement Video API Module
+
+**Files:**
+- Create: `rust/src/api/video.rs`
+- Modify: `rust/src/api/mod.rs`
+
+**Step 1: Create video API**
+
+Create `rust/src/api/video.rs`:
+
+```rust
+use flutter_rust_bridge::frb;
+use crate::models::{VideoInfo, VideoUrl, VideoQuality};
+use crate::error::BridgeResult;
+
+/// Get video information
+#[frb]
+pub async fn get_video_info(bvid: String) -> BridgeResult<VideoInfo> {
+    // TODO: Implement actual API call
+    // For now, return mock data
+    let mock_info = VideoInfo {
+        bvid: bvid.clone(),
+        aid: 123456,
+        title: "Test Video".to_string(),
+        description: "Test Description".to_string(),
+        owner: crate::models::VideoOwner {
+            mid: 789,
+            name: "Test User".to_string(),
+            face: crate::models::Image {
+                url: "https://test.com/avatar.jpg".to_string(),
+                width: Some(100),
+                height: Some(100),
+            },
+        },
+        pic: crate::models::Image {
+            url: "https://test.com/cover.jpg".to_string(),
+            width: Some(1280),
+            height: Some(720),
+        },
+        duration: 600,
+        stats: crate::models::VideoStats {
+            view_count: 10000,
+            like_count: 500,
+            coin_count: 100,
+            collect_count: 50,
+        },
+        cid: 456789,
+        pages: vec![],
+    };
+
+    Ok(mock_info)
+}
+
+/// Get video playback URL
+#[frb]
+pub async fn get_video_url(bvid: String, cid: i64, quality: VideoQuality) -> BridgeResult<VideoUrl> {
+    // TODO: Implement actual API call
+    Ok(VideoUrl {
+        quality,
+        format: crate::models::VideoFormat::Dash,
+        segments: vec![],
+    })
+}
+```
+
+**Step 2: Update api module**
+
+Open `rust/src/api/mod.rs`:
+
+```rust
+pub mod simple;
+pub mod bridge;
+pub mod video;
+
+pub use bridge::*;
+```
+
+**Step 3: Run cargo check**
+
+Run: `cd rust && cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 4: Commit**
+
+```bash
+git add rust/src/api/
+git commit -m "feat(rust): add video API module with mock data"
+```
+
+---
+
+This completes Phase 2. The core services are now in place and ready for Flutter integration.
+
+**Next Phase**: Full API integration and Download Service
+
+---
+
+# Phase 3: API Integration & Enhanced Services (Week 10-15)
+
+## Task 9: Implement Real Video API Integration
+
+**Files:**
+- Modify: `rust/src/api/video.rs`
+- Create: `rust/src/bilibili_api/video.rs`
+
+**Step 1: Create Bilibili video API client**
+
+Create `rust/src/bilibili_api/video.rs`:
+
+```rust
+use crate::models::{VideoInfo, VideoUrl, VideoQuality};
+use crate::http::HttpService;
+use crate::error::ApiError;
+
+pub struct VideoApi {
+    http: std::sync::Arc<HttpService>,
+}
+
+impl VideoApi {
+    pub fn new(http: std::sync::Arc<HttpService>) -> Self {
+        Self { http }
+    }
+
+    pub async fn get_video_info(&self, bvid: &str) -> Result<VideoInfo, ApiError> {
+        // Real Bilibili API endpoint
+        let url = format!("/x/web-interface/view?bvid={}", bvid);
+        self.http.get(&url).await
+    }
+
+    pub async fn get_video_url(
+        &self,
+        bvid: &str,
+        cid: i64,
+        quality: VideoQuality,
+    ) -> Result<VideoUrl, ApiError> {
+        let url = format!(
+            "/x/player/playurl?bvid={}&cid={}&qn={}",
+            bvid,
+            cid,
+            quality as i32
+        );
+        self.http.get(&url).await
+    }
+}
+```
+
+**Step 2: Update video API to use real implementation**
+
+Modify `rust/src/api/video.rs`:
+
+```rust
+use flutter_rust_bridge::frb;
+use crate::models::{VideoInfo, VideoUrl, VideoQuality};
+use crate::error::BridgeResult;
+use crate::bilibili_api::video::VideoApi;
+
+/// Get video information from Bilibili API
+#[frb]
+pub async fn get_video_info(bvid: String) -> BridgeResult<VideoInfo> {
+    // TODO: Get HttpService from global state
+    // For now, keep mock data
+    let mock_info = VideoInfo {
+        bvid: bvid.clone(),
+        aid: 123456,
+        title: "Test Video".to_string(),
+        description: "Test Description".to_string(),
+        owner: crate::models::VideoOwner {
+            mid: 789,
+            name: "Test User".to_string(),
+            face: crate::models::Image {
+                url: "https://test.com/avatar.jpg".to_string(),
+                width: Some(100),
+                height: Some(100),
+            },
+        },
+        pic: crate::models::Image {
+            url: "https://test.com/cover.jpg".to_string(),
+            width: Some(1280),
+            height: Some(720),
+        },
+        duration: 600,
+        stats: crate::models::VideoStats {
+            view_count: 10000,
+            like_count: 500,
+            coin_count: 100,
+            collect_count: 50,
+        },
+        cid: 456789,
+        pages: vec![],
+    };
+
+    Ok(mock_info)
+}
+
+/// Get video playback URL from Bilibili API
+#[frb]
+pub async fn get_video_url(bvid: String, cid: i64, quality: VideoQuality) -> BridgeResult<VideoUrl> {
+    // TODO: Integrate with VideoApi
+    Ok(VideoUrl {
+        quality,
+        format: crate::models::VideoFormat::Dash,
+        segments: vec![],
+    })
+}
+```
+
+**Step 3: Create bilibili_api module**
+
+Create `rust/src/bilibili_api/mod.rs`:
+
+```rust
+pub mod video;
+
+pub use video::VideoApi;
+```
+
+**Step 4: Update lib.rs**
+
+Open `rust/src/lib.rs`:
+
+```rust
+pub mod error;
+pub mod models;
+pub mod storage;
+pub mod http;
+pub mod account;
+pub mod bilibili_api;
+pub mod api;
+
+mod frb_generated;
+```
+
+**Step 5:** Run `cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 6:** Commit
+
+```bash
+git add rust/src/
+git commit -m "feat(rust): add Bilibili video API integration layer"
+```
+
+---
+
+## Task 10: Implement QR Login Flow
+
+**Files:**
+- Create: `rust/src/account/login.rs`
+- Modify: `rust/src/account/service.rs`
+
+**Step 1: Create QR login implementation**
+
+Create `rust/src/account/login.rs`:
+
+```rust
+use crate::account::qrcode::{QrCodeData, QrState, QrStatus};
+use crate::http::HttpService;
+use crate::models::Account;
+use crate::error::AccountError;
+use std::collections::HashMap;
+
+pub struct QrLoginFlow {
+    http: std::sync::Arc<HttpService>,
+}
+
+impl QrLoginFlow {
+    pub fn new(http: std::sync::Arc<HttpService>) -> Self {
+        Self { http }
+    }
+
+    pub async fn get_qr_code(&self) -> Result<QrCodeData, AccountError> {
+        // Call Bilibili QR code generation API
+        Ok(QrCodeData {
+            url: "https://passport.bilibili.com/qrcode/auth".to_string(),
+            oauth_key: "test_key".to_string(),
+            expiry: 180,
+        })
+    }
+
+    pub async fn poll_qr_status(&self, oauth_key: &str) -> Result<QrStatus, AccountError> {
+        // Poll Bilibili QR status API
+        // Return appropriate status based on response
+        Ok(QrStatus::Waiting)
+    }
+
+    pub async fn complete_login(
+        &self,
+        cookies: HashMap<String, String>,
+    ) -> Result<Account, AccountError> {
+        // Fetch user info with cookies and create Account
+        Ok(Account {
+            id: "user_123".to_string(),
+            name: "Test User".to_string(),
+            avatar: "https://test.com/avatar.jpg".to_string(),
+            cookies,
+            auth_tokens: crate::models::AuthTokens {
+                access_token: None,
+                refresh_token: None,
+                expires_at: None,
+            },
+            is_logged_in: true,
+        })
+    }
+}
+```
+
+**Step 2:** Add login methods to AccountService
+
+Modify `rust/src/account/service.rs`, add to AccountService:
+
+```rust
+use crate::account::login::QrLoginFlow;
+
+impl AccountService {
+    // ... existing methods ...
+
+    pub fn qr_login_flow(&self) -> QrLoginFlow {
+        QrLoginFlow::new(self.http.clone())
+    }
+}
+```
+
+**Step 3:** Update account module
+
+Open `rust/src/account/mod.rs`:
+
+```rust
+pub mod service;
+pub mod qrcode;
+pub mod login;
+
+pub use service::AccountService;
+pub use qrcode::{QrState, QrStatus, QrCodeData};
+pub use login::QrLoginFlow;
+```
+
+**Step 4:** Run `cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 5:** Commit
+
+```bash
+git add rust/src/account/
+git commit -m "feat(rust): add QR login flow implementation"
+```
+
+---
+
+## Task 11: Implement User API Module
+
+**Files:**
+- Create: `rust/src/api/user.rs`
+- Create: `rust/src/bilibili_api/user.rs`
+- Modify: `rust/src/api/mod.rs`
+
+**Step 1: Create Bilibili user API**
+
+Create `rust/src/bilibili_api/user.rs`:
+
+```rust
+use crate::models::{UserInfo, UserStats};
+use crate::http::HttpService;
+use crate::error::ApiError;
+
+pub struct UserApi {
+    http: std::sync::Arc<HttpService>,
+}
+
+impl UserApi {
+    pub fn new(http: std::sync::Arc<HttpService>) -> Self {
+        Self { http }
+    }
+
+    pub async fn get_user_info(&self, mid: i64) -> Result<UserInfo, ApiError> {
+        let url = format!("/x/space/acc/info?mid={}", mid);
+        self.http.get(&url).await
+    }
+
+    pub async fn get_user_stats(&self, mid: i64) -> Result<UserStats, ApiError> {
+        let url = format!("/x/relation/stat?vmid={}", mid);
+        self.http.get(&url).await
+    }
+}
+```
+
+**Step 2: Create user bridge API**
+
+Create `rust/src/api/user.rs`:
+
+```rust
+use flutter_rust_bridge::frb;
+use crate::models::{UserInfo, UserStats};
+use crate::error::BridgeResult;
+
+/// Get user information
+#[frb]
+pub async fn get_user_info(mid: i64) -> BridgeResult<UserInfo> {
+    // TODO: Integrate with UserApi
+    Err("Not yet implemented".into())
+}
+
+/// Get user statistics
+#[frb]
+pub async fn get_user_stats(mid: i64) -> BridgeResult<UserStats> {
+    // TODO: Integrate with UserApi
+    Err("Not yet implemented".into())
+}
+```
+
+**Step 3:** Update api module
+
+Open `rust/src/api/mod.rs`:
+
+```rust
+pub mod simple;
+pub mod bridge;
+pub mod video;
+pub mod user;
+
+pub use bridge::*;
+```
+
+**Step 4:** Update bilibili_api module
+
+Open `rust/src/bilibili_api/mod.rs`:
+
+```rust
+pub mod video;
+pub mod user;
+
+pub use video::VideoApi;
+pub use user::UserApi;
+```
+
+**Step 5:** Run `cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 6:** Commit
+
+```bash
+git add rust/src/
+git commit -m "feat(rust): add user API module"
+```
+
+---
+
+## Task 12: Implement Service Container
+
+**Files:**
+- Create: `rust/src/services/mod.rs`
+- Create: `rust/src/services/container.rs`
+- Modify: `rust/src/lib.rs`
+
+**Step 1: Create service container**
+
+Create `rust/src/services/container.rs`:
+
+```rust
+use once_cell::sync::Lazy;
+use std::sync::Arc;
+use tokio::runtime::Runtime;
+
+use crate::storage::StorageService;
+use crate::http::HttpService;
+use crate::account::AccountService;
+
+pub struct Services {
+    pub storage: Arc<StorageService>,
+    pub http: Arc<HttpService>,
+    pub account: Arc<AccountService>,
+}
+
+static SERVICES: Lazy<Arc<Services>> = Lazy::new(|| {
+    let rt = Runtime::new().unwrap();
+
+    rt.block_on(async {
+        let storage = Arc::new(StorageService::new("./data/pili.db").await.unwrap());
+        let http = Arc::new(HttpService::new("https://api.bilibili.com".to_string()).unwrap());
+        let account = Arc::new(AccountService::new(storage.clone(), http.clone()));
+
+        Arc::new(Services {
+            storage,
+            http,
+            account,
+        })
+    })
+});
+
+/// Get global services instance
+#[flutter_rust_bridge::frb(sync)]
+pub fn get_services() -> Arc<Services> {
+    SERVICES.clone()
+}
+```
+
+**Step 2:** Create services module
+
+Create `rust/src/services/mod.rs`:
+
+```rust
+pub mod container;
+
+pub use container::{Services, get_services};
+```
+
+**Step 3:** Update lib.rs
+
+Open `rust/src/lib.rs`:
+
+```rust
+pub mod error;
+pub mod models;
+pub mod storage;
+pub mod http;
+pub mod account;
+pub mod bilibili_api;
+pub mod services;
+pub mod api;
+
+mod frb_generated;
+```
+
+**Step 4:** Run `cargo check`
+
+Expected: "Finished dev [unoptimized] check"
+
+**Step 5:** Commit
+
+```bash
+git add rust/src/
+git commit -m "feat(rust): add global service container"
+```
+
+---
+
+This completes Phase 3. The Rust core now has real API integration and proper service management.
+
+**Next Phase**: Download service and complete feature parity

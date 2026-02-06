@@ -4,6 +4,7 @@ use crate::models::Account;
 use crate::storage::StorageService;
 use crate::http::HttpService;
 use crate::error::AccountError;
+use crate::account::login::QrLoginFlow;
 
 pub struct AccountService {
     current_account: Arc<RwLock<Option<Account>>>,
@@ -46,5 +47,9 @@ impl AccountService {
 
         self.set_current_account(account).await;
         Ok(())
+    }
+
+    pub fn qr_login_flow(&self) -> QrLoginFlow {
+        QrLoginFlow::new(self.http.clone())
     }
 }
