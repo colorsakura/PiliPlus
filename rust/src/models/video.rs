@@ -96,3 +96,23 @@ pub struct DynamicsList {
     pub has_more: bool,
     pub offset: Option<String>,
 }
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub struct SearchResult {
+    pub bvid: String,
+    pub title: String,
+    pub description: String,
+    pub owner: VideoOwner,
+    pub cover: Image,
+    pub duration: u32,
+    pub view_count: u64,
+    pub publish_time: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub struct SearchResults {
+    pub items: Vec<SearchResult>,
+    pub page: u32,
+    pub page_size: u32,
+    pub total_count: u32,
+}

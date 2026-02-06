@@ -6,7 +6,7 @@ use crate::storage::StorageService;
 use crate::http::HttpService;
 use crate::account::AccountService;
 use crate::download::DownloadService;
-use crate::bilibili_api::{VideoApi, UserApi};
+use crate::bilibili_api::{VideoApi, UserApi, SearchApi};
 
 pub struct Services {
     pub storage: Arc<StorageService>,
@@ -15,6 +15,7 @@ pub struct Services {
     pub download: Arc<DownloadService>,
     pub video_api: Arc<VideoApi>,
     pub user_api: Arc<UserApi>,
+    pub search_api: Arc<SearchApi>,
 }
 
 static SERVICES: Lazy<Arc<Services>> = Lazy::new(|| {
@@ -27,6 +28,7 @@ static SERVICES: Lazy<Arc<Services>> = Lazy::new(|| {
         let download = Arc::new(DownloadService::new(storage.clone(), http.clone()));
         let video_api = Arc::new(VideoApi::new(http.clone()));
         let user_api = Arc::new(UserApi::new(http.clone()));
+        let search_api = Arc::new(SearchApi::new(http.clone()));
 
         Arc::new(Services {
             storage,
@@ -35,6 +37,7 @@ static SERVICES: Lazy<Arc<Services>> = Lazy::new(|| {
             download,
             video_api,
             user_api,
+            search_api,
         })
     })
 });

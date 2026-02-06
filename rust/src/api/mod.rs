@@ -7,5 +7,6 @@ pub mod download;
 pub mod dynamics;
 pub mod live;
 pub mod comments;
+pub mod search;
 
 pub use bridge::*;

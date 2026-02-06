@@ -24,6 +24,7 @@ bytes = "1.5"
 flume = "0.11"
 async-stream = "0.3"
 futures = "0.3"
+urlencoding = "2.1"
 
 [dev-dependencies]
 wiremock = "0.6"
