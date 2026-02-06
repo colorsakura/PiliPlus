@@ -7,6 +7,11 @@ use serde::{Deserialize, Serialize};
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
 
+// Static HTTP client to avoid creating new clients on each call
+static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> = Lazy::new(|| {
+    Mutex::new(reqwest::Client::new())
+});
+
 /// Mixin key encoding table - 32-element shuffle table
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
     14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7,
@@ -93,7 +98,7 @@ fn extract_filename(url: &str) -> String {
 /// let (img_url, sub_url, mixin_key) = get_wbi_keys().await?;
 /// ```
 async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::new();
+    let client = HTTP_CLIENT.lock().unwrap_or_else(|p| p.into_inner());
 
     let response = client
         .get("https://api.bilibili.com/x/web-interface/nav")
@@ -128,7 +133,7 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
         timestamp: Utc::now(),
     };
 
-    let mut cache_guard = WBI_CACHE.lock().unwrap();
+    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
     *cache_guard = Some(cache);
 
     Ok((img_url, sub_url, mixin_key))
@@ -151,7 +156,7 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
 /// let (img_url, sub_url, mixin_key) = get_wbi_keys_cached().await?;
 /// ```
 pub async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let mut cache_guard = WBI_CACHE.lock().unwrap();
+    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
 
     if let Some(cache) = &*cache_guard {
         if !cache.is_expired() {
