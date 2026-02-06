@@ -719,6 +719,9 @@ abstract final class Pref {
   static bool get useRustVideoApi =>
       _setting.get(SettingBoxKey.useRustVideoApi, defaultValue: false);
 
+  static bool get useRustRcmdApi =>
+      _setting.get(SettingBoxKey.useRustRcmdApi, defaultValue: false);
+
   static bool get enableValidation =>
       _setting.get(SettingBoxKey.enableValidation, defaultValue: false);
 

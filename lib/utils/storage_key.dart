@@ -159,6 +159,7 @@ abstract final class SettingBoxKey {
       showTrayIcon = 'showTrayIcon',
       uiScale = 'uiScale',
       useRustVideoApi = 'useRustVideoApi',
+      useRustRcmdApi = 'useRustRcmdApi',
       enableValidation = 'enableValidation',
       betaTestingEnabled = 'betaTestingEnabled',
       betaRolloutPercentage = 'betaRolloutPercentage';
