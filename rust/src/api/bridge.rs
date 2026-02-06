@@ -173,9 +173,8 @@ pub use crate::api::video::*;
 pub use crate::api::account::*;
 pub use crate::api::search::*;
 pub use crate::api::user::*;
-// All other APIs temporarily disabled due to flutter_rust_bridge codegen issues
-// The types are already exposed in bridge.rs, which causes codegen to generate invalid code
-// pub use crate::api::comments::*;
-// pub use crate::api::dynamics::*;
-// pub use crate::api::live::*;
+pub use crate::api::comments::*;
+pub use crate::api::dynamics::*;
+pub use crate::api::live::*;
+// download module not yet implemented - requires DownloadTask model
 // pub use crate::api::download::*;

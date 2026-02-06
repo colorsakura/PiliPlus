@@ -5,11 +5,12 @@
 
 import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
-import 'package:PiliPlus/src/rust/lib.dart';
+import 'package:PiliPlus/src/rust/models/comments.dart';
+import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Get video comments
-Future<ApiResult> getVideoComments({
+Future<CommentList> getVideoComments({
   required PlatformInt64 oid,
   required int page,
   required int pageSize,

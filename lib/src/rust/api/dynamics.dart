@@ -5,11 +5,12 @@
 
 import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
-import 'package:PiliPlus/src/rust/lib.dart';
+import 'package:PiliPlus/src/rust/models/common.dart';
+import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Get user dynamics/posts from Bilibili API
-Future<ApiResult> getUserDynamics({
+Future<DynamicsList> getUserDynamics({
   required PlatformInt64 uid,
   String? offset,
 }) => RustLib.instance.api.crateApiDynamicsGetUserDynamics(
@@ -18,7 +19,7 @@ Future<ApiResult> getUserDynamics({
 );
 
 /// Get dynamics detail by ID from Bilibili API
-Future<ApiResult> getDynamicsDetail({required String dynamicId}) => RustLib
+Future<DynamicsItem> getDynamicsDetail({required String dynamicId}) => RustLib
     .instance
     .api
     .crateApiDynamicsGetDynamicsDetail(dynamicId: dynamicId);

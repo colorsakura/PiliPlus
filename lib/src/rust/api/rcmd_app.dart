@@ -34,7 +34,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 Future<List<RcmdVideoInfo>> getRecommendListApp({
   required int ps,
   required int freshIdx,
-}) => RustLib.instance.api.crateApiBridgeGetRecommendListApp(
+}) => RustLib.instance.api.crateApiRcmdAppGetRecommendListApp(
   ps: ps,
   freshIdx: freshIdx,
 );

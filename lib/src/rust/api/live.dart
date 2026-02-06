@@ -6,20 +6,18 @@
 import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
-import 'package:PiliPlus/src/rust/models/video.dart';
+import 'package:PiliPlus/src/rust/models/live.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Get video information from Bilibili API
-Future<VideoInfo> getVideoInfo({required String bvid}) =>
-    RustLib.instance.api.crateApiVideoGetVideoInfo(bvid: bvid);
+/// Get live room information
+Future<LiveRoomInfo> getLiveRoomInfo({required PlatformInt64 roomId}) =>
+    RustLib.instance.api.crateApiLiveGetLiveRoomInfo(roomId: roomId);
 
-/// Get video playback URL from Bilibili API
-Future<VideoUrl> getVideoUrl({
-  required String bvid,
-  required PlatformInt64 cid,
-  required VideoQuality quality,
-}) => RustLib.instance.api.crateApiVideoGetVideoUrl(
-  bvid: bvid,
-  cid: cid,
+/// Get live stream play URLs
+Future<LivePlayUrl> getLivePlayUrl({
+  required PlatformInt64 roomId,
+  required int quality,
+}) => RustLib.instance.api.crateApiLiveGetLivePlayUrl(
+  roomId: roomId,
   quality: quality,
 );

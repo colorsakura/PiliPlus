@@ -6,7 +6,18 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
+import 'package:PiliPlus/src/rust/api/account.dart';
 import 'package:PiliPlus/src/rust/api/bridge.dart';
+import 'package:PiliPlus/src/rust/api/comments.dart';
+import 'package:PiliPlus/src/rust/api/dynamics.dart';
+import 'package:PiliPlus/src/rust/api/live.dart';
+import 'package:PiliPlus/src/rust/api/rcmd.dart';
+import 'package:PiliPlus/src/rust/api/rcmd_app.dart';
+import 'package:PiliPlus/src/rust/api/search.dart';
+import 'package:PiliPlus/src/rust/api/simple.dart';
+import 'package:PiliPlus/src/rust/api/user.dart';
+import 'package:PiliPlus/src/rust/api/video.dart';
+import 'package:PiliPlus/src/rust/api/wbi.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:PiliPlus/src/rust/error.dart';
@@ -29,8 +40,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     required super.portManager,
   });
 
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_HashMapStringStringPtr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString;
+
+  @protected
+  HashMapStringString
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    dynamic raw,
+  );
+
   @protected
   Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
+
+  @protected
+  HashMapStringString
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    dynamic raw,
+  );
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -43,6 +70,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
+
+  @protected
+  Account dco_decode_box_autoadd_account(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_i_32(dynamic raw);
@@ -79,6 +109,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<Account> dco_decode_list_account(dynamic raw);
 
   @protected
   List<Comment> dco_decode_list_comment(dynamic raw);
@@ -126,6 +159,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  Account? dco_decode_opt_box_autoadd_account(dynamic raw);
+
+  @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
 
   @protected
@@ -145,6 +181,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
+  (String, String, String) dco_decode_record_string_string_string(dynamic raw);
 
   @protected
   SearchResult dco_decode_search_result(dynamic raw);
@@ -189,6 +228,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   UserStats dco_decode_user_stats(dynamic raw);
 
   @protected
+  BigInt dco_decode_usize(dynamic raw);
+
+  @protected
   VideoFormat dco_decode_video_format(dynamic raw);
 
   @protected
@@ -216,7 +258,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   VipStatus dco_decode_vip_status(dynamic raw);
 
   @protected
+  HashMapStringString
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  HashMapStringString
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
     SseDeserializer deserializer,
   );
 
@@ -231,6 +285,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
@@ -267,6 +324,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<Account> sse_decode_list_account(SseDeserializer deserializer);
 
   @protected
   List<Comment> sse_decode_list_comment(SseDeserializer deserializer);
@@ -326,6 +386,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
@@ -345,6 +408,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, String) sse_decode_record_string_string(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  (String, String, String) sse_decode_record_string_string_string(
     SseDeserializer deserializer,
   );
 
@@ -393,6 +461,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   UserStats sse_decode_user_stats(SseDeserializer deserializer);
 
   @protected
+  BigInt sse_decode_usize(SseDeserializer deserializer);
+
+  @protected
   VideoFormat sse_decode_video_format(SseDeserializer deserializer);
 
   @protected
@@ -420,8 +491,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   VipStatus sse_decode_vip_status(SseDeserializer deserializer);
 
   @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    HashMapStringString self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_Map_String_String_None(
     Map<String, String> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    HashMapStringString self,
     SseSerializer serializer,
   );
 
@@ -436,6 +521,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
@@ -475,6 +563,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_account(List<Account> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_comment(List<Comment> self, SseSerializer serializer);
@@ -546,6 +637,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_account(
+    Account? self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
 
   @protected
@@ -569,6 +666,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_string(
     (String, String) self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_record_string_string_string(
+    (String, String, String) self,
     SseSerializer serializer,
   );
 
@@ -630,6 +733,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_user_stats(UserStats self, SseSerializer serializer);
 
   @protected
+  void sse_encode_usize(BigInt self, SseSerializer serializer);
+
+  @protected
   void sse_encode_video_format(VideoFormat self, SseSerializer serializer);
 
   @protected
@@ -661,6 +767,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
 class RustLibWire implements BaseWire {
   RustLibWire.fromExternalLibrary(ExternalLibrary lib);
+
+  void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+        ptr,
+      );
+
+  void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+        ptr,
+      );
 }
 
 @JS('wasm_bindgen')
@@ -668,4 +790,14 @@ external RustLibWasmModule get wasmModule;
 
 @JS()
 @anonymous
-extension type RustLibWasmModule._(JSObject _) implements JSObject {}
+extension type RustLibWasmModule._(JSObject _) implements JSObject {
+  external void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    int ptr,
+  );
+
+  external void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
+    int ptr,
+  );
+}
