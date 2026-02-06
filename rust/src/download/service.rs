@@ -1,6 +1,7 @@
 use std::sync::Arc;
 use tokio::sync::{RwLock, broadcast};
 use crate::download::task::{DownloadTask, DownloadStatus, DownloadEvent};
+use crate::download::retry::RetryPolicy;
 use crate::storage::StorageService;
 use crate::http::HttpService;
 use crate::error::DownloadError;
@@ -74,23 +75,96 @@ impl DownloadService {
             }
         }
 
-        // TODO: Implement actual download logic
-        // For now, simulate completion
-        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+        let retry_policy = RetryPolicy::default();
+        let mut attempt = 0;
 
-        // Mark as completed
-        {
-            let mut tasks = self.active_downloads.write().await;
-            if let Some(task) = tasks.get_mut(task_id) {
-                task.status = DownloadStatus::Completed;
-                task.completed_at = Some(chrono::Utc::now());
+        loop {
+            attempt += 1;
+
+            match self.attempt_download(task_id, output_path).await {
+                Ok(_) => {
+                    // Mark as completed
+                    let mut tasks = self.active_downloads.write().await;
+                    if let Some(task) = tasks.get_mut(task_id) {
+                        task.status = DownloadStatus::Completed;
+                        task.completed_at = Some(chrono::Utc::now());
+                    }
+
+                    let _ = self.download_tx.send(DownloadEvent {
+                        task_id: task_id.to_string(),
+                        event_type: crate::download::task::DownloadEventType::Completed,
+                    });
+                    break;
+                }
+                Err(e) => {
+                    if retry_policy.should_retry(attempt) {
+                        tracing::warn!(
+                            task_id = %task_id,
+                            attempt = attempt,
+                            max_attempts = retry_policy.max_attempts,
+                            error = %e,
+                            "Download attempt failed, retrying..."
+                        );
+
+                        // Send retry event
+                        let _ = self.download_tx.send(DownloadEvent {
+                            task_id: task_id.to_string(),
+                            event_type: crate::download::task::DownloadEventType::Failed {
+                                error: format!("Attempt {}/{} failed: {}", attempt, retry_policy.max_attempts, e),
+                            },
+                        });
+
+                        // Calculate delay and wait before retry
+                        let delay = retry_policy.delay_for_attempt(attempt);
+                        tokio::time::sleep(delay).await;
+                    } else {
+                        tracing::error!(
+                            task_id = %task_id,
+                            attempt = attempt,
+                            max_attempts = retry_policy.max_attempts,
+                            error = %e,
+                            "Download failed after maximum attempts"
+                        );
+
+                        // Mark as failed
+                        let mut tasks = self.active_downloads.write().await;
+                        if let Some(task) = tasks.get_mut(task_id) {
+                            task.status = DownloadStatus::Failed {
+                                error: e.to_string(),
+                            };
+                        }
+
+                        // Send final failed event
+                        let _ = self.download_tx.send(DownloadEvent {
+                            task_id: task_id.to_string(),
+                            event_type: crate::download::task::DownloadEventType::Failed {
+                                error: format!("Failed after {} attempts: {}", attempt, e),
+                            },
+                        });
+                        break;
+                    }
+                }
             }
         }
+    }
 
-        let _ = self.download_tx.send(DownloadEvent {
-            task_id: task_id.to_string(),
-            event_type: crate::download::task::DownloadEventType::Completed,
-        });
+    /// Perform a single download attempt
+    /// TODO: Implement actual HTTP download logic in a future task
+    async fn attempt_download(
+        &self,
+        _task_id: &str,
+        _output_path: &std::path::Path,
+    ) -> Result<(), DownloadError> {
+        // Placeholder: Simulate download attempt
+        // In a real implementation, this would:
+        // 1. Make HTTP request to download URL
+        // 2. Stream response to file
+        // 3. Handle network errors
+        // 4. Return Ok(()) on success, Err on failure
+
+        // For now, simulate a successful download
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        Ok(())
     }
 
     pub async fn pause_download(&self, task_id: &str) -> Result<(), DownloadError> {
