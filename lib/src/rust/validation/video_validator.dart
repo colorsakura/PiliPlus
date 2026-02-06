@@ -95,7 +95,9 @@ class VideoApiValidator {
     // Handle edge cases where both implementations failed
     if (rustResult == null && flutterResult == null) {
       debugPrint('⚠️  Both implementations failed for $bvid');
-      return ValidationResult.passed('Both implementations failed (consistent)');
+      return ValidationResult.passed(
+        'Both implementations failed (consistent)',
+      );
     }
 
     // Handle asymmetric failures
@@ -247,7 +249,9 @@ class VideoApiValidator {
       debugPrint('✅ Validation passed for $bvid');
       return ValidationResult.passed('All fields match');
     } else {
-      debugPrint('❌ Validation failed for $bvid with ${mismatches.length} mismatches');
+      debugPrint(
+        '❌ Validation failed for $bvid with ${mismatches.length} mismatches',
+      );
       return ValidationResult.failed(
         'Found ${mismatches.length} mismatches:\n${mismatches.join('\n')}',
       );
@@ -272,7 +276,8 @@ class VideoApiValidator {
     List<String> mismatches,
   ) {
     if (rustValue != flutterValue) {
-      final mismatch = '  $fieldName: Rust="$rustValue" vs Flutter="$flutterValue"';
+      final mismatch =
+          '  $fieldName: Rust="$rustValue" vs Flutter="$flutterValue"';
       mismatches.add(mismatch);
       debugPrint('❌ Mismatch for $bvid.$fieldName');
       debugPrint('  Rust:    $rustValue');

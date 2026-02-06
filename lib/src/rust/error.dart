@@ -25,7 +25,4 @@ class SerializableError implements FrbException {
           runtimeType == other.runtimeType &&
           code == other.code &&
           message == other.message;
-
-  @override
-  String toString() => 'SerializableError($code: $message)';
 }
