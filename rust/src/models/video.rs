@@ -76,3 +76,23 @@ pub struct VideoSegment {
     #[serde(rename = "length")]
     pub duration: u32,
 }
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub struct DynamicsItem {
+    pub id: String,
+    pub uid: i64,
+    pub username: String,
+    pub avatar: Image,
+    pub content: String,
+    pub images: Vec<Image>,
+    pub publish_time: i64,
+    pub like_count: u64,
+    pub reply_count: u64,
+}
+
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+pub struct DynamicsList {
+    pub items: Vec<DynamicsItem>,
+    pub has_more: bool,
+    pub offset: Option<String>,
+}

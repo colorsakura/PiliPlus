@@ -4,5 +4,6 @@ pub mod video;
 pub mod user;
 pub mod account;
 pub mod download;
+pub mod dynamics;
 
 pub use bridge::*;
