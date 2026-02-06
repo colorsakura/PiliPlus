@@ -114,14 +114,14 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
         timestamp: Utc::now(),
     };
 
-    let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
     *cache_guard = Some(cache);
 
     Ok((img_url_clone, sub_url_clone, mixin_key))
 }
 
 async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+    let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
 
     if let Some(cache) = &*cache_guard {
         if !cache.is_expired() {
