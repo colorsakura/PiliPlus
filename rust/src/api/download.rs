@@ -3,6 +3,7 @@ use crate::models::VideoQuality;
 use crate::download::{DownloadTask, DownloadEvent};
 use crate::error::BridgeResult;
 use crate::services::get_services;
+use crate::stream::DownloadStream;
 
 /// Start a new download
 #[frb]
@@ -46,4 +47,34 @@ pub fn download_events() -> flume::Receiver<DownloadEvent> {
     // TODO: Implement proper event forwarding from broadcast::Receiver to flume::Receiver
     let (_tx, rx) = flume::unbounded();
     rx
+}
+
+/// Subscribe to download events stream
+///
+/// Returns a stream adapter that provides async access to download events.
+/// Multiple subscribers can call this function to receive independent streams.
+#[frb]
+pub fn subscribe_download_events() -> DownloadStream {
+    let services = get_services();
+    let receiver = services.download.events();
+    DownloadStream::new(receiver)
+}
+
+/// Poll for the next download event
+///
+/// Helper function for Flutter to poll events synchronously.
+/// Returns None if no event is available or stream is closed.
+///
+/// TODO: Replace with proper async stream support in flutter_rust_bridge
+#[frb(sync)]
+pub fn poll_download_event(stream: &mut DownloadStream) -> Option<DownloadEvent> {
+    // For sync bridge, we need to block on tokio runtime
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    rt.block_on(async {
+        // Use a timeout to avoid blocking indefinitely
+        match tokio::time::timeout(tokio::time::Duration::from_millis(100), stream.next()).await {
+            Ok(event) => event,
+            Err(_) => None, // Timeout
+        }
+    })
 }
