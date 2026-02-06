@@ -5,5 +5,6 @@ pub mod user;
 pub mod account;
 pub mod download;
 pub mod dynamics;
+pub mod live;
 
 pub use bridge::*;
