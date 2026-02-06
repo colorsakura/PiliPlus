@@ -22,11 +22,12 @@
 - ✅ Rcmd Web API (Web推荐) - Production Ready
 - ✅ Rcmd App API (App推荐) - Production Ready
 - ✅ Video Info API (视频信息) - Production Ready
-- ✅ User API (用户信息) - Production Ready (NEW!)
+- ✅ User API (用户信息) - Production Ready
+- ✅ Search API (视频搜索) - Production Ready (NEW!)
 - ✅ **Global Rollout Enabled** (All APIs default to Rust)
 
 **Deployment Status:**
-- ✅ Default settings changed: `useRustVideoApi = true`, `useRustUserApi = true`
+- ✅ Default settings changed: `useRustVideoApi = true`, `useRustUserApi = true`, `useRustSearchApi = true`
 - ✅ Migration logic in main.dart
 - ✅ Automatic user setting migration
 - ✅ All unit tests passing (29/29)
