@@ -23,5 +23,3 @@ pub fn health_check() -> bool {
     true
 }
 
-// Re-export account functions
-pub use crate::api::account::{get_current_account, switch_account, get_all_accounts};
