@@ -717,10 +717,16 @@ abstract final class Pref {
       _setting.get(SettingBoxKey.enableHttp2, defaultValue: false);
 
   static bool get useRustVideoApi =>
-      _setting.get(SettingBoxKey.useRustVideoApi, defaultValue: false);
+      _setting.get(SettingBoxKey.useRustVideoApi, defaultValue: true);
 
   static bool get useRustRcmdApi =>
-      _setting.get(SettingBoxKey.useRustRcmdApi, defaultValue: false);
+      _setting.get(SettingBoxKey.useRustRcmdApi, defaultValue: true);
+
+  static bool get useRustRcmdAppApi =>
+      _setting.get(SettingBoxKey.useRustRcmdAppApi, defaultValue: true);
+
+  static bool get useRustUserApi =>
+      _setting.get(SettingBoxKey.useRustUserApi, defaultValue: true);
 
   static bool get enableValidation =>
       _setting.get(SettingBoxKey.enableValidation, defaultValue: false);

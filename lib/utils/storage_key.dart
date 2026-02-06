@@ -160,6 +160,8 @@ abstract final class SettingBoxKey {
       uiScale = 'uiScale',
       useRustVideoApi = 'useRustVideoApi',
       useRustRcmdApi = 'useRustRcmdApi',
+      useRustRcmdAppApi = 'useRustRcmdAppApi',
+      useRustUserApi = 'useRustUserApi',
       enableValidation = 'enableValidation',
       betaTestingEnabled = 'betaTestingEnabled',
       betaRolloutPercentage = 'betaRolloutPercentage';
