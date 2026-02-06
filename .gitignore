@@ -146,4 +146,5 @@ pili_release.json
 
 dist
 
-test.dart
+test.dart# Git worktrees for isolated development
+.worktrees/
