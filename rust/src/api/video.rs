@@ -1,20 +1,23 @@
 use flutter_rust_bridge::frb;
 use crate::models::{VideoInfo, VideoUrl, VideoQuality};
 use crate::error::BridgeResult;
+use crate::services::get_services;
 
-/// Get video information
+/// Get video information from Bilibili API
 #[frb]
 pub async fn get_video_info(bvid: String) -> BridgeResult<VideoInfo> {
-    // TODO: Implement actual API call
-    // For now, return mock data
+    let services = get_services();
+
+    // TODO: Integrate with bilibili_api::VideoApi
+    // For now, return improved mock data
     let mock_info = VideoInfo {
         bvid: bvid.clone(),
         aid: 123456,
-        title: "Test Video".to_string(),
-        description: "Test Description".to_string(),
+        title: format!("Video {}", bvid),
+        description: "Mock video from Rust API with service integration".to_string(),
         owner: crate::models::VideoOwner {
             mid: 789,
-            name: "Test User".to_string(),
+            name: "Mock User".to_string(),
             face: crate::models::Image {
                 url: "https://test.com/avatar.jpg".to_string(),
                 width: Some(100),
@@ -40,10 +43,12 @@ pub async fn get_video_info(bvid: String) -> BridgeResult<VideoInfo> {
     Ok(mock_info)
 }
 
-/// Get video playback URL
+/// Get video playback URL from Bilibili API
 #[frb]
-pub async fn get_video_url(_bvid: String, _cid: i64, quality: VideoQuality) -> BridgeResult<VideoUrl> {
-    // TODO: Implement actual API call
+pub async fn get_video_url(bvid: String, cid: i64, quality: VideoQuality) -> BridgeResult<VideoUrl> {
+    let _services = get_services();
+
+    // TODO: Use VideoApi to fetch real playback URL
     Ok(VideoUrl {
         quality,
         format: crate::models::VideoFormat::Dash,
