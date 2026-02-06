@@ -2,13 +2,16 @@
 use std::collections::HashMap;
 use md5;
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
-use chrono;
+use chrono::Local;
 
 /// Mixin key encoding table - 32-element shuffle table
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
     14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7,
     1, 21, 26, 30, 4, 22, 20, 29, 25, 13, 24, 17, 6, 0, 9, 16
 ];
+
+/// Allowed special characters in WBI parameter filtering
+const ALLOWED_SPECIAL_CHARS: &str = "!'()*-_.";
 
 
 /// Generate mixin key by shuffling characters according to the encoding table
@@ -43,7 +46,7 @@ fn get_mixin_key(orig: &str) -> String {
     let result: Vec<u8> = MIXIN_KEY_ENC_TAB.iter()
         .map(|&i| code_units[i])
         .collect();
-    String::from_utf8(result).unwrap_or_else(|_| String::new())
+    String::from_utf8(result).expect("WBI mixin key generation should always produce valid UTF-8")
 }
 
 /// Encode parameters with WBI (Web Bilibili Interface) signing
@@ -58,7 +61,7 @@ fn get_mixin_key(orig: &str) -> String {
 /// 1. Add current timestamp as "wts" parameter
 /// 2. Sort parameters by key
 /// 3. Build query string with URL encoding
-/// 4. Filter special characters: !'()*
+/// 4. Filter special characters using ALLOWED_SPECIAL_CHARS
 /// 5. Calculate MD5 hash of query + mixin_key
 /// 6. Add hash as "w_rid" parameter
 ///
@@ -71,8 +74,12 @@ fn get_mixin_key(orig: &str) -> String {
 /// assert!(params.contains_key("w_rid"));
 /// ```
 fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
+    // Input validation
+    assert!(!mixin_key.is_empty(), "mixin_key cannot be empty");
+    assert!(mixin_key.len() <= 32, "mixin_key cannot be longer than 32 characters");
+
     // Add timestamp
-    let timestamp = chrono::Local::now().timestamp().to_string();
+    let timestamp = Local::now().timestamp().to_string();
     params.insert("wts".to_string(), timestamp);
 
     // Sort parameters by key
@@ -88,11 +95,11 @@ fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
     }
     let query_string = query_parts.join("&");
 
-    // Filter special characters: !'()*
+    // Filter special characters using ALLOWED_SPECIAL_CHARS constant
     let filtered_query: String = query_string
         .chars()
         .filter(|c| !c.is_ascii_punctuation() || c.is_ascii_alphanumeric() ||
-                 matches!(c, '!' | '\'' | '(' | ')' | '*' | '-' | '_' | '.'))
+                 ALLOWED_SPECIAL_CHARS.contains(*c))
         .collect();
 
     // Calculate MD5 hash
