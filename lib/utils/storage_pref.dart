@@ -728,6 +728,9 @@ abstract final class Pref {
   static bool get useRustUserApi =>
       _setting.get(SettingBoxKey.useRustUserApi, defaultValue: true);
 
+  static bool get useRustSearchApi =>
+      _setting.get(SettingBoxKey.useRustSearchApi, defaultValue: true);
+
   static bool get enableValidation =>
       _setting.get(SettingBoxKey.enableValidation, defaultValue: false);
 

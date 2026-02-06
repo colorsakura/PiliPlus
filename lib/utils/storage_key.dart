@@ -162,6 +162,7 @@ abstract final class SettingBoxKey {
       useRustRcmdApi = 'useRustRcmdApi',
       useRustRcmdAppApi = 'useRustRcmdAppApi',
       useRustUserApi = 'useRustUserApi',
+      useRustSearchApi = 'useRustSearchApi',
       enableValidation = 'enableValidation',
       betaTestingEnabled = 'betaTestingEnabled',
       betaRolloutPercentage = 'betaRolloutPercentage';
