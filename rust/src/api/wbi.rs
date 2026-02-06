@@ -127,8 +127,8 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
 
     // Update cache
     let cache = WbiCache {
-        img_url,
-        sub_url,
+        img_url: img_url.clone(),
+        sub_url: sub_url.clone(),
         mixin_key: mixin_key.clone(),
         timestamp: Utc::now(),
     };
