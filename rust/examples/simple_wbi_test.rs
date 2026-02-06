@@ -1,5 +1,3 @@
-// Standalone WBI test without dependencies on the main library
-
 use std::collections::HashMap;
 use md5;
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
@@ -7,6 +5,7 @@ use chrono::{Local, DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
+use reqwest;
 use tokio;
 
 // Constants
@@ -79,45 +78,6 @@ fn get_mixin_key(orig: &str) -> String {
     String::from_utf8(result).expect("WBI mixin key generation should always produce valid UTF-8")
 }
 
-fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
-    // Input validation
-    assert!(!mixin_key.is_empty(), "mixin_key cannot be empty");
-    assert!(mixin_key.len() <= 32, "mixin_key cannot be longer than 32 characters");
-
-    // Add timestamp
-    let timestamp = Local::now().timestamp().to_string();
-    params.insert("wts".to_string(), timestamp);
-
-    // Sort parameters by key
-    let mut sorted_params: Vec<_> = params.iter().collect();
-    sorted_params.sort_by_key(|(k, _)| k.to_string());
-
-    // Build query string with URL encoding
-    let mut query_parts = Vec::new();
-    for (key, value) in sorted_params {
-        let encoded_key = utf8_percent_encode(key, NON_ALPHANUMERIC).to_string();
-        let encoded_value = utf8_percent_encode(value, NON_ALPHANUMERIC).to_string();
-        query_parts.push(format!("{}={}", encoded_key, encoded_value));
-    }
-    let query_string = query_parts.join("&");
-
-    // Filter special characters using ALLOWED_SPECIAL_CHARS constant
-    let filtered_query: String = query_string
-        .chars()
-        .filter(|c| !c.is_ascii_punctuation() || c.is_ascii_alphanumeric() ||
-                 ALLOWED_SPECIAL_CHARS.contains(*c))
-        .collect();
-
-    // Calculate MD5 hash
-    let mut hasher = md5::Context::new();
-    hasher.consume(filtered_query.as_bytes());
-    hasher.consume(mixin_key.as_bytes());
-    let md5_hash = format!("{:02x}", hasher.compute());
-
-    // Add w_rid parameter
-    params.insert("w_rid".to_string(), md5_hash);
-}
-
 async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
 
@@ -138,18 +98,18 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
         return Err(format!("API returned error code {}: {}", user_info.code, user_info.message).into());
     }
 
-    let img_url_clone = user_info.data.wbi_img.img_url.clone();
-    let sub_url_clone = user_info.data.wbi_img.sub_url.clone();
+    let img_url = user_info.data.wbi_img.img_url;
+    let sub_url = user_info.data.wbi_img.sub_url;
 
-    let img_filename = extract_filename(&img_url_clone);
-    let sub_filename = extract_filename(&sub_url_clone);
+    let img_filename = extract_filename(&img_url);
+    let sub_filename = extract_filename(&sub_url);
 
     let mixin_key = get_mixin_key(&format!("{}{}", img_filename, sub_filename));
 
     // Update cache
     let cache = WbiCache {
-        img_url: img_url_clone.clone(),
-        sub_url: sub_url_clone.clone(),
+        img_url,
+        sub_url,
         mixin_key: mixin_key.clone(),
         timestamp: Utc::now(),
     };
@@ -157,11 +117,11 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
     let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
     *cache_guard = Some(cache);
 
-    Ok((img_url_clone, sub_url_clone, mixin_key))
+    Ok((img_url, sub_url, mixin_key))
 }
 
 async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
 
     if let Some(cache) = &*cache_guard {
         if !cache.is_expired() {
@@ -249,26 +209,12 @@ async fn main() {
         }
     }
 
-    // Test enc_wbi function
-    println!("\nTesting enc_wbi function:");
-    let mut test_params = HashMap::new();
-    test_params.insert("test".to_string(), "value".to_string());
-    test_params.insert("foo".to_string(), "bar".to_string());
-
-    let mixin_key = "test_mixin_key_1234567890123456";
-    let original_count = test_params.len();
-
-    enc_wbi(&mut test_params, mixin_key);
-
-    println!("After encoding:");
-    for (key, value) in &test_params {
-        println!("  {}: {}", key, value);
-    }
-
-    // Verify that wts and w_rid parameters were added
-    assert!(test_params.contains_key("wts"));
-    assert!(test_params.contains_key("w_rid"));
-    assert_eq!(test_params.len(), original_count + 2);
+    // Test get_mixin_key function
+    println!("\nTesting get_mixin_key function:");
+    let test_input = "test1234567890";
+    let mixin_key = get_mixin_key(test_input);
+    println!("get_mixin_key(\"{}\") = \"{}\"", test_input, mixin_key);
+    assert_eq!(mixin_key.len(), 32);
 
     println!("\nAll tests completed successfully!");
 }
