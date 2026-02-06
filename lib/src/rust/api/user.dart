@@ -5,13 +5,14 @@
 
 import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
-import 'package:PiliPlus/src/rust/lib.dart';
+import 'package:PiliPlus/src/rust/models/common.dart';
+import 'package:PiliPlus/src/rust/models/user.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Get user information
-Future<ApiResult> getUserInfo({required PlatformInt64 mid}) =>
-    RustLib.instance.api.crateApiUserGetUserInfo(mid: mid);
+/// Get current user information (uses auth cookie from HTTP client)
+Future<UserInfo> getUserInfo() =>
+    RustLib.instance.api.crateApiUserGetUserInfo();
 
-/// Get user statistics
-Future<ApiResult> getUserStats({required PlatformInt64 mid}) =>
-    RustLib.instance.api.crateApiUserGetUserStats(mid: mid);
+/// Get current user statistics (uses auth cookie from HTTP client)
+Future<UserStats> getUserStats() =>
+    RustLib.instance.api.crateApiUserGetUserStats();

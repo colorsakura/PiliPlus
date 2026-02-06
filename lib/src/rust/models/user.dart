@@ -4,34 +4,28 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import 'package:PiliPlus/src/rust/frb_generated.dart';
-import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-class CoinBalance {
-  final int coins;
-
-  const CoinBalance({
-    required this.coins,
-  });
-
-  @override
-  int get hashCode => coins.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CoinBalance &&
-          runtimeType == other.runtimeType &&
-          coins == other.coins;
-}
-
+/// User information matching Bilibili API response
 class UserInfo {
   final PlatformInt64 mid;
   final String name;
-  final Image face;
+  final String face;
   final UserLevel levelInfo;
   final VipStatus vipStatus;
-  final CoinBalance money;
+  final double money;
+  final int emailVerified;
+  final int mobileVerified;
+  final int moral;
+  final int scores;
+  final PlatformInt64 vipDueDate;
+  final int vipPayType;
+  final int vipThemeType;
+  final int vipAvatarSub;
+  final String vipNicknameColor;
+  final bool hasShop;
+  final String shopUrl;
+  final int isSeniorMember;
 
   const UserInfo({
     required this.mid,
@@ -40,6 +34,18 @@ class UserInfo {
     required this.levelInfo,
     required this.vipStatus,
     required this.money,
+    required this.emailVerified,
+    required this.mobileVerified,
+    required this.moral,
+    required this.scores,
+    required this.vipDueDate,
+    required this.vipPayType,
+    required this.vipThemeType,
+    required this.vipAvatarSub,
+    required this.vipNicknameColor,
+    required this.hasShop,
+    required this.shopUrl,
+    required this.isSeniorMember,
   });
 
   @override
@@ -49,7 +55,19 @@ class UserInfo {
       face.hashCode ^
       levelInfo.hashCode ^
       vipStatus.hashCode ^
-      money.hashCode;
+      money.hashCode ^
+      emailVerified.hashCode ^
+      mobileVerified.hashCode ^
+      moral.hashCode ^
+      scores.hashCode ^
+      vipDueDate.hashCode ^
+      vipPayType.hashCode ^
+      vipThemeType.hashCode ^
+      vipAvatarSub.hashCode ^
+      vipNicknameColor.hashCode ^
+      hasShop.hashCode ^
+      shopUrl.hashCode ^
+      isSeniorMember.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -61,38 +79,66 @@ class UserInfo {
           face == other.face &&
           levelInfo == other.levelInfo &&
           vipStatus == other.vipStatus &&
-          money == other.money;
+          money == other.money &&
+          emailVerified == other.emailVerified &&
+          mobileVerified == other.mobileVerified &&
+          moral == other.moral &&
+          scores == other.scores &&
+          vipDueDate == other.vipDueDate &&
+          vipPayType == other.vipPayType &&
+          vipThemeType == other.vipThemeType &&
+          vipAvatarSub == other.vipAvatarSub &&
+          vipNicknameColor == other.vipNicknameColor &&
+          hasShop == other.hasShop &&
+          shopUrl == other.shopUrl &&
+          isSeniorMember == other.isSeniorMember;
 }
 
 class UserLevel {
   final int currentLevel;
+  final int currentMin;
+  final int currentExp;
+  final int nextExp;
 
   const UserLevel({
     required this.currentLevel,
+    required this.currentMin,
+    required this.currentExp,
+    required this.nextExp,
   });
 
   @override
-  int get hashCode => currentLevel.hashCode;
+  int get hashCode =>
+      currentLevel.hashCode ^
+      currentMin.hashCode ^
+      currentExp.hashCode ^
+      nextExp.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is UserLevel &&
           runtimeType == other.runtimeType &&
-          currentLevel == other.currentLevel;
+          currentLevel == other.currentLevel &&
+          currentMin == other.currentMin &&
+          currentExp == other.currentExp &&
+          nextExp == other.nextExp;
 }
 
 class UserStats {
   final int following;
   final int follower;
+  final int dynamicCount;
 
   const UserStats({
     required this.following,
     required this.follower,
+    required this.dynamicCount,
   });
 
   @override
-  int get hashCode => following.hashCode ^ follower.hashCode;
+  int get hashCode =>
+      following.hashCode ^ follower.hashCode ^ dynamicCount.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -100,7 +146,8 @@ class UserStats {
       other is UserStats &&
           runtimeType == other.runtimeType &&
           following == other.following &&
-          follower == other.follower;
+          follower == other.follower &&
+          dynamicCount == other.dynamicCount;
 }
 
 class VipStatus {
