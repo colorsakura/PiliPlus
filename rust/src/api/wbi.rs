@@ -8,7 +8,7 @@ use once_cell::sync::Lazy;
 use std::sync::Mutex;
 
 // Static HTTP client to avoid creating new clients on each call
-static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> = Lazy::new(|| {
+pub static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> = Lazy::new(|| {
     Mutex::new(reqwest::Client::new())
 });
 
@@ -230,7 +230,7 @@ fn get_mixin_key(orig: &str) -> String {
 /// assert!(params.contains_key("wts"));
 /// assert!(params.contains_key("w_rid"));
 /// ```
-fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
+pub fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
     // Input validation
     assert!(!mixin_key.is_empty(), "mixin_key cannot be empty");
     assert!(mixin_key.len() <= 32, "mixin_key cannot be longer than 32 characters");
