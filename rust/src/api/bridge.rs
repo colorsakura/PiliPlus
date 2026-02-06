@@ -4,9 +4,14 @@ use crate::models::*;
 /// Initialize the Rust core
 #[frb(sync)]
 pub fn init_core() {
-    // Initialize logging
+    // Initialize logging with proper formatter to show logs
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::INFO)
+        .with_target(false) // Don't show module path
+        .with_thread_ids(false) // Don't show thread IDs
+        .with_file(false) // Don't show file path
+        .with_line_number(false) // Don't show line number
+        .compact() // Use compact format for single-line logs
         .init();
 
     tracing::info!("PiliPlus Rust core initialized");
@@ -121,6 +126,23 @@ pub async fn _expose_search_result_type() -> SearchResult {
 #[frb]
 pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
     crate::api::rcmd::get_recommend_list(ps, fresh_idx).await
+}
+
+// App Recommendation API wrapper for flutter_rust_bridge
+#[frb]
+pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
+    crate::api::rcmd_app::get_recommend_list_app(ps, fresh_idx).await
+}
+
+// User API wrapper for flutter_rust_bridge
+#[frb]
+pub async fn get_user_info() -> Result<crate::models::UserInfo, crate::error::SerializableError> {
+    crate::api::user::get_user_info().await
+}
+
+#[frb]
+pub async fn get_user_stats() -> Result<crate::models::UserStats, crate::error::SerializableError> {
+    crate::api::user::get_user_stats().await
 }
 
 // Re-export API functions for use by Dart

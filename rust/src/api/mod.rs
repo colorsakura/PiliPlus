@@ -4,9 +4,10 @@ pub mod video;
 pub mod account;  // Restored
 pub mod wbi;
 pub mod rcmd;
+pub mod rcmd_app;
+pub mod user;
 // All other APIs temporarily disabled due to flutter_rust_bridge codegen issues
 // The types are already exposed in bridge.rs, which causes codegen to generate invalid code
-// pub mod user;
 // pub mod comments;
 // pub mod dynamics;
 // pub mod live;
@@ -15,3 +16,6 @@ pub mod rcmd;
 
 pub use bridge::*;
 pub use rcmd::*;
+pub use rcmd_app::*;
+pub use user::*;
+
