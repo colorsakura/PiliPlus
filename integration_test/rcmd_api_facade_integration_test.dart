@@ -76,7 +76,7 @@ void main() {
         expect(result, isA<LoadingState>());
 
         // Should either succeed or fail gracefully
-        expect(result, isOneOf([isA<Success>(), isA<Error>()]));
+        expect(result, anyOf([isA<Success>(), isA<Error>()]));
       });
     });
 
