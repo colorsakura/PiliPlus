@@ -1,6 +1,7 @@
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/http/user_api_facade.dart';
 import 'package:PiliPlus/models/user/info.dart';
 import 'package:PiliPlus/models/user/stat.dart';
 import 'package:PiliPlus/models/coin_log/data.dart';
@@ -35,23 +36,20 @@ abstract final class UserHttp {
   // }
 
   static Future<LoadingState<UserInfoData>> userInfo() async {
-    final res = await Request().get(Api.userInfo);
-    if (res.data['code'] == 0) {
-      UserInfoData data = UserInfoData.fromJson(res.data['data']);
-      GlobalData().coins = data.money;
-      return Success(data);
-    } else {
-      return Error(res.data['message']);
+    // Use facade which routes to Rust or Flutter implementation
+    final result = await UserApiFacade.userInfo();
+
+    // Update GlobalData with coin balance on success
+    if (result is Success<UserInfoData>) {
+      GlobalData().coins = result.data.money;
     }
+
+    return result;
   }
 
   static Future<LoadingState<UserStat>> userStatOwner() async {
-    final res = await Request().get(Api.userStatOwner);
-    if (res.data['code'] == 0) {
-      return Success(UserStat.fromJson(res.data['data']));
-    } else {
-      return Error(res.data['message']);
-    }
+    // Use facade which routes to Rust or Flutter implementation
+    return UserApiFacade.userStatOwner();
   }
 
   // 稍后再看
