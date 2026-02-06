@@ -63,9 +63,13 @@ class BetaTestingManager {
       // Enable Rust API for this user
       GStorage.setting.put(SettingBoxKey.useRustVideoApi, true);
 
+      // Enable Rust rcmd API (same cohort allocation)
+      GStorage.setting.put(SettingBoxKey.useRustRcmdApi, true);
+
       final currentUserId = _getCurrentUserId();
       debugPrint('[BetaTesting] ✅ User $currentUserId included in beta cohort ($rolloutPercentage% rollout)');
       debugPrint('[BetaTesting] Rust Video API enabled');
+      debugPrint('[BetaTesting] Rust rcmd API enabled');
 
       // Start periodic metrics persistence (every hour)
       _startPeriodicMetricsPersistence();
@@ -73,6 +77,7 @@ class BetaTestingManager {
     } else {
       debugPrint('[BetaTesting] ❌ User not in beta cohort ($rolloutPercentage% rollout)');
       debugPrint('[BetaTesting] Rust Video API disabled (using Flutter)');
+      debugPrint('[BetaTesting] Rust rcmd API disabled (using Flutter)');
     }
 
     _initialized = true;
@@ -165,12 +170,22 @@ class BetaTestingManager {
       defaultValue: false,
     );
 
+    final rcmdApiEnabled = GStorage.setting.get(
+      SettingBoxKey.useRustRcmdApi,
+      defaultValue: false,
+    );
+
     return {
       'beta_testing_enabled': betaTestingEnabled,
       'rollout_percentage': rolloutPercentage,
       'is_in_beta_cohort': isInBeta,
       'rust_api_enabled': rustApiEnabled,
+      'rust_rcmd_api_enabled': rcmdApiEnabled,
       'user_id': _getCurrentUserId(),
+      'rust_apis': {
+        'video': rustApiEnabled,
+        'rcmd': rcmdApiEnabled,
+      },
     };
   }
 
@@ -296,7 +311,8 @@ class BetaTestingManager {
     buffer.writeln('   Enabled: ${status['beta_testing_enabled']}');
     buffer.writeln('   Rollout: ${status['rollout_percentage']}%');
     buffer.writeln('   In Cohort: ${status['is_in_beta_cohort']}');
-    buffer.writeln('   Rust API: ${status['rust_api_enabled']}');
+    buffer.writeln('   Rust Video API: ${status['rust_api_enabled']}');
+    buffer.writeln('   Rust rcmd API: ${status['rust_rcmd_api_enabled']}');
     buffer.writeln('   User ID: ${status['user_id']}');
     buffer.writeln('');
 
@@ -316,6 +332,12 @@ class BetaTestingManager {
         ? 0.0
         : (stats['rust_fallbacks'] as int) / (stats['rust_calls'] as int);
     buffer.writeln('   Fallback Rate: ${(fallbackRate * 100).toStringAsFixed(2)}%');
+    buffer.writeln('');
+
+    buffer.writeln('🔍 API Implementation Status:');
+    buffer.writeln('   Video API: ${status['rust_api_enabled'] ? 'Rust' : 'Flutter'}');
+    buffer.writeln('   rcmd API: ${status['rust_rcmd_api_enabled'] ? 'Rust' : 'Flutter'}');
+    buffer.writeln('   Combined APIs: ${status['rust_api_enabled'] && status['rust_rcmd_api_enabled'] ? 'Both Rust' : status['rust_api_enabled'] || status['rust_rcmd_api_enabled'] ? 'Mixed' : 'Both Flutter'}');
     buffer.writeln('');
 
     buffer.writeln('💚 Health Status: $health');
