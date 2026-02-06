@@ -1,4 +1,3 @@
-use flutter_rust_bridge::frb;
 use tokio::sync::broadcast;
 use crate::download::DownloadEvent;
 use crate::models::Account;
