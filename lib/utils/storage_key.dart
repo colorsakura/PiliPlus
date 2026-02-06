@@ -157,7 +157,11 @@ abstract final class SettingBoxKey {
       showWindowTitleBar = 'showWindowTitleBar',
       desktopVolume = 'desktopVolume',
       showTrayIcon = 'showTrayIcon',
-      uiScale = 'uiScale';
+      uiScale = 'uiScale',
+      useRustVideoApi = 'useRustVideoApi',
+      enableValidation = 'enableValidation',
+      betaTestingEnabled = 'betaTestingEnabled',
+      betaRolloutPercentage = 'betaRolloutPercentage';
 
   static const String subtitlePreferenceV2 = 'subtitlePreferenceV2',
       enableDragSubtitle = 'enableDragSubtitle',

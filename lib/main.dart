@@ -26,6 +26,8 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/utils/beta_testing_manager.dart';
+import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:PiliPlus/utils/theme_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:catcher_2/catcher_2.dart';
@@ -95,6 +97,30 @@ void main() async {
     exit(0);
   }
   ScaledWidgetsFlutterBinding.instance.scaleFactor = Pref.uiScale;
+
+  // Initialize Rust bridge (required before using any Rust API)
+  try {
+    await RustLib.init();
+    if (kDebugMode) debugPrint('🦀 Rust bridge initialized successfully');
+  } catch (e) {
+    if (kDebugMode) {
+      debugPrint('⚠️  Rust bridge initialization failed: $e');
+      debugPrint('Rust API will be disabled, using Flutter implementation');
+    }
+    // Continue without Rust - app will use Flutter implementation
+  }
+
+  // Week 2-3: Beta Testing - Enable beta testing and initialize manager
+  // This will automatically enable Rust API for eligible beta users
+  if (kDebugMode) {
+    // Enable beta testing in debug mode for testing
+    // Set to 100% for testing - change to 10 for production beta testing
+    GStorage.setting.put(SettingBoxKey.betaTestingEnabled, true);
+    GStorage.setting.put(SettingBoxKey.betaRolloutPercentage, 100);
+    if (kDebugMode) debugPrint('🧪 Beta testing ENABLED (100% rollout for testing)');
+  }
+  await BetaTestingManager.initialize();
+
   await Future.wait([_initDownPath(), _initTmpPath()]);
   Get
     ..lazyPut(AccountService.new)

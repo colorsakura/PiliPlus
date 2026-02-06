@@ -6,6 +6,7 @@ import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/http/ua_type.dart';
+import 'package:PiliPlus/http/video_api_facade.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
@@ -21,7 +22,6 @@ import 'package:PiliPlus/models/triple/pgc_triple.dart';
 import 'package:PiliPlus/models/triple/ugc_triple.dart';
 import 'package:PiliPlus/models/video/video_ai_conclusion/data.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
-import 'package:PiliPlus/models/video/video_detail/video_detail_response.dart';
 import 'package:PiliPlus/models/video/video_note_list/data.dart';
 import 'package:PiliPlus/models/video/video_play_info/data.dart';
 import 'package:PiliPlus/models/video/video_relation/data.dart';
@@ -278,15 +278,17 @@ abstract final class VideoHttp {
   static Future<LoadingState<VideoDetailData>> videoIntro({
     required String bvid,
   }) async {
-    final res = await Request().get(
-      Api.videoIntro,
-      queryParameters: {'bvid': bvid},
-    );
-    VideoDetailResponse data = VideoDetailResponse.fromJson(res.data);
-    if (data.code == 0) {
-      return Success(data.data!);
-    } else {
-      return Error(data.message);
+    try {
+      // Call facade instead of Request().get()
+      final data = await VideoApiFacade.getVideoInfo(bvid);
+
+      if (data.code == 0 && data.data != null) {
+        return Success(data.data!);
+      } else {
+        return Error(data.message ?? 'Unknown error');
+      }
+    } catch (e) {
+      return Error(e.toString());
     }
   }
 

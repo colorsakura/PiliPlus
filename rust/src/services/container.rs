@@ -1,6 +1,5 @@
-use once_cell::sync::Lazy;
+use once_cell::sync::OnceCell;
 use std::sync::Arc;
-use tokio::runtime::Runtime;
 
 use crate::storage::StorageService;
 use crate::http::HttpService;
@@ -18,31 +17,41 @@ pub struct Services {
     pub search_api: Arc<SearchApi>,
 }
 
-static SERVICES: Lazy<Arc<Services>> = Lazy::new(|| {
-    let rt = Runtime::new().unwrap();
+static SERVICES: OnceCell<Arc<Services>> = OnceCell::new();
 
-    rt.block_on(async {
-        let storage = Arc::new(StorageService::new(":memory:").await.unwrap());
-        let http = Arc::new(HttpService::new("https://api.bilibili.com".to_string()).unwrap());
-        let account = Arc::new(AccountService::new(storage.clone(), http.clone()));
-        let download = Arc::new(DownloadService::new(storage.clone(), http.clone()));
-        let video_api = Arc::new(VideoApi::new(http.clone()));
-        let user_api = Arc::new(UserApi::new(http.clone()));
-        let search_api = Arc::new(SearchApi::new(http.clone()));
+/// Initialize services (async, for use within tokio runtime)
+async fn init_services() -> Arc<Services> {
+    let storage = Arc::new(StorageService::new(":memory:").await.unwrap());
+    let http = Arc::new(HttpService::new("https://api.bilibili.com".to_string()).unwrap());
+    let account = Arc::new(AccountService::new(storage.clone(), http.clone()));
+    let download = Arc::new(DownloadService::new(storage.clone(), http.clone()));
+    let video_api = Arc::new(VideoApi::new(http.clone()));
+    let user_api = Arc::new(UserApi::new(http.clone()));
+    let search_api = Arc::new(SearchApi::new(http.clone()));
 
-        Arc::new(Services {
-            storage,
-            http,
-            account,
-            download,
-            video_api,
-            user_api,
-            search_api,
-        })
+    Arc::new(Services {
+        storage,
+        http,
+        account,
+        download,
+        video_api,
+        user_api,
+        search_api,
     })
-});
+}
 
 /// Get global services instance
-pub fn get_services() -> Arc<Services> {
-    SERVICES.clone()
+/// This will initialize services on first call in an async context
+pub async fn get_services() -> Arc<Services> {
+    // Use get_or_init safely in async context
+    // We use a oneshot channel to ensure only one initialization happens
+    if let Some(services) = SERVICES.get() {
+        return services.clone();
+    }
+
+    // Initialize services asynchronously
+    let services = init_services().await;
+
+    // Try to set - if another thread beat us to it, use theirs
+    SERVICES.get_or_init(|| services.clone()).clone()
 }

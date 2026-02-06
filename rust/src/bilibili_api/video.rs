@@ -1,9 +1,18 @@
 use crate::models::{VideoInfo, VideoUrl, VideoQuality};
 use crate::http::HttpService;
 use crate::error::ApiError;
+use serde::Deserialize;
 
 pub struct VideoApi {
     http: std::sync::Arc<HttpService>,
+}
+
+// Bilibili API response wrapper
+#[derive(Deserialize)]
+struct BiliResponse<T> {
+    code: i32,
+    message: Option<String>,
+    data: T,
 }
 
 impl VideoApi {
@@ -12,9 +21,20 @@ impl VideoApi {
     }
 
     pub async fn get_video_info(&self, bvid: &str) -> Result<VideoInfo, ApiError> {
-        // Real Bilibili API endpoint
         let url = format!("/x/web-interface/view?bvid={}", bvid);
-        self.http.get(&url).await
+
+        // Get wrapped response
+        let response: BiliResponse<VideoInfo> = self.http.get(&url).await?;
+
+        // Check API response code
+        if response.code != 0 {
+            return Err(ApiError::ApiError {
+                code: response.code,
+                message: response.message.unwrap_or_else(|| "Unknown error".to_string()),
+            });
+        }
+
+        Ok(response.data)
     }
 
     pub async fn get_video_url(
@@ -29,6 +49,18 @@ impl VideoApi {
             cid,
             quality as i32
         );
-        self.http.get(&url).await
+
+        // Get wrapped response
+        let response: BiliResponse<VideoUrl> = self.http.get(&url).await?;
+
+        // Check API response code
+        if response.code != 0 {
+            return Err(ApiError::ApiError {
+                code: response.code,
+                message: response.message.unwrap_or_else(|| "Unknown error".to_string()),
+            });
+        }
+
+        Ok(response.data)
     }
 }

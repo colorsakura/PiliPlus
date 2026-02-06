@@ -6,10 +6,19 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
+import 'package:PiliPlus/src/rust/api/bridge.dart';
 import 'package:PiliPlus/src/rust/api/simple.dart';
+import 'package:PiliPlus/src/rust/api/video.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
+import 'package:PiliPlus/src/rust/models/account.dart';
+import 'package:PiliPlus/src/rust/models/comments.dart';
+import 'package:PiliPlus/src/rust/models/common.dart';
+import 'package:PiliPlus/src/rust/models/live.dart';
+import 'package:PiliPlus/src/rust/models/user.dart';
+import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
@@ -21,10 +30,115 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   });
 
   @protected
+  Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
 
   @protected
+  Account dco_decode_account(dynamic raw);
+
+  @protected
+  AuthTokens dco_decode_auth_tokens(dynamic raw);
+
+  @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
+
+  @protected
+  int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  CoinBalance dco_decode_coin_balance(dynamic raw);
+
+  @protected
+  Comment dco_decode_comment(dynamic raw);
+
+  @protected
+  CommentList dco_decode_comment_list(dynamic raw);
+
+  @protected
+  DynamicsItem dco_decode_dynamics_item(dynamic raw);
+
+  @protected
+  DynamicsList dco_decode_dynamics_list(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_i_64(dynamic raw);
+
+  @protected
+  Image dco_decode_image(dynamic raw);
+
+  @protected
+  List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<Comment> dco_decode_list_comment(dynamic raw);
+
+  @protected
+  List<DynamicsItem> dco_decode_list_dynamics_item(dynamic raw);
+
+  @protected
+  List<Image> dco_decode_list_image(dynamic raw);
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
+
+  @protected
+  List<SearchResult> dco_decode_list_search_result(dynamic raw);
+
+  @protected
+  List<VideoPage> dco_decode_list_video_page(dynamic raw);
+
+  @protected
+  List<VideoSegment> dco_decode_list_video_segment(dynamic raw);
+
+  @protected
+  LivePlayUrl dco_decode_live_play_url(dynamic raw);
+
+  @protected
+  LiveQuality dco_decode_live_quality(dynamic raw);
+
+  @protected
+  LiveRoomInfo dco_decode_live_room_info(dynamic raw);
+
+  @protected
+  LiveStatus dco_decode_live_status(dynamic raw);
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
+  SearchResult dco_decode_search_result(dynamic raw);
+
+  @protected
+  SearchResults dco_decode_search_results(dynamic raw);
+
+  @protected
+  SerializableError dco_decode_serializable_error(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -33,10 +147,163 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
+  UserInfo dco_decode_user_info(dynamic raw);
+
+  @protected
+  UserLevel dco_decode_user_level(dynamic raw);
+
+  @protected
+  UserStats dco_decode_user_stats(dynamic raw);
+
+  @protected
+  VideoFormat dco_decode_video_format(dynamic raw);
+
+  @protected
+  VideoInfo dco_decode_video_info(dynamic raw);
+
+  @protected
+  VideoOwner dco_decode_video_owner(dynamic raw);
+
+  @protected
+  VideoPage dco_decode_video_page(dynamic raw);
+
+  @protected
+  VideoQuality dco_decode_video_quality(dynamic raw);
+
+  @protected
+  VideoSegment dco_decode_video_segment(dynamic raw);
+
+  @protected
+  VideoStats dco_decode_video_stats(dynamic raw);
+
+  @protected
+  VideoUrl dco_decode_video_url(dynamic raw);
+
+  @protected
+  VipStatus dco_decode_vip_status(dynamic raw);
+
+  @protected
+  Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  Account sse_decode_account(SseDeserializer deserializer);
+
+  @protected
+  AuthTokens sse_decode_auth_tokens(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  CoinBalance sse_decode_coin_balance(SseDeserializer deserializer);
+
+  @protected
+  Comment sse_decode_comment(SseDeserializer deserializer);
+
+  @protected
+  CommentList sse_decode_comment_list(SseDeserializer deserializer);
+
+  @protected
+  DynamicsItem sse_decode_dynamics_item(SseDeserializer deserializer);
+
+  @protected
+  DynamicsList sse_decode_dynamics_list(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
+
+  @protected
+  Image sse_decode_image(SseDeserializer deserializer);
+
+  @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<Comment> sse_decode_list_comment(SseDeserializer deserializer);
+
+  @protected
+  List<DynamicsItem> sse_decode_list_dynamics_item(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<Image> sse_decode_list_image(SseDeserializer deserializer);
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<(String, String)> sse_decode_list_record_string_string(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<SearchResult> sse_decode_list_search_result(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<VideoPage> sse_decode_list_video_page(SseDeserializer deserializer);
+
+  @protected
+  List<VideoSegment> sse_decode_list_video_segment(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  LivePlayUrl sse_decode_live_play_url(SseDeserializer deserializer);
+
+  @protected
+  LiveQuality sse_decode_live_quality(SseDeserializer deserializer);
+
+  @protected
+  LiveRoomInfo sse_decode_live_room_info(SseDeserializer deserializer);
+
+  @protected
+  LiveStatus sse_decode_live_status(SseDeserializer deserializer);
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  SearchResult sse_decode_search_result(SseDeserializer deserializer);
+
+  @protected
+  SearchResults sse_decode_search_results(SseDeserializer deserializer);
+
+  @protected
+  SerializableError sse_decode_serializable_error(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -45,13 +312,106 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
+  UserInfo sse_decode_user_info(SseDeserializer deserializer);
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
+  UserLevel sse_decode_user_level(SseDeserializer deserializer);
+
+  @protected
+  UserStats sse_decode_user_stats(SseDeserializer deserializer);
+
+  @protected
+  VideoFormat sse_decode_video_format(SseDeserializer deserializer);
+
+  @protected
+  VideoInfo sse_decode_video_info(SseDeserializer deserializer);
+
+  @protected
+  VideoOwner sse_decode_video_owner(SseDeserializer deserializer);
+
+  @protected
+  VideoPage sse_decode_video_page(SseDeserializer deserializer);
+
+  @protected
+  VideoQuality sse_decode_video_quality(SseDeserializer deserializer);
+
+  @protected
+  VideoSegment sse_decode_video_segment(SseDeserializer deserializer);
+
+  @protected
+  VideoStats sse_decode_video_stats(SseDeserializer deserializer);
+
+  @protected
+  VideoUrl sse_decode_video_url(SseDeserializer deserializer);
+
+  @protected
+  VipStatus sse_decode_vip_status(SseDeserializer deserializer);
+
+  @protected
+  void sse_encode_Map_String_String_None(
+    Map<String, String> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_account(Account self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_auth_tokens(AuthTokens self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_64(
+    PlatformInt64 self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_coin_balance(CoinBalance self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_comment(Comment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_comment_list(CommentList self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dynamics_item(DynamicsItem self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dynamics_list(DynamicsList self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_image(Image self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_comment(List<Comment> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_dynamics_item(
+    List<DynamicsItem> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_image(List<Image> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_strict(
@@ -60,16 +420,118 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_record_string_string(
+    List<(String, String)> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_search_result(
+    List<SearchResult> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_video_page(
+    List<VideoPage> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_video_segment(
+    List<VideoSegment> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_live_play_url(LivePlayUrl self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_live_quality(LiveQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_live_room_info(LiveRoomInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_live_status(LiveStatus self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_64(
+    PlatformInt64? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_string(
+    (String, String) self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_search_result(SearchResult self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_search_results(SearchResults self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_serializable_error(
+    SerializableError self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
 
   @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
+  void sse_encode_user_info(UserInfo self, SseSerializer serializer);
 
   @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
+  void sse_encode_user_level(UserLevel self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_user_stats(UserStats self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_format(VideoFormat self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_info(VideoInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_owner(VideoOwner self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_page(VideoPage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_quality(VideoQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_segment(VideoSegment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_stats(VideoStats self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_video_url(VideoUrl self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_vip_status(VipStatus self, SseSerializer serializer);
 }
 
 // Section: wire_class

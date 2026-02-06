@@ -62,8 +62,74 @@ fn error_code(err: &ApiError) -> String {
     }
 }
 
-// Result type for bridge functions
+// Result type for bridge functions (legacy - still used in services)
 pub type BridgeResult<T> = Result<T, SerializableError>;
+
+// Serializable result wrapper for Flutter bridge
+// This replaces BridgeResult for all #[frb] functions
+#[derive(Clone, serde::Serialize, serde::Deserialize, Debug)]
+pub struct ApiResult<T> {
+    pub success: bool,
+    pub data: Option<T>,
+    pub error: Option<String>,
+}
+
+impl<T> From<Result<T, SerializableError>> for ApiResult<T> {
+    fn from(result: Result<T, SerializableError>) -> Self {
+        match result {
+            Ok(data) => ApiResult {
+                success: true,
+                data: Some(data),
+                error: None,
+            },
+            Err(err) => ApiResult {
+                success: false,
+                data: None,
+                error: Some(format!("{}: {}", err.code, err.message)),
+            },
+        }
+    }
+}
+
+impl<T> From<Result<T, ApiError>> for ApiResult<T> {
+    fn from(result: Result<T, ApiError>) -> Self {
+        match result {
+            Ok(data) => ApiResult {
+                success: true,
+                data: Some(data),
+                error: None,
+            },
+            Err(err) => ApiResult {
+                success: false,
+                data: None,
+                error: Some(err.to_string()),
+            },
+        }
+    }
+}
+
+// Removed generic From impl to avoid conflict with ApiError impl
+// impl<T, E> From<Result<T, E>> for ApiResult<T>
+// where
+//     E: std::fmt::Display,
+// {
+//     fn from(result: Result<T, E>) -> Self {
+//         match result {
+//             Ok(data) => ApiResult {
+//                 success: true,
+//             Ok(data) => ApiResult {
+//                 success: true,
+//                 data: Some(data),
+//                 error: None,
+//             },
+//             Err(err) => ApiResult {
+//                 success: false,
+//                 data: None,
+//                 error: Some(err.to_string()),
+//             },
+//         }
+//     }
+// }
 
 #[cfg(test)]
 mod tests {

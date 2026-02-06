@@ -119,7 +119,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                     onTap: () {},
                     child: Row(
                       children: [
-                        if (videoDetail.staff.isNullOrEmpty) ...[
+                        if (videoDetail.staff == null || videoDetail.staff!.isEmpty) ...[
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerLeft,
@@ -222,7 +222,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                             ),
                           ),
                           TextSpan(
-                            text: '${videoDetail.argueInfo!.argueMsg}',
+                            text: videoDetail.argueInfo?.argueMsg ?? '',
                           ),
                         ],
                       ),
@@ -535,7 +535,9 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
               selectIcon: const Icon(FontAwesomeIcons.solidThumbsUp),
               selectStatus: introController.hasLike.value,
               semanticsLabel: '点赞',
-              text: !isLoading
+              text: !isLoading &&
+                  videoDetail.stat != null &&
+                  videoDetail.stat!.like != null
                   ? NumUtils.numFormat(videoDetail.stat!.like)
                   : null,
               onStartTriple: introController.onStartTriple,
@@ -562,7 +564,9 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
               onTap: introController.actionCoinVideo,
               selectStatus: introController.hasCoin,
               semanticsLabel: '投币',
-              text: !isLoading
+              text: !isLoading &&
+                  videoDetail.stat != null &&
+                  videoDetail.stat!.coin != null
                   ? NumUtils.numFormat(videoDetail.stat!.coin)
                   : null,
             ),
@@ -579,7 +583,9 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
               ),
               selectStatus: introController.hasFav.value,
               semanticsLabel: '收藏',
-              text: !isLoading
+              text: !isLoading &&
+                  videoDetail.stat != null &&
+                  videoDetail.stat!.favorite != null
                   ? NumUtils.numFormat(videoDetail.stat!.favorite)
                   : null,
             ),
@@ -600,7 +606,9 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
             onTap: () => introController.actionShareVideo(context),
             selectStatus: false,
             semanticsLabel: '分享',
-            text: !isLoading
+            text: !isLoading &&
+                    videoDetail.stat != null &&
+                    videoDetail.stat!.share != null
                 ? NumUtils.numFormat(videoDetail.stat!.share!)
                 : null,
           ),

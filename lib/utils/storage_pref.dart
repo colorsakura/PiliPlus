@@ -716,6 +716,12 @@ abstract final class Pref {
   static bool get enableHttp2 =>
       _setting.get(SettingBoxKey.enableHttp2, defaultValue: false);
 
+  static bool get useRustVideoApi =>
+      _setting.get(SettingBoxKey.useRustVideoApi, defaultValue: false);
+
+  static bool get enableValidation =>
+      _setting.get(SettingBoxKey.enableValidation, defaultValue: false);
+
   static ReplySortType get replySortType =>
       ReplySortType.values[_setting.get(
         SettingBoxKey.replySortType,
