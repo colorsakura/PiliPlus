@@ -3,6 +3,7 @@ pub mod video;
 pub mod user;
 pub mod account;
 pub mod live;
+pub mod comments;
 #[cfg(test)]
 pub mod tests;
 
@@ -11,3 +12,4 @@ pub use video::*;
 pub use user::*;
 pub use account::*;
 pub use live::*;
+pub use comments::*;
