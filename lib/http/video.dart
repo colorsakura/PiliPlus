@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/http/rcmd_api_facade.dart';
+import 'package:PiliPlus/http/rcmd_app_api_facade.dart';
 import 'package:PiliPlus/http/video_api_facade.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
@@ -54,81 +53,9 @@ abstract final class VideoHttp {
   // 添加额外的loginState变量模拟未登录状态
   static Future<LoadingState<List<RecVideoItemAppModel>>> rcmdVideoListApp({
     required int freshIdx,
-  }) async {
-    final params = {
-      'build': 2001100,
-      'c_locale': 'zh_CN',
-      'channel': 'master',
-      'column': 4,
-      'device': 'pad',
-      'device_name': 'android',
-      'device_type': 0,
-      'disable_rcmd': 0,
-      'flush': 5,
-      'fnval': 976,
-      'fnver': 0,
-      'force_host': 2, //使用https
-      'fourk': 1,
-      'guidance': 0,
-      'https_url_req': 0,
-      'idx': freshIdx,
-      'mobi_app': 'android_hd',
-      'network': 'wifi',
-      'platform': 'android',
-      'player_net': 1,
-      'pull': freshIdx == 0 ? 'true' : 'false',
-      'qn': 32,
-      'recsys_mode': 0,
-      's_locale': 'zh_CN',
-      'splash_id': '',
-      'statistics': Constants.statistics,
-      'voice_balance': 0,
-    };
-    final res = await Request().get(
-      Api.recommendListApp,
-      queryParameters: params,
-      options: Options(
-        headers: {
-          'buvid': LoginHttp.buvid,
-          'fp_local':
-              '1111111111111111111111111111111111111111111111111111111111111111',
-          'fp_remote':
-              '1111111111111111111111111111111111111111111111111111111111111111',
-          'session_id': '11111111',
-          'env': 'prod',
-          'app-key': 'android_hd',
-          'User-Agent': Constants.userAgent,
-          'x-bili-trace-id': Constants.traceId,
-          'x-bili-aurora-eid': '',
-          'x-bili-aurora-zone': '',
-          'bili-http-engine': 'cronet',
-        },
-      ),
-    );
-    if (res.data['code'] == 0) {
-      List<RecVideoItemAppModel> list = <RecVideoItemAppModel>[];
-      for (final i in res.data['data']['items']) {
-        // 屏蔽推广和拉黑用户
-        if (i['card_goto'] != 'ad_av' &&
-            i['card_goto'] != 'ad_web_s' &&
-            i['ad_info'] == null &&
-            (i['args'] != null &&
-                !GlobalData().blackMids.contains(i['args']['up_id']))) {
-          if (enableFilter &&
-              i['args']?['tname'] != null &&
-              zoneRegExp.hasMatch(i['args']['tname'])) {
-            continue;
-          }
-          RecVideoItemAppModel videoItem = RecVideoItemAppModel.fromJson(i);
-          if (!RecommendFilter.filter(videoItem)) {
-            list.add(videoItem);
-          }
-        }
-      }
-      return Success(list);
-    } else {
-      return Error(res.data['message']);
-    }
+  }) {
+    // Call facade instead of direct API call
+    return RcmdAppApiFacade.getRecommendList(ps: 20, freshIdx: freshIdx);
   }
 
   // 最热视频

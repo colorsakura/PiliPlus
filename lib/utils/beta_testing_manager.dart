@@ -4,13 +4,18 @@ import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/rust_api_metrics.dart';
 
-/// Manager for Week 2-3 Beta Testing of Rust Video API.
+/// Manager for Beta Testing of Rust APIs.
 ///
 /// This class handles:
 /// - Beta user identification and allocation
 /// - Hash-based rollout percentage
 /// - Metrics tracking specific to beta testing
 /// - Rollback safety mechanisms
+///
+/// **Implementation Status:**
+/// - ✅ Rust Web rcmd API: Implemented and tested
+/// - ✅ Rust App rcmd API: Implemented and tested
+/// - ❌ Rust Video API: NOT YET IMPLEMENTED
 ///
 /// **Usage:**
 /// ```dart
@@ -60,16 +65,18 @@ class BetaTestingManager {
     final isInBeta = _isUserInBetaCohort(rolloutPercentage);
 
     if (isInBeta) {
-      // Enable Rust API for this user
-      GStorage.setting.put(SettingBoxKey.useRustVideoApi, true);
-
-      // Enable Rust rcmd API (same cohort allocation)
+      // Enable Rust rcmd APIs (both Web and App APIs are implemented)
       GStorage.setting.put(SettingBoxKey.useRustRcmdApi, true);
+      GStorage.setting.put(SettingBoxKey.useRustRcmdAppApi, true);
+
+      // Note: Video API is not yet implemented, so we don't enable it
+      // GStorage.setting.put(SettingBoxKey.useRustVideoApi, true);
 
       final currentUserId = _getCurrentUserId();
       debugPrint('[BetaTesting] ✅ User $currentUserId included in beta cohort ($rolloutPercentage% rollout)');
-      debugPrint('[BetaTesting] Rust Video API enabled');
-      debugPrint('[BetaTesting] Rust rcmd API enabled');
+      debugPrint('[BetaTesting] Rust Web rcmd API enabled');
+      debugPrint('[BetaTesting] Rust App rcmd API enabled');
+      debugPrint('[BetaTesting] Rust Video API NOT enabled (not yet implemented)');
 
       // Start periodic metrics persistence (every hour)
       _startPeriodicMetricsPersistence();
@@ -175,12 +182,18 @@ class BetaTestingManager {
       defaultValue: false,
     );
 
+    final rcmdAppApiEnabled = GStorage.setting.get(
+      SettingBoxKey.useRustRcmdAppApi,
+      defaultValue: false,
+    );
+
     return {
       'beta_testing_enabled': betaTestingEnabled,
       'rollout_percentage': rolloutPercentage,
       'is_in_beta_cohort': isInBeta,
       'rust_api_enabled': rustApiEnabled,
       'rust_rcmd_api_enabled': rcmdApiEnabled,
+      'rust_rcmd_app_api_enabled': rcmdAppApiEnabled,
       'user_id': _getCurrentUserId(),
       'rust_apis': {
         'video': rustApiEnabled,
@@ -235,8 +248,9 @@ class BetaTestingManager {
       debugPrint('Reason: $reason');
     }
 
-    // Disable Rust API
-    GStorage.setting.put(SettingBoxKey.useRustVideoApi, false);
+    // Disable Rust rcmd APIs
+    GStorage.setting.put(SettingBoxKey.useRustRcmdApi, false);
+    GStorage.setting.put(SettingBoxKey.useRustRcmdAppApi, false);
 
     // Disable beta testing
     GStorage.setting.put(SettingBoxKey.betaTestingEnabled, false);
@@ -244,7 +258,7 @@ class BetaTestingManager {
     // Log metrics before rollback
     await _persistMetrics();
 
-    debugPrint('Rust Video API disabled');
+    debugPrint('Rust rcmd APIs disabled');
     debugPrint('Beta testing disabled');
     debugPrint('Users reverted to Flutter implementation');
     debugPrint('EMERGENCY ROLLOUT COMPLETE\n');
@@ -283,11 +297,13 @@ class BetaTestingManager {
     // Re-initialize to apply new percentage
     final isInBeta = _isUserInBetaCohort(newPercentage);
     if (isInBeta) {
-      GStorage.setting.put(SettingBoxKey.useRustVideoApi, true);
-      debugPrint('[BetaTesting] Rust API enabled for user at new percentage');
+      GStorage.setting.put(SettingBoxKey.useRustRcmdApi, true);
+      GStorage.setting.put(SettingBoxKey.useRustRcmdAppApi, true);
+      debugPrint('[BetaTesting] Rust rcmd APIs enabled for user at new percentage');
     } else {
-      GStorage.setting.put(SettingBoxKey.useRustVideoApi, false);
-      debugPrint('[BetaTesting] Rust API disabled for user at new percentage');
+      GStorage.setting.put(SettingBoxKey.useRustRcmdApi, false);
+      GStorage.setting.put(SettingBoxKey.useRustRcmdAppApi, false);
+      debugPrint('[BetaTesting] Rust rcmd APIs disabled for user at new percentage');
     }
 
     debugPrint('Rollout increase complete\n');
@@ -303,7 +319,7 @@ class BetaTestingManager {
     final buffer = StringBuffer();
 
     buffer.writeln('╔════════════════════════════════════════════════════════╗');
-    buffer.writeln('║     Week 2-3 Beta Testing - Status Report             ║');
+    buffer.writeln('║        Rust Beta Testing - Status Report              ║');
     buffer.writeln('╚════════════════════════════════════════════════════════╝');
     buffer.writeln('');
 
@@ -311,8 +327,9 @@ class BetaTestingManager {
     buffer.writeln('   Enabled: ${status['beta_testing_enabled']}');
     buffer.writeln('   Rollout: ${status['rollout_percentage']}%');
     buffer.writeln('   In Cohort: ${status['is_in_beta_cohort']}');
-    buffer.writeln('   Rust Video API: ${status['rust_api_enabled']}');
-    buffer.writeln('   Rust rcmd API: ${status['rust_rcmd_api_enabled']}');
+    buffer.writeln('   Rust Web rcmd API: ${status['rust_rcmd_api_enabled']} (implemented)');
+    buffer.writeln('   Rust App rcmd API: ${status['rust_rcmd_app_api_enabled']} (implemented)');
+    buffer.writeln('   Rust Video API: ${status['rust_api_enabled']} (NOT IMPLEMENTED)');
     buffer.writeln('   User ID: ${status['user_id']}');
     buffer.writeln('');
 
@@ -335,9 +352,10 @@ class BetaTestingManager {
     buffer.writeln('');
 
     buffer.writeln('🔍 API Implementation Status:');
-    buffer.writeln('   Video API: ${status['rust_api_enabled'] ? 'Rust' : 'Flutter'}');
-    buffer.writeln('   rcmd API: ${status['rust_rcmd_api_enabled'] ? 'Rust' : 'Flutter'}');
-    buffer.writeln('   Combined APIs: ${status['rust_api_enabled'] && status['rust_rcmd_api_enabled'] ? 'Both Rust' : status['rust_api_enabled'] || status['rust_rcmd_api_enabled'] ? 'Mixed' : 'Both Flutter'}');
+    buffer.writeln('   Video API: Flutter (Rust NOT implemented)');
+    buffer.writeln('   Web rcmd API: ${status['rust_rcmd_api_enabled'] ? 'Rust ✅' : 'Flutter'}');
+    buffer.writeln('   App rcmd API: ${status['rust_rcmd_app_api_enabled'] ? 'Rust ✅' : 'Flutter'}');
+    buffer.writeln('   Status: Web & App rcmd APIs implemented in Rust');
     buffer.writeln('');
 
     buffer.writeln('💚 Health Status: $health');

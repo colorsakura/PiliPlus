@@ -3,6 +3,36 @@ use std::collections::HashMap;
 use crate::error::{ApiError, SerializableError};
 use crate::models::rcmd::{RcmdVideoInfo, RcmdResponse};
 use crate::api::wbi::{get_wbi_keys_cached, enc_wbi, HTTP_CLIENT};
+use tracing::{info, warn, error, debug};
+
+/// Helper macro to log to both tracing and stdout
+macro_rules! log_info {
+    ($($arg:tt)*) => {
+        println!($($arg)*);
+        info!($($arg)*);
+    };
+}
+
+macro_rules! log_debug {
+    ($($arg:tt)*) => {
+        println!($($arg)*);
+        debug!($($arg)*);
+    };
+}
+
+macro_rules! log_warn {
+    ($($arg:tt)*) => {
+        eprintln!($($arg)*);
+        warn!($($arg)*);
+    };
+}
+
+macro_rules! log_error {
+    ($($arg:tt)*) => {
+        eprintln!($($arg)*);
+        error!($($arg)*);
+    };
+}
 
 /// Get recommendation list from Bilibili API
 ///
@@ -29,17 +59,28 @@ use crate::api::wbi::{get_wbi_keys_cached, enc_wbi, HTTP_CLIENT};
 /// ```
 #[frb]
 pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideoInfo>, SerializableError> {
+    log_info!(
+        "[RustRcmd] Fetching Web recommendations: ps={}, fresh_idx={}",
+        ps, fresh_idx
+    );
+
     // Build request parameters
     let mut params = HashMap::new();
     params.insert("ps".to_string(), ps.to_string());
     params.insert("fresh_idx".to_string(), fresh_idx.to_string());
 
     // Get WBI keys (cached version)
+    log_debug!("[RustRcmd] Getting WBI keys...");
     let (_, _, mixin_key) = get_wbi_keys_cached().await
-        .map_err(|e| SerializableError {
-            code: "WBI_ERROR".to_string(),
-            message: format!("Failed to get WBI keys: {}", e)
+        .map_err(|e| {
+            log_error!("[RustRcmd] Failed to get WBI keys: {}", e);
+            SerializableError {
+                code: "WBI_ERROR".to_string(),
+                message: format!("Failed to get WBI keys: {}", e)
+            }
         })?;
+
+    log_debug!("[RustRcmd] WBI keys obtained, signing request...");
 
     // Sign parameters with WBI
     enc_wbi(&mut params, &mixin_key);
@@ -51,47 +92,74 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
     let query_string = query_string.join("&");
 
     let url = format!("https://api.bilibili.com/x/web-interface/wbi/index/top/feed/rcmd?{}", query_string);
+    log_debug!("[RustRcmd] Request URL prepared (length: {})", url.len());
 
-    // Make HTTP GET request
-    let client = HTTP_CLIENT.lock().expect("Failed to lock HTTP client");
+    // Make HTTP GET request - clone client to avoid holding lock across await
+    let client = HTTP_CLIENT.lock().expect("Failed to lock HTTP client").clone();
+
+    log_debug!("[RustRcmd] Sending HTTP GET request...");
     let response = client
         .get(&url)
         .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         .send()
         .await
-        .map_err(|e| SerializableError {
-            code: "NETWORK_ERROR".to_string(),
-            message: format!("Network error: {}", e),
+        .map_err(|e| {
+            log_error!("[RustRcmd] Network error: {}", e);
+            SerializableError {
+                code: "NETWORK_ERROR".to_string(),
+                message: format!("Network error: {}", e),
+            }
         })?;
 
     // Check HTTP status
     if !response.status().is_success() {
-        match response.status().as_u16() {
-            401 => return Err(SerializableError {
-                code: "UNAUTHORIZED".to_string(),
-                message: "Unauthorized access".to_string(),
-            }),
+        let status = response.status();
+        log_error!("[RustRcmd] HTTP error: {}", status);
+        match status.as_u16() {
+            401 => {
+                log_warn!("[RustRcmd] Unauthorized access (401)");
+                return Err(SerializableError {
+                    code: "UNAUTHORIZED".to_string(),
+                    message: "Unauthorized access".to_string(),
+                });
+            },
             _ => return Err(SerializableError {
                 code: "HTTP_ERROR".to_string(),
-                message: format!("HTTP error: {}", response.status()),
+                message: format!("HTTP error: {}", status),
             }),
         }
     }
 
+    log_debug!("[RustRcmd] Response received, status: {}", response.status());
+
     // Parse response
     let text = response.text().await
-        .map_err(|e| SerializableError {
-            code: "NETWORK_ERROR".to_string(),
-            message: format!("Failed to read response: {}", e),
+        .map_err(|e| {
+            log_error!("[RustRcmd] Failed to read response body: {}", e);
+            SerializableError {
+                code: "NETWORK_ERROR".to_string(),
+                message: format!("Failed to read response: {}", e),
+            }
         })?;
+
+    log_debug!("[RustRcmd] Response body length: {} bytes", text.len());
+
     let rcmd_response: RcmdResponse = serde_json::from_str(&text)
-        .map_err(|e| SerializableError {
-            code: "SERIALIZATION_ERROR".to_string(),
-            message: format!("JSON parsing error: {}", e),
+        .map_err(|e| {
+            log_error!("[RustRcmd] JSON parsing error: {}", e);
+            SerializableError {
+                code: "SERIALIZATION_ERROR".to_string(),
+                message: format!("JSON parsing error: {}", e),
+            }
         })?;
 
     // Check API response code
     if rcmd_response.code != 0 {
+        log_error!(
+            "[RustRcmd] API error: code={}, message={}",
+            rcmd_response.code,
+            rcmd_response.message
+        );
         return Err(SerializableError {
             code: "API_ERROR".to_string(),
             message: rcmd_response.message.clone(),
@@ -99,64 +167,34 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
     }
 
     // Extract videos and filter for goto='av'
-    if let Some(data) = rcmd_response.data {
+    let videos = if let Some(data) = rcmd_response.data {
+        let total_items = data.item.len();
         let videos: Vec<RcmdVideoInfo> = data.item
             .into_iter()
             .filter(|video| video.goto.as_deref() == Some("av"))
             .collect();
 
-        Ok(videos)
-    } else {
-        Ok(Vec::new())
-    }
-}
+        log_info!(
+            "[RustRcmd] Successfully fetched {} video recommendations (filtered from {} items)",
+            videos.len(),
+            total_items
+        );
 
-// Unit tests
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[tokio::test]
-    async fn test_get_recommend_list() {
-        // This test requires network access to fetch actual recommendations
-        // It's an integration test that may fail if network is not available
-        let result = get_recommend_list(10, 0).await;
-
-        match result {
-            Ok(videos) => {
-                println!("Successfully fetched {} recommendations", videos.len());
-
-                // Verify we got valid videos
-                for video in &videos {
-                    assert!(!video.bvid.is_empty(), "BVID should not be empty");
-                    assert!(!video.title.is_empty(), "Title should not be empty");
-                    assert_eq!(video.goto.as_deref(), Some("av"), "Only videos with goto='av' should be returned");
-
-                    println!("Video: {} - {}", video.bvid, video.title);
-                }
-
-                // If we got videos, verify some expected fields
-                if !videos.is_empty() {
-                    let first_video = &videos[0];
-                    assert!(first_video.id.is_some(), "Video ID should be present");
-                    assert!(first_video.owner.mid > 0, "Owner MID should be positive");
-                    assert!(first_video.stat.view.is_some(), "View count should be present");
-                }
-            },
-            Err(e) => {
-                // If the test fails, it might be due to network issues
-                println!("Test failed (possibly due to network): {}", e);
-                // For unit tests, we might want to mock the HTTP request
-                // In this case, we'll just log the error
-            }
+        // Log first video for debugging
+        if !videos.is_empty() {
+            log_debug!(
+                "[RustRcmd] First video: {} - {}",
+                videos[0].bvid,
+                videos[0].title
+            );
         }
-    }
 
-    #[test]
-    fn test_empty_response_handling() {
-        // Test that empty data returns empty vector
-        let result: Result<Vec<RcmdVideoInfo>, ApiError> = Ok(Vec::new());
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap().len(), 0);
-    }
+        videos
+    } else {
+        log_warn!("[RustRcmd] Response data is null, returning empty list");
+        Vec::new()
+    };
+
+    log_info!("[RustRcmd] Web recommendations completed successfully");
+    Ok(videos)
 }

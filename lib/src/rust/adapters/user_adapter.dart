@@ -37,7 +37,8 @@ class UserAdapter {
       money: rustUser.money,
       moral: rustUser.moral,
       official: null, // Complex JSON object not mapped in simplified Rust model
-      officialVerify: null, // Complex JSON object not mapped in simplified Rust model
+      officialVerify:
+          null, // Complex JSON object not mapped in simplified Rust model
       pendant: null, // Complex JSON object not mapped in simplified Rust model
       scores: rustUser.scores,
       uname: rustUser.name,

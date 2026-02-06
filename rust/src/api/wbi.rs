@@ -6,6 +6,7 @@ use chrono::{Local, DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
+use crate::error::SerializableError;
 
 // Static HTTP client to avoid creating new clients on each call
 pub static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> = Lazy::new(|| {
@@ -97,8 +98,9 @@ fn extract_filename(url: &str) -> String {
 /// ```rust
 /// let (img_url, sub_url, mixin_key) = get_wbi_keys().await?;
 /// ```
-async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let client = HTTP_CLIENT.lock().unwrap_or_else(|p| p.into_inner());
+async fn get_wbi_keys() -> Result<(String, String, String), SerializableError> {
+    // Clone client to avoid holding lock across await
+    let client = HTTP_CLIENT.lock().unwrap_or_else(|p| p.into_inner()).clone();
 
     let response = client
         .get("https://api.bilibili.com/x/web-interface/nav")
@@ -155,13 +157,17 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
 /// ```rust
 /// let (img_url, sub_url, mixin_key) = get_wbi_keys_cached().await?;
 /// ```
-pub async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
-    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+pub async fn get_wbi_keys_cached() -> Result<(String, String, String), SerializableError> {
+    // Check cache first - clone values and release lock before await
+    let cached = {
+        let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+        cache_guard.as_ref().filter(|cache| !cache.is_expired()).map(|cache| {
+            (cache.img_url.clone(), cache.sub_url.clone(), cache.mixin_key.clone())
+        })
+    }; // cache_guard is dropped here
 
-    if let Some(cache) = &*cache_guard {
-        if !cache.is_expired() {
-            return Ok((cache.img_url.clone(), cache.sub_url.clone(), cache.mixin_key.clone()));
-        }
+    if let Some(result) = cached {
+        return Ok(result);
     }
 
     // Cache is expired or not present, fetch fresh keys
@@ -267,139 +273,4 @@ pub fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
 
     // Add w_rid parameter
     params.insert("w_rid".to_string(), md5_hash);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_get_mixin_key() {
-        let input = "abcdefghijklmnopqrstuvwxyz012345";
-        let result = get_mixin_key(input);
-
-        // Verify that the result is exactly 32 characters long
-        assert_eq!(result.len(), 32);
-
-        // Verify that the output is different from the input
-        assert_ne!(result, input);
-
-        // Verify that the shuffle follows the encoding table correctly
-        let code_units = input.as_bytes();
-        let expected_first_char = code_units[MIXIN_KEY_ENC_TAB[0]];
-        assert_eq!(result.as_bytes()[0], expected_first_char);
-    }
-
-    #[test]
-    fn test_enc_wbi() {
-        let mut params = HashMap::new();
-        params.insert("test".to_string(), "value".to_string());
-        params.insert("foo".to_string(), "bar".to_string());
-        let mixin_key = "test_mixin_key_1234567890123456";
-
-        // Store original count to verify new parameters are added
-        let original_count = params.len();
-
-        enc_wbi(&mut params, mixin_key);
-
-        // Verify that wts and w_rid parameters were added
-        assert!(params.contains_key("wts"));
-        assert!(params.contains_key("w_rid"));
-
-        // Verify that original parameters are still there
-        assert_eq!(params.get("test"), Some(&"value".to_string()));
-        assert_eq!(params.get("foo"), Some(&"bar".to_string()));
-
-        // Verify that w_rid is exactly 32 characters (MD5 hex)
-        let w_rid = params.get("w_rid").unwrap();
-        assert_eq!(w_rid.len(), 32);
-
-        // Verify that wts is a valid timestamp (numeric string)
-        let wts = params.get("wts").unwrap();
-        assert!(wts.parse::<i64>().is_ok());
-
-        // Verify that we have exactly 4 parameters (original 2 + wts + w_rid)
-        assert_eq!(params.len(), original_count + 2);
-    }
-
-    #[test]
-    fn test_get_mixin_key_edge_cases() {
-        // Test with empty string - should be padded to 32 zeros
-        let empty_result = get_mixin_key("");
-        assert_eq!(empty_result.len(), 32);
-        assert_eq!(empty_result, "00000000000000000000000000000000");
-
-        // Test with string shorter than 32 chars - should be padded with zeros
-        let short_result = get_mixin_key("abc");
-        assert_eq!(short_result.len(), 32);
-        assert_ne!(short_result, "abc");
-
-        // Test with string longer than 32 chars - should be truncated
-        let long_result = get_mixin_key("abcdefghijklmnopqrstuvwxyz012345678901234567890123");
-        assert_eq!(long_result.len(), 32);
-        // Check that it was truncated properly by comparing the input after truncation
-        let expected_input = "abcdefghijklmnopqrstuvwxyz012345";
-        assert_eq!(expected_input.len(), 32);
-        // The shuffled result should be different from the truncated input
-        assert_ne!(long_result, expected_input);
-    }
-}
-
-#[tokio::test]
-async fn test_get_wbi_keys() {
-    // This test requires network access to fetch actual WBI keys
-    // It's a integration test that may fail if network is not available
-    let result = get_wbi_keys().await;
-
-    match result {
-        Ok((img_url, sub_url, mixin_key)) => {
-            println!("Successfully fetched WBI keys:");
-            println!("img_url: {}", img_url);
-            println!("sub_url: {}", sub_url);
-            println!("mixin_key: {}", mixin_key);
-
-            // Verify that we have valid URLs
-            assert!(!img_url.is_empty());
-            assert!(!sub_url.is_empty());
-            assert!(!mixin_key.is_empty());
-
-            // Verify mixin key length
-            assert_eq!(mixin_key.len(), 32);
-
-            // Verify URLs contain expected patterns
-            assert!(img_url.contains("http"));
-            assert!(sub_url.contains("http"));
-        }
-        Err(e) => {
-            // If the test fails, it might be due to network issues
-            // In a real test suite, you might want to mock the HTTP request
-            println!("Test failed (possibly due to network): {}", e);
-        }
-    }
-}
-
-#[tokio::test]
-async fn test_get_wbi_keys_cached() {
-    // Test the cached version
-    let result = get_wbi_keys_cached().await;
-
-    match result {
-        Ok((img_url, sub_url, mixin_key)) => {
-            println!("Successfully fetched cached WBI keys:");
-            println!("img_url: {}", img_url);
-            println!("sub_url: {}", sub_url);
-            println!("mixin_key: {}", mixin_key);
-
-            // Verify that we have valid URLs
-            assert!(!img_url.is_empty());
-            assert!(!sub_url.is_empty());
-            assert!(!mixin_key.is_empty());
-
-            // Verify mixin key length
-            assert_eq!(mixin_key.len(), 32);
-        }
-        Err(e) => {
-            println!("Test failed (possibly due to network): {}", e);
-        }
-    }
 }

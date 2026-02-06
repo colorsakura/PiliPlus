@@ -85,6 +85,56 @@ Future<void> _initAppPath() async {
   appSupportDirPath = (await getApplicationSupportDirectory()).path;
 }
 
+/// Migrate Rust API settings to enable for all users.
+///
+/// This function ensures all users have Rust API enabled by default,
+/// even if they had previously disabled it or have an old setting.
+Future<void> _migrateRustApiSettings() async {
+  try {
+    // Enable all Rust APIs for all users
+    final settingsToUpdate = {
+      SettingBoxKey.useRustVideoApi: true,
+      SettingBoxKey.useRustRcmdApi: true,
+      SettingBoxKey.useRustRcmdAppApi: true,
+    };
+
+    for (final entry in settingsToUpdate.entries) {
+      final key = entry.key;
+      final defaultValue = entry.value;
+
+      // Only update if the key doesn't exist or is set to false
+      final currentValue = GStorage.setting.get(
+        key,
+        defaultValue: defaultValue,
+      );
+      if (currentValue != defaultValue) {
+        await GStorage.setting.put(key, defaultValue);
+        if (kDebugMode) {
+          debugPrint('✅ Migrated $key to $defaultValue');
+        }
+      }
+    }
+
+    if (kDebugMode) {
+      debugPrint('✅ Rust API settings migration complete');
+      debugPrint(
+        '   - Video API: ${Pref.useRustVideoApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Rcmd Web API: ${Pref.useRustRcmdApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Rcmd App API: ${Pref.useRustRcmdAppApi ? "Rust ✅" : "Flutter"}',
+      );
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      debugPrint('⚠️  Rust API settings migration failed: $e');
+    }
+    // Continue even if migration fails - defaults will handle new users
+  }
+}
+
 void main() async {
   ScaledWidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
@@ -110,6 +160,9 @@ void main() async {
     // Continue without Rust - app will use Flutter implementation
   }
 
+  // Migrate Rust API settings to enable for all users
+  await _migrateRustApiSettings();
+
   // Week 2-3: Beta Testing - Enable beta testing and initialize manager
   // This will automatically enable Rust API for eligible beta users
   if (kDebugMode) {
@@ -117,7 +170,8 @@ void main() async {
     // Set to 100% for testing - change to 10 for production beta testing
     GStorage.setting.put(SettingBoxKey.betaTestingEnabled, true);
     GStorage.setting.put(SettingBoxKey.betaRolloutPercentage, 100);
-    if (kDebugMode) debugPrint('🧪 Beta testing ENABLED (100% rollout for testing)');
+    if (kDebugMode)
+      debugPrint('🧪 Beta testing ENABLED (100% rollout for testing)');
   }
   await BetaTestingManager.initialize();
 

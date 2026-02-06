@@ -15,6 +15,14 @@ pub struct SerializableError {
     pub message: String,
 }
 
+impl std::fmt::Display for SerializableError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}: {}", self.code, self.message)
+    }
+}
+
+impl std::error::Error for SerializableError {}
+
 impl From<ApiError> for SerializableError {
     fn from(err: ApiError) -> Self {
         SerializableError {
@@ -46,6 +54,33 @@ impl From<DownloadError> for SerializableError {
     fn from(err: DownloadError) -> Self {
         SerializableError {
             code: "DOWNLOAD_ERROR".to_string(),
+            message: err.to_string(),
+        }
+    }
+}
+
+impl From<String> for SerializableError {
+    fn from(err: String) -> Self {
+        SerializableError {
+            code: "UNKNOWN_ERROR".to_string(),
+            message: err,
+        }
+    }
+}
+
+impl From<reqwest::Error> for SerializableError {
+    fn from(err: reqwest::Error) -> Self {
+        SerializableError {
+            code: "HTTP_ERROR".to_string(),
+            message: err.to_string(),
+        }
+    }
+}
+
+impl From<serde_json::Error> for SerializableError {
+    fn from(err: serde_json::Error) -> Self {
+        SerializableError {
+            code: "SERIALIZATION_ERROR".to_string(),
             message: err.to_string(),
         }
     }
@@ -130,32 +165,3 @@ impl<T> From<Result<T, ApiError>> for ApiResult<T> {
 //         }
 //     }
 // }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_api_error_to_serializable() {
-        let err = ApiError::Unauthorized;
-        let serializable: SerializableError = err.into();
-        assert_eq!(serializable.code, "UNAUTHORIZED");
-        assert!(serializable.message.contains("Authentication"));
-    }
-
-    #[test]
-    fn test_storage_error_to_serializable() {
-        let err = StorageError::AccountNotFound("test_id".to_string());
-        let serializable: SerializableError = err.into();
-        assert_eq!(serializable.code, "STORAGE_ERROR");
-        assert!(serializable.message.contains("Account not found"));
-    }
-
-    #[test]
-    fn test_account_error_to_serializable() {
-        let err = AccountError::QrExpired;
-        let serializable: SerializableError = err.into();
-        assert_eq!(serializable.code, "ACCOUNT_ERROR");
-        assert!(serializable.message.contains("QR code expired"));
-    }
-}

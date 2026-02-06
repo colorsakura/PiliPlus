@@ -10,8 +10,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Get current user information (uses auth cookie from HTTP client)
 Future<UserInfo> getUserInfo() =>
-    RustLib.instance.api.crateApiUserGetUserInfo();
+    RustLib.instance.api.crateApiBridgeGetUserInfo();
 
 /// Get current user statistics (uses auth cookie from HTTP client)
 Future<UserStats> getUserStats() =>
-    RustLib.instance.api.crateApiUserGetUserStats();
+    RustLib.instance.api.crateApiBridgeGetUserStats();

@@ -3,7 +3,8 @@ import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/search/search_type.dart';
 import 'package:PiliPlus/models/search/result.dart';
-import 'package:PiliPlus/src/rust/api/search.dart' as rust;
+import 'package:PiliPlus/src/rust/frb_generated.dart' as rust;
+import 'package:PiliPlus/src/rust/models/search.dart' as rust_models;
 import 'package:PiliPlus/src/rust/adapters/search_adapter.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/rust_api_metrics.dart';
@@ -190,7 +191,7 @@ class SearchApiFacade {
   }) async {
     try {
       // Call Rust bridge API
-      final rustResult = await rust.searchVideos(
+      final rustResult = await rust.RustLib.instance.api.crateApiBridgeSearchVideos(
         keyword: keyword,
         page: page,
         order: order,

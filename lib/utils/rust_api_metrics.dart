@@ -349,17 +349,25 @@ class RustMetricsStopwatch {
     _stopwatch.stop();
     final latencyMs = _stopwatch.elapsedMilliseconds;
 
-    switch (_type) {
-      case 'rust_call':
-        RustApiMetrics.recordRustCall(latencyMs);
-        break;
-      case 'flutter_call':
-        RustApiMetrics.recordFlutterCall(latencyMs);
-        break;
-      default:
-        if (kDebugMode) {
-          debugPrint('[RustMetrics] Unknown stopwatch type: $_type');
-        }
+    // Handle all Rust API call types
+    if (_type.startsWith('rust_')) {
+      RustApiMetrics.recordRustCall(latencyMs);
+    }
+    // Handle all Flutter API call types
+    else if (_type.startsWith('flutter_')) {
+      RustApiMetrics.recordFlutterCall(latencyMs);
+    }
+    // Legacy types (for backward compatibility)
+    else if (_type == 'rust_call') {
+      RustApiMetrics.recordRustCall(latencyMs);
+    } else if (_type == 'flutter_call') {
+      RustApiMetrics.recordFlutterCall(latencyMs);
+    }
+    // Unknown type
+    else {
+      if (kDebugMode) {
+        debugPrint('[RustMetrics] Unknown stopwatch type: $_type');
+      }
     }
   }
 

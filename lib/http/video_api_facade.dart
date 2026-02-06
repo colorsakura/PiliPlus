@@ -75,8 +75,18 @@ class VideoApiFacade {
   /// }
   /// ```
   static Future<VideoDetailResponse> getVideoInfo(String bvid) async {
-    // Check feature flag
-    if (Pref.useRustVideoApi) {
+    // Check feature flag - handle case where GStorage is not initialized
+    bool useRust = false;
+    try {
+      useRust = Pref.useRustVideoApi;
+    } catch (e) {
+      // GStorage not initialized (e.g., in tests), default to Flutter
+      if (kDebugMode) {
+        debugPrint('GStorage not initialized, using Flutter implementation');
+      }
+    }
+
+    if (useRust) {
       final stopwatch = RustMetricsStopwatch('rust_call');
       try {
         // Try Rust implementation first
@@ -94,11 +104,11 @@ class VideoApiFacade {
           debugPrint('Stack trace: $stack');
           debugPrint('Falling back to Flutter implementation');
         }
-        return await _flutterGetVideoInfo(bvid);
+        return _flutterGetVideoInfo(bvid);
       }
     } else {
       // Use Flutter implementation
-      return await _flutterGetVideoInfo(bvid);
+      return _flutterGetVideoInfo(bvid);
     }
   }
 
@@ -146,7 +156,7 @@ class VideoApiFacade {
   ///
   /// Uses the Rust FFI bridge to call native Rust code for API requests.
   ///
-  /// **Implementation Details (Task 45):**
+  /// **Implementation Details:**
   /// - Calls [rust.getVideoInfo] from `package:PiliPlus/src/rust/api/video.dart`
   /// - Converts Rust [VideoInfo] model to Flutter [VideoDetailData] via [VideoAdapter]
   /// - Wraps the result in a [VideoDetailResponse]
@@ -160,25 +170,29 @@ class VideoApiFacade {
   /// **Disadvantages:**
   /// - Additional FFI overhead
   /// - Different error handling patterns
-  /// - May have subtle behavioral differences
   static Future<VideoDetailResponse> _rustGetVideoInfo(String bvid) async {
     try {
       // Call Rust bridge API
-      final result = await rust.getVideoInfo(bvid: bvid);
+      final rustVideo = await rust.getVideoInfo(bvid: bvid);
 
-      // Convert Rust VideoInfo to Flutter VideoDetailData
-      final videoDetail = VideoAdapter.fromRust(result);
+      // Convert Rust model to Flutter model
+      final videoData = VideoAdapter.fromRust(rustVideo);
 
+      // Wrap in response
       return VideoDetailResponse(
         code: 0,
-        data: videoDetail,
+        data: videoData,
+        message: 'success',
       );
     } catch (e) {
+      // Convert Rust errors to string for logging
+      final errorMessage = e.toString();
+
       // Log and rethrow
       if (kDebugMode) {
-        debugPrint('Rust video API failed: $e');
+        debugPrint('Rust video API failed: $errorMessage');
       }
-      rethrow;
+      throw Exception(errorMessage);
     }
   }
 }

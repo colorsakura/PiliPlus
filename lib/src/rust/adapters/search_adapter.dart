@@ -17,10 +17,12 @@ class SearchAdapter {
   ///
   /// Since SearchVideoData extends SearchNumData, we create it directly
   /// with the list of items and numResults.
-  static SearchVideoData fromRustSearchResult(rust.SearchVideoResult rustResult) {
+  static SearchVideoData fromRustSearchResult(
+    rust.SearchVideoResult rustResult,
+  ) {
     return SearchVideoData(
       numResults: rustResult.num_results,
-      list: rustResult.items.map((item) => fromRustSearchVideoItem(item)).toList(),
+      list: rustResult.items.map(fromRustSearchVideoItem).toList(),
     );
   }
 
@@ -31,13 +33,15 @@ class SearchAdapter {
   /// - Converts duration from seconds to Duration
   /// - Maps stat fields (view_count → play, etc.)
   /// - Uses fromJson constructor for proper initialization
-  static SearchVideoItemModel fromRustSearchVideoItem(rust.SearchVideoItem rustItem) {
+  static SearchVideoItemModel fromRustSearchVideoItem(
+    rust.SearchVideoItem rustItem,
+  ) {
     // Create a JSON map that SearchVideoItemModel.fromJson can parse
     final json = <String, dynamic>{
-      'type': rustItem.r#type,
+      'type': rustItem.type,
       'id': null, // Not in Rust model
       'arcurl': null, // Not in Rust model
-      'aid': rustItem.aid,
+      'aid': rustItem.aid.toInt(),
       'bvid': rustItem.bvid,
       'title': rustItem.title,
       'description': rustItem.description,
@@ -45,13 +49,13 @@ class SearchAdapter {
       'pubdate': rustItem.pubdate,
       'senddate': rustItem.ctime,
       'duration': rustItem.duration, // in seconds
-      'mid': rustItem.owner.mid,
+      'mid': rustItem.owner.mid.toInt(),
       'author': rustItem.owner.name,
       'upic': rustItem.owner.face,
-      'play': rustItem.stat.view,
-      'danmaku': rustItem.stat.danmaku,
-      'like': rustItem.stat.like,
-      'is_union_video': rustItem.is_union_video == 1,
+      'play': rustItem.stat.view.toInt(),
+      'danmaku': rustItem.stat.danmaku.toInt(),
+      'like': rustItem.stat.like.toInt(),
+      'is_union_video': rustItem.isUnionVideo == 1,
       // Optional fields not in Rust model
       'favorite': null,
       'review': null,
