@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/http/search_api_facade.dart';
 import 'package:PiliPlus/models/common/search/search_type.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/models/search/suggest.dart';
@@ -57,6 +58,19 @@ abstract final class SearchHttp {
     String? gaiaVtoken,
     required ValueChanged<String> onSuccess,
   }) async {
+    // Use facade for video search
+    if (searchType == SearchType.video) {
+      final result = await SearchApiFacade.searchVideos(
+        keyword: keyword,
+        page: page,
+        order: order,
+        duration: duration,
+        tids: tids,
+      );
+      return result as LoadingState<R>;
+    }
+
+    // Use Flutter implementation for other search types
     final params = await WbiSign.makSign({
       'search_type': searchType.name,
       'keyword': keyword,
