@@ -40,6 +40,24 @@ pub async fn pause_download(task_id: String) -> BridgeResult<()> {
         .map_err(|e| e.into())
 }
 
+/// Cancel a download
+#[frb]
+pub async fn cancel_download(task_id: String) -> BridgeResult<()> {
+    let services = get_services();
+
+    services.download.cancel_download(&task_id).await
+        .map_err(|e| e.into())
+}
+
+/// Resume a paused download
+#[frb]
+pub async fn resume_download(task_id: String) -> BridgeResult<()> {
+    let services = get_services();
+
+    services.download.resume_download(&task_id).await
+        .map_err(|e| e.into())
+}
+
 /// Subscribe to download events (simplified version)
 #[frb(sync)]
 pub fn download_events() -> flume::Receiver<DownloadEvent> {

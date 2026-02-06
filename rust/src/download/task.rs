@@ -11,6 +11,7 @@ pub struct DownloadTask {
     pub downloaded_bytes: u64,
     pub status: DownloadStatus,
     pub file_path: std::path::PathBuf,
+    pub can_resume: bool,
     pub created_at: chrono::DateTime<chrono::Utc>,
     pub completed_at: Option<chrono::DateTime<chrono::Utc>>,
 }

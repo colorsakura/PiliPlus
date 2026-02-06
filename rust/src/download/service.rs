@@ -47,6 +47,7 @@ impl DownloadService {
             downloaded_bytes: 0,
             status: DownloadStatus::Pending,
             file_path: file_path.clone(),
+            can_resume: true,
             created_at: chrono::Utc::now(),
             completed_at: None,
         };
@@ -171,6 +172,7 @@ impl DownloadService {
         let mut tasks = self.active_downloads.write().await;
         if let Some(task) = tasks.get_mut(task_id) {
             task.status = DownloadStatus::Paused;
+            task.can_resume = true;
             let _ = self.download_tx.send(DownloadEvent {
                 task_id: task_id.to_string(),
                 event_type: crate::download::task::DownloadEventType::Paused,
@@ -179,6 +181,157 @@ impl DownloadService {
         } else {
             Err(DownloadError::NotFound(task_id.to_string()))
         }
+    }
+
+    pub async fn cancel_download(&self, task_id: &str) -> Result<(), DownloadError> {
+        let mut tasks = self.active_downloads.write().await;
+        if let Some(task) = tasks.get_mut(task_id) {
+            task.status = DownloadStatus::Cancelled;
+            task.can_resume = false;
+            let _ = self.download_tx.send(DownloadEvent {
+                task_id: task_id.to_string(),
+                event_type: crate::download::task::DownloadEventType::Cancelled,
+            });
+            Ok(())
+        } else {
+            Err(DownloadError::NotFound(task_id.to_string()))
+        }
+    }
+
+    pub async fn resume_download(&self, task_id: &str) -> Result<(), DownloadError> {
+        // Get task details and check if resumable
+        let (file_path, start_offset) = {
+            let tasks = self.active_downloads.read().await;
+            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+
+            if !task.can_resume {
+                return Err(DownloadError::DownloadFailed(
+                    "Download cannot be resumed".to_string()
+                ));
+            }
+
+            (task.file_path.clone(), task.downloaded_bytes)
+        };
+
+        // Update status to downloading
+        {
+            let mut tasks = self.active_downloads.write().await;
+            if let Some(task) = tasks.get_mut(task_id) {
+                task.status = DownloadStatus::Downloading {
+                    speed: 0.0,
+                    eta: None,
+                };
+            }
+        }
+
+        // Spawn resume task
+        let service = self.clone();
+        let task_id_spawn = task_id.to_string();
+        tokio::spawn(async move {
+            service.do_resume_download(&task_id_spawn, &file_path, start_offset).await;
+        });
+
+        Ok(())
+    }
+
+    async fn do_resume_download(&self, task_id: &str, output_path: &std::path::Path, start_offset: u64) {
+        tracing::info!(
+            task_id = %task_id,
+            start_offset = start_offset,
+            "Resuming download from byte offset"
+        );
+
+        let retry_policy = RetryPolicy::default();
+        let mut attempt = 0;
+
+        loop {
+            attempt += 1;
+
+            match self.attempt_resume_download(task_id, output_path, start_offset).await {
+                Ok(_) => {
+                    // Mark as completed
+                    let mut tasks = self.active_downloads.write().await;
+                    if let Some(task) = tasks.get_mut(task_id) {
+                        task.status = DownloadStatus::Completed;
+                        task.completed_at = Some(chrono::Utc::now());
+                    }
+
+                    let _ = self.download_tx.send(DownloadEvent {
+                        task_id: task_id.to_string(),
+                        event_type: crate::download::task::DownloadEventType::Completed,
+                    });
+                    break;
+                }
+                Err(e) => {
+                    if retry_policy.should_retry(attempt) {
+                        tracing::warn!(
+                            task_id = %task_id,
+                            attempt = attempt,
+                            max_attempts = retry_policy.max_attempts,
+                            error = %e,
+                            "Resume attempt failed, retrying..."
+                        );
+
+                        // Send retry event
+                        let _ = self.download_tx.send(DownloadEvent {
+                            task_id: task_id.to_string(),
+                            event_type: crate::download::task::DownloadEventType::Failed {
+                                error: format!("Resume attempt {}/{} failed: {}", attempt, retry_policy.max_attempts, e),
+                            },
+                        });
+
+                        // Calculate delay and wait before retry
+                        let delay = retry_policy.delay_for_attempt(attempt);
+                        tokio::time::sleep(delay).await;
+                    } else {
+                        tracing::error!(
+                            task_id = %task_id,
+                            attempt = attempt,
+                            max_attempts = retry_policy.max_attempts,
+                            error = %e,
+                            "Resume failed after maximum attempts"
+                        );
+
+                        // Mark as failed
+                        let mut tasks = self.active_downloads.write().await;
+                        if let Some(task) = tasks.get_mut(task_id) {
+                            task.status = DownloadStatus::Failed {
+                                error: e.to_string(),
+                            };
+                        }
+
+                        // Send final failed event
+                        let _ = self.download_tx.send(DownloadEvent {
+                            task_id: task_id.to_string(),
+                            event_type: crate::download::task::DownloadEventType::Failed {
+                                error: format!("Resume failed after {} attempts: {}", attempt, e),
+                            },
+                        });
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /// Perform a single resume download attempt with Range header
+    /// TODO: Implement actual HTTP Range request in a future task
+    async fn attempt_resume_download(
+        &self,
+        _task_id: &str,
+        _output_path: &std::path::Path,
+        _start_offset: u64,
+    ) -> Result<(), DownloadError> {
+        // Placeholder: Simulate resume download attempt
+        // In a real implementation, this would:
+        // 1. Make HTTP request with Range header: "Range: bytes={start_offset}-"
+        // 2. Stream response to file starting at offset
+        // 3. Handle network errors
+        // 4. Return Ok(()) on success, Err on failure
+
+        // For now, simulate a successful resume
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        Ok(())
     }
 
     pub fn events(&self) -> broadcast::Receiver<DownloadEvent> {
