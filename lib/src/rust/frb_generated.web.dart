@@ -6,10 +6,6 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
-import 'package:PiliPlus/src/rust/api/account.dart';
-import 'package:PiliPlus/src/rust/api/bridge.dart';
-import 'package:PiliPlus/src/rust/api/simple.dart';
-import 'package:PiliPlus/src/rust/api/video.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:PiliPlus/src/rust/error.dart';
@@ -18,8 +14,10 @@ import 'package:PiliPlus/src/rust/models/account.dart';
 import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
+import 'package:PiliPlus/src/rust/models/rcmd.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
+import 'package:PiliPlus/src/rust/third_party/pilicore/api/bridge.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RustLibApiImplPlatform({
@@ -43,9 +41,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
-
-  @protected
-  Account dco_decode_box_autoadd_account(dynamic raw);
 
   @protected
   PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
@@ -78,9 +73,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
-  List<Account> dco_decode_list_account(dynamic raw);
-
-  @protected
   List<Comment> dco_decode_list_comment(dynamic raw);
 
   @protected
@@ -91,6 +83,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<RcmdVideoInfo> dco_decode_list_rcmd_video_info(dynamic raw);
 
   @protected
   List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
@@ -120,13 +115,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
-  Account? dco_decode_opt_box_autoadd_account(dynamic raw);
-
-  @protected
   PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  RcmdOwner dco_decode_rcmd_owner(dynamic raw);
+
+  @protected
+  RcmdStat dco_decode_rcmd_stat(dynamic raw);
+
+  @protected
+  RcmdVideoInfo dco_decode_rcmd_video_info(dynamic raw);
 
   @protected
   (String, String) dco_decode_record_string_string(dynamic raw);
@@ -194,9 +195,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
-  Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
-
-  @protected
   PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
@@ -227,9 +225,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
-  List<Account> sse_decode_list_account(SseDeserializer deserializer);
-
-  @protected
   List<Comment> sse_decode_list_comment(SseDeserializer deserializer);
 
   @protected
@@ -242,6 +237,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<RcmdVideoInfo> sse_decode_list_rcmd_video_info(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<(String, String)> sse_decode_list_record_string_string(
@@ -277,13 +277,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
-  Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
-
-  @protected
   PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  RcmdOwner sse_decode_rcmd_owner(SseDeserializer deserializer);
+
+  @protected
+  RcmdStat sse_decode_rcmd_stat(SseDeserializer deserializer);
+
+  @protected
+  RcmdVideoInfo sse_decode_rcmd_video_info(SseDeserializer deserializer);
 
   @protected
   (String, String) sse_decode_record_string_string(
@@ -354,9 +360,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_i_64(
     PlatformInt64 self,
     SseSerializer serializer,
@@ -390,9 +393,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_account(List<Account> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_comment(List<Comment> self, SseSerializer serializer);
 
   @protected
@@ -407,6 +407,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
     Uint8List self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_rcmd_video_info(
+    List<RcmdVideoInfo> self,
     SseSerializer serializer,
   );
 
@@ -450,12 +456,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_account(
-    Account? self,
-    SseSerializer serializer,
-  );
-
-  @protected
   void sse_encode_opt_box_autoadd_i_64(
     PlatformInt64? self,
     SseSerializer serializer,
@@ -463,6 +463,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rcmd_owner(RcmdOwner self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rcmd_stat(RcmdStat self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rcmd_video_info(RcmdVideoInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_string(

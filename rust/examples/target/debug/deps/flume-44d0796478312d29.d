@@ -1,0 +1,10 @@
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/flume-44d0796478312d29.d: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/select.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/async.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/signal.rs
+
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/libflume-44d0796478312d29.rlib: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/select.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/async.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/signal.rs
+
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/libflume-44d0796478312d29.rmeta: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/select.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/async.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/signal.rs
+
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/lib.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/select.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/async.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/flume-0.11.1/src/signal.rs:

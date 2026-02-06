@@ -4,6 +4,7 @@ pub mod user;
 pub mod account;
 pub mod live;
 pub mod comments;
+pub mod rcmd;
 #[cfg(test)]
 pub mod tests;
 
@@ -13,3 +14,4 @@ pub use user::*;
 pub use account::*;
 pub use live::*;
 pub use comments::*;
+pub use rcmd::*;

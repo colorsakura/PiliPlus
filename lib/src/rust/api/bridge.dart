@@ -3,79 +3,27 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import 'package:PiliPlus/src/rust/frb_generated.dart';
-import 'package:PiliPlus/src/rust/models/account.dart';
-import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
-import 'package:PiliPlus/src/rust/models/live.dart';
+import 'package:PiliPlus/src/rust/models/rcmd.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
+import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Initialize the Rust core
-void initCore() => RustLib.instance.api.crateApiBridgeInitCore();
+void initCore() => RustLib.instance.api.pilicoreApiBridgeInitCore();
 
 /// Get version information
-String getVersion() => RustLib.instance.api.crateApiBridgeGetVersion();
+String getVersion() => RustLib.instance.api.pilicoreApiBridgeGetVersion();
 
 /// Health check
-bool healthCheck() => RustLib.instance.api.crateApiBridgeHealthCheck();
+bool healthCheck() => RustLib.instance.api.pilicoreApiBridgeHealthCheck();
 
-/// Expose VideoInfo type to bridge
-Future<VideoInfo> exposeVideoInfoType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoInfoType();
-
-/// Expose VideoUrl type to bridge
-Future<VideoUrl> exposeVideoUrlType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoUrlType();
-
-/// Expose VideoOwner type to bridge
-Future<VideoOwner> exposeVideoOwnerType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoOwnerType();
-
-/// Expose VideoStats type to bridge
-Future<VideoStats> exposeVideoStatsType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoStatsType();
-
-/// Expose VideoPage type to bridge
-Future<VideoPage> exposeVideoPageType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoPageType();
-
-/// Expose VideoSegment type to bridge
-Future<VideoSegment> exposeVideoSegmentType() =>
-    RustLib.instance.api.crateApiBridgeExposeVideoSegmentType();
-
-/// Expose Image type to bridge
-Future<Image> exposeImageType() =>
-    RustLib.instance.api.crateApiBridgeExposeImageType();
-
-/// Expose Account type to bridge
-Future<Account> exposeAccountType() =>
-    RustLib.instance.api.crateApiBridgeExposeAccountType();
-
-/// Expose DynamicsList type to bridge
-Future<DynamicsList> exposeDynamicsListType() =>
-    RustLib.instance.api.crateApiBridgeExposeDynamicsListType();
-
-/// Expose DynamicsItem type to bridge
-Future<DynamicsItem> exposeDynamicsItemType() =>
-    RustLib.instance.api.crateApiBridgeExposeDynamicsItemType();
-
-/// Expose LiveRoomInfo type to bridge
-Future<LiveRoomInfo> exposeLiveRoomInfoType() =>
-    RustLib.instance.api.crateApiBridgeExposeLiveRoomInfoType();
-
-/// Expose LivePlayUrl type to bridge
-Future<LivePlayUrl> exposeLivePlayUrlType() =>
-    RustLib.instance.api.crateApiBridgeExposeLivePlayUrlType();
-
-/// Expose CommentList type to bridge
-Future<CommentList> exposeCommentListType() =>
-    RustLib.instance.api.crateApiBridgeExposeCommentListType();
-
-/// Expose SearchResults type to bridge
-Future<SearchResults> exposeSearchResultsType() =>
-    RustLib.instance.api.crateApiBridgeExposeSearchResultsType();
-
-/// Expose SearchResult type to bridge
-Future<SearchResult> exposeSearchResultType() =>
-    RustLib.instance.api.crateApiBridgeExposeSearchResultType();
+/// Get recommendation list from Bilibili API
+Future<List<RcmdVideoInfo>> getRecommendList({
+  required int ps,
+  required int freshIdx,
+}) =>
+    RustLib.instance.api.pilicoreApiBridgeGetRecommendList(
+      ps: ps,
+      freshIdx: freshIdx,
+    );

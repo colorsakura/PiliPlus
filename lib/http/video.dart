@@ -6,6 +6,7 @@ import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/http/ua_type.dart';
+import 'package:PiliPlus/http/rcmd_api_facade.dart';
 import 'package:PiliPlus/http/video_api_facade.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
@@ -45,36 +46,9 @@ abstract final class VideoHttp {
   static Future<LoadingState<List<RecVideoItemModel>>> rcmdVideoList({
     required int ps,
     required int freshIdx,
-  }) async {
-    final res = await Request().get(
-      Api.recommendListWeb,
-      queryParameters: await WbiSign.makSign({
-        'version': 1,
-        'feed_version': 'V8',
-        'homepage_ver': 1,
-        'ps': ps,
-        'fresh_idx': freshIdx,
-        'brush': freshIdx,
-        'fresh_type': 4,
-      }),
-    );
-    if (res.data['code'] == 0) {
-      List<RecVideoItemModel> list = <RecVideoItemModel>[];
-      for (final i in res.data['data']['item']) {
-        //过滤掉live与ad，以及拉黑用户
-        if (i['goto'] == 'av' &&
-            (i['owner'] != null &&
-                !GlobalData().blackMids.contains(i['owner']['mid']))) {
-          RecVideoItemModel videoItem = RecVideoItemModel.fromJson(i);
-          if (!RecommendFilter.filter(videoItem)) {
-            list.add(videoItem);
-          }
-        }
-      }
-      return Success(list);
-    } else {
-      return Error(res.data['message']);
-    }
+  }) {
+    // Call facade instead of direct API call
+    return RcmdApiFacade.getRecommendList(ps: ps, freshIdx: freshIdx);
   }
 
   // 添加额外的loginState变量模拟未登录状态
