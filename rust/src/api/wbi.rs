@@ -1,4 +1,9 @@
 
+use std::collections::HashMap;
+use md5;
+use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
+use chrono;
+
 /// Mixin key encoding table - 32-element shuffle table
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
     14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7,
@@ -102,10 +107,7 @@ fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
-use md5;
-use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
-use super::*;
+    use super::*;
 
     #[test]
     fn test_get_mixin_key() {
