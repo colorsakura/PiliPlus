@@ -11,14 +11,14 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Get video information from Bilibili API
 Future<VideoInfo> getVideoInfo({required String bvid}) =>
-    RustLib.instance.api.crateApiVideoGetVideoInfo(bvid: bvid);
+    RustLib.instance.api.crateApiBridgeGetVideoInfo(bvid: bvid);
 
 /// Get video playback URL from Bilibili API
 Future<VideoUrl> getVideoUrl({
   required String bvid,
   required PlatformInt64 cid,
   required VideoQuality quality,
-}) => RustLib.instance.api.crateApiVideoGetVideoUrl(
+}) => RustLib.instance.api.crateApiBridgeGetVideoUrl(
   bvid: bvid,
   cid: cid,
   quality: quality,

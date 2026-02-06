@@ -145,6 +145,17 @@ pub async fn get_user_stats() -> Result<crate::models::UserStats, crate::error::
     crate::api::user::get_user_stats().await
 }
 
+// Video API wrapper for flutter_rust_bridge
+#[frb]
+pub async fn get_video_info(bvid: String) -> Result<crate::models::VideoInfo, crate::error::SerializableError> {
+    crate::api::video::get_video_info(bvid).await
+}
+
+#[frb]
+pub async fn get_video_url(bvid: String, cid: i64, quality: crate::models::VideoQuality) -> Result<crate::models::VideoUrl, crate::error::SerializableError> {
+    crate::api::video::get_video_url(bvid, cid, quality).await
+}
+
 // Search API wrapper for flutter_rust_bridge
 #[frb]
 pub async fn search_videos(

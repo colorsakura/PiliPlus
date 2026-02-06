@@ -15,6 +15,7 @@ pub mod search;
 // pub mod download;
 
 pub use bridge::*;
+pub use video::*;
 pub use rcmd::*;
 pub use rcmd_app::*;
 pub use user::*;

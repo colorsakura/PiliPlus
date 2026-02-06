@@ -106,6 +106,19 @@ Future<UserInfo> getUserInfo() =>
 Future<UserStats> getUserStats() =>
     RustLib.instance.api.crateApiBridgeGetUserStats();
 
+Future<VideoInfo> getVideoInfo({required String bvid}) =>
+    RustLib.instance.api.crateApiBridgeGetVideoInfo(bvid: bvid);
+
+Future<VideoUrl> getVideoUrl({
+  required String bvid,
+  required PlatformInt64 cid,
+  required VideoQuality quality,
+}) => RustLib.instance.api.crateApiBridgeGetVideoUrl(
+  bvid: bvid,
+  cid: cid,
+  quality: quality,
+);
+
 Future<SearchVideoResult> searchVideos({
   required String keyword,
   required int page,

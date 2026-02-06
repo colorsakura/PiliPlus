@@ -77,7 +77,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -356556705;
+  int get rustContentHash => -496103600;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -133,6 +133,14 @@ abstract class RustLibApi extends BaseApi {
   Future<UserStats> crateApiBridgeGetUserStats();
 
   String crateApiBridgeGetVersion();
+
+  Future<VideoInfo> crateApiBridgeGetVideoInfo({required String bvid});
+
+  Future<VideoUrl> crateApiBridgeGetVideoUrl({
+    required String bvid,
+    required PlatformInt64 cid,
+    required VideoQuality quality,
+  });
 
   bool crateApiBridgeHealthCheck();
 
@@ -758,12 +766,78 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   );
 
   @override
+  Future<VideoInfo> crateApiBridgeGetVideoInfo({required String bvid}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(bvid, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 21,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_video_info,
+          decodeErrorData: sse_decode_serializable_error,
+        ),
+        constMeta: kCrateApiBridgeGetVideoInfoConstMeta,
+        argValues: [bvid],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBridgeGetVideoInfoConstMeta => const TaskConstMeta(
+    debugName: "get_video_info",
+    argNames: ["bvid"],
+  );
+
+  @override
+  Future<VideoUrl> crateApiBridgeGetVideoUrl({
+    required String bvid,
+    required PlatformInt64 cid,
+    required VideoQuality quality,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(bvid, serializer);
+          sse_encode_i_64(cid, serializer);
+          sse_encode_video_quality(quality, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 22,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_video_url,
+          decodeErrorData: sse_decode_serializable_error,
+        ),
+        constMeta: kCrateApiBridgeGetVideoUrlConstMeta,
+        argValues: [bvid, cid, quality],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBridgeGetVideoUrlConstMeta => const TaskConstMeta(
+    debugName: "get_video_url",
+    argNames: ["bvid", "cid", "quality"],
+  );
+
+  @override
   bool crateApiBridgeHealthCheck() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 23)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -787,7 +861,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 22)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -825,7 +899,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 23,
+            funcId: 25,
             port: port_,
           );
         },

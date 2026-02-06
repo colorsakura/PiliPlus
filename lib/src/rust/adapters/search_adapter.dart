@@ -21,7 +21,7 @@ class SearchAdapter {
     rust.SearchVideoResult rustResult,
   ) {
     return SearchVideoData(
-      numResults: rustResult.num_results,
+      numResults: rustResult.numResults,
       list: rustResult.items.map(fromRustSearchVideoItem).toList(),
     );
   }

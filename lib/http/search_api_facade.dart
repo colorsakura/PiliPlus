@@ -1,7 +1,5 @@
-import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/common/search/search_type.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart' as rust;
 import 'package:PiliPlus/src/rust/models/search.dart' as rust_models;
