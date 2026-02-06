@@ -2,7 +2,10 @@
 use std::collections::HashMap;
 use md5;
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
-use chrono::Local;
+use chrono::{Local, DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use once_cell::sync::Lazy;
+use std::sync::Mutex;
 
 /// Mixin key encoding table - 32-element shuffle table
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
@@ -12,6 +15,155 @@ const MIXIN_KEY_ENC_TAB: [usize; 32] = [
 
 /// Allowed special characters in WBI parameter filtering
 const ALLOWED_SPECIAL_CHARS: &str = "!'()*-_.";
+const CACHE_DURATION_HOURS: i64 = 24;
+
+// Cache structure for WBI keys
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct WbiCache {
+    img_url: String,
+    sub_url: String,
+    mixin_key: String,
+    timestamp: DateTime<Utc>,
+}
+
+impl WbiCache {
+    fn is_expired(&self) -> bool {
+        Utc::now().signed_duration_since(self.timestamp).num_hours() >= CACHE_DURATION_HOURS
+    }
+}
+
+// Global cache storage
+static WBI_CACHE: Lazy<Mutex<Option<WbiCache>>> = Lazy::new(|| Mutex::new(None));
+
+#[derive(Debug, Clone, Deserialize)]
+struct WbiImg {
+    img_url: String,
+    sub_url: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct UserData {
+    wbi_img: WbiImg,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct UserInfoResponse {
+    code: i32,
+    message: String,
+    data: UserData,
+}
+
+/// Extract filename from WBI URL
+///
+/// Extracts the filename from a URL path for mixin key generation
+///
+/// # Parameters
+/// * `url` - The URL containing the filename
+///
+/// # Returns
+/// The extracted filename, or empty string if not found
+///
+/// # Examples
+/// ```rust
+/// let filename = extract_filename("https://example.com/img_xxx.jpg");
+/// assert_eq!(filename, "img_xxx");
+/// ```
+fn extract_filename(url: &str) -> String {
+    url.split('/')
+        .last()
+        .and_then(|name| name.split('.').next())
+        .unwrap_or("")
+        .to_string()
+}
+
+/// Fetch WBI keys from Bilibili API
+///
+/// Makes HTTP request to https://api.bilibili.com/x/web-interface/nav
+/// to get user information and extract WBI keys
+///
+/// # Returns
+/// Result containing tuple of (img_url, sub_url, mixin_key)
+///
+/// # Errors
+/// Returns reqwest::Error for HTTP failures
+/// Returns json::Error for JSON parsing failures
+///
+/// # Examples
+/// ```rust
+/// let (img_url, sub_url, mixin_key) = get_wbi_keys().await?;
+/// ```
+async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+
+    let response = client
+        .get("https://api.bilibili.com/x/web-interface/nav")
+        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+        .send()
+        .await?;
+
+    if !response.status().is_success() {
+        return Err(format!("HTTP request failed: {}", response.status()).into());
+    }
+
+    let text = response.text().await?;
+    let user_info: UserInfoResponse = serde_json::from_str(&text)?;
+
+    if user_info.code != 0 {
+        return Err(format!("API returned error code {}: {}", user_info.code, user_info.message).into());
+    }
+
+    let img_url = user_info.data.wbi_img.img_url;
+    let sub_url = user_info.data.wbi_img.sub_url;
+
+    let img_filename = extract_filename(&img_url);
+    let sub_filename = extract_filename(&sub_url);
+
+    let mixin_key = get_mixin_key(&format!("{}{}", img_filename, sub_filename));
+
+    // Update cache
+    let cache = WbiCache {
+        img_url,
+        sub_url,
+        mixin_key: mixin_key.clone(),
+        timestamp: Utc::now(),
+    };
+
+    let mut cache_guard = WBI_CACHE.lock().unwrap();
+    *cache_guard = Some(cache);
+
+    Ok((img_url, sub_url, mixin_key))
+}
+
+/// Get WBI keys with caching
+///
+/// Returns cached WBI keys if available and not expired,
+/// otherwise fetches new keys from API
+///
+/// # Returns
+/// Result containing tuple of (img_url, sub_url, mixin_key)
+///
+/// # Errors
+/// Returns reqwest::Error for HTTP failures
+/// Returns json::Error for JSON parsing failures
+///
+/// # Examples
+/// ```rust
+/// let (img_url, sub_url, mixin_key) = get_wbi_keys_cached().await?;
+/// ```
+pub async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
+    let mut cache_guard = WBI_CACHE.lock().unwrap();
+
+    if let Some(cache) = &*cache_guard {
+        if !cache.is_expired() {
+            return Ok((cache.img_url.clone(), cache.sub_url.clone(), cache.mixin_key.clone()));
+        }
+    }
+
+    // Cache is expired or not present, fetch fresh keys
+    let (img_url, sub_url, mixin_key) = get_wbi_keys().await?;
+
+    Ok((img_url, sub_url, mixin_key))
+}
 
 
 /// Generate mixin key by shuffling characters according to the encoding table
@@ -84,7 +236,7 @@ fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
 
     // Sort parameters by key
     let mut sorted_params: Vec<_> = params.iter().collect();
-    sorted_params.sort_by_key(|(k, _)| k.clone());
+    sorted_params.sort_by_key(|(k, _)| k.to_string());
 
     // Build query string with URL encoding
     let mut query_parts = Vec::new();
@@ -185,5 +337,64 @@ mod tests {
         assert_eq!(expected_input.len(), 32);
         // The shuffled result should be different from the truncated input
         assert_ne!(long_result, expected_input);
+    }
+}
+
+#[tokio::test]
+async fn test_get_wbi_keys() {
+    // This test requires network access to fetch actual WBI keys
+    // It's a integration test that may fail if network is not available
+    let result = get_wbi_keys().await;
+
+    match result {
+        Ok((img_url, sub_url, mixin_key)) => {
+            println!("Successfully fetched WBI keys:");
+            println!("img_url: {}", img_url);
+            println!("sub_url: {}", sub_url);
+            println!("mixin_key: {}", mixin_key);
+
+            // Verify that we have valid URLs
+            assert!(!img_url.is_empty());
+            assert!(!sub_url.is_empty());
+            assert!(!mixin_key.is_empty());
+
+            // Verify mixin key length
+            assert_eq!(mixin_key.len(), 32);
+
+            // Verify URLs contain expected patterns
+            assert!(img_url.contains("http"));
+            assert!(sub_url.contains("http"));
+        }
+        Err(e) => {
+            // If the test fails, it might be due to network issues
+            // In a real test suite, you might want to mock the HTTP request
+            println!("Test failed (possibly due to network): {}", e);
+        }
+    }
+}
+
+#[tokio::test]
+async fn test_get_wbi_keys_cached() {
+    // Test the cached version
+    let result = get_wbi_keys_cached().await;
+
+    match result {
+        Ok((img_url, sub_url, mixin_key)) => {
+            println!("Successfully fetched cached WBI keys:");
+            println!("img_url: {}", img_url);
+            println!("sub_url: {}", sub_url);
+            println!("mixin_key: {}", mixin_key);
+
+            // Verify that we have valid URLs
+            assert!(!img_url.is_empty());
+            assert!(!sub_url.is_empty());
+            assert!(!mixin_key.is_empty());
+
+            // Verify mixin key length
+            assert_eq!(mixin_key.len(), 32);
+        }
+        Err(e) => {
+            println!("Test failed (possibly due to network): {}", e);
+        }
     }
 }

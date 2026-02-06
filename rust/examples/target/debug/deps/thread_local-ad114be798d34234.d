@@ -1,0 +1,10 @@
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/thread_local-ad114be798d34234.d: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/cached.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/thread_id.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/unreachable.rs
+
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/libthread_local-ad114be798d34234.rlib: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/cached.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/thread_id.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/unreachable.rs
+
+/home/iFlygo/Projects/PiliPlus/.worktrees/rcmd-api/rust/examples/target/debug/deps/libthread_local-ad114be798d34234.rmeta: /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/lib.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/cached.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/thread_id.rs /home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/unreachable.rs
+
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/lib.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/cached.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/thread_id.rs:
+/home/iFlygo/.local/share/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/src/unreachable.rs:
