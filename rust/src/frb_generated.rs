@@ -37,7 +37,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 814289178;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -356556705;
 
 // Section: executor
 
@@ -834,6 +834,53 @@ fn wire__crate__api__bridge__init_core_impl(
         },
     )
 }
+fn wire__crate__api__bridge__search_videos_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "search_videos",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_keyword = <String>::sse_decode(&mut deserializer);
+            let api_page = <i32>::sse_decode(&mut deserializer);
+            let api_order = <Option<String>>::sse_decode(&mut deserializer);
+            let api_duration = <Option<i32>>::sse_decode(&mut deserializer);
+            let api_tids = <Option<i32>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::error::SerializableError>(
+                    (move || async move {
+                        let output_ok = crate::api::bridge::search_videos(
+                            api_keyword,
+                            api_page,
+                            api_order,
+                            api_duration,
+                            api_tids,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 
 // Section: dart2rust
 
@@ -1115,6 +1162,20 @@ impl SseDecode for Vec<crate::models::video::SearchResult> {
     }
 }
 
+impl SseDecode for Vec<crate::models::search::SearchVideoItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::models::search::SearchVideoItem>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::models::video::VideoPage> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1209,6 +1270,17 @@ impl SseDecode for Option<String> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<String>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<i32>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -1344,6 +1416,84 @@ impl SseDecode for crate::models::video::SearchResults {
             page: var_page,
             page_size: var_pageSize,
             total_count: var_totalCount,
+        };
+    }
+}
+
+impl SseDecode for crate::models::search::SearchVideoItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_bvid = <String>::sse_decode(deserializer);
+        let mut var_aid = <i64>::sse_decode(deserializer);
+        let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_description = <String>::sse_decode(deserializer);
+        let mut var_cover = <String>::sse_decode(deserializer);
+        let mut var_duration = <u32>::sse_decode(deserializer);
+        let mut var_pubdate = <i64>::sse_decode(deserializer);
+        let mut var_ctime = <i64>::sse_decode(deserializer);
+        let mut var_owner = <crate::models::search::SearchVideoOwner>::sse_decode(deserializer);
+        let mut var_stat = <crate::models::search::SearchVideoStat>::sse_decode(deserializer);
+        let mut var_isUnionVideo = <i32>::sse_decode(deserializer);
+        let mut var_type = <Option<String>>::sse_decode(deserializer);
+        let mut var_tag = <Option<String>>::sse_decode(deserializer);
+        return crate::models::search::SearchVideoItem {
+            bvid: var_bvid,
+            aid: var_aid,
+            title: var_title,
+            description: var_description,
+            cover: var_cover,
+            duration: var_duration,
+            pubdate: var_pubdate,
+            ctime: var_ctime,
+            owner: var_owner,
+            stat: var_stat,
+            is_union_video: var_isUnionVideo,
+            r#type: var_type,
+            tag: var_tag,
+        };
+    }
+}
+
+impl SseDecode for crate::models::search::SearchVideoOwner {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_mid = <i64>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_face = <String>::sse_decode(deserializer);
+        return crate::models::search::SearchVideoOwner {
+            mid: var_mid,
+            name: var_name,
+            face: var_face,
+        };
+    }
+}
+
+impl SseDecode for crate::models::search::SearchVideoResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_items = <Vec<crate::models::search::SearchVideoItem>>::sse_decode(deserializer);
+        let mut var_page = <i32>::sse_decode(deserializer);
+        let mut var_pageSize = <i32>::sse_decode(deserializer);
+        let mut var_numResults = <i32>::sse_decode(deserializer);
+        return crate::models::search::SearchVideoResult {
+            items: var_items,
+            page: var_page,
+            page_size: var_pageSize,
+            num_results: var_numResults,
+        };
+    }
+}
+
+impl SseDecode for crate::models::search::SearchVideoStat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_view = <i64>::sse_decode(deserializer);
+        let mut var_like = <i64>::sse_decode(deserializer);
+        let mut var_danmaku = <i64>::sse_decode(deserializer);
+        return crate::models::search::SearchVideoStat {
+            view: var_view,
+            like: var_like,
+            danmaku: var_danmaku,
         };
     }
 }
@@ -1693,6 +1843,7 @@ fn pde_ffi_dispatcher_primary_impl(
         }
         18 => wire__crate__api__bridge__get_user_info_impl(port, ptr, rust_vec_len, data_len),
         19 => wire__crate__api__bridge__get_user_stats_impl(port, ptr, rust_vec_len, data_len),
+        23 => wire__crate__api__bridge__search_videos_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -2095,6 +2246,105 @@ impl flutter_rust_bridge::IntoIntoDart<crate::models::video::SearchResults>
     for crate::models::video::SearchResults
 {
     fn into_into_dart(self) -> crate::models::video::SearchResults {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::search::SearchVideoItem {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.bvid.into_into_dart().into_dart(),
+            self.aid.into_into_dart().into_dart(),
+            self.title.into_into_dart().into_dart(),
+            self.description.into_into_dart().into_dart(),
+            self.cover.into_into_dart().into_dart(),
+            self.duration.into_into_dart().into_dart(),
+            self.pubdate.into_into_dart().into_dart(),
+            self.ctime.into_into_dart().into_dart(),
+            self.owner.into_into_dart().into_dart(),
+            self.stat.into_into_dart().into_dart(),
+            self.is_union_video.into_into_dart().into_dart(),
+            self.r#type.into_into_dart().into_dart(),
+            self.tag.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::search::SearchVideoItem
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::search::SearchVideoItem>
+    for crate::models::search::SearchVideoItem
+{
+    fn into_into_dart(self) -> crate::models::search::SearchVideoItem {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::search::SearchVideoOwner {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.mid.into_into_dart().into_dart(),
+            self.name.into_into_dart().into_dart(),
+            self.face.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::search::SearchVideoOwner
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::search::SearchVideoOwner>
+    for crate::models::search::SearchVideoOwner
+{
+    fn into_into_dart(self) -> crate::models::search::SearchVideoOwner {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::search::SearchVideoResult {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.items.into_into_dart().into_dart(),
+            self.page.into_into_dart().into_dart(),
+            self.page_size.into_into_dart().into_dart(),
+            self.num_results.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::search::SearchVideoResult
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::search::SearchVideoResult>
+    for crate::models::search::SearchVideoResult
+{
+    fn into_into_dart(self) -> crate::models::search::SearchVideoResult {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::search::SearchVideoStat {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.view.into_into_dart().into_dart(),
+            self.like.into_into_dart().into_dart(),
+            self.danmaku.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::search::SearchVideoStat
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::search::SearchVideoStat>
+    for crate::models::search::SearchVideoStat
+{
+    fn into_into_dart(self) -> crate::models::search::SearchVideoStat {
         self
     }
 }
@@ -2608,6 +2858,16 @@ impl SseEncode for Vec<crate::models::video::SearchResult> {
     }
 }
 
+impl SseEncode for Vec<crate::models::search::SearchVideoItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::models::search::SearchVideoItem>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::models::video::VideoPage> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2691,6 +2951,16 @@ impl SseEncode for Option<String> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <String>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <i32>::sse_encode(value, serializer);
         }
     }
 }
@@ -2781,6 +3051,53 @@ impl SseEncode for crate::models::video::SearchResults {
         <u32>::sse_encode(self.page, serializer);
         <u32>::sse_encode(self.page_size, serializer);
         <u32>::sse_encode(self.total_count, serializer);
+    }
+}
+
+impl SseEncode for crate::models::search::SearchVideoItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.bvid, serializer);
+        <i64>::sse_encode(self.aid, serializer);
+        <String>::sse_encode(self.title, serializer);
+        <String>::sse_encode(self.description, serializer);
+        <String>::sse_encode(self.cover, serializer);
+        <u32>::sse_encode(self.duration, serializer);
+        <i64>::sse_encode(self.pubdate, serializer);
+        <i64>::sse_encode(self.ctime, serializer);
+        <crate::models::search::SearchVideoOwner>::sse_encode(self.owner, serializer);
+        <crate::models::search::SearchVideoStat>::sse_encode(self.stat, serializer);
+        <i32>::sse_encode(self.is_union_video, serializer);
+        <Option<String>>::sse_encode(self.r#type, serializer);
+        <Option<String>>::sse_encode(self.tag, serializer);
+    }
+}
+
+impl SseEncode for crate::models::search::SearchVideoOwner {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i64>::sse_encode(self.mid, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.face, serializer);
+    }
+}
+
+impl SseEncode for crate::models::search::SearchVideoResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::models::search::SearchVideoItem>>::sse_encode(self.items, serializer);
+        <i32>::sse_encode(self.page, serializer);
+        <i32>::sse_encode(self.page_size, serializer);
+        <i32>::sse_encode(self.num_results, serializer);
+    }
+}
+
+impl SseEncode for crate::models::search::SearchVideoStat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i64>::sse_encode(self.view, serializer);
+        <i64>::sse_encode(self.like, serializer);
+        <i64>::sse_encode(self.danmaku, serializer);
     }
 }
 

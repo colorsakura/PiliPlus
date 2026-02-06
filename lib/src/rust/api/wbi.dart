@@ -3,6 +3,7 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
+import 'package:PiliPlus/src/rust/error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
@@ -58,9 +59,6 @@ Future<void> encWbi({
   required String mixinKey,
 }) =>
     RustLib.instance.api.crateApiWbiEncWbi(params: params, mixinKey: mixinKey);
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Box < Error >>>
-abstract class BoxError implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<HashMap < String , String >>>
 abstract class HashMapStringString implements RustOpaqueInterface {}

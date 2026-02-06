@@ -145,6 +145,18 @@ pub async fn get_user_stats() -> Result<crate::models::UserStats, crate::error::
     crate::api::user::get_user_stats().await
 }
 
+// Search API wrapper for flutter_rust_bridge
+#[frb]
+pub async fn search_videos(
+    keyword: String,
+    page: i32,
+    order: Option<String>,
+    duration: Option<i32>,
+    tids: Option<i32>,
+) -> Result<crate::models::SearchVideoResult, crate::error::SerializableError> {
+    crate::api::search::search_videos(keyword, page, order, duration, tids).await
+}
+
 // Re-export API functions for use by Dart
 pub use crate::api::video::*;
 pub use crate::api::account::*;

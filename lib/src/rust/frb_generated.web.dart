@@ -16,6 +16,7 @@ import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
 import 'package:PiliPlus/src/rust/models/rcmd.dart';
+import 'package:PiliPlus/src/rust/models/search.dart';
 import 'package:PiliPlus/src/rust/models/user.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
@@ -42,6 +43,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
+
+  @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw);
 
   @protected
   PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
@@ -98,6 +102,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<SearchResult> dco_decode_list_search_result(dynamic raw);
 
   @protected
+  List<SearchVideoItem> dco_decode_list_search_video_item(dynamic raw);
+
+  @protected
   List<VideoPage> dco_decode_list_video_page(dynamic raw);
 
   @protected
@@ -117,6 +124,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
 
   @protected
   PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
@@ -141,6 +151,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SearchResults dco_decode_search_results(dynamic raw);
+
+  @protected
+  SearchVideoItem dco_decode_search_video_item(dynamic raw);
+
+  @protected
+  SearchVideoOwner dco_decode_search_video_owner(dynamic raw);
+
+  @protected
+  SearchVideoResult dco_decode_search_video_result(dynamic raw);
+
+  @protected
+  SearchVideoStat dco_decode_search_video_stat(dynamic raw);
 
   @protected
   SerializableError dco_decode_serializable_error(dynamic raw);
@@ -211,6 +233,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
   PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
@@ -273,6 +298,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  List<SearchVideoItem> sse_decode_list_search_video_item(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<VideoPage> sse_decode_list_video_page(SseDeserializer deserializer);
 
   @protected
@@ -294,6 +324,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
   PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
@@ -320,6 +353,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SearchResults sse_decode_search_results(SseDeserializer deserializer);
+
+  @protected
+  SearchVideoItem sse_decode_search_video_item(SseDeserializer deserializer);
+
+  @protected
+  SearchVideoOwner sse_decode_search_video_owner(SseDeserializer deserializer);
+
+  @protected
+  SearchVideoResult sse_decode_search_video_result(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  SearchVideoStat sse_decode_search_video_stat(SseDeserializer deserializer);
 
   @protected
   SerializableError sse_decode_serializable_error(SseDeserializer deserializer);
@@ -389,6 +436,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_i_64(
@@ -463,6 +513,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_search_video_item(
+    List<SearchVideoItem> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_video_page(
     List<VideoPage> self,
     SseSerializer serializer,
@@ -488,6 +544,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_i_64(
@@ -518,6 +577,30 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_search_results(SearchResults self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_search_video_item(
+    SearchVideoItem self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_search_video_owner(
+    SearchVideoOwner self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_search_video_result(
+    SearchVideoResult self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_search_video_stat(
+    SearchVideoStat self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_serializable_error(

@@ -8,20 +8,20 @@ import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:PiliPlus/src/rust/models/rcmd.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Get recommendation list from Bilibili API
+/// Get recommendation list from Bilibili APP API
 ///
-/// Fetches the recommendation feed from Bilibili's web interface
-/// and filters for video content (goto='av')
+/// Fetches the recommendation feed from Bilibili's APP interface
+/// and filters for video content (card_goto='av')
 ///
 /// # Parameters
 /// * `ps` - Page size (number of recommendations to fetch)
-/// * `fresh_idx` - Freshness index for recommendations
+/// * `fresh_idx` - Freshness index for recommendations (idx parameter)
 ///
 /// # Returns
 /// Result containing vector of RcmdVideoInfo structs
 ///
 /// # Errors
-/// Returns ApiError for:
+/// Returns SerializableError for:
 /// - HTTP request failures
 /// - JSON parsing failures
 /// - API error responses
@@ -29,12 +29,12 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 ///
 /// # Examples
 /// ```rust
-/// let recommendations = get_recommend_list(10, 0).await?;
+/// let recommendations = get_recommend_list_app(10, 0).await?;
 /// ```
-Future<List<RcmdVideoInfo>> getRecommendList({
+Future<List<RcmdVideoInfo>> getRecommendListApp({
   required int ps,
   required int freshIdx,
-}) => RustLib.instance.api.crateApiRcmdGetRecommendList(
+}) => RustLib.instance.api.crateApiRcmdAppGetRecommendListApp(
   ps: ps,
   freshIdx: freshIdx,
 );
