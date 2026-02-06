@@ -98,26 +98,26 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
         return Err(format!("API returned error code {}: {}", user_info.code, user_info.message).into());
     }
 
-    let img_url = user_info.data.wbi_img.img_url;
-    let sub_url = user_info.data.wbi_img.sub_url;
+    let img_url_clone = user_info.data.wbi_img.img_url.clone();
+    let sub_url_clone = user_info.data.wbi_img.sub_url.clone();
 
-    let img_filename = extract_filename(&img_url);
-    let sub_filename = extract_filename(&sub_url);
+    let img_filename = extract_filename(&img_url_clone);
+    let sub_filename = extract_filename(&sub_url_clone);
 
     let mixin_key = get_mixin_key(&format!("{}{}", img_filename, sub_filename));
 
     // Update cache
     let cache = WbiCache {
-        img_url,
-        sub_url,
+        img_url: img_url_clone.clone(),
+        sub_url: sub_url_clone.clone(),
         mixin_key: mixin_key.clone(),
         timestamp: Utc::now(),
     };
 
-    let mut cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
+    let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
     *cache_guard = Some(cache);
 
-    Ok((img_url, sub_url, mixin_key))
+    Ok((img_url_clone, sub_url_clone, mixin_key))
 }
 
 async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::error::Error>> {
