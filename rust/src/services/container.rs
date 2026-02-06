@@ -2,16 +2,15 @@ use once_cell::sync::OnceCell;
 use std::sync::Arc;
 
 use crate::storage::StorageService;
+use crate::services::account::AccountService;
 use crate::http::HttpService;
-use crate::account::AccountService;
-use crate::download::DownloadService;
 use crate::bilibili_api::{VideoApi, UserApi, SearchApi};
 
 pub struct Services {
     pub storage: Arc<StorageService>,
     pub http: Arc<HttpService>,
     pub account: Arc<AccountService>,
-    pub download: Arc<DownloadService>,
+    // pub download: Arc<DownloadService>,  // TODO: Restore when DownloadService is ready
     pub video_api: Arc<VideoApi>,
     pub user_api: Arc<UserApi>,
     pub search_api: Arc<SearchApi>,
@@ -24,7 +23,7 @@ async fn init_services() -> Arc<Services> {
     let storage = Arc::new(StorageService::new(":memory:").await.unwrap());
     let http = Arc::new(HttpService::new("https://api.bilibili.com".to_string()).unwrap());
     let account = Arc::new(AccountService::new(storage.clone(), http.clone()));
-    let download = Arc::new(DownloadService::new(storage.clone(), http.clone()));
+    // let download = Arc::new(DownloadService::new(storage.clone(), http.clone()));  // TODO: Restore when needed
     let video_api = Arc::new(VideoApi::new(http.clone()));
     let user_api = Arc::new(UserApi::new(http.clone()));
     let search_api = Arc::new(SearchApi::new(http.clone()));
@@ -33,7 +32,7 @@ async fn init_services() -> Arc<Services> {
         storage,
         http,
         account,
-        download,
+        // download,  // TODO: Restore when needed
         video_api,
         user_api,
         search_api,

@@ -1,0 +1,35 @@
+use flutter_rust_bridge::frb;
+use crate::models::{DynamicsList, DynamicsItem};
+use crate::error::ApiResult;
+use crate::services::get_services;
+
+/// Get user dynamics/posts from Bilibili API
+#[frb]
+pub async fn get_user_dynamics(_uid: i64, _offset: Option<String>) -> ApiResult<DynamicsList> {
+    let _services = get_services().await;
+
+    // TODO: Add DynamicsApi to service container
+    // For now, return mock data
+    ApiResult {
+        success: true,
+        data: Some(DynamicsList {
+            items: vec![],
+            has_more: false,
+            offset: None,
+        }),
+        error: None,
+    }
+}
+
+/// Get dynamics detail by ID from Bilibili API
+#[frb]
+pub async fn get_dynamics_detail(_dynamic_id: String) -> ApiResult<DynamicsItem> {
+    let _services = get_services().await;
+
+    // TODO: Add DynamicsApi to service container
+    ApiResult {
+        success: false,
+        data: None,
+        error: Some("Not yet implemented".to_string()),
+    }
+}

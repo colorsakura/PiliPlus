@@ -1,0 +1,23 @@
+use flutter_rust_bridge::frb;
+use crate::models::{UserInfo, UserStats};
+use crate::error::ApiResult;
+use crate::services::get_services;
+
+
+/// Get user information
+#[frb]
+pub async fn get_user_info(mid: i64) -> ApiResult<UserInfo> {
+    let services = get_services();
+
+    let result: Result<UserInfo, _> = services.user_api.get_user_info(mid).await;
+    result.into()
+}
+
+/// Get user statistics
+#[frb]
+pub async fn get_user_stats(mid: i64) -> ApiResult<UserStats> {
+    let services = get_services();
+
+    let result: Result<UserStats, _> = services.user_api.get_user_stats(mid).await;
+    result.into()
+}

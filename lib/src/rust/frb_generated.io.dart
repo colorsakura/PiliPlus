@@ -3,6 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'package:PiliPlus/src/rust/api/account.dart';
 import 'package:PiliPlus/src/rust/api/bridge.dart';
 import 'package:PiliPlus/src/rust/api/simple.dart';
 import 'package:PiliPlus/src/rust/api/video.dart';
@@ -15,7 +16,6 @@ import 'package:PiliPlus/src/rust/models/account.dart';
 import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
-import 'package:PiliPlus/src/rust/models/user.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
 
@@ -43,13 +43,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_bool(dynamic raw);
 
   @protected
+  Account dco_decode_box_autoadd_account(dynamic raw);
+
+  @protected
   PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
-
-  @protected
-  CoinBalance dco_decode_coin_balance(dynamic raw);
 
   @protected
   Comment dco_decode_comment(dynamic raw);
@@ -74,6 +74,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<Account> dco_decode_list_account(dynamic raw);
 
   @protected
   List<Comment> dco_decode_list_comment(dynamic raw);
@@ -115,6 +118,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  Account? dco_decode_opt_box_autoadd_account(dynamic raw);
+
+  @protected
   PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
 
   @protected
@@ -145,15 +151,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
-  UserInfo dco_decode_user_info(dynamic raw);
-
-  @protected
-  UserLevel dco_decode_user_level(dynamic raw);
-
-  @protected
-  UserStats dco_decode_user_stats(dynamic raw);
-
-  @protected
   VideoFormat dco_decode_video_format(dynamic raw);
 
   @protected
@@ -178,9 +175,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   VideoUrl dco_decode_video_url(dynamic raw);
 
   @protected
-  VipStatus dco_decode_vip_status(dynamic raw);
-
-  @protected
   Map<String, String> sse_decode_Map_String_String_None(
     SseDeserializer deserializer,
   );
@@ -198,13 +192,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
+  Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
+
+  @protected
   PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
-
-  @protected
-  CoinBalance sse_decode_coin_balance(SseDeserializer deserializer);
 
   @protected
   Comment sse_decode_comment(SseDeserializer deserializer);
@@ -229,6 +223,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<Account> sse_decode_list_account(SseDeserializer deserializer);
 
   @protected
   List<Comment> sse_decode_list_comment(SseDeserializer deserializer);
@@ -278,6 +275,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
+
+  @protected
   PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
@@ -310,15 +310,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
-  UserInfo sse_decode_user_info(SseDeserializer deserializer);
-
-  @protected
-  UserLevel sse_decode_user_level(SseDeserializer deserializer);
-
-  @protected
-  UserStats sse_decode_user_stats(SseDeserializer deserializer);
-
-  @protected
   VideoFormat sse_decode_video_format(SseDeserializer deserializer);
 
   @protected
@@ -343,9 +334,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   VideoUrl sse_decode_video_url(SseDeserializer deserializer);
 
   @protected
-  VipStatus sse_decode_vip_status(SseDeserializer deserializer);
-
-  @protected
   void sse_encode_Map_String_String_None(
     Map<String, String> self,
     SseSerializer serializer,
@@ -364,6 +352,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_i_64(
     PlatformInt64 self,
     SseSerializer serializer,
@@ -371,9 +362,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_coin_balance(CoinBalance self, SseSerializer serializer);
 
   @protected
   void sse_encode_comment(Comment self, SseSerializer serializer);
@@ -398,6 +386,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_account(List<Account> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_comment(List<Comment> self, SseSerializer serializer);
@@ -457,6 +448,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_account(
+    Account? self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_box_autoadd_i_64(
     PlatformInt64? self,
     SseSerializer serializer,
@@ -496,15 +493,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_unit(void self, SseSerializer serializer);
 
   @protected
-  void sse_encode_user_info(UserInfo self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_user_level(UserLevel self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_user_stats(UserStats self, SseSerializer serializer);
-
-  @protected
   void sse_encode_video_format(VideoFormat self, SseSerializer serializer);
 
   @protected
@@ -527,9 +515,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_video_url(VideoUrl self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_vip_status(VipStatus self, SseSerializer serializer);
 }
 
 // Section: wire_class

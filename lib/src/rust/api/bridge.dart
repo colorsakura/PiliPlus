@@ -8,7 +8,6 @@ import 'package:PiliPlus/src/rust/models/account.dart';
 import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
-import 'package:PiliPlus/src/rust/models/user.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
@@ -48,14 +47,6 @@ Future<VideoSegment> exposeVideoSegmentType() =>
 /// Expose Image type to bridge
 Future<Image> exposeImageType() =>
     RustLib.instance.api.crateApiBridgeExposeImageType();
-
-/// Expose UserInfo type to bridge
-Future<UserInfo> exposeUserInfoType() =>
-    RustLib.instance.api.crateApiBridgeExposeUserInfoType();
-
-/// Expose UserStats type to bridge
-Future<UserStats> exposeUserStatsType() =>
-    RustLib.instance.api.crateApiBridgeExposeUserStatsType();
 
 /// Expose Account type to bridge
 Future<Account> exposeAccountType() =>
