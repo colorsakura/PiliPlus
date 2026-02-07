@@ -1,5 +1,5 @@
 use crate::api::wbi::HTTP_CLIENT;
-use crate::error::{ApiError, SerializableError};
+use crate::error::SerializableError;
 use crate::models::common::Image;
 use crate::models::{Comment, CommentList};
 use flutter_rust_bridge::frb;

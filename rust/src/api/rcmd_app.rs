@@ -2,7 +2,6 @@ use crate::api::wbi::HTTP_CLIENT;
 use crate::error::SerializableError;
 use crate::models::rcmd::RcmdVideoInfo;
 use flutter_rust_bridge::frb;
-use std::collections::HashMap;
 use tracing::{debug, error, info, warn};
 
 /// Helper macro to log to both tracing and stdout

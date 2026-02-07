@@ -182,11 +182,5 @@ pub async fn search_videos(
 
 // Re-export API functions for use by Dart
 pub use crate::api::account::*;
-pub use crate::api::comments::*;
-pub use crate::api::dynamics::*;
-pub use crate::api::live::*;
-pub use crate::api::search::*;
-pub use crate::api::user::*;
-pub use crate::api::video::*;
 // download module not yet implemented - requires DownloadTask model
 // pub use crate::api::download::*;

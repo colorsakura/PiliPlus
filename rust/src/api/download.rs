@@ -5,7 +5,6 @@ use crate::models::{DownloadStatusData, DownloadTaskData, VideoQuality};
 use flutter_rust_bridge::frb;
 use std::sync::Arc;
 use std::sync::Mutex;
-use tokio::sync::RwLock;
 
 /// Global download manager instance
 static DOWNLOAD_MANAGER: Mutex<Option<Arc<DownloadManager>>> = Mutex::new(None);

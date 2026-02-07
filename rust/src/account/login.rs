@@ -1,4 +1,4 @@
-use crate::account::qrcode::{QrCodeData, QrState, QrStatus};
+use crate::account::qrcode::{QrCodeData, QrStatus};
 use crate::error::AccountError;
 use crate::http::HttpService;
 use crate::models::Account;

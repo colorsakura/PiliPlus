@@ -12,13 +12,5 @@ pub mod user;
 pub mod video;
 pub mod wbi;
 
+// Re-export bridge functions which already re-export the API functions
 pub use bridge::*;
-pub use comments::*;
-pub use download::*;
-pub use dynamics::*;
-pub use live::*;
-pub use rcmd::*;
-pub use rcmd_app::*;
-pub use search::*;
-pub use user::*;
-pub use video::*;

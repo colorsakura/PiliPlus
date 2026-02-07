@@ -1,4 +1,3 @@
-use crate::bilibili_api::VideoApi;
 use crate::error::{ApiError, SerializableError};
 use crate::models::{VideoInfo, VideoQuality, VideoUrl};
 use crate::services::get_services;

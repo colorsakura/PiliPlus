@@ -1,5 +1,5 @@
 use crate::api::wbi::{HTTP_CLIENT, enc_wbi, get_wbi_keys_cached};
-use crate::error::{ApiError, SerializableError};
+use crate::error::SerializableError;
 use crate::models::rcmd::{RcmdResponse, RcmdVideoInfo};
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
