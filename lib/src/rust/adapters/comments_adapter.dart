@@ -37,7 +37,8 @@ class CommentsAdapter {
       replies: rustCommentList.comments.map(_convertComment).toList(),
       // Set defaults for fields not in Rust model
       cursor: ReplyCursor(
-        isEnd: rustCommentList.page * rustCommentList.pageSize >=
+        isEnd:
+            rustCommentList.page * rustCommentList.pageSize >=
             rustCommentList.totalCount,
         next: rustCommentList.page + 1,
         // All other cursor fields are null (not in Rust model)

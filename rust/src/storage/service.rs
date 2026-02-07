@@ -24,6 +24,15 @@ impl StorageService {
         Ok(Self { db: pool })
     }
 
+    /// Create an in-memory storage service (for testing or download service)
+    pub fn in_memory() -> Result<Self, StorageError> {
+        // For download service, we don't need persistent storage
+        // Use a simple in-memory implementation
+        let pool = SqlitePool::connect_lazy(":memory:")?;
+
+        Ok(Self { db: pool })
+    }
+
     // Account operations
     pub async fn save_account(&self, account: &Account) -> Result<(), StorageError> {
         let cookies_json = serde_json::to_string(&account.cookies)?;

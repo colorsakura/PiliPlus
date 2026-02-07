@@ -6,6 +6,7 @@
 import 'package:PiliPlus/src/rust/api/account.dart';
 import 'package:PiliPlus/src/rust/api/bridge.dart';
 import 'package:PiliPlus/src/rust/api/comments.dart';
+import 'package:PiliPlus/src/rust/api/download.dart';
 import 'package:PiliPlus/src/rust/api/dynamics.dart';
 import 'package:PiliPlus/src/rust/api/live.dart';
 import 'package:PiliPlus/src/rust/api/rcmd.dart';
@@ -19,10 +20,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'package:PiliPlus/src/rust/error.dart';
+import 'package:PiliPlus/src/rust/error/api_error.dart';
 import 'package:PiliPlus/src/rust/frb_generated.dart';
 import 'package:PiliPlus/src/rust/models/account.dart';
 import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
+import 'package:PiliPlus/src/rust/models/download.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
 import 'package:PiliPlus/src/rust/models/rcmd.dart';
 import 'package:PiliPlus/src/rust/models/search.dart';
@@ -39,8 +42,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   });
 
   CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ApiErrorPtr => wire
+      ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiErrorPtr;
+
+  CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_HashMapStringStringPtr => wire
       ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringStringPtr;
+
+  @protected
+  ApiError
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    dynamic raw,
+  );
 
   @protected
   HashMapStringString
@@ -50,6 +63,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Map<String, String> dco_decode_Map_String_String_None(dynamic raw);
+
+  @protected
+  ApiError
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    dynamic raw,
+  );
 
   @protected
   HashMapStringString
@@ -73,6 +92,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account dco_decode_box_autoadd_account(dynamic raw);
 
   @protected
+  DownloadTaskData dco_decode_box_autoadd_download_task_data(dynamic raw);
+
+  @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_i_32(dynamic raw);
 
   @protected
@@ -86,6 +111,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CommentList dco_decode_comment_list(dynamic raw);
+
+  @protected
+  DownloadStatusData dco_decode_download_status_data(dynamic raw);
+
+  @protected
+  DownloadTaskData dco_decode_download_task_data(dynamic raw);
 
   @protected
   DynamicsItem dco_decode_dynamics_item(dynamic raw);
@@ -113,6 +144,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Comment> dco_decode_list_comment(dynamic raw);
+
+  @protected
+  List<DownloadTaskData> dco_decode_list_download_task_data(dynamic raw);
 
   @protected
   List<DynamicsItem> dco_decode_list_dynamics_item(dynamic raw);
@@ -158,6 +192,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Account? dco_decode_opt_box_autoadd_account(dynamic raw);
+
+  @protected
+  DownloadTaskData? dco_decode_opt_box_autoadd_download_task_data(dynamic raw);
+
+  @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
@@ -256,6 +296,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   VipStatus dco_decode_vip_status(dynamic raw);
 
   @protected
+  ApiError
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   HashMapStringString
   sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
     SseDeserializer deserializer,
@@ -263,6 +309,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  ApiError
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
     SseDeserializer deserializer,
   );
 
@@ -288,6 +340,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Account sse_decode_box_autoadd_account(SseDeserializer deserializer);
 
   @protected
+  DownloadTaskData sse_decode_box_autoadd_download_task_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
@@ -301,6 +361,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   CommentList sse_decode_comment_list(SseDeserializer deserializer);
+
+  @protected
+  DownloadStatusData sse_decode_download_status_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  DownloadTaskData sse_decode_download_task_data(SseDeserializer deserializer);
 
   @protected
   DynamicsItem sse_decode_dynamics_item(SseDeserializer deserializer);
@@ -328,6 +396,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Comment> sse_decode_list_comment(SseDeserializer deserializer);
+
+  @protected
+  List<DownloadTaskData> sse_decode_list_download_task_data(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<DynamicsItem> sse_decode_list_dynamics_item(
@@ -385,6 +458,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Account? sse_decode_opt_box_autoadd_account(SseDeserializer deserializer);
+
+  @protected
+  DownloadTaskData? sse_decode_opt_box_autoadd_download_task_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
@@ -490,6 +571,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    ApiError self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
   sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
     HashMapStringString self,
     SseSerializer serializer,
@@ -498,6 +586,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_Map_String_String_None(
     Map<String, String> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    ApiError self,
     SseSerializer serializer,
   );
 
@@ -524,6 +619,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_account(Account self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_download_task_data(
+    DownloadTaskData self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
 
   @protected
@@ -540,6 +644,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_comment_list(CommentList self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_download_status_data(
+    DownloadStatusData self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_download_task_data(
+    DownloadTaskData self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_dynamics_item(DynamicsItem self, SseSerializer serializer);
@@ -567,6 +683,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_list_comment(List<Comment> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_download_task_data(
+    List<DownloadTaskData> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_dynamics_item(
@@ -639,6 +761,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     Account? self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_opt_box_autoadd_download_task_data(
+    DownloadTaskData? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
@@ -774,6 +905,40 @@ class RustLibWire implements BaseWire {
   /// The symbols are looked up in [dynamicLibrary].
   RustLibWire(ffi.DynamicLibrary dynamicLibrary)
     : _lookup = dynamicLibrary.lookup;
+
+  void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiErrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+        'frbgen_PiliPlus_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError',
+      );
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiErrorPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiErrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+        'frbgen_PiliPlus_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError',
+      );
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiErrorPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
   rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(

@@ -68,4 +68,10 @@ impl HttpService {
             Err(ApiError::Unauthorized)
         }
     }
+
+    /// Get the underlying reqwest Client for direct access
+    /// Used for download operations that need streaming
+    pub fn get_client(&self) -> &reqwest::Client {
+        self.client.get_client()
+    }
 }

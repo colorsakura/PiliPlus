@@ -10,8 +10,7 @@ pub mod search;
 pub mod comments;
 pub mod dynamics;
 pub mod live;
-// download module not yet implemented - requires DownloadTask model
-// pub mod download;
+pub mod download;
 
 pub use bridge::*;
 pub use video::*;
@@ -22,5 +21,5 @@ pub use search::*;
 pub use comments::*;
 pub use dynamics::*;
 pub use live::*;
-// pub use download::*;
+pub use download::*;
 

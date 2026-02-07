@@ -26,6 +26,7 @@
 // Section: imports
 
 use crate::api::wbi::*;
+use crate::error::api_error::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -38,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 276031241;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 635379474;
 
 // Section: executor
 
@@ -599,6 +600,85 @@ fn wire__crate__api__bridge___expose_video_url_type_impl(
         },
     )
 }
+fn wire__crate__api__download__cancelDownload_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "cancelDownload",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_task_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok = crate::api::download::cancelDownload(api_task_id).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__download__createDownloadTask_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "createDownloadTask",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_video_id = <String>::sse_decode(&mut deserializer);
+            let api_title = <String>::sse_decode(&mut deserializer);
+            let api_quality = <crate::models::video::VideoQuality>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok = crate::api::download::createDownloadTask(
+                            api_video_id,
+                            api_title,
+                            api_quality,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__account__delete_account_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -685,6 +765,44 @@ fn wire__crate__api__wbi__enc_wbi_impl(
                     })?;
                     Ok(output_ok)
                 })())
+            }
+        },
+    )
+}
+fn wire__crate__api__download__getDownloadTask_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "getDownloadTask",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_task_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::download::getDownloadTask(api_task_id).await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
             }
         },
     )
@@ -1558,6 +1676,43 @@ fn wire__crate__api__bridge__health_check_impl(
         },
     )
 }
+fn wire__crate__api__download__initDownloadManager_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "initDownloadManager",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_download_dir = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok =
+                            crate::api::download::initDownloadManager(api_download_dir).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__simple__init_app_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1620,6 +1775,114 @@ fn wire__crate__api__bridge__init_core_impl(
                 })?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__download__listDownloadTasks_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "listDownloadTasks",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let output_ok =
+                            Result::<_, ()>::Ok(crate::api::download::listDownloadTasks().await)?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__download__pauseDownload_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "pauseDownload",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_task_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok = crate::api::download::pauseDownload(api_task_id).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__download__resumeDownload_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "resumeDownload",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_task_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok = crate::api::download::resumeDownload(api_task_id).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -1753,6 +2016,42 @@ fn wire__crate__api__search__search_videos_impl(
         },
     )
 }
+fn wire__crate__api__download__startDownload_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "startDownload",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api__task_id = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ApiError>(
+                    (move || async move {
+                        let output_ok = crate::api::download::startDownload(api__task_id).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__account__switch_account_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1793,16 +2092,39 @@ fn wire__crate__api__account__switch_account_impl(
 // Section: related_funcs
 
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<HashMap<String, String>>
 );
 
 // Section: dart2rust
+
+impl SseDecode for ApiError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
 
 impl SseDecode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<(String, String)>>::sse_decode(deserializer);
         return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
     }
 }
 
@@ -1907,6 +2229,73 @@ impl SseDecode for crate::models::comments::CommentList {
             page: var_page,
             page_size: var_pageSize,
             total_count: var_totalCount,
+        };
+    }
+}
+
+impl SseDecode for crate::models::download::DownloadStatusData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                return crate::models::download::DownloadStatusData::Pending;
+            }
+            1 => {
+                let mut var_speed = <f64>::sse_decode(deserializer);
+                let mut var_eta = <Option<f64>>::sse_decode(deserializer);
+                return crate::models::download::DownloadStatusData::Downloading {
+                    speed: var_speed,
+                    eta: var_eta,
+                };
+            }
+            2 => {
+                return crate::models::download::DownloadStatusData::Paused;
+            }
+            3 => {
+                return crate::models::download::DownloadStatusData::Completed;
+            }
+            4 => {
+                let mut var_error = <String>::sse_decode(deserializer);
+                return crate::models::download::DownloadStatusData::Failed { error: var_error };
+            }
+            5 => {
+                return crate::models::download::DownloadStatusData::Cancelled;
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseDecode for crate::models::download::DownloadTaskData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_videoId = <String>::sse_decode(deserializer);
+        let mut var_title = <String>::sse_decode(deserializer);
+        let mut var_quality = <crate::models::video::VideoQuality>::sse_decode(deserializer);
+        let mut var_totalBytes = <u64>::sse_decode(deserializer);
+        let mut var_downloadedBytes = <u64>::sse_decode(deserializer);
+        let mut var_status =
+            <crate::models::download::DownloadStatusData>::sse_decode(deserializer);
+        let mut var_filePath = <String>::sse_decode(deserializer);
+        let mut var_canResume = <bool>::sse_decode(deserializer);
+        let mut var_createdAt = <i64>::sse_decode(deserializer);
+        let mut var_completedAt = <Option<i64>>::sse_decode(deserializer);
+        return crate::models::download::DownloadTaskData {
+            id: var_id,
+            video_id: var_videoId,
+            title: var_title,
+            quality: var_quality,
+            total_bytes: var_totalBytes,
+            downloaded_bytes: var_downloadedBytes,
+            status: var_status,
+            file_path: var_filePath,
+            can_resume: var_canResume,
+            created_at: var_createdAt,
+            completed_at: var_completedAt,
         };
     }
 }
@@ -2017,6 +2406,20 @@ impl SseDecode for Vec<crate::models::comments::Comment> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<crate::models::comments::Comment>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::models::download::DownloadTaskData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::models::download::DownloadTaskData>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -2219,6 +2622,30 @@ impl SseDecode for Option<crate::models::account::Account> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<crate::models::account::Account>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::models::download::DownloadTaskData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::models::download::DownloadTaskData>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<f64>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -2803,52 +3230,64 @@ fn pde_ffi_dispatcher_primary_impl(
         15 => {
             wire__crate__api__bridge___expose_video_url_type_impl(port, ptr, rust_vec_len, data_len)
         }
-        16 => wire__crate__api__account__delete_account_impl(port, ptr, rust_vec_len, data_len),
-        17 => wire__crate__api__wbi__enc_wbi_impl(port, ptr, rust_vec_len, data_len),
-        18 => wire__crate__api__account__get_all_accounts_impl(port, ptr, rust_vec_len, data_len),
-        19 => {
+        16 => wire__crate__api__download__cancelDownload_impl(port, ptr, rust_vec_len, data_len),
+        17 => {
+            wire__crate__api__download__createDownloadTask_impl(port, ptr, rust_vec_len, data_len)
+        }
+        18 => wire__crate__api__account__delete_account_impl(port, ptr, rust_vec_len, data_len),
+        19 => wire__crate__api__wbi__enc_wbi_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire__crate__api__download__getDownloadTask_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__account__get_all_accounts_impl(port, ptr, rust_vec_len, data_len),
+        22 => {
             wire__crate__api__account__get_current_account_impl(port, ptr, rust_vec_len, data_len)
         }
-        20 => wire__crate__api__account__get_current_account_id_impl(
+        23 => wire__crate__api__account__get_current_account_id_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        21 => {
+        24 => {
             wire__crate__api__dynamics__get_dynamics_detail_impl(port, ptr, rust_vec_len, data_len)
         }
-        22 => wire__crate__api__live__get_live_play_url_impl(port, ptr, rust_vec_len, data_len),
-        23 => wire__crate__api__live__get_live_room_info_impl(port, ptr, rust_vec_len, data_len),
-        24 => wire__crate__api__bridge__get_recommend_list_impl(port, ptr, rust_vec_len, data_len),
-        25 => wire__crate__api__rcmd__get_recommend_list_impl(port, ptr, rust_vec_len, data_len),
-        26 => {
+        25 => wire__crate__api__live__get_live_play_url_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire__crate__api__live__get_live_room_info_impl(port, ptr, rust_vec_len, data_len),
+        27 => wire__crate__api__bridge__get_recommend_list_impl(port, ptr, rust_vec_len, data_len),
+        28 => wire__crate__api__rcmd__get_recommend_list_impl(port, ptr, rust_vec_len, data_len),
+        29 => {
             wire__crate__api__bridge__get_recommend_list_app_impl(port, ptr, rust_vec_len, data_len)
         }
-        27 => wire__crate__api__rcmd_app__get_recommend_list_app_impl(
+        30 => wire__crate__api__rcmd_app__get_recommend_list_app_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        28 => wire__crate__api__dynamics__get_user_dynamics_impl(port, ptr, rust_vec_len, data_len),
-        29 => wire__crate__api__bridge__get_user_info_impl(port, ptr, rust_vec_len, data_len),
-        30 => wire__crate__api__user__get_user_info_impl(port, ptr, rust_vec_len, data_len),
-        31 => wire__crate__api__bridge__get_user_stats_impl(port, ptr, rust_vec_len, data_len),
-        32 => wire__crate__api__user__get_user_stats_impl(port, ptr, rust_vec_len, data_len),
-        34 => {
+        31 => wire__crate__api__dynamics__get_user_dynamics_impl(port, ptr, rust_vec_len, data_len),
+        32 => wire__crate__api__bridge__get_user_info_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire__crate__api__user__get_user_info_impl(port, ptr, rust_vec_len, data_len),
+        34 => wire__crate__api__bridge__get_user_stats_impl(port, ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__user__get_user_stats_impl(port, ptr, rust_vec_len, data_len),
+        37 => {
             wire__crate__api__comments__get_video_comments_impl(port, ptr, rust_vec_len, data_len)
         }
-        35 => wire__crate__api__bridge__get_video_info_impl(port, ptr, rust_vec_len, data_len),
-        36 => wire__crate__api__video__get_video_info_impl(port, ptr, rust_vec_len, data_len),
-        37 => wire__crate__api__bridge__get_video_url_impl(port, ptr, rust_vec_len, data_len),
-        38 => wire__crate__api__video__get_video_url_impl(port, ptr, rust_vec_len, data_len),
-        39 => wire__crate__api__wbi__get_wbi_keys_cached_impl(port, ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__account__save_account_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__bridge__search_videos_impl(port, ptr, rust_vec_len, data_len),
-        46 => wire__crate__api__search__search_videos_impl(port, ptr, rust_vec_len, data_len),
-        47 => wire__crate__api__account__switch_account_impl(port, ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__bridge__get_video_info_impl(port, ptr, rust_vec_len, data_len),
+        39 => wire__crate__api__video__get_video_info_impl(port, ptr, rust_vec_len, data_len),
+        40 => wire__crate__api__bridge__get_video_url_impl(port, ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__video__get_video_url_impl(port, ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__wbi__get_wbi_keys_cached_impl(port, ptr, rust_vec_len, data_len),
+        45 => {
+            wire__crate__api__download__initDownloadManager_impl(port, ptr, rust_vec_len, data_len)
+        }
+        46 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
+        48 => wire__crate__api__download__listDownloadTasks_impl(port, ptr, rust_vec_len, data_len),
+        49 => wire__crate__api__download__pauseDownload_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__download__resumeDownload_impl(port, ptr, rust_vec_len, data_len),
+        51 => wire__crate__api__account__save_account_impl(port, ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__bridge__search_videos_impl(port, ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__search__search_videos_impl(port, ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__download__startDownload_impl(port, ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__account__switch_account_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -2861,15 +3300,30 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        33 => wire__crate__api__bridge__get_version_impl(ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__bridge__health_check_impl(ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__bridge__init_core_impl(ptr, rust_vec_len, data_len),
+        36 => wire__crate__api__bridge__get_version_impl(ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__bridge__health_check_impl(ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__bridge__init_core_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
 
 // Section: rust2dart
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<ApiError> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<ApiError> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<ApiError>> for ApiError {
+    fn into_into_dart(self) -> FrbWrapper<ApiError> {
+        self.into()
+    }
+}
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::models::account::Account {
@@ -2967,6 +3421,70 @@ impl flutter_rust_bridge::IntoIntoDart<crate::models::comments::CommentList>
     for crate::models::comments::CommentList
 {
     fn into_into_dart(self) -> crate::models::comments::CommentList {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::download::DownloadStatusData {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            crate::models::download::DownloadStatusData::Pending => [0.into_dart()].into_dart(),
+            crate::models::download::DownloadStatusData::Downloading { speed, eta } => [
+                1.into_dart(),
+                speed.into_into_dart().into_dart(),
+                eta.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            crate::models::download::DownloadStatusData::Paused => [2.into_dart()].into_dart(),
+            crate::models::download::DownloadStatusData::Completed => [3.into_dart()].into_dart(),
+            crate::models::download::DownloadStatusData::Failed { error } => {
+                [4.into_dart(), error.into_into_dart().into_dart()].into_dart()
+            }
+            crate::models::download::DownloadStatusData::Cancelled => [5.into_dart()].into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::download::DownloadStatusData
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::download::DownloadStatusData>
+    for crate::models::download::DownloadStatusData
+{
+    fn into_into_dart(self) -> crate::models::download::DownloadStatusData {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::models::download::DownloadTaskData {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.video_id.into_into_dart().into_dart(),
+            self.title.into_into_dart().into_dart(),
+            self.quality.into_into_dart().into_dart(),
+            self.total_bytes.into_into_dart().into_dart(),
+            self.downloaded_bytes.into_into_dart().into_dart(),
+            self.status.into_into_dart().into_dart(),
+            self.file_path.into_into_dart().into_dart(),
+            self.can_resume.into_into_dart().into_dart(),
+            self.created_at.into_into_dart().into_dart(),
+            self.completed_at.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::models::download::DownloadTaskData
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::models::download::DownloadTaskData>
+    for crate::models::download::DownloadTaskData
+{
+    fn into_into_dart(self) -> crate::models::download::DownloadTaskData {
         self
     }
 }
@@ -3662,10 +4180,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::models::user::VipStatus>
     }
 }
 
+impl SseEncode for ApiError {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<(String, String)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
     }
 }
 
@@ -3740,6 +4276,55 @@ impl SseEncode for crate::models::comments::CommentList {
         <u32>::sse_encode(self.page, serializer);
         <u32>::sse_encode(self.page_size, serializer);
         <u32>::sse_encode(self.total_count, serializer);
+    }
+}
+
+impl SseEncode for crate::models::download::DownloadStatusData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::models::download::DownloadStatusData::Pending => {
+                <i32>::sse_encode(0, serializer);
+            }
+            crate::models::download::DownloadStatusData::Downloading { speed, eta } => {
+                <i32>::sse_encode(1, serializer);
+                <f64>::sse_encode(speed, serializer);
+                <Option<f64>>::sse_encode(eta, serializer);
+            }
+            crate::models::download::DownloadStatusData::Paused => {
+                <i32>::sse_encode(2, serializer);
+            }
+            crate::models::download::DownloadStatusData::Completed => {
+                <i32>::sse_encode(3, serializer);
+            }
+            crate::models::download::DownloadStatusData::Failed { error } => {
+                <i32>::sse_encode(4, serializer);
+                <String>::sse_encode(error, serializer);
+            }
+            crate::models::download::DownloadStatusData::Cancelled => {
+                <i32>::sse_encode(5, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
+impl SseEncode for crate::models::download::DownloadTaskData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.video_id, serializer);
+        <String>::sse_encode(self.title, serializer);
+        <crate::models::video::VideoQuality>::sse_encode(self.quality, serializer);
+        <u64>::sse_encode(self.total_bytes, serializer);
+        <u64>::sse_encode(self.downloaded_bytes, serializer);
+        <crate::models::download::DownloadStatusData>::sse_encode(self.status, serializer);
+        <String>::sse_encode(self.file_path, serializer);
+        <bool>::sse_encode(self.can_resume, serializer);
+        <i64>::sse_encode(self.created_at, serializer);
+        <Option<i64>>::sse_encode(self.completed_at, serializer);
     }
 }
 
@@ -3823,6 +4408,16 @@ impl SseEncode for Vec<crate::models::comments::Comment> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <crate::models::comments::Comment>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::models::download::DownloadTaskData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::models::download::DownloadTaskData>::sse_encode(item, serializer);
         }
     }
 }
@@ -3990,6 +4585,26 @@ impl SseEncode for Option<crate::models::account::Account> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::models::account::Account>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::models::download::DownloadTaskData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::models::download::DownloadTaskData>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <f64>::sse_encode(value, serializer);
         }
     }
 }
@@ -4351,6 +4966,7 @@ mod io {
 
     use super::*;
     use crate::api::wbi::*;
+    use crate::error::api_error::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -4360,6 +4976,20 @@ mod io {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_io!();
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_PiliPlus_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>::increment_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_PiliPlus_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>::decrement_strong_count(ptr as _);
+    }
 
     #[unsafe(no_mangle)]
     pub extern "C" fn frbgen_PiliPlus_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(
@@ -4388,6 +5018,7 @@ mod web {
 
     use super::*;
     use crate::api::wbi::*;
+    use crate::error::api_error::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -4399,6 +5030,20 @@ mod web {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_web!();
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerApiError(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ApiError>>::decrement_strong_count(ptr as _);
+    }
 
     #[wasm_bindgen]
     pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHashMapStringString(

@@ -6,6 +6,7 @@ pub mod live;
 pub mod comments;
 pub mod rcmd;
 pub mod search;
+pub mod download;
 
 pub use common::*;
 pub use video::*;
@@ -15,3 +16,4 @@ pub use live::*;
 pub use comments::*;
 pub use rcmd::*;
 pub use search::*;
+pub use download::*;

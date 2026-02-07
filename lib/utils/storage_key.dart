@@ -166,6 +166,7 @@ abstract final class SettingBoxKey {
       useRustCommentsApi = 'useRustCommentsApi',
       useRustDynamicsApi = 'useRustDynamicsApi',
       useRustLiveApi = 'useRustLiveApi',
+      useRustDownloadApi = 'useRustDownloadApi',
       enableValidation = 'enableValidation',
       betaTestingEnabled = 'betaTestingEnabled',
       betaRolloutPercentage = 'betaRolloutPercentage';

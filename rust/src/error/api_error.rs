@@ -1,4 +1,5 @@
 use thiserror::Error;
+use crate::error::storage_error::StorageError;
 
 #[derive(Error, Debug)]
 pub enum ApiError {
@@ -22,4 +23,10 @@ pub enum ApiError {
 
     #[error("Request timeout")]
     Timeout,
+
+    #[error("Download error: {0}")]
+    DownloadError(String),
+
+    #[error("Storage error: {0}")]
+    StorageError(#[from] StorageError),
 }

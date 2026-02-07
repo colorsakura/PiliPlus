@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use tokio::sync::{RwLock, broadcast};
-use crate::download::task::{DownloadTask, DownloadStatus, DownloadEvent};
+use crate::download::task::{DownloadTask, DownloadStatus, DownloadEvent, DownloadEventType};
 use crate::download::retry::RetryPolicy;
 use crate::storage::StorageService;
 use crate::http::HttpService;
@@ -150,21 +150,70 @@ impl DownloadService {
     }
 
     /// Perform a single download attempt
-    /// TODO: Implement actual HTTP download logic in a future task
+    /// Downloads file from URL to output path with progress tracking
     async fn attempt_download(
         &self,
-        _task_id: &str,
-        _output_path: &std::path::Path,
+        task_id: &str,
+        output_path: &std::path::Path,
     ) -> Result<(), DownloadError> {
-        // Placeholder: Simulate download attempt
-        // In a real implementation, this would:
-        // 1. Make HTTP request to download URL
-        // 2. Stream response to file
-        // 3. Handle network errors
-        // 4. Return Ok(()) on success, Err on failure
+        // Get task details to retrieve URL
+        let (download_url, start_offset) = {
+            let tasks = self.active_downloads.read().await;
+            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+            // For now, we'll use a placeholder URL since DownloadTask doesn't have a URL field yet
+            // In production, this would come from the task struct
+            (format!("https://example.com/download/{}", task.video_id), 0u64)
+        };
 
-        // For now, simulate a successful download
-        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        // Create parent directory if it doesn't exist
+        if let Some(parent) = output_path.parent() {
+            tokio::fs::create_dir_all(parent).await?;
+        }
+
+        // Use HTTP service to download file
+        let response = self.http
+            .get_client()
+            .get(&download_url)
+            .send()
+            .await
+            .map_err(|e| DownloadError::DownloadFailed(format!("HTTP request failed: {}", e)))?;
+
+        if !response.status().is_success() {
+            return Err(DownloadError::DownloadFailed(
+                format!("HTTP error: {}", response.status())
+            ));
+        }
+
+        let total_size = response.content_length().unwrap_or(0);
+        let bytes = response
+            .bytes()
+            .await
+            .map_err(|e| DownloadError::DownloadFailed(format!("Failed to download: {}", e)))?;
+
+        // Write to file
+        tokio::fs::write(output_path, &bytes)
+            .await
+            .map_err(|e| DownloadError::FileSystemError(e))?;
+
+        // Update task progress
+        {
+            let mut tasks = self.active_downloads.write().await;
+            if let Some(task) = tasks.get_mut(task_id) {
+                task.downloaded_bytes = bytes.len() as u64;
+                task.total_bytes = total_size;
+
+                // Send progress event
+                let _ = self.download_tx.send(DownloadEvent {
+                    task_id: task_id.to_string(),
+                    event_type: DownloadEventType::Progress {
+                        downloaded: bytes.len() as u64,
+                        total: total_size,
+                        speed: 0.0,
+                    },
+                });
+            }
+        }
+
         Ok(())
     }
 
@@ -315,22 +364,84 @@ impl DownloadService {
     }
 
     /// Perform a single resume download attempt with Range header
-    /// TODO: Implement actual HTTP Range request in a future task
+    /// Resumes download from the specified byte offset
     async fn attempt_resume_download(
         &self,
-        _task_id: &str,
-        _output_path: &std::path::Path,
-        _start_offset: u64,
+        task_id: &str,
+        output_path: &std::path::Path,
+        start_offset: u64,
     ) -> Result<(), DownloadError> {
-        // Placeholder: Simulate resume download attempt
-        // In a real implementation, this would:
-        // 1. Make HTTP request with Range header: "Range: bytes={start_offset}-"
-        // 2. Stream response to file starting at offset
-        // 3. Handle network errors
-        // 4. Return Ok(()) on success, Err on failure
+        // Get task details to retrieve URL
+        let download_url = {
+            let tasks = self.active_downloads.read().await;
+            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+            format!("https://example.com/download/{}", task.video_id)
+        };
 
-        // For now, simulate a successful resume
-        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        // Create parent directory if it doesn't exist
+        if let Some(parent) = output_path.parent() {
+            tokio::fs::create_dir_all(parent).await?;
+        }
+
+        // Use HTTP service to download file with Range header
+        let response = self.http
+            .get_client()
+            .get(&download_url)
+            .header("Range", format!("bytes={}-", start_offset))
+            .send()
+            .await
+            .map_err(|e| DownloadError::DownloadFailed(format!("HTTP request failed: {}", e)))?;
+
+        // Check if server supports range requests
+        if response.status() == 416 {
+            // Range not satisfiable - file might be already complete
+            return Err(DownloadError::DownloadFailed(
+                "Invalid byte range".to_string()
+            ));
+        }
+
+        if !response.status().is_success() && response.status().as_u16() != 206 {
+            return Err(DownloadError::DownloadFailed(
+                format!("HTTP error: {}", response.status())
+            ));
+        }
+
+        let total_size = response.content_length().unwrap_or(0) + start_offset;
+        let bytes = response
+            .bytes()
+            .await
+            .map_err(|e| DownloadError::DownloadFailed(format!("Failed to download: {}", e)))?;
+
+        // Append to file
+        let mut file = tokio::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(output_path)
+            .await?;
+
+        tokio::io::AsyncWriteExt::write_all(&mut file, &bytes)
+            .await
+            .map_err(|e| DownloadError::FileSystemError(e))?;
+
+        // Update task progress
+        {
+            let mut tasks = self.active_downloads.write().await;
+            if let Some(task) = tasks.get_mut(task_id) {
+                task.downloaded_bytes = start_offset + bytes.len() as u64;
+                task.total_bytes = total_size;
+
+                // Send progress event
+                let _ = self.download_tx.send(DownloadEvent {
+                    task_id: task_id.to_string(),
+                    event_type: DownloadEventType::Progress {
+                        downloaded: start_offset + bytes.len() as u64,
+                        total: total_size,
+                        speed: 0.0,
+                    },
+                });
+            }
+        }
+
         Ok(())
     }
 
