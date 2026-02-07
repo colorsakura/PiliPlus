@@ -3,6 +3,7 @@ use crate::error::AccountError;
 use crate::http::HttpService;
 use crate::models::Account;
 use std::collections::HashMap;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 pub struct QrLoginFlow {
     http: std::sync::Arc<HttpService>,
@@ -23,7 +24,7 @@ impl QrLoginFlow {
         })
     }
 
-    pub async fn poll_qr_status(&self, oauth_key: &str) -> Result<QrStatus, AccountError> {
+    pub async fn poll_qr_status(&self, _oauth_key: &str) -> Result<QrStatus, AccountError> {
         // Poll Bilibili QR status API
         // Real endpoint: https://passport.bilibili.com/x/passport-login/web/qrcode/poll
         // Return appropriate status based on response
@@ -36,6 +37,11 @@ impl QrLoginFlow {
     ) -> Result<Account, AccountError> {
         // Fetch user info with cookies and create Account
         // Real endpoint: https://api.bilibili.com/x/space/acc/info
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|d| d.as_secs() as i64)
+            .unwrap_or(0);
+
         Ok(Account {
             id: "user_123".to_string(),
             name: "Test User".to_string(),
@@ -47,6 +53,8 @@ impl QrLoginFlow {
                 expires_at: None,
             },
             is_logged_in: true,
+            created_at: now,
+            last_used: now,
         })
     }
 }

@@ -41,15 +41,16 @@ impl StorageService {
 
         sqlx::query(
             r#"
-            INSERT INTO accounts (id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO accounts (id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at, last_used)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
                 name = excluded.name,
                 avatar = excluded.avatar,
                 cookies_json = excluded.cookies_json,
                 auth_tokens_json = excluded.auth_tokens_json,
                 is_logged_in = excluded.is_logged_in,
-                updated_at = excluded.updated_at
+                updated_at = excluded.updated_at,
+                last_used = excluded.last_used
             "#
         )
         .bind(&account.id)
@@ -60,6 +61,7 @@ impl StorageService {
         .bind(account.is_logged_in)
         .bind(&now)
         .bind(&now)
+        .bind(&account.last_used)
         .execute(&self.db)
         .await?;
 
@@ -68,7 +70,7 @@ impl StorageService {
 
     pub async fn load_account(&self, id: &str) -> Result<Account, StorageError> {
         let row = sqlx::query(
-            "SELECT id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at
+            "SELECT id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at, last_used
              FROM accounts WHERE id = ?"
         )
         .bind(id)
@@ -86,6 +88,7 @@ impl StorageService {
                     is_logged_in: row.get("is_logged_in"),
                     created_at: row.get("created_at"),
                     updated_at: row.get("updated_at"),
+                    last_used: row.get("last_used"),
                 };
                 account.into_account()
             }
@@ -95,7 +98,7 @@ impl StorageService {
 
     pub async fn all_accounts(&self) -> Result<Vec<Account>, StorageError> {
         let rows = sqlx::query(
-            "SELECT id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at
+            "SELECT id, name, avatar, cookies_json, auth_tokens_json, is_logged_in, created_at, updated_at, last_used
              FROM accounts ORDER BY updated_at DESC"
         )
         .fetch_all(&self.db)
@@ -112,6 +115,7 @@ impl StorageService {
                 is_logged_in: row.get("is_logged_in"),
                 created_at: row.get("created_at"),
                 updated_at: row.get("updated_at"),
+                last_used: row.get("last_used"),
             };
             accounts.push(account_row.into_account()?);
         }
@@ -123,6 +127,37 @@ impl StorageService {
             .bind(id)
             .execute(&self.db)
             .await?;
+        Ok(())
+    }
+
+    pub async fn get_last_used_account(&self) -> Result<Option<String>, StorageError> {
+        let row = sqlx::query("SELECT value_json FROM settings WHERE key = 'last_used_account_id'")
+            .fetch_optional(&self.db)
+            .await?;
+
+        match row {
+            Some(r) => {
+                let json: String = r.get("value_json");
+                let value: String = serde_json::from_str(&json)?;
+                Ok(Some(value))
+            }
+            None => Ok(None),
+        }
+    }
+
+    pub async fn set_last_used_account(&self, account_id: &str) -> Result<(), StorageError> {
+        let json = serde_json::to_string(account_id)?;
+        let now = Utc::now().to_rfc3339();
+
+        sqlx::query(
+            "INSERT INTO settings (key, value_json, updated_at) VALUES ('last_used_account_id', ?, ?)
+             ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json, updated_at = excluded.updated_at"
+        )
+        .bind(&json)
+        .bind(&now)
+        .execute(&self.db)
+        .await?;
+
         Ok(())
     }
 
@@ -178,10 +213,18 @@ struct AccountRow {
     is_logged_in: bool,
     created_at: String,
     updated_at: String,
+    last_used: i64,
 }
 
 impl AccountRow {
     fn into_account(self) -> Result<Account, StorageError> {
+        // Parse created_at timestamp
+        let created_at = self
+            .created_at
+            .parse::<chrono::DateTime<chrono::Utc>>()
+            .map(|dt| dt.timestamp())
+            .unwrap_or(0);
+
         Ok(Account {
             id: self.id,
             name: self.name,
@@ -189,6 +232,8 @@ impl AccountRow {
             cookies: serde_json::from_str(&self.cookies_json)?,
             auth_tokens: serde_json::from_str(&self.auth_tokens_json)?,
             is_logged_in: self.is_logged_in,
+            created_at,
+            last_used: self.last_used,
         })
     }
 }

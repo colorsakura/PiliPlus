@@ -16,4 +16,7 @@ pub enum AccountError {
 
     #[error("Session expired")]
     SessionExpired,
+
+    #[error("Storage error: {0}")]
+    StorageError(String),
 }

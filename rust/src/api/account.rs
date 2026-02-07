@@ -37,9 +37,9 @@ pub async fn save_account(account: Account) -> Result<(), String> {
     let services = get_services().await;
     services
         .account
-        .save_account(account)
+        .add_account(account)
         .await
-        .map_err(|e| e.to_string())
+        .map_err(|e: crate::error::AccountError| e.to_string())
 }
 
 /// Delete an account
@@ -48,9 +48,9 @@ pub async fn delete_account(account_id: String) -> Result<(), String> {
     let services = get_services().await;
     services
         .account
-        .delete_account(&account_id)
+        .remove_account(&account_id)
         .await
-        .map_err(|e| e.to_string())
+        .map_err(|e: crate::error::AccountError| e.to_string())
 }
 
 /// Get current account ID

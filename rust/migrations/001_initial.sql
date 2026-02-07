@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS accounts (
     auth_tokens_json TEXT NOT NULL,
     is_logged_in INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    updated_at TEXT NOT NULL,
+    last_used INTEGER NOT NULL DEFAULT 0
 );
 
 -- Settings table (key-value with JSON values)

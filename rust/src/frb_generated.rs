@@ -28,7 +28,7 @@
 use crate::api::wbi::*;
 use crate::error::api_error::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -2190,6 +2190,8 @@ impl SseDecode for crate::models::account::Account {
         let mut var_cookies = <std::collections::HashMap<String, String>>::sse_decode(deserializer);
         let mut var_authTokens = <crate::models::account::AuthTokens>::sse_decode(deserializer);
         let mut var_isLoggedIn = <bool>::sse_decode(deserializer);
+        let mut var_createdAt = <i64>::sse_decode(deserializer);
+        let mut var_lastUsed = <i64>::sse_decode(deserializer);
         return crate::models::account::Account {
             id: var_id,
             name: var_name,
@@ -2197,6 +2199,8 @@ impl SseDecode for crate::models::account::Account {
             cookies: var_cookies,
             auth_tokens: var_authTokens,
             is_logged_in: var_isLoggedIn,
+            created_at: var_createdAt,
+            last_used: var_lastUsed,
         };
     }
 }
@@ -4306,6 +4310,8 @@ impl SseEncode for crate::models::account::Account {
         <std::collections::HashMap<String, String>>::sse_encode(self.cookies, serializer);
         <crate::models::account::AuthTokens>::sse_encode(self.auth_tokens, serializer);
         <bool>::sse_encode(self.is_logged_in, serializer);
+        <i64>::sse_encode(self.created_at, serializer);
+        <i64>::sse_encode(self.last_used, serializer);
     }
 }
 
@@ -5051,7 +5057,7 @@ mod io {
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
-    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate
@@ -5105,7 +5111,7 @@ mod web {
     };
     use flutter_rust_bridge::for_generated::wasm_bindgen;
     use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate
