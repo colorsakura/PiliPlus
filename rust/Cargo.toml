@@ -28,10 +28,5 @@ urlencoding = "2.1"
 md5 = "0.7"
 percent-encoding = "2.3"
 
-[dev-dependencies]
-wiremock = "0.6"
-proptest = "1.4"
-tokio-test = "0.4"
-
 [build-dependencies]
 flutter_rust_bridge_codegen = "2.11.1"
