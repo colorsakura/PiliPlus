@@ -96,6 +96,10 @@ Future<void> _migrateRustApiSettings() async {
       SettingBoxKey.useRustVideoApi: true,
       SettingBoxKey.useRustRcmdApi: true,
       SettingBoxKey.useRustRcmdAppApi: true,
+      SettingBoxKey.useRustCommentsApi: true,
+      SettingBoxKey.useRustDynamicsApi: true,
+      SettingBoxKey.useRustLiveApi: true,
+      SettingBoxKey.useRustDownloadApi: true,
     };
 
     for (final entry in settingsToUpdate.entries) {
@@ -125,6 +129,18 @@ Future<void> _migrateRustApiSettings() async {
       );
       debugPrint(
         '   - Rcmd App API: ${Pref.useRustRcmdAppApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Comments API: ${Pref.useRustCommentsApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Dynamics API: ${Pref.useRustDynamicsApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Live API: ${Pref.useRustLiveApi ? "Rust ✅" : "Flutter"}',
+      );
+      debugPrint(
+        '   - Download API: ${Pref.useRustDownloadApi ? "Rust ✅" : "Flutter"}',
       );
     }
   } catch (e) {
