@@ -1,10 +1,10 @@
+use crate::download::retry::RetryPolicy;
+use crate::download::task::{DownloadEvent, DownloadEventType, DownloadStatus, DownloadTask};
+use crate::error::DownloadError;
+use crate::http::HttpService;
+use crate::storage::StorageService;
 use std::sync::Arc;
 use tokio::sync::{RwLock, broadcast};
-use crate::download::task::{DownloadTask, DownloadStatus, DownloadEvent, DownloadEventType};
-use crate::download::retry::RetryPolicy;
-use crate::storage::StorageService;
-use crate::http::HttpService;
-use crate::error::DownloadError;
 
 pub struct DownloadService {
     active_downloads: Arc<RwLock<std::collections::HashMap<String, DownloadTask>>>,
@@ -14,10 +14,7 @@ pub struct DownloadService {
 }
 
 impl DownloadService {
-    pub fn new(
-        storage: Arc<StorageService>,
-        http: Arc<HttpService>,
-    ) -> Self {
+    pub fn new(storage: Arc<StorageService>, http: Arc<HttpService>) -> Self {
         let (tx, _) = broadcast::channel(100);
 
         Self {
@@ -52,7 +49,10 @@ impl DownloadService {
             completed_at: None,
         };
 
-        self.active_downloads.write().await.insert(task_id.clone(), task.clone());
+        self.active_downloads
+            .write()
+            .await
+            .insert(task_id.clone(), task.clone());
 
         // Spawn download task
         let service = self.clone();
@@ -111,7 +111,10 @@ impl DownloadService {
                         let _ = self.download_tx.send(DownloadEvent {
                             task_id: task_id.to_string(),
                             event_type: crate::download::task::DownloadEventType::Failed {
-                                error: format!("Attempt {}/{} failed: {}", attempt, retry_policy.max_attempts, e),
+                                error: format!(
+                                    "Attempt {}/{} failed: {}",
+                                    attempt, retry_policy.max_attempts, e
+                                ),
                             },
                         });
 
@@ -159,10 +162,15 @@ impl DownloadService {
         // Get task details to retrieve URL
         let (download_url, start_offset) = {
             let tasks = self.active_downloads.read().await;
-            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+            let task = tasks
+                .get(task_id)
+                .ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
             // For now, we'll use a placeholder URL since DownloadTask doesn't have a URL field yet
             // In production, this would come from the task struct
-            (format!("https://example.com/download/{}", task.video_id), 0u64)
+            (
+                format!("https://example.com/download/{}", task.video_id),
+                0u64,
+            )
         };
 
         // Create parent directory if it doesn't exist
@@ -171,7 +179,8 @@ impl DownloadService {
         }
 
         // Use HTTP service to download file
-        let response = self.http
+        let response = self
+            .http
             .get_client()
             .get(&download_url)
             .send()
@@ -179,9 +188,10 @@ impl DownloadService {
             .map_err(|e| DownloadError::DownloadFailed(format!("HTTP request failed: {}", e)))?;
 
         if !response.status().is_success() {
-            return Err(DownloadError::DownloadFailed(
-                format!("HTTP error: {}", response.status())
-            ));
+            return Err(DownloadError::DownloadFailed(format!(
+                "HTTP error: {}",
+                response.status()
+            )));
         }
 
         let total_size = response.content_length().unwrap_or(0);
@@ -251,11 +261,13 @@ impl DownloadService {
         // Get task details and check if resumable
         let (file_path, start_offset) = {
             let tasks = self.active_downloads.read().await;
-            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+            let task = tasks
+                .get(task_id)
+                .ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
 
             if !task.can_resume {
                 return Err(DownloadError::DownloadFailed(
-                    "Download cannot be resumed".to_string()
+                    "Download cannot be resumed".to_string(),
                 ));
             }
 
@@ -277,13 +289,20 @@ impl DownloadService {
         let service = self.clone();
         let task_id_spawn = task_id.to_string();
         tokio::spawn(async move {
-            service.do_resume_download(&task_id_spawn, &file_path, start_offset).await;
+            service
+                .do_resume_download(&task_id_spawn, &file_path, start_offset)
+                .await;
         });
 
         Ok(())
     }
 
-    async fn do_resume_download(&self, task_id: &str, output_path: &std::path::Path, start_offset: u64) {
+    async fn do_resume_download(
+        &self,
+        task_id: &str,
+        output_path: &std::path::Path,
+        start_offset: u64,
+    ) {
         tracing::info!(
             task_id = %task_id,
             start_offset = start_offset,
@@ -296,7 +315,10 @@ impl DownloadService {
         loop {
             attempt += 1;
 
-            match self.attempt_resume_download(task_id, output_path, start_offset).await {
+            match self
+                .attempt_resume_download(task_id, output_path, start_offset)
+                .await
+            {
                 Ok(_) => {
                     // Mark as completed
                     let mut tasks = self.active_downloads.write().await;
@@ -325,7 +347,10 @@ impl DownloadService {
                         let _ = self.download_tx.send(DownloadEvent {
                             task_id: task_id.to_string(),
                             event_type: crate::download::task::DownloadEventType::Failed {
-                                error: format!("Resume attempt {}/{} failed: {}", attempt, retry_policy.max_attempts, e),
+                                error: format!(
+                                    "Resume attempt {}/{} failed: {}",
+                                    attempt, retry_policy.max_attempts, e
+                                ),
                             },
                         });
 
@@ -374,7 +399,9 @@ impl DownloadService {
         // Get task details to retrieve URL
         let download_url = {
             let tasks = self.active_downloads.read().await;
-            let task = tasks.get(task_id).ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
+            let task = tasks
+                .get(task_id)
+                .ok_or_else(|| DownloadError::NotFound(task_id.to_string()))?;
             format!("https://example.com/download/{}", task.video_id)
         };
 
@@ -384,7 +411,8 @@ impl DownloadService {
         }
 
         // Use HTTP service to download file with Range header
-        let response = self.http
+        let response = self
+            .http
             .get_client()
             .get(&download_url)
             .header("Range", format!("bytes={}-", start_offset))
@@ -396,14 +424,15 @@ impl DownloadService {
         if response.status() == 416 {
             // Range not satisfiable - file might be already complete
             return Err(DownloadError::DownloadFailed(
-                "Invalid byte range".to_string()
+                "Invalid byte range".to_string(),
             ));
         }
 
         if !response.status().is_success() && response.status().as_u16() != 206 {
-            return Err(DownloadError::DownloadFailed(
-                format!("HTTP error: {}", response.status())
-            ));
+            return Err(DownloadError::DownloadFailed(format!(
+                "HTTP error: {}",
+                response.status()
+            )));
         }
 
         let total_size = response.content_length().unwrap_or(0) + start_offset;
@@ -450,7 +479,12 @@ impl DownloadService {
     }
 
     pub async fn all_downloads(&self) -> Vec<DownloadTask> {
-        self.active_downloads.read().await.values().cloned().collect()
+        self.active_downloads
+            .read()
+            .await
+            .values()
+            .cloned()
+            .collect()
     }
 }
 

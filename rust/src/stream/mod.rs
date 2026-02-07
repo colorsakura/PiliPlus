@@ -1,3 +1,3 @@
 pub mod adapter;
 
-pub use adapter::{DownloadStream, AccountStream};
+pub use adapter::{AccountStream, DownloadStream};

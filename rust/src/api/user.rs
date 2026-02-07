@@ -1,7 +1,7 @@
-use flutter_rust_bridge::frb;
+use crate::error::{ApiError, SerializableError};
 use crate::models::{UserInfo, UserStats};
-use crate::error::{SerializableError, ApiError};
 use crate::services::get_services;
+use flutter_rust_bridge::frb;
 
 /// Get current user information (uses auth cookie from HTTP client)
 #[frb]

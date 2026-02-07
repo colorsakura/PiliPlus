@@ -1,6 +1,6 @@
-use crate::models::{VideoInfo, VideoUrl, VideoQuality};
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::{VideoInfo, VideoQuality, VideoUrl};
 use serde::Deserialize;
 
 pub struct VideoApi {
@@ -30,7 +30,9 @@ impl VideoApi {
         if response.code != 0 {
             return Err(ApiError::ApiError {
                 code: response.code,
-                message: response.message.unwrap_or_else(|| "Unknown error".to_string()),
+                message: response
+                    .message
+                    .unwrap_or_else(|| "Unknown error".to_string()),
             });
         }
 
@@ -45,9 +47,7 @@ impl VideoApi {
     ) -> Result<VideoUrl, ApiError> {
         let url = format!(
             "/x/player/playurl?bvid={}&cid={}&qn={}",
-            bvid,
-            cid,
-            quality as i32
+            bvid, cid, quality as i32
         );
 
         // Get wrapped response
@@ -57,7 +57,9 @@ impl VideoApi {
         if response.code != 0 {
             return Err(ApiError::ApiError {
                 code: response.code,
-                message: response.message.unwrap_or_else(|| "Unknown error".to_string()),
+                message: response
+                    .message
+                    .unwrap_or_else(|| "Unknown error".to_string()),
             });
         }
 

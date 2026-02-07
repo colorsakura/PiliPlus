@@ -9,7 +9,33 @@ import 'package:PiliPlus/src/rust/models/comments.dart';
 import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Get video comments
+// These functions are ignored because they are not marked as `pub`: `convert_comment`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `BiliAvatar`, `BiliCommentData`, `BiliCommentReply`, `BiliContent`, `BiliMember`, `BiliResponse`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+
+/// Get video comments from Bilibili API
+///
+/// Fetches comments for a video with pagination support.
+///
+/// # Parameters
+/// * `oid` - Video ID (avid)
+/// * `page` - Page number (0-indexed)
+/// * `page_size` - Number of comments per page (typically 20)
+///
+/// # Returns
+/// Result containing CommentList with comments and pagination info
+///
+/// # Errors
+/// Returns SerializableError for:
+/// - HTTP request failures
+/// - JSON parsing failures
+/// - API error responses
+/// - Network issues
+///
+/// # Examples
+/// ```rust
+/// let comments = get_video_comments(123456, 0, 20).await?;
+/// ```
 Future<CommentList> getVideoComments({
   required PlatformInt64 oid,
   required int page,
@@ -19,3 +45,30 @@ Future<CommentList> getVideoComments({
   page: page,
   pageSize: pageSize,
 );
+
+class BiliCursor {
+  final bool isEnd;
+  final String? next;
+  final String? prev;
+
+  const BiliCursor({
+    required this.isEnd,
+    this.next,
+    this.prev,
+  });
+
+  static Future<BiliCursor> default_() =>
+      RustLib.instance.api.crateApiCommentsBiliCursorDefault();
+
+  @override
+  int get hashCode => isEnd.hashCode ^ next.hashCode ^ prev.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BiliCursor &&
+          runtimeType == other.runtimeType &&
+          isEnd == other.isEnd &&
+          next == other.next &&
+          prev == other.prev;
+}

@@ -1,6 +1,6 @@
-use flutter_rust_bridge::frb;
 use crate::models::Account;
 use crate::services::get_services;
+use flutter_rust_bridge::frb;
 
 /// Get current logged-in account
 #[frb]
@@ -13,7 +13,10 @@ pub async fn get_current_account() -> Option<Account> {
 #[frb]
 pub async fn switch_account(account_id: String) -> Result<(), String> {
     let services = get_services().await;
-    services.account.switch_account(&account_id).await
+    services
+        .account
+        .switch_account(&account_id)
+        .await
         .map_err(|e| e.to_string())
 }
 
@@ -21,7 +24,10 @@ pub async fn switch_account(account_id: String) -> Result<(), String> {
 #[frb]
 pub async fn get_all_accounts() -> Result<Vec<Account>, String> {
     let services = get_services().await;
-    services.account.all_accounts().await
+    services
+        .account
+        .all_accounts()
+        .await
         .map_err(|e| e.to_string())
 }
 
@@ -29,7 +35,10 @@ pub async fn get_all_accounts() -> Result<Vec<Account>, String> {
 #[frb]
 pub async fn save_account(account: Account) -> Result<(), String> {
     let services = get_services().await;
-    services.account.save_account(account).await
+    services
+        .account
+        .save_account(account)
+        .await
         .map_err(|e| e.to_string())
 }
 
@@ -37,7 +46,10 @@ pub async fn save_account(account: Account) -> Result<(), String> {
 #[frb]
 pub async fn delete_account(account_id: String) -> Result<(), String> {
     let services = get_services().await;
-    services.account.delete_account(&account_id).await
+    services
+        .account
+        .delete_account(&account_id)
+        .await
         .map_err(|e| e.to_string())
 }
 

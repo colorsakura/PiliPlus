@@ -1,6 +1,6 @@
-use crate::models::{UserInfo, UserStats};
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::{UserInfo, UserStats};
 
 pub struct UserApi {
     http: std::sync::Arc<HttpService>,

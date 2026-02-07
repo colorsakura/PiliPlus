@@ -2,12 +2,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RcmdVideoInfo {
-    pub id: Option<i64>,           // Corresponds to aid
+    pub id: Option<i64>, // Corresponds to aid
     pub bvid: String,
     pub cid: Option<i64>,
-    pub goto: Option<String>,      // 'av', 'bangumi', etc.
+    pub goto: Option<String>, // 'av', 'bangumi', etc.
     pub uri: Option<String>,
-    pub pic: Option<String>,       // Cover URL
+    pub pic: Option<String>, // Cover URL
     pub title: String,
     pub duration: i32,
     pub pubdate: Option<i64>,
@@ -21,7 +21,7 @@ pub struct RcmdVideoInfo {
 pub struct RcmdOwner {
     pub mid: i64,
     pub name: String,
-    pub face: Option<String>,      // Avatar URL
+    pub face: Option<String>, // Avatar URL
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

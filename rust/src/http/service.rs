@@ -1,7 +1,7 @@
-use std::sync::Arc;
+use crate::error::ApiError;
 use crate::http::client::HttpClient;
 use crate::models::Account;
-use crate::error::ApiError;
+use std::sync::Arc;
 
 pub struct HttpService {
     client: Arc<HttpClient>,
@@ -29,10 +29,7 @@ impl HttpService {
         self.account.read().await.clone()
     }
 
-    pub async fn get<T: serde::de::DeserializeOwned>(
-        &self,
-        path: &str,
-    ) -> Result<T, ApiError> {
+    pub async fn get<T: serde::de::DeserializeOwned>(&self, path: &str) -> Result<T, ApiError> {
         self.client.get(path).await
     }
 
@@ -63,7 +60,9 @@ impl HttpService {
     ) -> Result<T, ApiError> {
         let account = self.account.read().await;
         if let Some(acc) = account.as_ref() {
-            self.client.post_with_auth(path, body, &acc.cookie_header()).await
+            self.client
+                .post_with_auth(path, body, &acc.cookie_header())
+                .await
         } else {
             Err(ApiError::Unauthorized)
         }

@@ -1,10 +1,10 @@
 use once_cell::sync::OnceCell;
 use std::sync::Arc;
 
-use crate::storage::StorageService;
-use crate::services::account::AccountService;
+use crate::bilibili_api::{SearchApi, UserApi, VideoApi};
 use crate::http::HttpService;
-use crate::bilibili_api::{VideoApi, UserApi, SearchApi};
+use crate::services::account::AccountService;
+use crate::storage::StorageService;
 
 pub struct Services {
     pub storage: Arc<StorageService>,

@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize, Deserializer};
 use crate::error::ApiError;
+use serde::{Deserialize, Deserializer, Serialize};
 
 #[derive(Clone, Serialize, Debug, PartialEq)]
 pub struct Image {
@@ -49,9 +49,7 @@ impl<'de> Deserialize<'de> for Image {
 
                 Ok(Image { url, width, height })
             }
-            _ => Err(Error::custom(
-                "expected string or object for Image",
-            )),
+            _ => Err(Error::custom("expected string or object for Image")),
         }
     }
 }
@@ -70,11 +68,9 @@ impl<T> ApiResponse<T> {
 
     pub fn into_result(self) -> Result<T, ApiError> {
         if self.is_success() {
-            self.data.ok_or_else(|| {
-                ApiError::ApiError {
-                    code: self.code,
-                    message: "No data in response".to_string(),
-                }
+            self.data.ok_or_else(|| ApiError::ApiError {
+                code: self.code,
+                message: "No data in response".to_string(),
             })
         } else {
             Err(ApiError::ApiError {

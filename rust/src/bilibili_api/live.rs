@@ -1,6 +1,6 @@
-use crate::models::{LiveRoomInfo, LivePlayUrl};
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::{LivePlayUrl, LiveRoomInfo};
 
 pub struct LiveApi {
     http: std::sync::Arc<HttpService>,
@@ -17,7 +17,10 @@ impl LiveApi {
     }
 
     pub async fn get_play_url(&self, room_id: i64) -> Result<LivePlayUrl, ApiError> {
-        let url = format!("/xlive/web-room/v2/index/getRoomPlayInfo?room_id={}", room_id);
+        let url = format!(
+            "/xlive/web-room/v2/index/getRoomPlayInfo?room_id={}",
+            room_id
+        );
         self.http.get(&url).await
     }
 }

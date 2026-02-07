@@ -1,9 +1,9 @@
-use flutter_rust_bridge::frb;
-use std::collections::HashMap;
+use crate::api::wbi::HTTP_CLIENT;
 use crate::error::SerializableError;
 use crate::models::rcmd::RcmdVideoInfo;
-use crate::api::wbi::HTTP_CLIENT;
-use tracing::{info, warn, error, debug};
+use flutter_rust_bridge::frb;
+use std::collections::HashMap;
+use tracing::{debug, error, info, warn};
 
 /// Helper macro to log to both tracing and stdout
 macro_rules! log_info {
@@ -58,10 +58,14 @@ macro_rules! log_error {
 /// let recommendations = get_recommend_list_app(10, 0).await?;
 /// ```
 #[frb]
-pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideoInfo>, SerializableError> {
+pub async fn get_recommend_list_app(
+    ps: i32,
+    fresh_idx: i32,
+) -> Result<Vec<RcmdVideoInfo>, SerializableError> {
     log_info!(
         "[RustRcmdApp] Fetching App recommendations: ps={}, fresh_idx={}",
-        ps, fresh_idx
+        ps,
+        fresh_idx
     );
 
     // Build request parameters for APP API
@@ -85,7 +89,14 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
         ("network", "wifi".to_string()),
         ("platform", "android".to_string()),
         ("player_net", "1".to_string()),
-        ("pull", if fresh_idx == 0 { "true".to_string() } else { "false".to_string() }),
+        (
+            "pull",
+            if fresh_idx == 0 {
+                "true".to_string()
+            } else {
+                "false".to_string()
+            },
+        ),
         ("qn", "32".to_string()),
         ("recsys_mode", "0".to_string()),
         ("s_locale", "zh_CN".to_string()),
@@ -97,7 +108,8 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
     log_debug!("[RustRcmdApp] Built {} request parameters", params.len());
 
     // Build query string
-    let query_string: Vec<String> = params.iter()
+    let query_string: Vec<String> = params
+        .iter()
         .map(|(key, value)| format!("{}={}", key, value))
         .collect();
     let query_string = query_string.join("&");
@@ -106,7 +118,10 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
     log_debug!("[RustRcmdApp] Request URL prepared (length: {})", url.len());
 
     // Make HTTP GET request - clone client to avoid holding lock across await
-    let client = HTTP_CLIENT.lock().expect("Failed to lock HTTP client").clone();
+    let client = HTTP_CLIENT
+        .lock()
+        .expect("Failed to lock HTTP client")
+        .clone();
 
     log_debug!("[RustRcmdApp] Sending HTTP GET request...");
     let response = client
@@ -139,44 +154,48 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
                     code: "UNAUTHORIZED".to_string(),
                     message: "Unauthorized access".to_string(),
                 });
-            },
-            _ => return Err(SerializableError {
-                code: "HTTP_ERROR".to_string(),
-                message: format!("HTTP error: {}", status),
-            }),
+            }
+            _ => {
+                return Err(SerializableError {
+                    code: "HTTP_ERROR".to_string(),
+                    message: format!("HTTP error: {}", status),
+                });
+            }
         }
     }
 
-    log_debug!("[RustRcmdApp] Response received, status: {}", response.status());
+    log_debug!(
+        "[RustRcmdApp] Response received, status: {}",
+        response.status()
+    );
 
     // Parse response as JSON
-    let text = response.text().await
-        .map_err(|e| {
-            log_error!("[RustRcmdApp] Failed to read response body: {}", e);
-            SerializableError {
-                code: "NETWORK_ERROR".to_string(),
-                message: format!("Failed to read response: {}", e),
-            }
-        })?;
+    let text = response.text().await.map_err(|e| {
+        log_error!("[RustRcmdApp] Failed to read response body: {}", e);
+        SerializableError {
+            code: "NETWORK_ERROR".to_string(),
+            message: format!("Failed to read response: {}", e),
+        }
+    })?;
 
     log_debug!("[RustRcmdApp] Response body length: {} bytes", text.len());
 
     // Parse JSON manually to handle APP-specific structure
-    let json: serde_json::Value = serde_json::from_str(&text)
-        .map_err(|e| {
-            log_error!("[RustRcmdApp] JSON parsing error: {}", e);
-            SerializableError {
-                code: "SERIALIZATION_ERROR".to_string(),
-                message: format!("JSON parsing error: {}", e),
-            }
-        })?;
+    let json: serde_json::Value = serde_json::from_str(&text).map_err(|e| {
+        log_error!("[RustRcmdApp] JSON parsing error: {}", e);
+        SerializableError {
+            code: "SERIALIZATION_ERROR".to_string(),
+            message: format!("JSON parsing error: {}", e),
+        }
+    })?;
 
     // Check API response code
     if json["code"] != 0 {
         let message = json["message"].as_str().unwrap_or("Unknown error");
         log_error!(
             "[RustRcmdApp] API error: code={}, message={}",
-            json["code"], message
+            json["code"],
+            message
         );
         return Err(SerializableError {
             code: "API_ERROR".to_string(),
@@ -191,13 +210,14 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
 
     if let Some(data) = json.get("data") {
         if let Some(items) = data.get("items").and_then(|v| v.as_array()) {
-            log_debug!("[RustRcmdApp] Processing {} items from response", items.len());
+            log_debug!(
+                "[RustRcmdApp] Processing {} items from response",
+                items.len()
+            );
 
             for (idx, item) in items.iter().enumerate() {
                 // Filter for videos only (card_goto == 'av')
-                let card_goto = item.get("card_goto")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("");
+                let card_goto = item.get("card_goto").and_then(|v| v.as_str()).unwrap_or("");
 
                 // Skip ads and non-video content
                 if card_goto != "av" {
@@ -214,23 +234,30 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
                 // Extract video information
                 let args = item.get("args").and_then(|v| v.as_object());
 
-                let bvid = item.get("bvid")
+                let bvid = item
+                    .get("bvid")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string();
 
-                let title = item.get("title")
+                let title = item
+                    .get("title")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string();
 
                 // Skip if bvid or title is missing
                 if bvid.is_empty() || title.is_empty() {
-                    log_debug!("[RustRcmdApp] Skipping item {} at index {}: missing bvid or title", idx, idx);
+                    log_debug!(
+                        "[RustRcmdApp] Skipping item {} at index {}: missing bvid or title",
+                        idx,
+                        idx
+                    );
                     continue;
                 }
 
-                let cover = item.get("cover")
+                let cover = item
+                    .get("cover")
                     .and_then(|v| v.as_str())
                     .unwrap_or("")
                     .to_string();
@@ -254,12 +281,14 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
                     .to_string();
 
                 // Statistics
-                let view = item.get("cover_left_text_1")
+                let view = item
+                    .get("cover_left_text_1")
                     .and_then(|v| v.as_str())
                     .and_then(|s| s.parse::<i64>().ok())
                     .unwrap_or(0);
 
-                let danmu = item.get("cover_left_text_2")
+                let danmu = item
+                    .get("cover_left_text_2")
                     .and_then(|v| v.as_str())
                     .and_then(|s| s.parse::<i64>().ok())
                     .unwrap_or(0);
@@ -301,10 +330,12 @@ pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdV
                         like: None,
                     },
                     goto: Some("av".to_string()),
-                    uri: item.get("uri")
+                    uri: item
+                        .get("uri")
                         .and_then(|v| v.as_str())
                         .map(|s| s.to_string()),
-                    rcmd_reason: item.get("rcmd_reason")
+                    rcmd_reason: item
+                        .get("rcmd_reason")
                         .and_then(|v| v.as_str())
                         .map(|s| s.to_string()),
                     is_followed: false, // App API doesn't provide this directly

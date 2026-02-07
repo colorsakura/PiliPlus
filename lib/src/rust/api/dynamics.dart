@@ -9,7 +9,32 @@ import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/video.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `convert_dynamic_item`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `BiliArchive`, `BiliAuthor`, `BiliDynamicContent`, `BiliDynamicDesc`, `BiliDynamicDetailData`, `BiliDynamicItem`, `BiliDynamicMajor`, `BiliDynamicsListData`, `BiliModule`, `BiliOffset`, `BiliOpus`, `BiliPicture`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+
 /// Get user dynamics/posts from Bilibili API
+///
+/// Fetches dynamics for a user with pagination support.
+///
+/// # Parameters
+/// * `uid` - User ID
+/// * `offset` - Pagination offset string
+///
+/// # Returns
+/// Result containing DynamicsList with dynamic items and pagination info
+///
+/// # Errors
+/// Returns SerializableError for:
+/// - HTTP request failures
+/// - JSON parsing failures
+/// - API error responses
+/// - Network issues
+///
+/// # Examples
+/// ```rust
+/// let dynamics = get_user_dynamics(123456, None).await?;
+/// ```
 Future<DynamicsList> getUserDynamics({
   required PlatformInt64 uid,
   String? offset,
@@ -19,6 +44,26 @@ Future<DynamicsList> getUserDynamics({
 );
 
 /// Get dynamics detail by ID from Bilibili API
+///
+/// Fetches a single dynamic post by its ID.
+///
+/// # Parameters
+/// * `dynamic_id` - Dynamic ID string
+///
+/// # Returns
+/// Result containing DynamicsItem with full dynamic details
+///
+/// # Errors
+/// Returns SerializableError for:
+/// - HTTP request failures
+/// - JSON parsing failures
+/// - API error responses
+/// - Network issues
+///
+/// # Examples
+/// ```rust
+/// let dynamic = get_dynamics_detail("123456789".to_string()).await?;
+/// ```
 Future<DynamicsItem> getDynamicsDetail({required String dynamicId}) => RustLib
     .instance
     .api

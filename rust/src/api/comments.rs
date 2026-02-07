@@ -54,13 +54,13 @@ struct BiliCommentData {
 }
 
 #[derive(Debug, Deserialize, Default)]
-struct BiliCursor {
+pub struct BiliCursor {
     #[serde(default)]
-    is_end: bool,
+    pub is_end: bool,
     #[serde(default)]
-    next: Option<String>,
+    pub next: Option<String>,
     #[serde(default)]
-    prev: Option<String>,
+    pub prev: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]

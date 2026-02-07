@@ -1,10 +1,10 @@
-use std::sync::Arc;
-use tokio::sync::{RwLock, broadcast};
+use crate::account::login::QrLoginFlow;
+use crate::error::AccountError;
+use crate::http::HttpService;
 use crate::models::Account;
 use crate::storage::StorageService;
-use crate::http::HttpService;
-use crate::error::AccountError;
-use crate::account::login::QrLoginFlow;
+use std::sync::Arc;
+use tokio::sync::{RwLock, broadcast};
 
 pub struct AccountService {
     current_account: Arc<RwLock<Option<Account>>>,
@@ -14,10 +14,7 @@ pub struct AccountService {
 }
 
 impl AccountService {
-    pub fn new(
-        storage: Arc<StorageService>,
-        http: Arc<HttpService>,
-    ) -> Self {
+    pub fn new(storage: Arc<StorageService>, http: Arc<HttpService>) -> Self {
         let (tx, _) = broadcast::channel(16);
 
         Self {
@@ -42,7 +39,10 @@ impl AccountService {
     }
 
     pub async fn switch_account(&self, account_id: &str) -> Result<(), AccountError> {
-        let account = self.storage.load_account(account_id).await
+        let account = self
+            .storage
+            .load_account(account_id)
+            .await
             .map_err(|_| AccountError::AccountNotFound(account_id.to_string()))?;
 
         self.set_current_account(account).await;

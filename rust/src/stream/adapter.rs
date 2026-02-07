@@ -1,6 +1,6 @@
-use tokio::sync::broadcast;
 use crate::download::DownloadEvent;
 use crate::models::Account;
+use tokio::sync::broadcast;
 
 /// Stream adapter for download events
 ///
@@ -22,12 +22,18 @@ impl DownloadStream {
     pub async fn next(&mut self) -> Option<DownloadEvent> {
         // TODO: Implement proper async stream with backpressure handling
         // For now, use async recv with timeout to avoid blocking indefinitely
-        match tokio::time::timeout(tokio::time::Duration::from_secs(5), self.receiver.recv()).await {
+        match tokio::time::timeout(tokio::time::Duration::from_secs(5), self.receiver.recv()).await
+        {
             Ok(Ok(event)) => Some(event),
             Ok(Err(broadcast::error::RecvError::Lagged(n))) => {
                 tracing::warn!("Download stream lagged, skipped {} events", n);
                 // Try to receive the next available event after lag
-                match tokio::time::timeout(tokio::time::Duration::from_millis(100), self.receiver.recv()).await {
+                match tokio::time::timeout(
+                    tokio::time::Duration::from_millis(100),
+                    self.receiver.recv(),
+                )
+                .await
+                {
                     Ok(Ok(event)) => Some(event),
                     _ => None,
                 }
@@ -58,12 +64,18 @@ impl AccountStream {
     pub async fn next(&mut self) -> Option<Account> {
         // TODO: Implement proper async stream with backpressure handling
         // For now, use async recv with timeout to avoid blocking indefinitely
-        match tokio::time::timeout(tokio::time::Duration::from_secs(5), self.receiver.recv()).await {
+        match tokio::time::timeout(tokio::time::Duration::from_secs(5), self.receiver.recv()).await
+        {
             Ok(Ok(account)) => Some(account),
             Ok(Err(broadcast::error::RecvError::Lagged(n))) => {
                 tracing::warn!("Account stream lagged, skipped {} events", n);
                 // Try to receive the next available event after lag
-                match tokio::time::timeout(tokio::time::Duration::from_millis(100), self.receiver.recv()).await {
+                match tokio::time::timeout(
+                    tokio::time::Duration::from_millis(100),
+                    self.receiver.recv(),
+                )
+                .await
+                {
                     Ok(Ok(account)) => Some(account),
                     _ => None,
                 }

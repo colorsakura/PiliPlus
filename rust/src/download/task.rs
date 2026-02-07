@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::models::VideoQuality;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct DownloadTask {
@@ -34,9 +34,15 @@ pub struct DownloadEvent {
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub enum DownloadEventType {
-    Progress { downloaded: u64, total: u64, speed: f64 },
+    Progress {
+        downloaded: u64,
+        total: u64,
+        speed: f64,
+    },
     Paused,
     Completed,
-    Failed { error: String },
+    Failed {
+        error: String,
+    },
     Cancelled,
 }

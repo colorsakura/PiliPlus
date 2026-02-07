@@ -1,6 +1,6 @@
 // Example for WBI functions
+use pilicore::api::wbi::{enc_wbi, get_mixin_key};
 use std::collections::HashMap;
-use pilicore::api::wbi::{get_mixin_key, enc_wbi};
 
 fn main() {
     println!("Testing WBI functions...");
@@ -8,7 +8,12 @@ fn main() {
     // Test get_mixin_key
     let input = "abcdefghijklmnopqrstuvwxyz012345";
     let result = get_mixin_key(input);
-    println!("get_mixin_key({}) -> {} (length: {})", input, result, result.len());
+    println!(
+        "get_mixin_key({}) -> {} (length: {})",
+        input,
+        result,
+        result.len()
+    );
     assert_eq!(result.len(), 32);
 
     // Test enc_wbi

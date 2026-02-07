@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::models::VideoQuality;
+use serde::{Deserialize, Serialize};
 
 /// Download task representation for bridge compatibility
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]

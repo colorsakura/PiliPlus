@@ -1,5 +1,5 @@
-use reqwest::{Client, header};
 use crate::error::ApiError;
+use reqwest::{Client, header};
 
 pub struct HttpClient {
     client: Client,
@@ -16,15 +16,9 @@ impl HttpClient {
         Ok(Self { client, base_url })
     }
 
-    pub async fn get<T: serde::de::DeserializeOwned>(
-        &self,
-        path: &str,
-    ) -> Result<T, ApiError> {
+    pub async fn get<T: serde::de::DeserializeOwned>(&self, path: &str) -> Result<T, ApiError> {
         let url = format!("{}{}", self.base_url, path);
-        let response = self.client
-            .get(&url)
-            .send()
-            .await?;
+        let response = self.client.get(&url).send().await?;
 
         self.handle_response(response).await
     }
@@ -35,11 +29,7 @@ impl HttpClient {
         body: serde_json::Value,
     ) -> Result<T, ApiError> {
         let url = format!("{}{}", self.base_url, path);
-        let response = self.client
-            .post(&url)
-            .json(&body)
-            .send()
-            .await?;
+        let response = self.client.post(&url).json(&body).send().await?;
 
         self.handle_response(response).await
     }
@@ -50,7 +40,8 @@ impl HttpClient {
         cookie_header: &str,
     ) -> Result<T, ApiError> {
         let url = format!("{}{}", self.base_url, path);
-        let response = self.client
+        let response = self
+            .client
             .get(&url)
             .header(header::COOKIE, cookie_header)
             .send()
@@ -66,7 +57,8 @@ impl HttpClient {
         cookie_header: &str,
     ) -> Result<T, ApiError> {
         let url = format!("{}{}", self.base_url, path);
-        let response = self.client
+        let response = self
+            .client
             .post(&url)
             .json(&body)
             .header(header::COOKIE, cookie_header)
@@ -81,10 +73,7 @@ impl HttpClient {
         response: reqwest::Response,
     ) -> Result<T, ApiError> {
         if response.status().is_success() {
-            response
-                .json()
-                .await
-                .map_err(ApiError::from)
+            response.json().await.map_err(ApiError::from)
         } else {
             match response.status().as_u16() {
                 401 => Err(ApiError::Unauthorized),

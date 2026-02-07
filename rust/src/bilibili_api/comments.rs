@@ -1,6 +1,6 @@
-use crate::models::CommentList;
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::CommentList;
 
 pub struct CommentsApi {
     http: std::sync::Arc<HttpService>,

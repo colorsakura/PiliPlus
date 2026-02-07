@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use super::common::Image;
+use serde::{Deserialize, Serialize};
 
 /// Search result for a single video
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]

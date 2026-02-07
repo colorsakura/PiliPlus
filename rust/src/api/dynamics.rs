@@ -361,10 +361,7 @@ pub async fn get_user_dynamics(
 /// ```
 #[frb]
 pub async fn get_dynamics_detail(dynamic_id: String) -> Result<DynamicsItem, SerializableError> {
-    log_info!(
-        "[RustDynamics] Fetching dynamics detail: id={}",
-        dynamic_id
-    );
+    log_info!("[RustDynamics] Fetching dynamics detail: id={}", dynamic_id);
 
     // Build request URL
     let url = format!(
@@ -418,10 +415,7 @@ pub async fn get_dynamics_detail(dynamic_id: String) -> Result<DynamicsItem, Ser
         }
     })?;
 
-    log_debug!(
-        "[RustDynamics] Response body length: {} bytes",
-        text.len()
-    );
+    log_debug!("[RustDynamics] Response body length: {} bytes", text.len());
 
     // Parse JSON response
     let bili_response: BiliResponse<BiliDynamicDetailData> =

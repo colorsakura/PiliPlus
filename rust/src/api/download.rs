@@ -1,11 +1,11 @@
-use flutter_rust_bridge::frb;
-use std::sync::Mutex;
-use std::sync::Arc;
-use tokio::sync::RwLock;
 use crate::download::service::DownloadService;
-use crate::http::service::HttpService;
-use crate::models::{VideoQuality, DownloadTaskData, DownloadStatusData};
 use crate::error::ApiError;
+use crate::http::service::HttpService;
+use crate::models::{DownloadStatusData, DownloadTaskData, VideoQuality};
+use flutter_rust_bridge::frb;
+use std::sync::Arc;
+use std::sync::Mutex;
+use tokio::sync::RwLock;
 
 /// Global download manager instance
 static DOWNLOAD_MANAGER: Mutex<Option<Arc<DownloadManager>>> = Mutex::new(None);
@@ -51,7 +51,8 @@ pub async fn createDownloadTask(
     let manager = get_manager()?;
     let output_dir = &manager.download_dir;
 
-    let task_id = manager.service
+    let task_id = manager
+        .service
         .start_download(&video_id, &title, quality, output_dir)
         .await
         .map_err(|e| ApiError::DownloadError(e.to_string()))?;
@@ -79,7 +80,8 @@ pub async fn startDownload(_task_id: String) -> Result<(), ApiError> {
 #[frb]
 pub async fn pauseDownload(task_id: String) -> Result<(), ApiError> {
     let manager = get_manager()?;
-    manager.service
+    manager
+        .service
         .pause_download(&task_id)
         .await
         .map_err(|e| ApiError::DownloadError(e.to_string()))?;
@@ -90,7 +92,8 @@ pub async fn pauseDownload(task_id: String) -> Result<(), ApiError> {
 #[frb]
 pub async fn resumeDownload(task_id: String) -> Result<(), ApiError> {
     let manager = get_manager()?;
-    manager.service
+    manager
+        .service
         .resume_download(&task_id)
         .await
         .map_err(|e| ApiError::DownloadError(e.to_string()))?;
@@ -101,7 +104,8 @@ pub async fn resumeDownload(task_id: String) -> Result<(), ApiError> {
 #[frb]
 pub async fn cancelDownload(task_id: String) -> Result<(), ApiError> {
     let manager = get_manager()?;
-    manager.service
+    manager
+        .service
         .cancel_download(&task_id)
         .await
         .map_err(|e| ApiError::DownloadError(e.to_string()))?;
@@ -127,7 +131,8 @@ pub async fn listDownloadTasks() -> Vec<DownloadTaskData> {
         Err(_) => return vec![],
     };
 
-    manager.service
+    manager
+        .service
         .all_downloads()
         .await
         .into_iter()

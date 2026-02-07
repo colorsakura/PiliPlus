@@ -1,6 +1,6 @@
-use crate::models::SearchResults;
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::SearchResults;
 
 pub struct SearchApi {
     http: std::sync::Arc<HttpService>,

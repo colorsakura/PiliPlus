@@ -1,9 +1,9 @@
+use crate::api::wbi::{HTTP_CLIENT, enc_wbi, get_wbi_keys_cached};
+use crate::error::{ApiError, SerializableError};
+use crate::models::rcmd::{RcmdResponse, RcmdVideoInfo};
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
-use crate::error::{ApiError, SerializableError};
-use crate::models::rcmd::{RcmdVideoInfo, RcmdResponse};
-use crate::api::wbi::{get_wbi_keys_cached, enc_wbi, HTTP_CLIENT};
-use tracing::{info, warn, error, debug};
+use tracing::{debug, error, info, warn};
 
 /// Helper macro to log to both tracing and stdout
 macro_rules! log_info {
@@ -58,10 +58,14 @@ macro_rules! log_error {
 /// let recommendations = get_recommend_list(10, 0).await?;
 /// ```
 #[frb]
-pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideoInfo>, SerializableError> {
+pub async fn get_recommend_list(
+    ps: i32,
+    fresh_idx: i32,
+) -> Result<Vec<RcmdVideoInfo>, SerializableError> {
     log_info!(
         "[RustRcmd] Fetching Web recommendations: ps={}, fresh_idx={}",
-        ps, fresh_idx
+        ps,
+        fresh_idx
     );
 
     // Build request parameters
@@ -71,14 +75,13 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
 
     // Get WBI keys (cached version)
     log_debug!("[RustRcmd] Getting WBI keys...");
-    let (_, _, mixin_key) = get_wbi_keys_cached().await
-        .map_err(|e| {
-            log_error!("[RustRcmd] Failed to get WBI keys: {}", e);
-            SerializableError {
-                code: "WBI_ERROR".to_string(),
-                message: format!("Failed to get WBI keys: {}", e)
-            }
-        })?;
+    let (_, _, mixin_key) = get_wbi_keys_cached().await.map_err(|e| {
+        log_error!("[RustRcmd] Failed to get WBI keys: {}", e);
+        SerializableError {
+            code: "WBI_ERROR".to_string(),
+            message: format!("Failed to get WBI keys: {}", e),
+        }
+    })?;
 
     log_debug!("[RustRcmd] WBI keys obtained, signing request...");
 
@@ -86,16 +89,23 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
     enc_wbi(&mut params, &mixin_key);
 
     // Build query string
-    let query_string: Vec<String> = params.iter()
+    let query_string: Vec<String> = params
+        .iter()
         .map(|(key, value)| format!("{}={}", key, value))
         .collect();
     let query_string = query_string.join("&");
 
-    let url = format!("https://api.bilibili.com/x/web-interface/wbi/index/top/feed/rcmd?{}", query_string);
+    let url = format!(
+        "https://api.bilibili.com/x/web-interface/wbi/index/top/feed/rcmd?{}",
+        query_string
+    );
     log_debug!("[RustRcmd] Request URL prepared (length: {})", url.len());
 
     // Make HTTP GET request - clone client to avoid holding lock across await
-    let client = HTTP_CLIENT.lock().expect("Failed to lock HTTP client").clone();
+    let client = HTTP_CLIENT
+        .lock()
+        .expect("Failed to lock HTTP client")
+        .clone();
 
     log_debug!("[RustRcmd] Sending HTTP GET request...");
     let response = client
@@ -122,36 +132,39 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
                     code: "UNAUTHORIZED".to_string(),
                     message: "Unauthorized access".to_string(),
                 });
-            },
-            _ => return Err(SerializableError {
-                code: "HTTP_ERROR".to_string(),
-                message: format!("HTTP error: {}", status),
-            }),
+            }
+            _ => {
+                return Err(SerializableError {
+                    code: "HTTP_ERROR".to_string(),
+                    message: format!("HTTP error: {}", status),
+                });
+            }
         }
     }
 
-    log_debug!("[RustRcmd] Response received, status: {}", response.status());
+    log_debug!(
+        "[RustRcmd] Response received, status: {}",
+        response.status()
+    );
 
     // Parse response
-    let text = response.text().await
-        .map_err(|e| {
-            log_error!("[RustRcmd] Failed to read response body: {}", e);
-            SerializableError {
-                code: "NETWORK_ERROR".to_string(),
-                message: format!("Failed to read response: {}", e),
-            }
-        })?;
+    let text = response.text().await.map_err(|e| {
+        log_error!("[RustRcmd] Failed to read response body: {}", e);
+        SerializableError {
+            code: "NETWORK_ERROR".to_string(),
+            message: format!("Failed to read response: {}", e),
+        }
+    })?;
 
     log_debug!("[RustRcmd] Response body length: {} bytes", text.len());
 
-    let rcmd_response: RcmdResponse = serde_json::from_str(&text)
-        .map_err(|e| {
-            log_error!("[RustRcmd] JSON parsing error: {}", e);
-            SerializableError {
-                code: "SERIALIZATION_ERROR".to_string(),
-                message: format!("JSON parsing error: {}", e),
-            }
-        })?;
+    let rcmd_response: RcmdResponse = serde_json::from_str(&text).map_err(|e| {
+        log_error!("[RustRcmd] JSON parsing error: {}", e);
+        SerializableError {
+            code: "SERIALIZATION_ERROR".to_string(),
+            message: format!("JSON parsing error: {}", e),
+        }
+    })?;
 
     // Check API response code
     if rcmd_response.code != 0 {
@@ -169,7 +182,8 @@ pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<RcmdVideo
     // Extract videos and filter for goto='av'
     let videos = if let Some(data) = rcmd_response.data {
         let total_items = data.item.len();
-        let videos: Vec<RcmdVideoInfo> = data.item
+        let videos: Vec<RcmdVideoInfo> = data
+            .item
             .into_iter()
             .filter(|video| video.goto.as_deref() == Some("av"))
             .collect();

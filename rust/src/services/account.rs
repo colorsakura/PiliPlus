@@ -1,8 +1,8 @@
+use crate::http::HttpService;
+use crate::models::Account;
+use crate::storage::StorageService;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use crate::models::Account;
-use crate::http::HttpService;
-use crate::storage::StorageService;
 
 /// Account service for managing user authentication and account switching
 pub struct AccountService {
@@ -40,11 +40,12 @@ impl AccountService {
     /// Switch to a different account
     pub async fn switch_account(&self, account_id: &str) -> Result<(), crate::error::ApiError> {
         // Find account in storage
-        let account = self.storage.load_account(account_id).await
-            .map_err(|e| crate::error::ApiError::ApiError {
+        let account = self.storage.load_account(account_id).await.map_err(|e| {
+            crate::error::ApiError::ApiError {
                 code: 500,
                 message: e.to_string(),
-            })?;
+            }
+        })?;
 
         // Set as current
         self.set_account(account).await;
@@ -54,7 +55,9 @@ impl AccountService {
 
     /// Get all accounts from storage
     pub async fn all_accounts(&self) -> Result<Vec<Account>, crate::error::ApiError> {
-        self.storage.all_accounts().await
+        self.storage
+            .all_accounts()
+            .await
             .map_err(|e| crate::error::ApiError::ApiError {
                 code: 500,
                 message: e.to_string(),
@@ -63,7 +66,9 @@ impl AccountService {
 
     /// Save account to storage
     pub async fn save_account(&self, account: Account) -> Result<(), crate::error::ApiError> {
-        self.storage.save_account(&account).await
+        self.storage
+            .save_account(&account)
+            .await
             .map_err(|e| crate::error::ApiError::ApiError {
                 code: 500,
                 message: e.to_string(),
@@ -72,15 +77,20 @@ impl AccountService {
 
     /// Delete account from storage
     pub async fn delete_account(&self, account_id: &str) -> Result<(), crate::error::ApiError> {
-        self.storage.delete_account(account_id).await
-            .map_err(|e| crate::error::ApiError::ApiError {
+        self.storage.delete_account(account_id).await.map_err(|e| {
+            crate::error::ApiError::ApiError {
                 code: 500,
                 message: e.to_string(),
-            })
+            }
+        })
     }
 
     /// Get current account ID
     pub async fn current_account_id(&self) -> Option<String> {
-        self.current_account.read().await.as_ref().map(|a| a.id.clone())
+        self.current_account
+            .read()
+            .await
+            .as_ref()
+            .map(|a| a.id.clone())
     }
 }

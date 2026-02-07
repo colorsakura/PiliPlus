@@ -1,17 +1,17 @@
-use std::collections::HashMap;
+use chrono::{DateTime, Local, Utc};
 use md5;
-use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
-use chrono::{Local, DateTime, Utc};
-use serde::{Deserialize, Serialize};
 use once_cell::sync::Lazy;
-use std::sync::Mutex;
+use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
 use reqwest;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::sync::Mutex;
 use tokio;
 
 // Constants
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
-    14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7,
-    1, 21, 26, 30, 4, 22, 20, 29, 25, 13, 24, 17, 6, 0, 9, 16
+    14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7, 1, 21, 26, 30, 4, 22, 20, 29, 25,
+    13, 24, 17, 6, 0, 9, 16,
 ];
 
 const ALLOWED_SPECIAL_CHARS: &str = "!'()*-_.";
@@ -72,9 +72,7 @@ fn get_mixin_key(orig: &str) -> String {
     }
 
     let code_units = padded_input.as_bytes();
-    let result: Vec<u8> = MIXIN_KEY_ENC_TAB.iter()
-        .map(|&i| code_units[i])
-        .collect();
+    let result: Vec<u8> = MIXIN_KEY_ENC_TAB.iter().map(|&i| code_units[i]).collect();
     String::from_utf8(result).expect("WBI mixin key generation should always produce valid UTF-8")
 }
 
@@ -95,7 +93,11 @@ async fn get_wbi_keys() -> Result<(String, String, String), Box<dyn std::error::
     let user_info: UserInfoResponse = serde_json::from_str(&text)?;
 
     if user_info.code != 0 {
-        return Err(format!("API returned error code {}: {}", user_info.code, user_info.message).into());
+        return Err(format!(
+            "API returned error code {}: {}",
+            user_info.code, user_info.message
+        )
+        .into());
     }
 
     let img_url_clone = user_info.data.wbi_img.img_url.clone();
@@ -125,7 +127,11 @@ async fn get_wbi_keys_cached() -> Result<(String, String, String), Box<dyn std::
 
     if let Some(cache) = &*cache_guard {
         if !cache.is_expired() {
-            return Ok((cache.img_url.clone(), cache.sub_url.clone(), cache.mixin_key.clone()));
+            return Ok((
+                cache.img_url.clone(),
+                cache.sub_url.clone(),
+                cache.mixin_key.clone(),
+            ));
         }
     }
 
@@ -205,7 +211,10 @@ async fn main() {
         if result == expected {
             println!("✓ extract_filename(\"{}\") = \"{}\"", input, result);
         } else {
-            println!("✗ extract_filename(\"{}\") = \"{}\" (expected \"{}\")", input, result, expected);
+            println!(
+                "✗ extract_filename(\"{}\") = \"{}\" (expected \"{}\")",
+                input, result, expected
+            );
         }
     }
 

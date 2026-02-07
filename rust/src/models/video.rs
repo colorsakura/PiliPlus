@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use super::common::Image;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct VideoInfo {

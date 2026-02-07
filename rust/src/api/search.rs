@@ -1,8 +1,8 @@
-use flutter_rust_bridge::frb;
-use crate::models::{SearchVideoResult, SearchVideoItem};
-use crate::error::{SerializableError, ApiError};
-use crate::services::get_services;
 use crate::api::wbi;
+use crate::error::{ApiError, SerializableError};
+use crate::models::{SearchVideoItem, SearchVideoResult};
+use crate::services::get_services;
+use flutter_rust_bridge::frb;
 
 /// Build query string from parameters HashMap
 fn build_query_string(params: &std::collections::HashMap<String, String>) -> String {
@@ -62,18 +62,26 @@ pub async fn search_videos(
                     if let Some(results_array) = result.as_array() {
                         // Find video result
                         for item in results_array {
-                            if let Some(result_type) = item.get("result_type") as Option<&serde_json::Value> {
+                            if let Some(result_type) =
+                                item.get("result_type") as Option<&serde_json::Value>
+                            {
                                 if result_type == "video" {
-                                    if let Some(video_data) = item.get("data") as Option<&serde_json::Value> {
+                                    if let Some(video_data) =
+                                        item.get("data") as Option<&serde_json::Value>
+                                    {
                                         if let Some(videos) = video_data.as_array() {
                                             let items: Vec<SearchVideoItem> = videos
                                                 .iter()
-                                                .filter_map(|v| serde_json::from_value(v.clone()).ok())
+                                                .filter_map(|v| {
+                                                    serde_json::from_value(v.clone()).ok()
+                                                })
                                                 .collect();
 
-                                            let num_results = result_data.get("numResults")
+                                            let num_results = result_data
+                                                .get("numResults")
                                                 .and_then(|v: &serde_json::Value| v.as_i64())
-                                                .unwrap_or(0) as i32;
+                                                .unwrap_or(0)
+                                                as i32;
 
                                             return Ok(SearchVideoResult {
                                                 items,

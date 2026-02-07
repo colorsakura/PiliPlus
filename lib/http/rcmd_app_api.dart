@@ -1,11 +1,12 @@
+import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/http/api.dart';
-import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/home/rcmd/result.dart';
-import 'package:PiliPlus/utils/constants.dart';
-import 'package:PiliPlus/utils/models.dart';
-import 'dart:io';
+import 'package:PiliPlus/models/model_rec_video_item.dart';
+import 'package:PiliPlus/utils/global_data.dart';
+import 'package:PiliPlus/utils/recommend_filter.dart';
+import 'package:PiliPlus/utils/login_utils.dart';
+import 'package:dio/dio.dart';
 
 /// App端推荐API
 ///
@@ -58,7 +59,7 @@ class RcmdAppApi {
         queryParameters: params,
         options: Options(
           headers: {
-            'buvid': LoginHttp.buvid,
+            'buvid': LoginUtils.generateBuvid(),
             'fp_local':
                 '1111111111111111111111111111111111111111111111111111111111111111',
             'fp_remote':
@@ -84,7 +85,7 @@ class RcmdAppApi {
               i['ad_info'] == null &&
               (i['args'] != null &&
                   !GlobalData().blackMids.contains(i['args']['up_id']))) {
-            RecVideoItemModel videoItem = RecVideoItemAppModel.fromJson(i);
+            RecVideoItemModel videoItem = RecVideoItemModel.fromJson(i);
             // 应用推荐过滤
             if (!RecommendFilter.filter(videoItem)) {
               list.add(videoItem);

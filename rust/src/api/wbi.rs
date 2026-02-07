@@ -1,22 +1,20 @@
-
-use std::collections::HashMap;
-use md5;
-use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
-use chrono::{Local, DateTime, Utc};
-use serde::{Deserialize, Serialize};
-use once_cell::sync::Lazy;
-use std::sync::Mutex;
 use crate::error::SerializableError;
+use chrono::{DateTime, Local, Utc};
+use md5;
+use once_cell::sync::Lazy;
+use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::sync::Mutex;
 
 // Static HTTP client to avoid creating new clients on each call
-pub static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> = Lazy::new(|| {
-    Mutex::new(reqwest::Client::new())
-});
+pub static HTTP_CLIENT: Lazy<Mutex<reqwest::Client>> =
+    Lazy::new(|| Mutex::new(reqwest::Client::new()));
 
 /// Mixin key encoding table - 32-element shuffle table
 const MIXIN_KEY_ENC_TAB: [usize; 32] = [
-    14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7,
-    1, 21, 26, 30, 4, 22, 20, 29, 25, 13, 24, 17, 6, 0, 9, 16
+    14, 10, 2, 18, 23, 27, 8, 3, 28, 5, 15, 31, 12, 19, 11, 7, 1, 21, 26, 30, 4, 22, 20, 29, 25,
+    13, 24, 17, 6, 0, 9, 16,
 ];
 
 /// Allowed special characters in WBI parameter filtering
@@ -100,7 +98,10 @@ fn extract_filename(url: &str) -> String {
 /// ```
 async fn get_wbi_keys() -> Result<(String, String, String), SerializableError> {
     // Clone client to avoid holding lock across await
-    let client = HTTP_CLIENT.lock().unwrap_or_else(|p| p.into_inner()).clone();
+    let client = HTTP_CLIENT
+        .lock()
+        .unwrap_or_else(|p| p.into_inner())
+        .clone();
 
     let response = client
         .get("https://api.bilibili.com/x/web-interface/nav")
@@ -116,7 +117,11 @@ async fn get_wbi_keys() -> Result<(String, String, String), SerializableError> {
     let user_info: UserInfoResponse = serde_json::from_str(&text)?;
 
     if user_info.code != 0 {
-        return Err(format!("API returned error code {}: {}", user_info.code, user_info.message).into());
+        return Err(format!(
+            "API returned error code {}: {}",
+            user_info.code, user_info.message
+        )
+        .into());
     }
 
     let img_url = user_info.data.wbi_img.img_url;
@@ -161,9 +166,16 @@ pub async fn get_wbi_keys_cached() -> Result<(String, String, String), Serializa
     // Check cache first - clone values and release lock before await
     let cached = {
         let cache_guard = WBI_CACHE.lock().unwrap_or_else(|p| p.into_inner());
-        cache_guard.as_ref().filter(|cache| !cache.is_expired()).map(|cache| {
-            (cache.img_url.clone(), cache.sub_url.clone(), cache.mixin_key.clone())
-        })
+        cache_guard
+            .as_ref()
+            .filter(|cache| !cache.is_expired())
+            .map(|cache| {
+                (
+                    cache.img_url.clone(),
+                    cache.sub_url.clone(),
+                    cache.mixin_key.clone(),
+                )
+            })
     }; // cache_guard is dropped here
 
     if let Some(result) = cached {
@@ -175,7 +187,6 @@ pub async fn get_wbi_keys_cached() -> Result<(String, String, String), Serializa
 
     Ok((img_url, sub_url, mixin_key))
 }
-
 
 /// Generate mixin key by shuffling characters according to the encoding table
 ///
@@ -206,9 +217,7 @@ fn get_mixin_key(orig: &str) -> String {
     }
 
     let code_units = padded_input.as_bytes();
-    let result: Vec<u8> = MIXIN_KEY_ENC_TAB.iter()
-        .map(|&i| code_units[i])
-        .collect();
+    let result: Vec<u8> = MIXIN_KEY_ENC_TAB.iter().map(|&i| code_units[i]).collect();
     String::from_utf8(result).expect("WBI mixin key generation should always produce valid UTF-8")
 }
 
@@ -239,7 +248,10 @@ fn get_mixin_key(orig: &str) -> String {
 pub fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
     // Input validation
     assert!(!mixin_key.is_empty(), "mixin_key cannot be empty");
-    assert!(mixin_key.len() <= 32, "mixin_key cannot be longer than 32 characters");
+    assert!(
+        mixin_key.len() <= 32,
+        "mixin_key cannot be longer than 32 characters"
+    );
 
     // Add timestamp
     let timestamp = Local::now().timestamp().to_string();
@@ -261,8 +273,11 @@ pub fn enc_wbi(params: &mut HashMap<String, String>, mixin_key: &str) {
     // Filter special characters using ALLOWED_SPECIAL_CHARS constant
     let filtered_query: String = query_string
         .chars()
-        .filter(|c| !c.is_ascii_punctuation() || c.is_ascii_alphanumeric() ||
-                 ALLOWED_SPECIAL_CHARS.contains(*c))
+        .filter(|c| {
+            !c.is_ascii_punctuation()
+                || c.is_ascii_alphanumeric()
+                || ALLOWED_SPECIAL_CHARS.contains(*c)
+        })
         .collect();
 
     // Calculate MD5 hash

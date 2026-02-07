@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use super::common::Image;
+use serde::{Deserialize, Serialize};
 
 /// User information matching Bilibili API response
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]

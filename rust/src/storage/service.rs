@@ -1,7 +1,7 @@
-use sqlx::{SqlitePool, Row};
-use chrono::Utc;
-use crate::models::Account;
 use crate::error::StorageError;
+use crate::models::Account;
+use chrono::Utc;
+use sqlx::{Row, SqlitePool};
 
 pub struct StorageService {
     db: SqlitePool,

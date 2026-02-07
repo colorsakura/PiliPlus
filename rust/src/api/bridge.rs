@@ -1,5 +1,5 @@
-use flutter_rust_bridge::frb;
 use crate::models::*;
+use flutter_rust_bridge::frb;
 
 /// Initialize the Rust core
 #[frb(sync)]
@@ -124,13 +124,19 @@ pub async fn _expose_search_result_type() -> SearchResult {
 
 // Recommendation API wrapper for flutter_rust_bridge
 #[frb]
-pub async fn get_recommend_list(ps: i32, fresh_idx: i32) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
+pub async fn get_recommend_list(
+    ps: i32,
+    fresh_idx: i32,
+) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
     crate::api::rcmd::get_recommend_list(ps, fresh_idx).await
 }
 
 // App Recommendation API wrapper for flutter_rust_bridge
 #[frb]
-pub async fn get_recommend_list_app(ps: i32, fresh_idx: i32) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
+pub async fn get_recommend_list_app(
+    ps: i32,
+    fresh_idx: i32,
+) -> Result<Vec<crate::models::rcmd::RcmdVideoInfo>, crate::error::SerializableError> {
     crate::api::rcmd_app::get_recommend_list_app(ps, fresh_idx).await
 }
 
@@ -147,12 +153,18 @@ pub async fn get_user_stats() -> Result<crate::models::UserStats, crate::error::
 
 // Video API wrapper for flutter_rust_bridge
 #[frb]
-pub async fn get_video_info(bvid: String) -> Result<crate::models::VideoInfo, crate::error::SerializableError> {
+pub async fn get_video_info(
+    bvid: String,
+) -> Result<crate::models::VideoInfo, crate::error::SerializableError> {
     crate::api::video::get_video_info(bvid).await
 }
 
 #[frb]
-pub async fn get_video_url(bvid: String, cid: i64, quality: crate::models::VideoQuality) -> Result<crate::models::VideoUrl, crate::error::SerializableError> {
+pub async fn get_video_url(
+    bvid: String,
+    cid: i64,
+    quality: crate::models::VideoQuality,
+) -> Result<crate::models::VideoUrl, crate::error::SerializableError> {
     crate::api::video::get_video_url(bvid, cid, quality).await
 }
 
@@ -169,12 +181,12 @@ pub async fn search_videos(
 }
 
 // Re-export API functions for use by Dart
-pub use crate::api::video::*;
 pub use crate::api::account::*;
-pub use crate::api::search::*;
-pub use crate::api::user::*;
 pub use crate::api::comments::*;
 pub use crate::api::dynamics::*;
 pub use crate::api::live::*;
+pub use crate::api::search::*;
+pub use crate::api::user::*;
+pub use crate::api::video::*;
 // download module not yet implemented - requires DownloadTask model
 // pub use crate::api::download::*;

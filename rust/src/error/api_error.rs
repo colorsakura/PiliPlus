@@ -1,5 +1,5 @@
-use thiserror::Error;
 use crate::error::storage_error::StorageError;
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum ApiError {

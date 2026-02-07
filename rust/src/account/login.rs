@@ -1,7 +1,7 @@
 use crate::account::qrcode::{QrCodeData, QrState, QrStatus};
+use crate::error::AccountError;
 use crate::http::HttpService;
 use crate::models::Account;
-use crate::error::AccountError;
 use std::collections::HashMap;
 
 pub struct QrLoginFlow {

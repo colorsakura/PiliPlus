@@ -71,14 +71,15 @@ class DownloadApiFacade {
   /// - All errors are logged in debug mode
   static Future<void> initManager(String downloadDir) async {
     // Check feature flag - handle case where GStorage is not initialized
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
     } catch (e) {
       // GStorage not initialized (e.g., in tests), default to Flutter
       if (kDebugMode) {
-        debugPrint('GStorage not initialized, using Flutter implementation');
+        debugPrint('Failed to read useRustDownloadApi: $e');
       }
+      useRust = false;
     }
 
     if (useRust) {
@@ -129,13 +130,14 @@ class DownloadApiFacade {
     required VideoQuality quality,
   }) async {
     // Check feature flag
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('GStorage not initialized, using Flutter implementation');
+        debugPrint('Failed to read useRustDownloadApi: $e');
       }
+      useRust = false;
     }
 
     if (useRust) {
@@ -172,10 +174,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<void>] completes when download is started
   static Future<void> startDownload(String taskId) async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {
@@ -198,10 +205,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<void>] completes when download is paused
   static Future<void> pauseDownload(String taskId) async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {
@@ -224,10 +236,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<void>] completes when download is resumed
   static Future<void> resumeDownload(String taskId) async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {
@@ -250,10 +267,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<void>] completes when download is cancelled
   static Future<void> cancelDownload(String taskId) async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {
@@ -276,10 +298,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<Map<String, dynamic>?>] task information or null if not found
   static Future<Map<String, dynamic>?> getTask(String taskId) async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {
@@ -302,10 +329,15 @@ class DownloadApiFacade {
   /// **Returns:**
   /// - [Future<List<Map<String, dynamic>>>] list of all tasks
   static Future<List<Map<String, dynamic>>> listTasks() async {
-    bool useRust = false;
+    bool useRust = true;
     try {
       useRust = Pref.useRustDownloadApi;
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to read useRustDownloadApi: $e');
+      }
+      useRust = false;
+    }
 
     if (useRust) {
       try {

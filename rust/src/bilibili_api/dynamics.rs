@@ -1,6 +1,6 @@
-use crate::models::{DynamicsList, DynamicsItem};
-use crate::http::HttpService;
 use crate::error::ApiError;
+use crate::http::HttpService;
+use crate::models::{DynamicsItem, DynamicsList};
 
 pub struct DynamicsApi {
     http: std::sync::Arc<HttpService>,
