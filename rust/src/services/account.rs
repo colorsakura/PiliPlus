@@ -2,10 +2,12 @@ use crate::error::AccountError;
 use crate::http::HttpService;
 use crate::models::{Account, CookieJar};
 use crate::storage::StorageService;
+use reqwest::header::HeaderValue;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::{RwLock, broadcast};
+use tracing::warn;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub enum AccountChange {
@@ -94,7 +96,10 @@ impl AccountService {
         updated_account.last_used = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map(|d| d.as_secs() as i64)
-            .unwrap_or(0);
+            .unwrap_or_else(|e| {
+                warn!("Failed to get system time: {}", e);
+                0
+            });
 
         // Save updated account
         self.storage
@@ -188,9 +193,11 @@ impl AccountService {
                 .map(|(k, v)| format!("{}={}", k, v))
                 .collect::<Vec<_>>()
                 .join("; ");
+            let header_value = HeaderValue::from_str(&header)
+                .map_err(|e| AccountError::InvalidCookie(e.to_string()))?;
             request
                 .headers_mut()
-                .insert("Cookie", header.parse().unwrap());
+                .insert("Cookie", header_value);
         }
         Ok(())
     }

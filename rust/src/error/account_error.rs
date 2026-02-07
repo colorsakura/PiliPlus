@@ -19,4 +19,7 @@ pub enum AccountError {
 
     #[error("Storage error: {0}")]
     StorageError(String),
+
+    #[error("Invalid cookie header: {0}")]
+    InvalidCookie(String),
 }

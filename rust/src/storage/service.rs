@@ -223,7 +223,14 @@ impl AccountRow {
             .created_at
             .parse::<chrono::DateTime<chrono::Utc>>()
             .map(|dt| dt.timestamp())
-            .unwrap_or(0);
+            .map_err(|_| {
+                StorageError::DatabaseError(sqlx::Error::Decode(Box::new(
+                    std::io::Error::new(
+                        std::io::ErrorKind::InvalidData,
+                        format!("Invalid created_at format: {}", self.created_at)
+                    )
+                )))
+            })?;
 
         Ok(Account {
             id: self.id,
