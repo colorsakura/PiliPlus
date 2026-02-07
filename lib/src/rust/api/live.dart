@@ -9,11 +9,57 @@ import 'package:PiliPlus/src/rust/models/common.dart';
 import 'package:PiliPlus/src/rust/models/live.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Get live room information
+// These functions are ignored because they are not marked as `pub`: `quality_from_i32`, `quality_to_i32`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `BiliAnchorInfo`, `BiliBaseInfo`, `BiliCodec`, `BiliFormat`, `BiliPlayurlInfo`, `BiliPlayurl`, `BiliRoomInfoH5`, `BiliRoomInfo`, `BiliRoomPlayInfo`, `BiliStream`, `BiliUrlInfo`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+
+/// Get live room information from Bilibili API
+///
+/// Fetches basic room information including title, cover, status, online count, etc.
+///
+/// # Parameters
+/// * `room_id` - Live room ID
+///
+/// # Returns
+/// Result containing LiveRoomInfo with room details
+///
+/// # Errors
+/// Returns SerializableError for:
+/// - HTTP request failures
+/// - JSON parsing failures
+/// - API error responses
+/// - Network issues
+///
+/// # Examples
+/// ```rust
+/// let room_info = get_live_room_info(123456).await?;
+/// ```
 Future<LiveRoomInfo> getLiveRoomInfo({required PlatformInt64 roomId}) =>
     RustLib.instance.api.crateApiLiveGetLiveRoomInfo(roomId: roomId);
 
-/// Get live stream play URLs
+/// Get live stream play URLs from Bilibili API
+///
+/// Fetches playback URLs for a live room at specified quality level.
+/// Returns multiple codec formats (H.264, H.265, AV1) if available.
+///
+/// # Parameters
+/// * `room_id` - Live room ID
+/// * `quality` - Quality level (10000=Low, 20000=Medium, 30000=High, 40000=Ultra)
+///
+/// # Returns
+/// Result containing LivePlayUrl with playback URLs
+///
+/// # Errors
+/// Returns SerializableError for:
+/// - HTTP request failures
+/// - JSON parsing failures
+/// - API error responses
+/// - Network issues
+///
+/// # Examples
+/// ```rust
+/// let play_url = get_live_play_url(123456, 20000).await?;
+/// ```
 Future<LivePlayUrl> getLivePlayUrl({
   required PlatformInt64 roomId,
   required int quality,
