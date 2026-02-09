@@ -26,10 +26,10 @@ import 'package:PiliPlus/models/common/video/subtitle_pref_type.dart';
 import 'package:PiliPlus/models/common/video/video_decode_type.dart';
 import 'package:PiliPlus/models/common/video/video_quality.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
-import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/models/media_list/media_list.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';
+import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
 import 'package:PiliPlus/models/video/video_detail/episode.dart' as ugc;
 import 'package:PiliPlus/models/video/video_detail/page.dart';
@@ -504,8 +504,6 @@ class VideoDetailController extends GetxController
   @override
   Future<void> seekTo(Duration duration, {required bool isSeek}) =>
       plPlayerController.seekTo(duration, isSeek: isSeek);
-
-
 
   @override
   Widget buildItem(dynamic item, Animation<double> animation) {
