@@ -11,7 +11,6 @@ import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/audio_normalization.dart';
-import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';
 import 'package:PiliPlus/models/common/super_resolution_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/user/danmaku_rule.dart';
@@ -19,6 +18,7 @@ import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_shot/data.dart';
 import 'package:PiliPlus/pages/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/pages/sponsor_block/block_mixin.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_status.dart';
 import 'package:PiliPlus/plugin/pl_player/models/double_tap_type.dart';
@@ -62,7 +62,7 @@ import 'package:path/path.dart' as path;
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
-class PlPlayerController {
+class PlPlayerController with BlockConfigMixin {
   Player? _videoPlayerController;
   VideoController? _videoController;
 
@@ -76,7 +76,7 @@ class PlPlayerController {
   final playerStatus = PlPlayerStatus(PlayerStatus.playing);
 
   ///
-  final PlPlayerDataStatus dataStatus = PlPlayerDataStatus();
+  final Rx<DataStatus> dataStatus = Rx(DataStatus.none);
 
   // bool controlsEnabled = false;
 
@@ -230,6 +230,7 @@ class PlPlayerController {
   late bool isDesktopPip = false;
   late Rect _lastWindowBounds;
 
+  late final showWindowTitleBar = Pref.showWindowTitleBar;
   late final RxBool isAlwaysOnTop = false.obs;
   Future<void> setAlwaysOnTop(bool value) {
     isAlwaysOnTop.value = value;
@@ -239,8 +240,8 @@ class PlPlayerController {
   Future<void> exitDesktopPip() {
     isDesktopPip = false;
     return Future.wait([
-      windowManager.setTitleBarStyle(
-          Pref.showWindowTitleBar ? TitleBarStyle.normal : TitleBarStyle.hidden),
+      if (showWindowTitleBar)
+        windowManager.setTitleBarStyle(TitleBarStyle.normal),
       windowManager.setMinimumSize(const Size(400, 700)),
       windowManager.setBounds(_lastWindowBounds),
       setAlwaysOnTop(false),
@@ -255,7 +256,9 @@ class PlPlayerController {
 
     _lastWindowBounds = await windowManager.getBounds();
 
-    windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+    if (showWindowTitleBar) {
+      windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+    }
 
     late final Size size;
     final state = videoController!.player.state;
@@ -354,19 +357,6 @@ class PlPlayerController {
   final bool showVipDanmaku = Pref.showVipDanmaku; // loop unswitching
   late double subtitleStrokeWidth = Pref.subtitleStrokeWidth;
   late int subtitleFontWeight = Pref.subtitleFontWeight;
-
-  late final pgcSkipType = Pref.pgcSkipType;
-  late final enablePgcSkip = Pref.pgcSkipType != SkipType.disable;
-  // sponsor block
-  late final bool enableSponsorBlock = Pref.enableSponsorBlock;
-  late final bool enableBlock = enableSponsorBlock || enablePgcSkip;
-  late final double blockLimit = Pref.blockLimit;
-  late final blockSettings = Pref.blockSettings;
-  late final List<Color> blockColor = Pref.blockColor;
-  late final Set<String> enableList = blockSettings
-      .where((item) => item.second != SkipType.disable)
-      .map((item) => item.first.name)
-      .toSet();
 
   // settings
   late final showFSActionItem = Pref.showFSActionItem;
@@ -522,7 +512,7 @@ class PlPlayerController {
     bool notify = true,
     bool isInterrupt = false,
   }) async {
-    if (_instance?.playerStatus.value == PlayerStatus.playing) {
+    if (_instance?.playerStatus.isPlaying ?? false) {
       await _instance?.pause(notify: notify, isInterrupt: isInterrupt);
     }
   }
@@ -555,7 +545,7 @@ class PlPlayerController {
         if (sdkInt < 36) {
           Utils.channel.setMethodCallHandler((call) async {
             if (call.method == 'onUserLeaveHint') {
-              if (playerStatus.playing && _isCurrVideoPage) {
+              if (playerStatus.isPlaying && _isCurrVideoPage) {
                 enterPip();
               }
             }
@@ -632,7 +622,7 @@ class PlPlayerController {
       // 初始化视频倍速
       // _playbackSpeed.value = speed;
       // 初始化数据加载状态
-      dataStatus.status.value = DataStatus.loading;
+      dataStatus.value = DataStatus.loading;
       // 初始化全屏方向
       _isVertical = isVertical ?? false;
       _aid = aid;
@@ -670,14 +660,14 @@ class PlPlayerController {
       updateSliderPositionSecond();
       updateBufferedSecond();
       // 数据加载完成
-      dataStatus.status.value = DataStatus.loaded;
+      dataStatus.value = DataStatus.loaded;
 
       // listen the video player events
       startListeners();
       await _initializePlayer();
       onInit?.call();
     } catch (err, stackTrace) {
-      dataStatus.status.value = DataStatus.error;
+      dataStatus.value = DataStatus.error;
       if (kDebugMode) {
         debugPrint(stackTrace.toString());
         debugPrint('plPlayer err:  $err');
@@ -981,9 +971,9 @@ class PlPlayerController {
   Future<void>? autoEnterFullscreen() {
     if (enableAutoEnter) {
       return Future.delayed(const Duration(milliseconds: 500), () {
-        if (dataStatus.status.value != DataStatus.loaded) {
+        if (!dataStatus.loaded) {
           _stopListenerForEnterFullScreen();
-          _dataListenerForEnterFullScreen = dataStatus.status.listen((status) {
+          _dataListenerForEnterFullScreen = dataStatus.listen((status) {
             if (status == DataStatus.loaded) {
               _stopListenerForEnterFullScreen();
               triggerFullScreen(status: true);
@@ -1212,7 +1202,7 @@ class PlPlayerController {
           } catch (e) {
             if (kDebugMode) debugPrint('seek failed: $e');
           }
-          // if (playerStatus.value == PlayerStatus.paused) {
+          // if (playerStatus.isPaused) {
           //   play();
           // }
           t.cancel();
@@ -1383,7 +1373,7 @@ class PlPlayerController {
       if (buffered.value == Duration.zero) {
         attr = VideoFitType.contain;
         _stopListenerForVideoFit();
-        _dataListenerForVideoFit = dataStatus.status.listen((status) {
+        _dataListenerForVideoFit = dataStatus.listen((status) {
           if (status == DataStatus.loaded) {
             _stopListenerForVideoFit();
             final attr = VideoFitType.values[fitValue];
@@ -1434,7 +1424,7 @@ class PlPlayerController {
       return;
     }
     if (val) {
-      if (playerStatus.value == PlayerStatus.playing) {
+      if (playerStatus.isPlaying) {
         longPressStatus.value = val;
         HapticFeedback.lightImpact();
         await setPlaybackSpeed(
@@ -1631,14 +1621,13 @@ class PlPlayerController {
     }
     if (!enableHeart || MineController.anonymity.value || progress == 0) {
       return;
-    } else if (playerStatus.value == PlayerStatus.paused) {
+    } else if (playerStatus.isPaused) {
       if (!isManual) {
         return;
       }
     }
     bool isComplete =
-        playerStatus.value == PlayerStatus.completed ||
-        type == HeartBeatType.completed;
+        playerStatus.isCompleted || type == HeartBeatType.completed;
     if ((durationSeconds.value - position.value).inMilliseconds > 1000) {
       isComplete = false;
     }
@@ -1675,7 +1664,7 @@ class PlPlayerController {
 
   void setPlayRepeat(PlayRepeat type) {
     playRepeat = type;
-    video.put(VideoBoxKey.playRepeat, type.index);
+    if (!Pref.tempPlayerConf) video.put(VideoBoxKey.playRepeat, type.index);
   }
 
   void putSubtitleSettings() {
@@ -1728,7 +1717,7 @@ class PlPlayerController {
     // _controlsLock.close();
 
     // playerStatus.close();
-    // dataStatus.status.close();
+    // dataStatus.close();
 
     if (PlatformUtils.isDesktop && isAlwaysOnTop.value) {
       windowManager.setAlwaysOnTop(false);
@@ -1738,7 +1727,7 @@ class PlPlayerController {
     subscriptions.clear();
     _positionListeners.clear();
     _statusListeners.clear();
-    if (playerStatus.playing) {
+    if (playerStatus.isPlaying) {
       WakelockPlus.disable();
     }
     _videoPlayerController?.dispose();

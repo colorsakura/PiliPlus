@@ -36,6 +36,7 @@ import 'package:PiliPlus/pages/video/widgets/header_control.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/bottom_control_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/bottom_progress_behavior.dart';
+import 'package:PiliPlus/plugin/pl_player/models/data_status.dart';
 import 'package:PiliPlus/plugin/pl_player/models/double_tap_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/fullscreen_mode.dart';
 import 'package:PiliPlus/plugin/pl_player/models/gesture_type.dart';
@@ -455,7 +456,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       value: type,
                       onTap: () => plPlayerController.setShader(type),
                       child: Text(
-                        type.title,
+                        type.label,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 13,
@@ -468,7 +469,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                type.title,
+                type.label,
                 style: const TextStyle(color: Colors.white, fontSize: 13),
               ),
             ),
@@ -1898,7 +1899,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         Obx(() {
           if (plPlayerController.dataStatus.loading ||
               (plPlayerController.isBuffering.value &&
-                  plPlayerController.playerStatus.playing)) {
+                  plPlayerController.playerStatus.isPlaying)) {
             return Center(
               child: GestureDetector(
                 onTap: plPlayerController.refreshPlayer,
@@ -2109,7 +2110,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       category: SegmentType.sponsor,
       actionType: ActionType.skip,
     );
-    final isPlay = ctr.playerStatus.playing;
+    final isPlay = ctr.playerStatus.isPlaying;
     if (isPlay) ctr.pause();
 
     WebpPreset preset = WebpPreset.def;

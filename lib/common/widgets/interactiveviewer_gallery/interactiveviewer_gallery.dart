@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:PiliPlus/common/widgets/flutter/page/page_view.dart';
+import 'package:PiliPlus/common/widgets/gesture/image_horizontal_drag_gesture_recognizer.dart';
 import 'package:PiliPlus/common/widgets/interactiveviewer_gallery/interactive_viewer_boundary.dart';
+import 'package:PiliPlus/common/widgets/scroll_physics.dart'
+    show CustomTabBarViewScrollPhysics;
 import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
@@ -10,7 +14,7 @@ import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_throttle.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide PageView;
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
@@ -33,7 +37,6 @@ typedef IndexedFocusedWidgetBuilder =
       BuildContext context,
       int index,
       bool isFocus,
-      bool enablePageView,
     );
 
 typedef IndexedTagStringBuilder = String Function(int index);
@@ -80,17 +83,21 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
   /// The controller to animate the transformation value of the
   /// [InteractiveViewer] when it should reset.
   late AnimationController _animationController;
-  Animation<Matrix4>? _animation;
 
-  /// `true` when an source is zoomed in and not at the at a horizontal boundary
-  /// to disable the [PageView].
-  bool _enablePageView = true;
+  late final _tween = Matrix4Tween();
+  late final _animatable = _tween.chain(CurveTween(curve: Curves.easeOut));
+
+  late final _horizontalDragGestureRecognizer;
 
   late Offset _doubleTapLocalPosition;
+
+  late double _width;
 
   late final RxInt currentIndex = widget.initIndex.obs;
 
   late final int _quality = Pref.previewQ;
+
+  late final RxBool _hasScaled = false.obs;
 
   @override
   void initState() {
@@ -99,6 +106,11 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
     _pageController = PageController(initialPage: widget.initIndex);
 
     _transformationController = TransformationController();
+
+    _horizontalDragGestureRecognizer = ImageHorizontalDragGestureRecognizer(
+      width: 0,
+      transformationController: _transformationController,
+    );
 
     _animationController = AnimationController(
       vsync: this,
@@ -112,7 +124,16 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
   }
 
   void listener() {
-    _transformationController.value = _animation?.value ?? Matrix4.identity();
+    _transformationController.value = _animatable.evaluate(
+      _animationController,
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _width = MediaQuery.widthOf(context);
+    _horizontalDragGestureRecognizer.width = _width;
   }
 
   @override
@@ -124,6 +145,7 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
       ..removeListener(listener)
       ..dispose();
     _transformationController.dispose();
+    // _horizontalDragGestureRecognizer.dispose(); // duplicate
     if (widget.quality != _quality) {
       for (final item in widget.sources) {
         if (item.sourceType == SourceType.networkImage) {
@@ -134,57 +156,8 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
     super.dispose();
   }
 
-  /// When the source gets scaled up, the swipe up / down to dismiss gets
-  /// disabled.
-  ///
-  /// When the scale resets, the dismiss and the page view swiping gets enabled.
   void _onScaleChanged(double scale) {
-    final bool initialScale = scale <= widget.minScale;
-
-    if (initialScale) {
-      if (!_enablePageView) {
-        setState(() {
-          _enablePageView = true;
-        });
-      }
-    } else {
-      if (_enablePageView) {
-        setState(() {
-          _enablePageView = false;
-        });
-      }
-    }
-  }
-
-  /// When the left boundary has been hit after scaling up the source, the page
-  /// view swiping gets enabled if it has a page to swipe to.
-  void _onLeftBoundaryHit() {
-    if (!_enablePageView && _pageController.page!.floor() > 0) {
-      setState(() {
-        _enablePageView = true;
-      });
-    }
-  }
-
-  /// When the right boundary has been hit after scaling up the source, the page
-  /// view swiping gets enabled if it has a page to swipe to.
-  void _onRightBoundaryHit() {
-    if (!_enablePageView &&
-        _pageController.page!.floor() < widget.sources.length - 1) {
-      setState(() {
-        _enablePageView = true;
-      });
-    }
-  }
-
-  /// When the source has been scaled up and no horizontal boundary has been hit,
-  /// the page view swiping gets disabled.
-  void _onNoBoundaryHit() {
-    if (_enablePageView) {
-      setState(() {
-        _enablePageView = false;
-      });
-    }
+    _hasScaled.value = scale > 1.0;
   }
 
   void _onPlay(String liveUrl) {
@@ -207,13 +180,9 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
     if (_transformationController.value != Matrix4.identity()) {
       // animate the reset for the transformation of the interactive viewer
 
-      _animation = _animationController.drive(
-        Matrix4Tween(
-          begin: _transformationController.value,
-          end: Matrix4.identity(),
-        ).chain(CurveTween(curve: Curves.easeOut)),
-      );
-
+      _tween
+        ..begin = _transformationController.value.clone()
+        ..end = Matrix4.identity();
       _animationController.forward(from: 0);
     }
   }
@@ -234,28 +203,19 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
       children: [
         InteractiveViewerBoundary(
           controller: _transformationController,
-          boundaryWidth: MediaQuery.widthOf(context),
-          onScaleChanged: _onScaleChanged,
-          onLeftBoundaryHit: _onLeftBoundaryHit,
-          onRightBoundaryHit: _onRightBoundaryHit,
-          onNoBoundaryHit: _onNoBoundaryHit,
+          boundaryWidth: _width,
           maxScale: widget.maxScale,
           minScale: widget.minScale,
           onDismissed: Get.back,
-          onReset: () {
-            if (!_enablePageView) {
-              setState(() {
-                _enablePageView = true;
-              });
-            }
-          },
-          child: PageView.builder(
+          onInteractionEnd: (_) =>
+              _onScaleChanged(_transformationController.value.storage[0]),
+          child: PageView<ImageHorizontalDragGestureRecognizer>.builder(
             onPageChanged: _onPageChanged,
             controller: _pageController,
-            physics: _enablePageView
-                ? null
-                : const NeverScrollableScrollPhysics(),
             itemCount: widget.sources.length,
+            physics: const CustomTabBarViewScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             itemBuilder: (BuildContext context, int index) {
               final item = widget.sources[index];
               final isFileImg = item.sourceType == SourceType.fileImage;
@@ -283,38 +243,41 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
                         context,
                         index,
                         index == currentIndex.value,
-                        _enablePageView,
                       )
                     : _itemBuilder(index, item),
               );
             },
+            horizontalDragGestureRecognizer: () =>
+                _horizontalDragGestureRecognizer,
           ),
         ),
         Positioned(
           bottom: 0,
           left: 0,
           right: 0,
-          child: Container(
-            padding:
-                MediaQuery.viewPaddingOf(context) +
-                const EdgeInsets.fromLTRB(12, 8, 20, 8),
-            decoration: _enablePageView
-                ? BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.3),
-                      ],
+          child: Obx(
+            () => Container(
+              padding:
+                  MediaQuery.viewPaddingOf(context) +
+                  const EdgeInsets.fromLTRB(12, 8, 20, 8),
+              decoration: _hasScaled.value
+                  ? null
+                  : BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.3),
+                        ],
+                      ),
                     ),
-                  )
-                : null,
-            alignment: Alignment.center,
-            child: Obx(
-              () => Text(
-                "${currentIndex.value + 1}/${widget.sources.length}",
-                style: const TextStyle(color: Colors.white),
+              alignment: Alignment.center,
+              child: Obx(
+                () => Text(
+                  "${currentIndex.value + 1}/${widget.sources.length}",
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),
@@ -365,8 +328,8 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
   }
 
   void onDoubleTap() {
-    Matrix4 matrix = _transformationController.value.clone();
-    double currentScale = matrix.storage[0];
+    final matrix = _transformationController.value.clone();
+    final currentScale = matrix.storage[0];
 
     double targetScale = widget.minScale;
 
@@ -374,38 +337,26 @@ class _InteractiveviewerGalleryState extends State<InteractiveviewerGallery>
       targetScale = widget.maxScale * 0.4;
     }
 
-    double offSetX = targetScale == 1.0
-        ? 0.0
-        : -_doubleTapLocalPosition.dx * (targetScale - 1);
-    double offSetY = targetScale == 1.0
-        ? 0.0
-        : -_doubleTapLocalPosition.dy * (targetScale - 1);
+    final double dx, dy;
+    if (targetScale == 1.0) {
+      dx = dy = 0;
+    } else {
+      final tmp = 1 - targetScale;
+      dx = _doubleTapLocalPosition.dx * tmp;
+      dy = _doubleTapLocalPosition.dy * tmp;
+    }
 
-    matrix = Matrix4.fromList([
-      targetScale,
-      matrix.row1.x,
-      matrix.row2.x,
-      matrix.row3.x,
-      matrix.row0.y,
-      targetScale,
-      matrix.row2.y,
-      matrix.row3.y,
-      matrix.row0.z,
-      matrix.row1.z,
-      targetScale,
-      matrix.row3.z,
-      offSetX,
-      offSetY,
-      matrix.row2.w,
-      matrix.row3.w,
-    ]);
+    matrix
+      ..[0] = targetScale
+      ..[5] = targetScale
+      ..[10] = targetScale
+      ..[12] = dx
+      ..[13] = dy;
 
-    _animation = _animationController.drive(
-      Matrix4Tween(
-        begin: _transformationController.value,
-        end: matrix,
-      ).chain(CurveTween(curve: Curves.easeOut)),
-    );
+    _tween
+      ..begin = _transformationController.value.clone()
+      ..end = matrix;
+
     _animationController
         .forward(from: 0)
         .whenComplete(() => _onScaleChanged(targetScale));

@@ -1,5 +1,8 @@
+import 'dart:ui' as ui;
+
 import 'package:PiliPlus/common/widgets/interactiveviewer_gallery/interactive_viewer.dart'
     as custom;
+import 'package:PiliPlus/common/widgets/only_layout_widget.dart';
 import 'package:flutter/material.dart';
 
 /// https://github.com/qq326646683/interactiveviewer_gallery
@@ -19,18 +22,13 @@ class InteractiveViewerBoundary extends StatefulWidget {
     required this.child,
     required this.boundaryWidth,
     required this.controller,
-    this.onScaleChanged,
-    this.onLeftBoundaryHit,
-    this.onRightBoundaryHit,
-    this.onNoBoundaryHit,
     required this.maxScale,
     required this.minScale,
     this.onDismissed,
-    this.onReset,
     this.dismissThreshold = 0.2,
+    this.onInteractionEnd,
   });
 
-  final VoidCallback? onReset;
   final double dismissThreshold;
   final VoidCallback? onDismissed;
 
@@ -45,21 +43,11 @@ class InteractiveViewerBoundary extends StatefulWidget {
   /// The [TransformationController] for the [InteractiveViewer].
   final TransformationController controller;
 
-  /// Called when the scale changed after an interaction ended.
-  final ScaleChanged? onScaleChanged;
-
-  /// Called when the left boundary has been hit after an interaction ended.
-  final VoidCallback? onLeftBoundaryHit;
-
-  /// Called when the right boundary has been hit after an interaction ended.
-  final VoidCallback? onRightBoundaryHit;
-
-  /// Called when no boundary has been hit after an interaction ended.
-  final VoidCallback? onNoBoundaryHit;
-
   final double maxScale;
 
   final double minScale;
+
+  final GestureScaleEndCallback? onInteractionEnd;
 
   @override
   InteractiveViewerBoundaryState createState() =>
@@ -68,17 +56,15 @@ class InteractiveViewerBoundary extends StatefulWidget {
 
 class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary>
     with SingleTickerProviderStateMixin {
-  late TransformationController _controller;
-
-  double? _scale;
-
-  late AnimationController _animateController;
-  late Animation<Offset> _slideAnimation;
-  late Animation<double> _scaleAnimation;
-  late Animation<Decoration> _opacityAnimation;
+  late final TransformationController _controller;
+  late final AnimationController _animateController;
+  late final Animation<Decoration> _opacityAnimation;
+  double dx = 0, dy = 0;
 
   Offset _offset = Offset.zero;
   bool _dragging = false;
+
+  late Size _size;
 
   bool get _isActive => _dragging || _animateController.isAnimating;
 
@@ -92,43 +78,42 @@ class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary>
       vsync: this,
     );
 
-    _updateMoveAnimation();
+    _opacityAnimation = _animateController.drive(
+      DecorationTween(
+        begin: const BoxDecoration(color: Colors.black),
+        end: const BoxDecoration(color: Colors.transparent),
+      ),
+    );
+
+    _animateController.addListener(_updateTransformation);
   }
 
-  @override
-  void dispose() {
-    _animateController.dispose();
-    super.dispose();
+  void _updateTransformation() {
+    final val = _animateController.value;
+    final scale = ui.lerpDouble(1.0, 0.25, val)!;
+
+    // Matrix4.identity()
+    //   ..translateByDouble(size.width / 2, size.height / 2, 0, 1)
+    //   ..translateByDouble(size.width * val * dx, size.height * val * dy, 0, 1)
+    //   ..scaleByDouble(scale, scale, 1, 1)
+    //   ..translateByDouble(-size.width / 2, -size.height / 2, 0, 1);
+
+    final tmp = (1.0 - scale) / 2.0;
+    _controller.value = Matrix4.diagonal3Values(scale, scale, scale)
+      ..setTranslationRaw(
+        _size.width * (val * dx + tmp),
+        _size.height * (val * dy + tmp),
+        0,
+      );
   }
 
   void _updateMoveAnimation() {
-    final double endX = _offset.dx.sign * (_offset.dx.abs() / _offset.dy.abs());
-    final double endY = _offset.dy.sign;
-
-    _slideAnimation = _animateController.drive(
-      Tween<Offset>(
-        begin: Offset.zero,
-        end: Offset(endX, endY),
-      ),
-    );
-
-    _scaleAnimation = _animateController.drive(
-      Tween<double>(
-        begin: 1.0,
-        end: 0.25,
-      ),
-    );
-
-    _opacityAnimation = _animateController.drive(
-      DecorationTween(
-        begin: const BoxDecoration(
-          color: Colors.black,
-        ),
-        end: const BoxDecoration(
-          color: Colors.transparent,
-        ),
-      ),
-    );
+    dy = _offset.dy.sign;
+    if (dy == 0) {
+      dx = 0;
+    } else {
+      dx = _offset.dx / _offset.dy.abs();
+    }
   }
 
   void _handleDragStart(ScaleStartDetails details) {
@@ -140,7 +125,7 @@ class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary>
       _offset = Offset.zero;
       _animateController.value = 0.0;
     }
-    setState(_updateMoveAnimation);
+    _updateMoveAnimation();
   }
 
   void _handleDragUpdate(ScaleUpdateDetails details) {
@@ -149,11 +134,10 @@ class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary>
     }
 
     _offset += details.focalPointDelta;
-
-    setState(_updateMoveAnimation);
+    _updateMoveAnimation();
 
     if (!_animateController.isAnimating) {
-      _animateController.value = _offset.dy.abs() / context.size!.height;
+      _animateController.value = _offset.dy.abs() / _size.height;
     }
   }
 
@@ -179,60 +163,32 @@ class InteractiveViewerBoundaryState extends State<InteractiveViewerBoundary>
     }
   }
 
-  void _updateBoundaryDetection() {
-    final double scale = _controller.value.row0[0];
-
-    if (_scale != scale) {
-      // the scale changed
-      _scale = scale;
-      widget.onScaleChanged?.call(scale);
-    }
-
-    if (scale <= 1.01) {
-      // cant hit any boundaries when the child is not scaled
-      return;
-    }
-
-    final double xOffset = _controller.value.row0[3];
-    final double boundaryWidth = widget.boundaryWidth;
-    final double boundaryEnd = boundaryWidth * scale;
-    final double xPos = boundaryEnd + xOffset;
-
-    if (boundaryEnd.round() == xPos.round()) {
-      // left boundary hit
-      widget.onLeftBoundaryHit?.call();
-    } else if (boundaryWidth.round() == xPos.round()) {
-      // right boundary hit
-      widget.onRightBoundaryHit?.call();
-    } else {
-      widget.onNoBoundaryHit?.call();
-    }
+  @override
+  void dispose() {
+    _animateController
+      ..removeListener(_updateTransformation)
+      ..dispose();
+    super.dispose();
   }
-
-  Widget get content => DecoratedBoxTransition(
-    decoration: _opacityAnimation,
-    child: SlideTransition(
-      position: _slideAnimation,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: widget.child,
-      ),
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {
-    return custom.InteractiveViewer(
-      maxScale: widget.maxScale,
-      minScale: widget.minScale,
-      transformationController: _controller,
-      onInteractionEnd: (_) => _updateBoundaryDetection(),
-      onPanStart: _handleDragStart,
-      onPanUpdate: _handleDragUpdate,
-      onPanEnd: _handleDragEnd,
-      onReset: widget.onReset,
-      isAnimating: () => _animateController.value != 0,
-      child: content,
+    return LayoutSizeWidget(
+      onPerformLayout: (size) => _size = size,
+      child: DecoratedBoxTransition(
+        decoration: _opacityAnimation,
+        child: custom.InteractiveViewer(
+          maxScale: widget.maxScale,
+          minScale: widget.minScale,
+          transformationController: _controller,
+          onPanStart: _handleDragStart,
+          onPanUpdate: _handleDragUpdate,
+          onPanEnd: _handleDragEnd,
+          onInteractionEnd: widget.onInteractionEnd,
+          isAnimating: () => _animateController.value != 0,
+          child: widget.child,
+        ),
+      ),
     );
   }
 }
