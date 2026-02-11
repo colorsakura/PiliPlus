@@ -1,12 +1,6 @@
 name: Build
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - 'lib/**.dart'
-            - 'pubspec.yaml'
     pull_request:
         types:
             - opened
@@ -55,7 +49,7 @@ on:
 
 jobs:
     android:
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' || github.event.inputs.build_android == 'true' }}
+        if: ${{ github.event_name == 'pull_request' || github.event.inputs.build_android == 'true' }}
         name: Release Android
         runs-on: ubuntu-latest
         permissions: write-all
