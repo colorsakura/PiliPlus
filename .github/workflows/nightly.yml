@@ -1,0 +1,130 @@
+name: Nightly
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'lib/**.dart'
+      - 'pubspec.yaml'
+  workflow_dispatch:
+
+jobs:
+  android:
+    name: Release Android
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: 代码迁出
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 构建Java环境
+        uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: "gradle"
+          cache-dependency-path: |
+            android/*.gradle*
+            android/**/gradle-wrapper.properties
+
+      - name: 安装Flutter
+        uses: subosito/flutter-action@v2
+        id: flutter-action
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: apply bottom sheet patch
+        working-directory: ${{ env.FLUTTER_ROOT }}
+        run: git apply $GITHUB_WORKSPACE/lib/scripts/bottom_sheet_patch.diff
+        continue-on-error: true
+
+      - name: apply modal barrier patch
+        working-directory: ${{ env.FLUTTER_ROOT }}
+        run: git apply $GITHUB_WORKSPACE/lib/scripts/modal-barrier-patch.diff
+        continue-on-error: true
+
+      - name: Write key
+        run: |
+          if [ ! -z "${{ secrets.SIGN_KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.SIGN_KEYSTORE_BASE64 }}" | base64 --decode > android/app/key.jks
+            echo storeFile='key.jks' >> android/key.properties
+            echo storePassword='${{ secrets.KEYSTORE_PASSWORD }}' >> android/key.properties
+            echo keyAlias='${{ secrets.KEY_ALIAS }}' >> android/key.properties
+            echo keyPassword='${{ secrets.KEY_PASSWORD }}' >> android/key.properties
+          fi
+
+      - name: Set and Extract version
+        shell: pwsh
+        run: lib/scripts/build.ps1 android
+
+      - name: Generate nightly tag
+        id: nightly_tag
+        run: echo "tag=nightly-$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Delete old nightly release
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 1
+          delete_tag_pattern: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: flutter build apk
+        run: flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
+
+      - name: rename
+        run: |
+          for file in build/app/outputs/flutter-apk/app-*-release.apk; do
+            abi=$(echo "$file" | sed -E 's|.*app-(.*)-release\.apk|\1|')
+            mv "$file" "PiliPlus_android_${{ env.version }}_${abi}.apk"
+          done
+        shell: bash
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.nightly_tag.outputs.tag }}
+          name: Nightly ${{ steps.nightly_tag.outputs.tag }}
+          body: |
+            ## Nightly 构建
+            **构建时间**: ${{ github.event.head_commit.timestamp }}
+            **提交**: ${{ github.sha }}
+
+            > 📦 这是自动生成的 nightly 构建版本，仅保留最新构建。
+          files: |
+            PiliPlus_android_*.apk
+          prerelease: true
+          fail_on_unmatched_files: true
+
+      - name: 上传 arm64-v8a
+        uses: actions/upload-artifact@v5
+        with:
+          name: Android_arm64-v8a
+          path: |
+            PiliPlus_android_*_arm64-v8a.apk
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: 上传 armeabi-v7a
+        uses: actions/upload-artifact@v5
+        with:
+          name: Android_armeabi-v7a
+          path: |
+            PiliPlus_android_*_armeabi-v7a.apk
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: 上传 x86_64
+        uses: actions/upload-artifact@v5
+        with:
+          name: Android_x86_64
+          path: |
+            PiliPlus_android_*_x86_64.apk
+          retention-days: 7
+          if-no-files-found: error
