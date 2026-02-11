@@ -73,67 +73,70 @@ class VideoCardV extends StatelessWidget {
       cover: videoItem.cover,
       bvid: videoItem.bvid,
     );
-    return RepaintBoundary(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              onTap: () => onPushDetail(Utils.makeHeroTag(videoItem.aid)),
-              onLongPress: onLongPress,
-              onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AspectRatio(
-                    aspectRatio: StyleString.aspectRatio,
-                    child: LayoutBuilder(
-                      builder: (context, boxConstraints) {
-                        double maxWidth = boxConstraints.maxWidth;
-                        double maxHeight = boxConstraints.maxHeight;
-                        return Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            NetworkImgLayer(
-                              src: videoItem.cover,
-                              width: maxWidth,
-                              height: maxHeight,
-                              type: .emote,
-                            ),
-                            if (videoItem.duration > 0)
-                              PBadge(
-                                bottom: 6,
-                                right: 7,
-                                size: PBadgeSize.small,
-                                type: PBadgeType.gray,
-                                text: DurationUtils.formatDuration(
-                                  videoItem.duration,
-                                ),
+    return Hero(
+      tag: videoItem.aid!,
+      child: RepaintBoundary(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                onTap: () => onPushDetail(Utils.makeHeroTag(videoItem.aid)),
+                onLongPress: onLongPress,
+                onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: StyleString.aspectRatio,
+                      child: LayoutBuilder(
+                        builder: (context, boxConstraints) {
+                          double maxWidth = boxConstraints.maxWidth;
+                          double maxHeight = boxConstraints.maxHeight;
+                          return Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              NetworkImgLayer(
+                                src: videoItem.cover,
+                                width: maxWidth,
+                                height: maxHeight,
+                                type: .emote,
                               ),
-                          ],
-                        );
-                      },
+                              if (videoItem.duration > 0)
+                                PBadge(
+                                  bottom: 6,
+                                  right: 7,
+                                  size: PBadgeSize.small,
+                                  type: PBadgeType.gray,
+                                  text: DurationUtils.formatDuration(
+                                    videoItem.duration,
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  content(context),
-                ],
+                    content(context),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (videoItem.goto == 'av')
-            Positioned(
-              right: -5,
-              bottom: -2,
-              width: 29,
-              height: 29,
-              child: VideoPopupMenu(
-                iconSize: 17,
-                videoItem: videoItem,
-                onRemove: onRemove,
+            if (videoItem.goto == 'av')
+              Positioned(
+                right: -5,
+                bottom: -2,
+                width: 29,
+                height: 29,
+                child: VideoPopupMenu(
+                  iconSize: 17,
+                  videoItem: videoItem,
+                  onRemove: onRemove,
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

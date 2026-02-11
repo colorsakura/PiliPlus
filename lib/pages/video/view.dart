@@ -1600,15 +1600,18 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                 onTap: handlePlay,
                 behavior: .opaque,
                 child: Obx(
-                  () => NetworkImgLayer(
-                    type: .emote,
-                    quality: 60,
-                    src: videoDetailController.cover.value,
-                    width: width,
-                    height: height,
-                    cacheWidth: true,
-                    getPlaceHolder: () => Center(
-                      child: Image.asset('assets/images/loading.png'),
+                  () => Hero(
+                    tag: videoDetailController.aid,
+                    child: NetworkImgLayer(
+                      type: .emote,
+                      quality: 60,
+                      src: videoDetailController.cover.value,
+                      width: width,
+                      height: height,
+                      cacheWidth: true,
+                      getPlaceHolder: () => Center(
+                        child: Image.asset('assets/images/loading.png'),
+                      ),
                     ),
                   ),
                 ),

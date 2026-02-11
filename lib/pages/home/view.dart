@@ -79,12 +79,11 @@ class _HomePageState extends State<HomePage>
     const height = 52.0;
     const padding = EdgeInsets.fromLTRB(14, 6, 14, 0);
     final child = Row(
+      spacing: 8,
       children: [
-        searchBar(theme),
-        const SizedBox(width: 4),
-        msgBadge(_mainController),
-        const SizedBox(width: 8),
         userAvatar(theme: theme, mainController: _mainController),
+        searchBar(theme),
+        msgBadge(_mainController),
       ],
     );
     if (_homeController.showSearchBar case final searchBar?) {
