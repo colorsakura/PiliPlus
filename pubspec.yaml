@@ -40,6 +40,7 @@ dependencies:
   # 动态取色
   dynamic_color: ^1.8.1
 
+  flutter_riverpod: ^3.2.1
   # get: ^4.7.2
   get:
     git:

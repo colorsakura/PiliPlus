@@ -36,6 +36,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
@@ -221,7 +222,7 @@ void main() async {
       rootWidget: const MyApp(),
     );
   } else {
-    runApp(const MyApp());
+    runApp(const ProviderScope(child: MyApp()));
   }
 }
 
