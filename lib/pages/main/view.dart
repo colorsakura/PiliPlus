@@ -294,55 +294,6 @@ class _MainAppState extends PopScopeState<MainApp>
                   ),
                 )
         : null;
-    if (bottomNav != null) {
-      if (_mainController.showBottomBar case final bottomBar?) {
-        return Obx(
-          () => AnimatedSlide(
-            curve: Curves.easeInOutCubicEmphasized,
-            duration: const Duration(milliseconds: 500),
-            offset: Offset(0, bottomBar.value ? 0 : 1),
-            child: bottomNav,
-          ),
-        );
-      }
-    Widget? bottomNav = _mainController.navigationBars.length > 1
-        ? _mainController.enableMYBar
-              ? Obx(
-                  () => NavigationBar(
-                    maintainBottomViewPadding: true,
-                    onDestinationSelected: _mainController.setIndex,
-                    selectedIndex: _mainController.selectedIndex.value,
-                    destinations: _mainController.navigationBars
-                        .map(
-                          (e) => NavigationDestination(
-                            label: e.label,
-                            icon: _buildIcon(type: e),
-                            selectedIcon: _buildIcon(type: e, selected: true),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-              : Obx(
-                  () => BottomNavigationBar(
-                    currentIndex: _mainController.selectedIndex.value,
-                    onTap: _mainController.setIndex,
-                    iconSize: 16,
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    type: .fixed,
-                    items: _mainController.navigationBars
-                        .map(
-                          (e) => BottomNavigationBarItem(
-                            label: e.label,
-                            icon: _buildIcon(type: e),
-                            activeIcon: _buildIcon(type: e, selected: true),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-        : null;
     if (bottomNav != null && _mainController.hideBottomBar) {
       if (_mainController.barOffset case final barOffset?) {
         return Obx(
