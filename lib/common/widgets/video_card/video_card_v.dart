@@ -81,6 +81,9 @@ class VideoCardV extends StatelessWidget {
           children: [
             Card(
               clipBehavior: Clip.hardEdge,
+              shape: const RoundedRectangleBorder(
+                borderRadius: StyleString.mdRadius,
+              ),
               child: InkWell(
                 onTap: () => onPushDetail(Utils.makeHeroTag(videoItem.aid)),
                 onLongPress: onLongPress,

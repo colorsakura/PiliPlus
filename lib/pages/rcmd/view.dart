@@ -79,6 +79,10 @@ class _RcmdPageState extends CommonPageState<RcmdPage, RcmdController>
                             ..animateToTop()
                             ..onRefresh(),
                           child: Card(
+                            clipBehavior: Clip.hardEdge,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: StyleString.mdRadius,
+                            ),
                             child: Container(
                               alignment: Alignment.center,
                               padding: const .symmetric(horizontal: 10),
