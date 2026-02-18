@@ -260,7 +260,6 @@ class _MainAppState extends PopScopeState<MainApp>
         ? _mainController.enableMYBar
               ? Obx(
                   () => NavigationBar(
-                    maintainBottomViewPadding: true,
                     onDestinationSelected: _mainController.setIndex,
                     selectedIndex: _mainController.selectedIndex.value,
                     destinations: _mainController.navigationBars
@@ -431,16 +430,21 @@ class _MainAppState extends PopScopeState<MainApp>
         padding: EdgeInsets.only(
           left: _mainController.useBottomNav ? _padding.left : 0.0,
           right: _padding.right,
+          bottom: _mainController.useBottomNav ? 0.0 : _padding.bottom,
         ),
         child: child,
       ),
-      bottomNavigationBar: bottomNav,
+      bottomNavigationBar: ColoredBox(
+        color: theme.colorScheme.surface,
+        child: bottomNav,
+      ),
     );
 
     if (PlatformUtils.isMobile) {
       child = AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: theme.brightness.reverse,
         ),
         child: child,
