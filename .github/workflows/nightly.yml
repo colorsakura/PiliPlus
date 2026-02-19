@@ -55,7 +55,7 @@ jobs:
 
       - name: Generate nightly tag
         id: nightly_tag
-        run: echo "tag=nightly-$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+        run: echo "tag=nightly" >> $GITHUB_OUTPUT
 
       - name: Delete old nightly release
         uses: dev-drprasad/delete-older-releases@v0.3.2
