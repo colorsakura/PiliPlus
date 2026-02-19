@@ -39,16 +39,6 @@ jobs:
           flutter-version-file: pubspec.yaml
           cache: true
 
-      - name: apply bottom sheet patch
-        working-directory: ${{ env.FLUTTER_ROOT }}
-        run: git apply $GITHUB_WORKSPACE/lib/scripts/bottom_sheet_patch.diff
-        continue-on-error: true
-
-      - name: apply modal barrier patch
-        working-directory: ${{ env.FLUTTER_ROOT }}
-        run: git apply $GITHUB_WORKSPACE/lib/scripts/modal-barrier-patch.diff
-        continue-on-error: true
-
       - name: Write key
         run: |
           if [ ! -z "${{ secrets.SIGN_KEYSTORE_BASE64 }}" ]; then
@@ -70,7 +60,7 @@ jobs:
       - name: Delete old nightly release
         uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
-          keep_latest: 1
+          keep_latest: 0
           delete_tag_pattern: nightly
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -89,8 +79,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.nightly_tag.outputs.tag }}
-          name: Nightly ${{ steps.nightly_tag.outputs.tag }}
+          tag_name: nightly
+          name: Nightly
           body: |
             ## Nightly 构建
             **构建时间**: ${{ github.event.head_commit.timestamp }}
