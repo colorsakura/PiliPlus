@@ -106,14 +106,6 @@ List<SettingsModel> get styleSettings => [
     defaultVal: true,
     needReboot: true,
   ),
-  const SwitchModel(
-    title: 'MD3样式底栏',
-    subtitle: 'Material You设计规范底栏，关闭可变窄',
-    leading: Icon(Icons.design_services_outlined),
-    setKey: SettingBoxKey.enableMYBar,
-    defaultVal: true,
-    needReboot: true,
-  ),
   NormalModel(
     leading: const Icon(Icons.calendar_view_week_outlined),
     title: '列表宽度（dp）限制',

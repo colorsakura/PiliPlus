@@ -252,44 +252,24 @@ class _MainAppState extends PopScopeState<MainApp>
   }
 
   Widget? get _bottomNav {
-    Widget? bottomNav = _mainController.navigationBars.length > 1
-        ? _mainController.enableMYBar
-              ? Obx(
-                  () => NavigationBar(
-                    onDestinationSelected: _mainController.setIndex,
-                    selectedIndex: _mainController.selectedIndex.value,
-                    destinations: _mainController.navigationBars
-                        .map(
-                          (e) => NavigationDestination(
-                            label: e.label,
-                            icon: _buildIcon(type: e),
-                            selectedIcon: _buildIcon(type: e, selected: true),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-              : Obx(
-                  () => BottomNavigationBar(
-                    currentIndex: _mainController.selectedIndex.value,
-                    onTap: _mainController.setIndex,
-                    iconSize: 16,
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    type: .fixed,
-                    items: _mainController.navigationBars
-                        .map(
-                          (e) => BottomNavigationBarItem(
-                            label: e.label,
-                            icon: _buildIcon(type: e),
-                            activeIcon: _buildIcon(type: e, selected: true),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-        : null;
-    if (bottomNav != null && _mainController.hideBottomBar) {
+    Widget? bottomNav = BottomNavigationBar(
+      currentIndex: _mainController.selectedIndex.value,
+      onTap: _mainController.setIndex,
+      iconSize: 16,
+      selectedFontSize: 12,
+      unselectedFontSize: 12,
+      type: .fixed,
+      items: _mainController.navigationBars
+          .map(
+            (e) => BottomNavigationBarItem(
+              label: e.label,
+              icon: _buildIcon(type: e),
+              activeIcon: _buildIcon(type: e, selected: true),
+            ),
+          )
+          .toList(),
+    );
+    if (_mainController.hideBottomBar) {
       if (_mainController.barOffset case final barOffset?) {
         return Obx(
           () => FractionalTranslation(
@@ -431,10 +411,7 @@ class _MainAppState extends PopScopeState<MainApp>
         ),
         child: child,
       ),
-      bottomNavigationBar: ColoredBox(
-        color: theme.colorScheme.surface,
-        child: bottomNav,
-      ),
+      bottomNavigationBar: bottomNav,
     );
 
     if (PlatformUtils.isMobile) {

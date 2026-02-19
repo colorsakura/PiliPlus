@@ -55,7 +55,6 @@ class MainController extends GetxController
   late final RxString msgUnReadCount = ''.obs;
   late int lastCheckUnreadAt = 0;
 
-  final enableMYBar = Pref.enableMYBar;
   final useSideBar = Pref.useSideBar;
   final mainTabBarView = Pref.mainTabBarView;
   late final optTabletNav = Pref.optTabletNav;

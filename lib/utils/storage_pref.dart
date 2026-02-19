@@ -730,9 +730,6 @@ abstract final class Pref {
         defaultValue: DynamicBadgeMode.number.index,
       )];
 
-  static bool get enableMYBar =>
-      _setting.get(SettingBoxKey.enableMYBar, defaultValue: true);
-
   static Transition get pageTransition =>
       Transition.values[_setting.get(
         SettingBoxKey.pageTransition,
