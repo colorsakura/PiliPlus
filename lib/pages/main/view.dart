@@ -252,22 +252,24 @@ class _MainAppState extends PopScopeState<MainApp>
   }
 
   Widget? get _bottomNav {
-    Widget? bottomNav = BottomNavigationBar(
-      currentIndex: _mainController.selectedIndex.value,
-      onTap: _mainController.setIndex,
-      iconSize: 16,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      type: .fixed,
-      items: _mainController.navigationBars
-          .map(
-            (e) => BottomNavigationBarItem(
-              label: e.label,
-              icon: _buildIcon(type: e),
-              activeIcon: _buildIcon(type: e, selected: true),
-            ),
-          )
-          .toList(),
+    Widget? bottomNav = Obx(
+      () => BottomNavigationBar(
+        currentIndex: _mainController.selectedIndex.value,
+        onTap: _mainController.setIndex,
+        iconSize: 16,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        type: .fixed,
+        items: _mainController.navigationBars
+            .map(
+              (e) => BottomNavigationBarItem(
+                label: e.label,
+                icon: _buildIcon(type: e),
+                activeIcon: _buildIcon(type: e, selected: true),
+              ),
+            )
+            .toList(),
+      ),
     );
     if (_mainController.hideBottomBar) {
       if (_mainController.barOffset case final barOffset?) {
