@@ -1,17 +1,11 @@
 import 'package:PiliPlus/common/constants.dart' show StyleString;
-import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/pages/home/controller.dart';
 import 'package:PiliPlus/pages/main/controller.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class CommonPageState<
-  T extends StatefulWidget,
-  R extends CommonController
->
-    extends State<T> {
-  R get controller;
+abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
   RxDouble? _barOffset;
   RxBool? _showTopBar;
   RxBool? _showBottomBar;
@@ -88,6 +82,8 @@ abstract class CommonPageState<
   @override
   void dispose() {
     _barOffset = null;
+    _showTopBar = null;
+    _showBottomBar = null;
     super.dispose();
   }
 }

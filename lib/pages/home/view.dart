@@ -2,6 +2,7 @@ import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/custom_height_widget.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
+import 'package:PiliPlus/pages/common/common_page.dart';
 import 'package:PiliPlus/pages/home/controller.dart';
 import 'package:PiliPlus/pages/main/controller.dart';
 import 'package:PiliPlus/pages/mine/controller.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageState extends CommonPageState<HomePage>
     with AutomaticKeepAliveClientMixin {
   final _homeController = Get.putOrFind(HomeController.new);
   final _mainController = Get.find<MainController>();
@@ -72,9 +73,11 @@ class _HomePageState extends State<HomePage>
           customAppBar(theme),
         tabBar,
         Expanded(
-          child: tabBarView(
-            controller: _homeController.tabController,
-            children: _homeController.tabs.map((e) => e.page).toList(),
+          child: onBuild(
+            tabBarView(
+              controller: _homeController.tabController,
+              children: _homeController.tabs.map((e) => e.page).toList(),
+            ),
           ),
         ),
       ],

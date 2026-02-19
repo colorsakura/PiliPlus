@@ -31,10 +31,9 @@ class MinePage extends StatefulWidget {
   State<MinePage> createState() => _MediaPageState();
 }
 
-class _MediaPageState extends CommonPageState<MinePage, MineController>
+class _MediaPageState extends CommonPageState<MinePage>
     with AutomaticKeepAliveClientMixin {
-  @override
-  MineController controller = Get.putOrFind(MineController.new);
+  final MineController controller = Get.putOrFind(MineController.new);
   late final MainController _mainController = Get.find<MainController>();
 
   @override
@@ -65,19 +64,19 @@ class _MediaPageState extends CommonPageState<MinePage, MineController>
     super.build(context);
     final theme = Theme.of(context);
     final secondary = theme.colorScheme.secondary;
-    return onBuild(
-      Column(
-        children: [
-          Padding(
-            padding: const .symmetric(vertical: 10),
-            child: _buildHeaderActions,
-          ),
-          Expanded(
-            child: Material(
-              type: .transparency,
-              child: refreshIndicator(
-                onRefresh: controller.onRefresh,
-                child: ListView(
+    return Column(
+      children: [
+        Padding(
+          padding: const .symmetric(vertical: 10),
+          child: _buildHeaderActions,
+        ),
+        Expanded(
+          child: Material(
+            type: .transparency,
+            child: refreshIndicator(
+              onRefresh: controller.onRefresh,
+              child: onBuild(
+                ListView(
                   padding: const .only(bottom: 100),
                   controller: controller.scrollController,
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -94,8 +93,8 @@ class _MediaPageState extends CommonPageState<MinePage, MineController>
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
