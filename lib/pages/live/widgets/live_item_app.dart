@@ -23,6 +23,9 @@ class LiveCardVApp extends StatelessWidget {
     );
     return Card(
       clipBehavior: Clip.hardEdge,
+      shape: const RoundedRectangleBorder(
+        borderRadius: StyleString.mdRadius,
+      ),
       child: InkWell(
         onTap: () => PageUtils.toLiveRoom(item.roomid),
         onLongPress: onLongPress,
