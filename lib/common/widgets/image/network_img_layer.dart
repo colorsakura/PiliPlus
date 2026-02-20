@@ -70,7 +70,9 @@ class NetworkImgLayer extends StatelessWidget {
       memCacheHeight = height.cacheSize(context);
     }
     // Use lower quality for emote (video cover) images
-    final effectiveQuality = isEmote && quality > 1 ? (quality * 7 ~/ 10) : quality;
+    final effectiveQuality = isEmote && quality > 1
+        ? (quality * 7 ~/ 10)
+        : quality;
     return CachedNetworkImage(
       imageUrl: ImageUtils.thumbnailUrl(src, effectiveQuality),
       width: width,

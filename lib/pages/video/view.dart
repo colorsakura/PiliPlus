@@ -1604,7 +1604,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                     tag: videoDetailController.aid,
                     child: NetworkImgLayer(
                       type: .emote,
-                      quality: 60,
                       src: videoDetailController.cover.value,
                       width: width,
                       height: height,
