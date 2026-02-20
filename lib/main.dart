@@ -294,9 +294,9 @@ class MyApp extends StatelessWidget {
         PageUtils.routeObserver,
         FlutterSmartDialog.observer,
       ],
-      scrollBehavior: PlatformUtils.isDesktop
-          ? const CustomScrollBehavior(desktopDragDevices)
-          : null,
+      scrollBehavior: CustomScrollBehavior(
+        PlatformUtils.isDesktop ? desktopDragDevices : mobileDragDevices,
+      ),
     );
   }
 
