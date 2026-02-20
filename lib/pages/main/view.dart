@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/flutter/pop_scope.dart';
-import 'package:PiliPlus/common/widgets/flutter/tabs.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/pages/home/view.dart';
@@ -66,9 +65,7 @@ class _MainAppState extends PopScopeState<MainApp>
       this,
       ModalRoute.of(context) as PageRoute,
     );
-    if (!_mainController.useSideBar) {
-      _mainController.useBottomNav = MediaQuery.sizeOf(context).isPortrait;
-    }
+    _mainController.useBottomNav = MediaQuery.sizeOf(context).isPortrait;
   }
 
   @override
@@ -367,21 +364,11 @@ class _MainAppState extends PopScopeState<MainApp>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Widget child;
-    if (_mainController.mainTabBarView) {
-      child = CustomTabBarView(
-        scrollDirection: _mainController.useBottomNav ? .horizontal : .vertical,
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _mainController.controller,
-        children: _mainController.navigationBars.map((i) => i.page).toList(),
-      );
-    } else {
-      child = PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _mainController.controller,
-        children: _mainController.navigationBars.map((i) => i.page).toList(),
-      );
-    }
+    Widget child = PageView(
+      physics: const NeverScrollableScrollPhysics(),
+      controller: _mainController.controller,
+      children: _mainController.navigationBars.map((i) => i.page).toList(),
+    );
 
     Widget? bottomNav;
     if (_mainController.useBottomNav) {

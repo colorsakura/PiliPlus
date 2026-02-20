@@ -38,7 +38,7 @@ class HomeController extends GetxController
   void onInit() {
     super.onInit();
 
-    hideTopBar = !Pref.useSideBar && Pref.hideTopBar;
+    hideTopBar = Pref.hideTopBar;
     if (hideTopBar) {
       final mainCtr = Get.find<MainController>();
       switch (mainCtr.barHideType) {

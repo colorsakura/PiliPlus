@@ -70,14 +70,6 @@ List<SettingsModel> get styleSettings => [
       }
     },
   ),
-  const SwitchModel(
-    title: '改用侧边栏',
-    subtitle: '开启后底栏与顶栏被替换，且相关设置失效',
-    leading: Icon(Icons.chrome_reader_mode_outlined),
-    setKey: SettingBoxKey.useSideBar,
-    defaultVal: false,
-    needReboot: true,
-  ),
   SwitchModel(
     title: 'App字体字重',
     subtitle: '点击设置',

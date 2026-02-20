@@ -55,8 +55,6 @@ class MainController extends GetxController
   late final RxString msgUnReadCount = ''.obs;
   late int lastCheckUnreadAt = 0;
 
-  final useSideBar = Pref.useSideBar;
-  final mainTabBarView = Pref.mainTabBarView;
   late final optTabletNav = Pref.optTabletNav;
 
   late bool directExitOnBack = Pref.directExitOnBack;
@@ -79,16 +77,9 @@ class MainController extends GetxController
 
     setNavBarConfig();
 
-    controller = mainTabBarView
-        ? TabController(
-            vsync: this,
-            initialIndex: selectedIndex.value,
-            length: navigationBars.length,
-          )
-        : PageController(initialPage: selectedIndex.value);
+    controller = PageController(initialPage: selectedIndex.value);
 
-    hideBottomBar =
-        !useSideBar && navigationBars.length > 1 && Pref.hideBottomBar;
+    hideBottomBar = navigationBars.length > 1 && Pref.hideBottomBar;
     if (hideBottomBar) {
       switch (barHideType) {
         case .instant:
@@ -292,11 +283,7 @@ class MainController extends GetxController
     final currentNav = navigationBars[value];
     if (value != selectedIndex.value) {
       selectedIndex.value = value;
-      if (mainTabBarView) {
-        controller.animateTo(value);
-      } else {
-        controller.jumpToPage(value);
-      }
+      controller.jumpToPage(value);
       if (currentNav == NavigationBarType.home) {
         checkDefaultSearch();
         checkUnread();
