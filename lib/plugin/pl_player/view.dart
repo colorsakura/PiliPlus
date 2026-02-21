@@ -11,6 +11,7 @@ import 'package:PiliPlus/common/widgets/gesture/immediate_tap_gesture_recognizer
 import 'package:PiliPlus/common/widgets/gesture/mouse_interactive_viewer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget.dart';
 import 'package:PiliPlus/common/widgets/pair.dart';
+import 'package:PiliPlus/common/widgets/player_bar.dart';
 import 'package:PiliPlus/common/widgets/progress_bar/audio_video_progress_bar.dart';
 import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
@@ -874,22 +875,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       if (isNotFileSource && flag) BottomControlType.qa,
       if (!plPlayerController.isDesktopPip) BottomControlType.fullscreen,
     ];
-
-    return Row(
+    return PlayerBar(
       children: [
-        ...userSpecifyItemLeft.map(progressWidget),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) => FittedBox(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: constraints.maxWidth),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: userSpecifyItemRight.map(progressWidget).toList(),
-                ),
-              ),
-            ),
-          ),
+        Row(
+          mainAxisSize: .min,
+          children: userSpecifyItemLeft.map(progressWidget).toList(),
+        ),
+        Row(
+          mainAxisSize: .min,
+          children: userSpecifyItemRight.map(progressWidget).toList(),
         ),
       ],
     );
@@ -2868,7 +2862,7 @@ class _RenderVideoTime extends RenderBox {
           )
           ..addText(time);
     return builder.build()
-      ..layout(ui.ParagraphConstraints(width: constraints.maxWidth));
+      ..layout(const ui.ParagraphConstraints(width: .infinity));
   }
 
   @override
