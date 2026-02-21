@@ -91,6 +91,9 @@ class AppInitializer {
       await _initGetXServices();
       debugPrint('  ✓ GetX services registered');
 
+      await _initHttpClient();
+      debugPrint('  ✓ HTTP client initialized');
+
       _blockingPhaseCompleted = true;
       stopwatch.stop();
       debugPrint(
@@ -124,9 +127,6 @@ class AppInitializer {
     try {
       await _initDownloadPaths();
       debugPrint('  ✓ Download paths initialized');
-
-      await _initHttpClient();
-      debugPrint('  ✓ HTTP client initialized');
 
       await _setupPlatform();
       debugPrint('  ✓ Platform settings configured');
