@@ -14,7 +14,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/http/video.dart';
-import 'package:PiliPlus/main.dart';
+import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/action_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/post_segment_model.dart';

@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'package:PiliPlus/app/app.dart' show MyApp;
 import 'package:PiliPlus/common/widgets/color_palette.dart';
-import 'package:PiliPlus/main.dart' show MyApp;
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/models/common/theme/theme_color_type.dart';
 import 'package:PiliPlus/models/common/theme/theme_type.dart';

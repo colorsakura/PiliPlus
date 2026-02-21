@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' show max;
 
+import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/common/widgets/button/toolbar_icon_button.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart'
     show RichTextType;
@@ -11,7 +12,6 @@ import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/video.dart';
-import 'package:PiliPlus/main.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart' show FilePicModel;
 import 'package:PiliPlus/pages/common/publish/common_rich_text_pub_page.dart';
