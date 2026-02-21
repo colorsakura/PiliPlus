@@ -1,12 +1,9 @@
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/backup/webdav.dart';
-import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:PiliPlus/core/storage/storage_key.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/backup/providers/backup_providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BackupPage extends StatefulWidget {
+class BackupPage extends ConsumerStatefulWidget {
   const BackupPage({
     super.key,
     this.showAppBar = true,
@@ -15,15 +12,25 @@ class BackupPage extends StatefulWidget {
   final bool showAppBar;
 
   @override
-  State<BackupPage> createState() => _BackupPageState();
+  ConsumerState<BackupPage> createState() => _BackupPageState();
 }
 
-class _BackupPageState extends State<BackupPage> {
-  final _uriCtr = TextEditingController(text: Pref.webdavUri);
-  final _usernameCtr = TextEditingController(text: Pref.webdavUsername);
-  final _passwordCtr = TextEditingController(text: Pref.webdavPassword);
-  final _directoryCtr = TextEditingController(text: Pref.webdavDirectory);
-  bool _obscureText = true;
+class _BackupPageState extends ConsumerState<BackupPage> {
+  late final TextEditingController _uriCtr;
+  late final TextEditingController _usernameCtr;
+  late final TextEditingController _passwordCtr;
+  late final TextEditingController _directoryCtr;
+
+  @override
+  void initState() {
+    super.initState();
+    final state = ref.read(backupControllerProvider);
+    final config = state.config;
+    _uriCtr = TextEditingController(text: config.uri);
+    _usernameCtr = TextEditingController(text: config.username);
+    _passwordCtr = TextEditingController(text: config.password);
+    _directoryCtr = TextEditingController(text: config.directory);
+  }
 
   @override
   void dispose() {
@@ -36,18 +43,38 @@ class _BackupPageState extends State<BackupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final showAppBar = widget.showAppBar;
     final padding = MediaQuery.viewPaddingOf(context);
+    final state = ref.watch(backupControllerProvider);
+    final controller = ref.read(backupControllerProvider.notifier);
+
+    // 显示错误提示
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (state.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.errorMessage!),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        controller.clearError();
+      }
+    });
+
+    final isLoading = state.isLoading;
+    final obscureText = state.obscureText;
+
     return Scaffold(
-      appBar: showAppBar ? AppBar(title: const Text('WebDAV 设置')) : null,
+      appBar: widget.showAppBar
+          ? AppBar(title: Text('WebDAV 设置'))
+          : null,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
           ListView(
             padding: padding.copyWith(
               top: 20,
-              left: 20 + (showAppBar ? padding.left : 0),
-              right: 20 + (showAppBar ? padding.right : 0),
+              left: 20 + (widget.showAppBar ? padding.left : 0),
+              right: 20 + (widget.showAppBar ? padding.right : 0),
               bottom: padding.bottom + 100,
             ),
             children: [
@@ -74,14 +101,13 @@ class _BackupPageState extends State<BackupPage> {
                   labelText: '密码',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    onPressed: () =>
-                        setState(() => _obscureText = !_obscureText),
-                    icon: _obscureText
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
+                    onPressed: controller.togglePasswordVisibility,
+                    icon: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
                   ),
                 ),
-                obscureText: _obscureText,
+                obscureText: obscureText,
               ),
               const SizedBox(height: 20),
               TextField(
@@ -101,7 +127,7 @@ class _BackupPageState extends State<BackupPage> {
                           borderRadius: StyleString.mdRadius,
                         ),
                       ),
-                      onPressed: WebDav().backup,
+                      onPressed: isLoading ? null : _backup,
                       child: const Text('备份设置'),
                     ),
                   ),
@@ -113,7 +139,7 @@ class _BackupPageState extends State<BackupPage> {
                           borderRadius: StyleString.mdRadius,
                         ),
                       ),
-                      onPressed: WebDav().restore,
+                      onPressed: isLoading ? null : _restore,
                       child: const Text('恢复设置'),
                     ),
                   ),
@@ -122,37 +148,68 @@ class _BackupPageState extends State<BackupPage> {
             ],
           ),
           Positioned(
-            right:
-                kFloatingActionButtonMargin + (showAppBar ? padding.right : 0),
+            right: kFloatingActionButtonMargin +
+                (widget.showAppBar ? padding.right : 0),
             bottom: kFloatingActionButtonMargin + padding.bottom,
             child: FloatingActionButton(
+              onPressed: isLoading ? null : _saveConfig,
               child: const Icon(Icons.save),
-              onPressed: () async {
-                await GStorage.setting.putAll({
-                  SettingBoxKey.webdavUri: _uriCtr.text,
-                  SettingBoxKey.webdavUsername: _usernameCtr.text,
-                  SettingBoxKey.webdavPassword: _passwordCtr.text,
-                  SettingBoxKey.webdavDirectory: _directoryCtr.text,
-                });
-                if (_uriCtr.text.isEmpty) {
-                  return;
-                }
-                try {
-                  final res = await WebDav().init();
-                  if (res.first) {
-                    SmartDialog.showToast('配置成功');
-                  } else {
-                    SmartDialog.showToast('配置失败: ${res.second}');
-                  }
-                } catch (e) {
-                  SmartDialog.showToast('配置失败: ${e.toString()}');
-                  return;
-                }
-              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _saveConfig() async {
+    final controller = ref.read(backupControllerProvider.notifier);
+    // 更新配置值
+    controller
+      ..updateUri(_uriCtr.text)
+      ..updateUsername(_usernameCtr.text)
+      ..updatePassword(_passwordCtr.text)
+      ..updateDirectory(_directoryCtr.text);
+
+    final success = await controller.saveConfig();
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(success ? '配置成功' : '配置失败'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _backup() async {
+    final controller = ref.read(backupControllerProvider.notifier);
+    await controller.backup();
+
+    if (!mounted) return;
+    final state = ref.read(backupControllerProvider);
+    if (state.errorMessage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('备份成功'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> _restore() async {
+    final controller = ref.read(backupControllerProvider.notifier);
+    await controller.restore();
+
+    if (!mounted) return;
+    final state = ref.read(backupControllerProvider);
+    if (state.errorMessage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('恢复成功'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }
