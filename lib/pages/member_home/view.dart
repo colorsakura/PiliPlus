@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/button/more_btn.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/models/space/space/tab2.dart';

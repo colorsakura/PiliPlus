@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:PiliPlus/build_config.dart';
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/ua_type.dart';

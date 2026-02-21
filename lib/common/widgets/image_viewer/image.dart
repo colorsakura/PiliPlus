@@ -5,10 +5,10 @@
 import 'dart:io' show File;
 import 'dart:math' as math;
 
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/gesture/image_horizontal_drag_gesture_recognizer.dart';
 import 'package:PiliPlus/common/widgets/gesture/image_tap_gesture_recognizer.dart';
 import 'package:PiliPlus/common/widgets/image_viewer/viewer.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

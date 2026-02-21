@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/skeleton/video_card_h.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/pages/search_panel/all/controller.dart';
 import 'package:PiliPlus/pages/search_panel/all/widgets/pgc_card_v_search.dart';

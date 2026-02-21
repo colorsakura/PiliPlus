@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/common/widgets/badge.dart';
 import 'package:PiliPlus/common/widgets/dialog/report.dart';
 import 'package:PiliPlus/common/widgets/flutter/text/text.dart' as custom_text;

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/common/widgets/scale_app.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/services/account_service.dart';

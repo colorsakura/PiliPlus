@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/skeleton/skeleton.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class MediaPgcSkeleton extends StatefulWidget {

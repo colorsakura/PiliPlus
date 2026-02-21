@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -11,14 +11,14 @@ import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/models/model_rec_video_item.dart';
-import 'package:PiliPlus/models/pgc_lcf.dart';
-import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/pgc/pgc_rank/pgc_rank_item_model.dart';
+import 'package:PiliPlus/models/pgc_lcf.dart';
 import 'package:PiliPlus/models/popular/popular_precious/data.dart';
 import 'package:PiliPlus/models/popular/popular_series_list/list.dart';
 import 'package:PiliPlus/models/popular/popular_series_one/data.dart';
 import 'package:PiliPlus/models/triple/pgc_triple.dart';
 import 'package:PiliPlus/models/triple/ugc_triple.dart';
+import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_ai_conclusion/data.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
 import 'package:PiliPlus/models/video/video_detail/video_detail_response.dart';

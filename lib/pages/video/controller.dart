@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:math' show min;
 import 'dart:ui';
 
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/common/widgets/pair.dart';
 import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 import 'package:PiliPlus/http/constants.dart';
@@ -14,7 +15,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/http/video.dart';
-import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/action_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/post_segment_model.dart';

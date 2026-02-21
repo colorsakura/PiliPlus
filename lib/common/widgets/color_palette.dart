@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class ColorPalette extends StatelessWidget {

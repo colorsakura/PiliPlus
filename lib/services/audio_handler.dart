@@ -1,6 +1,6 @@
 import 'dart:io' show File;
 
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pb.dart' show DetailItem;
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/models/live/live_room_info_h5/data.dart';

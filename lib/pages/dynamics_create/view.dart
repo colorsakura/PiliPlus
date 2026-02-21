@@ -1,6 +1,5 @@
 import 'dart:math' show max;
 
-import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/button/toolbar_icon_button.dart';
 import 'package:PiliPlus/common/widgets/custom_icon.dart';
@@ -10,14 +9,15 @@ import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/text_field.dart';
 import 'package:PiliPlus/common/widgets/pair.dart';
 import 'package:PiliPlus/common/widgets/time_picker.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';
 import 'package:PiliPlus/models/common/reply/reply_option_type.dart';
-import 'package:PiliPlus/models/dynamics/result.dart' show PicModel;
-import 'package:PiliPlus/models/dynamics/vote_model.dart';
 import 'package:PiliPlus/models/dynamic/dyn_reserve_info/data.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
+import 'package:PiliPlus/models/dynamics/result.dart' show PicModel;
+import 'package:PiliPlus/models/dynamics/vote_model.dart';
 import 'package:PiliPlus/pages/common/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/pages/dynamics_create_reserve/view.dart';
 import 'package:PiliPlus/pages/dynamics_create_vote/view.dart';

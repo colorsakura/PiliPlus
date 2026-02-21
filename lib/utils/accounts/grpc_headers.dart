@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/metadata.pb.dart';
 import 'package:PiliPlus/grpc/bilibili/metadata/device.pb.dart';
 import 'package:PiliPlus/grpc/bilibili/metadata/fawkes.pb.dart';
