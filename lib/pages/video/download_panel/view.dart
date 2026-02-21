@@ -22,7 +22,6 @@ import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
-import 'package:PiliPlus/utils/utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter/material.dart';
@@ -309,8 +308,7 @@ class _DownloadPanelState extends State<DownloadPanel> {
       }
       cidSet.add(cid);
       return true;
-    } catch (e, s) {
-      Utils.reportError(e, s);
+    } catch (e) {
       SmartDialog.showToast(e.toString());
     }
     return false;

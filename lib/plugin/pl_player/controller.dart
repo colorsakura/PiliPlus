@@ -1056,7 +1056,6 @@ class PlPlayerController with BlockConfigMixin {
       if (kDebugMode)
         controllerStream.log.listen(((PlayerLog log) {
           if (log.level == 'error' || log.level == 'fatal') {
-            Utils.reportError('${log.level}: ${log.prefix}: ${log.text}', null);
           } else {
             debugPrint(log.toString());
           }

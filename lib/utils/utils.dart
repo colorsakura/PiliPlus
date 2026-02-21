@@ -5,7 +5,6 @@ import 'dart:math' show Random;
 
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:catcher_2/catcher_2.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
@@ -184,13 +183,5 @@ abstract final class Utils {
     }
     RangeError.checkNotNegative(slash, '/');
     return uri.substring(slash + 1, (fileExt || dot == -1) ? qMark : dot);
-  }
-
-  /// When calling this from a `catch` block consider annotating the method
-  /// containing the `catch` block with
-  /// `@pragma('vm:notify-debugger-on-exception')` to allow an attached debugger
-  /// to treat the exception as unhandled.
-  static void reportError(Object exception, [StackTrace? stack]) {
-    Catcher2.reportCheckedError(exception, stack);
   }
 }

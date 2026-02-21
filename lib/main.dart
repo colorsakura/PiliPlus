@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/build_config.dart';
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/scale_app.dart';
 import 'package:PiliPlus/http/init.dart';
@@ -11,9 +10,7 @@ import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/calc_window_position.dart';
-import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
-import 'package:PiliPlus/utils/json_file_handler.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
@@ -21,7 +18,6 @@ import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
-import 'package:catcher_2/catcher_2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -177,44 +173,7 @@ void main() async {
     await MyApp.initPlatformState();
   }
 
-  if (Pref.enableLog) {
-    // 异常捕获 logo记录
-    final customParameters = {
-      'BuildConfig':
-          '\nBuild Time: ${DateFormatUtils.format(BuildConfig.buildTime, format: DateFormatUtils.longFormatDs)}\n'
-          'Commit Hash: ${BuildConfig.commitHash}',
-    };
-    final fileHandler = await JsonFileHandler.init();
-    final Catcher2Options debugConfig = Catcher2Options(
-      SilentReportMode(),
-      [
-        ?fileHandler,
-        ConsoleHandler(
-          enableDeviceParameters: false,
-          enableApplicationParameters: false,
-          enableCustomParameters: true,
-        ),
-      ],
-      customParameters: customParameters,
-    );
-
-    final Catcher2Options releaseConfig = Catcher2Options(
-      SilentReportMode(),
-      [
-        ?fileHandler,
-        ConsoleHandler(enableCustomParameters: true),
-      ],
-      customParameters: customParameters,
-    );
-
-    Catcher2(
-      debugConfig: debugConfig,
-      releaseConfig: releaseConfig,
-      rootWidget: const MyApp(),
-    );
-  } else {
-    runApp(const ProviderScope(child: MyApp()));
-  }
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class _CustomHttpOverrides extends HttpOverrides {

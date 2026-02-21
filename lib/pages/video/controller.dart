@@ -1338,9 +1338,7 @@ class VideoDetailController extends GetxController
           return true;
         }
       }
-    } catch (e, s) {
-      Utils.reportError(e, s);
-    }
+    } catch (e) {}
     return false;
   }
 

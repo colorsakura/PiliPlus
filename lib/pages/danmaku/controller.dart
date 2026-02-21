@@ -8,7 +8,6 @@ import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/danmaku_options.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
-import 'package:PiliPlus/utils/utils.dart';
 import 'package:path/path.dart' as path;
 
 class PlDanmakuController {
@@ -128,8 +127,8 @@ class PlDanmakuController {
       if (bytes.isEmpty) return;
       final elem = DmSegMobileReply.fromBuffer(bytes).elems;
       handleDanmaku(elem);
-    } catch (e, s) {
-      Utils.reportError(e, s);
+    } catch (e) {
+      // Error loading danmaku file, silently ignore
     }
   }
 }

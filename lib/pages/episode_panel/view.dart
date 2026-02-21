@@ -29,8 +29,7 @@ import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
-import 'package:PiliPlus/utils/utils.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' hide TabBarView;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -129,9 +128,7 @@ class _EpisodePanelState extends State<EpisodePanel>
           _itemScrollController[_currentTabIndex.value].jumpTo(
             _calcItemOffset(newItemIndex),
           );
-        } catch (e, s) {
-          Utils.reportError(e, s);
-        }
+        } catch (e) {}
       }
     }
 

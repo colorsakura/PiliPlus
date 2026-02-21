@@ -1223,8 +1223,7 @@ class HeaderControlState extends State<HeaderControl>
                             allowedExtensions: const ['json'],
                           );
                         }
-                      } catch (e, s) {
-                        Utils.reportError(e, s);
+                      } catch (e) {
                         SmartDialog.showToast(e.toString());
                       }
                     },

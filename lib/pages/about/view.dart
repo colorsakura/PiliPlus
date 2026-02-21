@@ -7,7 +7,6 @@ import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/pages/mine/controller.dart';
-import 'package:PiliPlus/services/logger.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
@@ -200,17 +199,6 @@ Commit Hash: ${BuildConfig.commitHash}''',
               size: 16,
               color: outline,
             ),
-          ),
-          ListTile(
-            onTap: () => Get.toNamed('/logs'),
-            onLongPress: LoggerUtils.clearLogs,
-            onSecondaryTap: PlatformUtils.isMobile
-                ? null
-                : LoggerUtils.clearLogs,
-            leading: const Icon(Icons.bug_report_outlined),
-            title: const Text('错误日志'),
-            subtitle: Text('长按清除日志', style: subTitleStyle),
-            trailing: Icon(Icons.arrow_forward, size: 16, color: outline),
           ),
           ListTile(
             onTap: () {

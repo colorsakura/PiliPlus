@@ -1,7 +1,6 @@
 import 'package:PiliPlus/common/widgets/radio_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -117,10 +116,9 @@ Future<void> autoWrapReportDialog(
               } else {
                 res.toast();
               }
-            } catch (e, s) {
+            } catch (e) {
               SmartDialog.dismiss();
               SmartDialog.showToast('提交失败：$e');
-              Utils.reportError(e, s);
             }
           },
           child: const Text('确定'),
@@ -142,20 +140,17 @@ class CheckBoxText extends StatefulWidget {
     this.selected = false,
   });
 
-  @override
   State<CheckBoxText> createState() => _CheckBoxTextState();
 }
 
 class _CheckBoxTextState extends State<CheckBoxText> {
   late bool _selected;
 
-  @override
   void initState() {
     super.initState();
     _selected = widget.selected;
   }
 
-  @override
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
     return InkWell(
