@@ -1338,7 +1338,9 @@ class VideoDetailController extends GetxController
           return true;
         }
       }
-    } catch (e) {}
+    } catch (_) {
+      // Ignore: exception during segment skip
+    }
     return false;
   }
 

@@ -128,7 +128,9 @@ class _EpisodePanelState extends State<EpisodePanel>
           _itemScrollController[_currentTabIndex.value].jumpTo(
             _calcItemOffset(newItemIndex),
           );
-        } catch (e) {}
+        } catch (_) {
+          // Ignore: scroll controller might not be attached yet
+        }
       }
     }
 

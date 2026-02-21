@@ -1,191 +1,36 @@
-import 'dart:io';
-
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/common/widgets/scale_app.dart';
-import 'package:PiliPlus/http/init.dart';
-import 'package:PiliPlus/services/account_service.dart';
-import 'package:PiliPlus/services/download/download_service.dart';
-import 'package:PiliPlus/services/service_locator.dart';
-import 'package:PiliPlus/utils/app_scheme.dart';
-import 'package:PiliPlus/utils/cache_manager.dart';
-import 'package:PiliPlus/utils/calc_window_position.dart';
-import 'package:PiliPlus/utils/extension/iterable_ext.dart';
-import 'package:PiliPlus/utils/path_utils.dart';
+import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/utils/request_utils.dart';
-import 'package:PiliPlus/utils/storage.dart';
-import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
-import 'package:PiliPlus/utils/utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get.dart';
-import 'package:media_kit/media_kit.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:window_manager/window_manager.dart' hide calcWindowPosition;
-
-WebViewEnvironment? webViewEnvironment;
-
-Future<void> _initDownPath() async {
-  if (PlatformUtils.isDesktop) {
-    final customDownPath = Pref.downloadPath;
-    if (customDownPath != null && customDownPath.isNotEmpty) {
-      try {
-        final dir = Directory(customDownPath);
-        if (!dir.existsSync()) {
-          await dir.create(recursive: true);
-        }
-        downloadPath = customDownPath;
-      } catch (e) {
-        downloadPath = defDownloadPath;
-        await GStorage.setting.delete(SettingBoxKey.downloadPath);
-        if (kDebugMode) {
-          debugPrint('download path error: $e');
-        }
-      }
-    } else {
-      downloadPath = defDownloadPath;
-    }
-  } else if (Platform.isAndroid) {
-    final externalStorageDirPath = (await getExternalStorageDirectory())?.path;
-    downloadPath = externalStorageDirPath != null
-        ? path.join(externalStorageDirPath, PathUtils.downloadDir)
-        : defDownloadPath;
-  } else {
-    downloadPath = defDownloadPath;
-  }
-}
-
-Future<void> _initTmpPath() async {
-  tmpDirPath = (await getTemporaryDirectory()).path;
-}
-
-Future<void> _initAppPath() async {
-  appSupportDirPath = (await getApplicationSupportDirectory()).path;
-}
 
 void main() async {
-  ScaledWidgetsFlutterBinding.ensureInitialized();
-  MediaKit.ensureInitialized();
-  await _initAppPath();
-  try {
-    await GStorage.init();
-  } catch (e) {
-    await Utils.copyText(e.toString());
-    if (kDebugMode) debugPrint('GStorage init error: $e');
-    exit(0);
-  }
-  ScaledWidgetsFlutterBinding.instance.scaleFactor = Pref.uiScale;
-  await Future.wait([_initDownPath(), _initTmpPath()]);
-  Get
-    ..lazyPut(AccountService.new)
-    ..lazyPut(DownloadService.new);
-  HttpOverrides.global = _CustomHttpOverrides();
+  // 阻塞阶段 - 必须在 runApp 前完成
+  await AppInitializer.blockingPhase();
 
-  CacheManager.autoClearCache();
-
-  if (PlatformUtils.isMobile) {
-    await Future.wait([
-      SystemChrome.setPreferredOrientations(
-        [
-          DeviceOrientation.portraitUp,
-          if (Pref.horizontalScreen) ...[
-            DeviceOrientation.landscapeLeft,
-            DeviceOrientation.landscapeRight,
-          ],
-        ],
-      ),
-      setupServiceLocator(),
-    ]);
-  } else if (Platform.isWindows) {
-    if (await WebViewEnvironment.getAvailableVersion() != null) {
-      webViewEnvironment = await WebViewEnvironment.create(
-        settings: WebViewEnvironmentSettings(
-          userDataFolder: path.join(appSupportDirPath, 'flutter_inappwebview'),
-        ),
-      );
-    }
-  }
-
-  Request();
-  Request.setCookie();
-  RequestUtils.syncHistoryStatus();
-
+  // SmartDialog 配置 - 在 runApp 前设置
   SmartDialog.config.toast = SmartConfigToast(
     displayType: SmartToastType.onlyRefresh,
   );
 
-  if (PlatformUtils.isMobile) {
-    PiliScheme.init();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarDividerColor: Colors.transparent,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarContrastEnforced: false,
-      ),
-    );
-    if (Platform.isAndroid) {
-      FlutterDisplayMode.supported.then((mode) {
-        final String? storageDisplay = GStorage.setting.get(
-          SettingBoxKey.displayMode,
-        );
-        DisplayMode? displayMode;
-        if (storageDisplay != null) {
-          displayMode = mode.firstWhereOrNull(
-            (e) => e.toString() == storageDisplay,
-          );
-        }
-        FlutterDisplayMode.setPreferredMode(displayMode ?? DisplayMode.auto);
-      });
-    }
-  } else if (PlatformUtils.isDesktop) {
-    await windowManager.ensureInitialized();
-
-    final windowOptions = WindowOptions(
-      minimumSize: const Size(400, 720),
-      skipTaskbar: false,
-      titleBarStyle: Pref.showWindowTitleBar
-          ? TitleBarStyle.normal
-          : TitleBarStyle.hidden,
-      title: Constants.appName,
-    );
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      final windowSize = Pref.windowSize;
-      await windowManager.setBounds(
-        await calcWindowPosition(windowSize) & windowSize,
-      );
-      if (Pref.isWindowMaximized) await windowManager.maximize();
-      await windowManager.show();
-      await windowManager.focus();
-    });
-  }
-
+  // 动态颜色初始化 (如果启用)
   if (Pref.dynamicColor) {
     await MyApp.initPlatformState();
   }
 
+  // 启动应用
   runApp(const ProviderScope(child: MyApp()));
-}
 
-class _CustomHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    final client = super.createHttpClient(context);
-    // ..maxConnectionsPerHost = 32
-    /// The default value is 15 seconds.
-    //   ..idleTimeout = const Duration(seconds: 15);
-    if (kDebugMode || Pref.badCertificateCallback) {
-      client.badCertificateCallback = (cert, host, port) => true;
-    }
-    return client;
+  // 核心阶段 - runApp 后异步执行
+  await AppInitializer.corePhase();
+
+  // 辅助阶段 - 按需初始化
+  if (PlatformUtils.isDesktop) {
+    await Future.wait([
+      AppInitializer.initWebView(),
+      AppInitializer.initWindowManager(),
+    ]);
   }
 }

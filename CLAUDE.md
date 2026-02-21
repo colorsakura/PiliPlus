@@ -70,6 +70,30 @@ Build outputs go to `dist/` directory (configured in `distribute_options.yaml`).
    - Single Request singleton in `lib/http/init.dart`
    - Feature-specific API files: `login.dart`, `video.dart`, `dynamics.dart`, `live.dart`
 
+### Startup Flow
+
+The app uses a three-phase initialization strategy managed by `AppInitializer`:
+
+1. **Blocking Phase** (before `runApp`):
+   - Flutter bindings (ScaledWidgetsFlutterBinding, MediaKit)
+   - App paths
+   - Critical storage (only `setting` Box)
+
+2. **Core Phase** (async after `runApp`):
+   - Full storage initialization (all Hive boxes)
+   - HTTP client
+   - GetX services (AccountService, DownloadService)
+   - Platform settings (orientation, system UI)
+
+3. **Auxiliary Phase** (on-demand lazy loading):
+   - Audio service (setupServiceLocator)
+   - WebView (desktop only)
+   - Window manager (desktop only)
+
+This design minimizes startup time while maintaining code organization.
+
+For implementation details, see `lib/services/app_initializer/app_initializer.dart`.
+
 ### Directory Structure
 
 ```

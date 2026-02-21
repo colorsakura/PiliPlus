@@ -21,10 +21,36 @@ abstract final class GStorage {
   static late final Box<dynamic> video;
   static late final Box<int> watchProgress;
 
-  static Future<void> init() async {
+  /// 仅初始化关键 Box (用于阻塞阶段)
+  ///
+  /// 只打开 setting Box,用于读取 UI 缩放等关键设置
+  /// 其他 Box 延迟到核心阶段打开,以加快启动速度
+  static Future<void> initCritical() async {
     await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
     regAdapter();
 
+    // 只打开 setting Box
+    setting = await Hive.openBox('setting');
+  }
+
+  static Future<void> init() async {
+    // 检查是否需要初始化基础设置
+    // 使用 try-catch 来安全地检查 setting 是否已初始化
+    bool needBaseInit;
+    try {
+      needBaseInit = !setting.isOpen;
+    } catch (e) {
+      // setting 未初始化，需要进行基础初始化
+      needBaseInit = true;
+    }
+
+    if (needBaseInit) {
+      await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
+      regAdapter();
+      await Hive.openBox('setting').then((res) => setting = res);
+    }
+
+    // 打开其他 Box
     await Future.wait([
       // 登录用户信息
       Hive.openBox<UserInfoData>(
@@ -40,8 +66,6 @@ abstract final class GStorage {
           return deletedEntries > 4;
         },
       ).then((res) => localCache = res),
-      // 设置
-      Hive.openBox('setting').then((res) => setting = res),
       // 搜索历史
       Hive.openBox(
         'historyWord',

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/main.dart';
 import 'package:PiliPlus/models/common/webview_menu_type.dart';
+import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/login_utils.dart';
@@ -161,7 +162,7 @@ class _WebviewPageState extends State<WebviewPage> {
             ),
       body: SafeArea(
         child: InAppWebView(
-          webViewEnvironment: webViewEnvironment,
+          webViewEnvironment: AppInitializer.webViewEnvironment,
           initialSettings: InAppWebViewSettings(
             clearCache: true,
             javaScriptEnabled: true,
