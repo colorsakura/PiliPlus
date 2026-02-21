@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:PiliPlus/http/ua_type.dart';
-import 'package:PiliPlus/main.dart';
 import 'package:PiliPlus/models/common/webview_menu_type.dart';
 import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';

@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/user.dart';
-import 'package:PiliPlus/main.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/utils/accounts.dart';
