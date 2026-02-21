@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/services.dart';

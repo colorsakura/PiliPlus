@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/common/sponsor_block/post_segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/sponsor_block/segment_item.dart';
 import 'package:PiliPlus/models/sponsor_block/user_info.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;

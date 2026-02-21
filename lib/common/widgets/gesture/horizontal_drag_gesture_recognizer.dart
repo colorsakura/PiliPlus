@@ -1,4 +1,4 @@
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/gestures.dart';
 
 class CustomHorizontalDragGestureRecognizer

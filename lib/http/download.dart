@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/models/download/bili_download_media_file_info.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 
 abstract final class DownloadHttp {

@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:PiliPlus/common/widgets/scale_app.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/core/storage/storage.dart';
+import 'package:PiliPlus/core/storage/storage_key.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
@@ -14,9 +17,6 @@ import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
-import 'package:PiliPlus/utils/storage.dart';
-import 'package:PiliPlus/utils/storage_key.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -183,9 +183,7 @@ class AppInitializer {
   /// 支持的平台: Windows, macOS, Android, iOS, Web
   static Future<void> initWebView() async {
     // Linux 不支持 flutter_inappwebview
-    if (!PlatformUtils.isDesktop ||
-        Platform.isLinux ||
-        _webViewInitialized) {
+    if (!PlatformUtils.isDesktop || Platform.isLinux || _webViewInitialized) {
       return;
     }
 

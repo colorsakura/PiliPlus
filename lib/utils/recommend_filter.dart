@@ -1,5 +1,5 @@
 import 'package:PiliPlus/models/model_video.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 abstract final class RecommendFilter {
   static int minDurationForRcmd = Pref.minDurationForRcmd;

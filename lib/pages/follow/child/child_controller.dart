@@ -7,9 +7,9 @@ import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/pages/common/common_list_controller.dart';
 import 'package:PiliPlus/pages/follow/controller.dart';
-import 'package:PiliPlus/utils/storage.dart';
-import 'package:PiliPlus/utils/storage_key.dart';
-import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/core/storage/storage.dart';
+import 'package:PiliPlus/core/storage/storage_key.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:get/get.dart';
 
 class FollowChildController
