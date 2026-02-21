@@ -1,6 +1,7 @@
 import 'dart:async';
+
+import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
-import 'package:PiliPlus/pages/main/controller.dart';
 
 /// Manages periodic network requests for MainController
 class NetworkManager {
@@ -23,7 +24,8 @@ class NetworkManager {
     if (!controller.accountService.isLogin.value) return;
 
     // Only check if on home tab
-    final currentNav = controller.navigationBars[controller.selectedIndex.value];
+    final currentNav =
+        controller.navigationBars[controller.selectedIndex.value];
     if (currentNav == NavigationBarType.home) {
       await Future.wait([
         controller.checkUnreadDynamic(),

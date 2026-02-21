@@ -1,5 +1,6 @@
 import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/models/common/setting_type.dart';
 import 'package:PiliPlus/pages/about/view.dart';
@@ -11,7 +12,6 @@ import 'package:PiliPlus/pages/setting/recommend_setting.dart';
 import 'package:PiliPlus/pages/setting/style_setting.dart';
 import 'package:PiliPlus/pages/setting/video_setting.dart';
 import 'package:PiliPlus/pages/setting/widgets/multi_select_dialog.dart';
-import 'package:PiliPlus/pages/webdav/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -129,7 +129,7 @@ class _SettingPageState extends State<SettingPage> {
                       SettingType.extraSetting => const ExtraSetting(
                         showAppBar: false,
                       ),
-                      SettingType.webdavSetting => const WebDavSettingPage(
+                      SettingType.webdavSetting => const BackupPage(
                         showAppBar: false,
                       ),
                       SettingType.about => const AboutPage(showAppBar: false),

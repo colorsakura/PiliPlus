@@ -1,13 +1,13 @@
 import 'package:PiliPlus/common/constants.dart';
-import 'package:PiliPlus/pages/webdav/webdav.dart';
+import 'package:PiliPlus/features/backup/webdav.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-class WebDavSettingPage extends StatefulWidget {
-  const WebDavSettingPage({
+class BackupPage extends StatefulWidget {
+  const BackupPage({
     super.key,
     this.showAppBar = true,
   });
@@ -15,10 +15,10 @@ class WebDavSettingPage extends StatefulWidget {
   final bool showAppBar;
 
   @override
-  State<WebDavSettingPage> createState() => _WebDavSettingPageState();
+  State<BackupPage> createState() => _BackupPageState();
 }
 
-class _WebDavSettingPageState extends State<WebDavSettingPage> {
+class _BackupPageState extends State<BackupPage> {
   final _uriCtr = TextEditingController(text: Pref.webdavUri);
   final _usernameCtr = TextEditingController(text: Pref.webdavUsername);
   final _passwordCtr = TextEditingController(text: Pref.webdavPassword);

@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/widgets/flutter/pop_scope.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/pages/home/view.dart';
-import 'package:PiliPlus/pages/main/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
@@ -23,14 +23,14 @@ import 'package:get/get.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class ShellPage extends StatefulWidget {
+  const ShellPage({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<ShellPage> createState() => _ShellPageState();
 }
 
-class _MainAppState extends PopScopeState<MainApp>
+class _ShellPageState extends PopScopeState<ShellPage>
     with RouteAware, WidgetsBindingObserver, WindowListener, TrayListener {
   final _mainController = Get.put(MainController());
   late final _setting = GStorage.setting;

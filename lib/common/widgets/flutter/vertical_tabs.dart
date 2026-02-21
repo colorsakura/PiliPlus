@@ -5,7 +5,7 @@
 import 'dart:math' as math;
 import 'dart:ui' show SemanticsRole, lerpDouble;
 
-import 'package:PiliPlus/pages/main/controller.dart';
+import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
