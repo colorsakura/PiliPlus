@@ -1,20 +1,31 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:PiliPlus/core/storage/storage.dart';
+import 'package:PiliPlus/core/storage/storage_key.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
-import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:PiliPlus/core/storage/storage_key.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// @deprecated
+///
+/// This controller is deprecated. Use the new clean architecture implementation:
+/// - lib/features/home/presentation/providers/home_tab_controller.dart
+/// - lib/features/home/presentation/providers/search_controller.dart
+///
+/// The new implementation uses Riverpod instead of GetX for better state management
+/// and follows clean architecture principles.
+@Deprecated(
+  'Use homeTabConfigControllerProvider and searchSuggestionControllerProvider instead',
+)
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin, ScrollOrRefreshMixin {
   late List<HomeTabType> tabs;

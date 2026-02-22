@@ -1,6 +1,6 @@
 import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
+import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
-import 'package:PiliPlus/pages/home/controller.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

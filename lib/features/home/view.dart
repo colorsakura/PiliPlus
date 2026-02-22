@@ -1,10 +1,23 @@
+// TODO: Remove this file after migration is complete
+// @deprecated: Use lib/features/home/presentation/pages/home_page.dart instead
+
+/// @deprecated
+///
+/// This page is deprecated. Use the new clean architecture implementation:
+/// - lib/features/home/presentation/pages/home_page.dart
+///
+/// The new implementation uses Riverpod instead of GetX for better state management
+/// and follows clean architecture principles with proper separation of concerns.
+@Deprecated(
+  'Use HomePage from lib/features/home/presentation/pages/home_page.dart instead',
+)
 import 'package:PiliPlus/common/widgets/custom_height_widget.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/pages/common/common_page.dart';
-import 'package:PiliPlus/pages/home/controller.dart';
 import 'package:PiliPlus/pages/mine/controller.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
