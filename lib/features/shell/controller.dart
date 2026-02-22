@@ -1,7 +1,24 @@
+// ignore_for_file: deprecated_member_use
+//
+// ========================================
+// DEPRECATED - This file is deprecated
+// ========================================
+//
+// This file has been replaced by the clean architecture implementation.
+// Use the Riverpod providers in `presentation/providers/` instead.
+//
+// Migration guide:
+// - Navigation: Use `navigationConfigControllerProvider`
+// - Unread messages: Use `unreadMessageControllerProvider`
+// - Unread dynamics: Use `unreadDynamicControllerProvider`
+// - Periodic checks: Use `periodicCheckSchedulerProvider`
+//
+// This file is kept for backward compatibility during the migration period
+// and will be removed once all dependent pages are migrated.
+
 import 'dart:async';
 
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
-import 'package:PiliPlus/features/shell/network_manager.dart';
 import 'package:PiliPlus/grpc/dyn.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
@@ -24,6 +41,7 @@ import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// @deprecated Use `navigationConfigControllerProvider` instead
 class MainController extends GetxController
     with GetSingleTickerProviderStateMixin, AccountMixin {
   @override
@@ -66,8 +84,6 @@ class MainController extends GetxController
   static const _period = 5 * 60 * 1000;
   late int _lastSelectTime = 0;
 
-  NetworkManager? _networkManager;
-
   @override
   void onInit() {
     super.onInit();
@@ -108,10 +124,7 @@ class MainController extends GetxController
         queryUnreadMsg();
       }
     }
-
-    // Start periodic network checks
-    _networkManager = NetworkManager(this);
-    _networkManager!.startPeriodicChecks();
+    // Note: Periodic checks now handled by PeriodicCheckScheduler in new architecture
   }
 
   Future<int> _msgUnread() async {
@@ -325,7 +338,6 @@ class MainController extends GetxController
   void onClose() {
     barOffset?.close();
     controller.dispose();
-    _networkManager?.dispose();
     super.onClose();
   }
 
