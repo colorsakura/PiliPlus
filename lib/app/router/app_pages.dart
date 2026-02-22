@@ -1,5 +1,6 @@
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
+import 'package:PiliPlus/features/home_hot/view.dart';
 import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
 import 'package:PiliPlus/pages/about/view.dart';
 import 'package:PiliPlus/pages/article/view.dart';
@@ -25,7 +26,6 @@ import 'package:PiliPlus/pages/follow_type/follow_same/view.dart';
 import 'package:PiliPlus/pages/follow_type/followed/view.dart';
 import 'package:PiliPlus/pages/history/view.dart';
 import 'package:PiliPlus/pages/history_search/view.dart';
-import 'package:PiliPlus/pages/hot/view.dart';
 import 'package:PiliPlus/pages/later/view.dart';
 import 'package:PiliPlus/pages/later_search/view.dart';
 import 'package:PiliPlus/pages/live_dm_block/view.dart';

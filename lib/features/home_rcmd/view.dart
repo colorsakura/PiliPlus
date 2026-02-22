@@ -3,10 +3,10 @@ import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/rcmd/controller.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/home_rcmd/controller.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
