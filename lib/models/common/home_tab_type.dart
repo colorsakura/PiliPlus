@@ -2,8 +2,7 @@ import 'package:PiliPlus/features/home_hot/controller.dart';
 import 'package:PiliPlus/features/home_hot/view.dart';
 import 'package:PiliPlus/features/home_live/controller.dart';
 import 'package:PiliPlus/features/home_live/view.dart';
-import 'package:PiliPlus/features/home_rcmd/controller.dart';
-import 'package:PiliPlus/features/home_rcmd/view.dart';
+import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/pages/pgc/controller.dart';
@@ -28,7 +27,9 @@ enum HomeTabType implements EnumWithLabel {
 
   ScrollOrRefreshMixin Function() get ctr => switch (this) {
     HomeTabType.live => Get.find<LiveController>,
-    HomeTabType.rcmd => Get.find<RcmdController>,
+    HomeTabType.rcmd => () => throw UnimplementedError(
+      'RcmdPage uses Riverpod, not GetX. Access state via recommendationControllerProvider.',
+    ),
     HomeTabType.hot => Get.find<HotController>,
     HomeTabType.rank => Get.find<RankController>,
     HomeTabType.bangumi ||

@@ -1,11 +1,9 @@
 import 'package:PiliPlus/core/storage/storage_key.dart';
-import 'package:PiliPlus/features/home_rcmd/controller.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/pages/setting/models/model.dart';
 import 'package:PiliPlus/utils/recommend_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 List<SettingsModel> get recommendSettings => [
   const SwitchModel(
@@ -22,15 +20,7 @@ List<SettingsModel> get recommendSettings => [
     leading: const Icon(Icons.refresh),
     setKey: SettingBoxKey.enableSaveLastData,
     defaultVal: true,
-    onChanged: (value) {
-      try {
-        Get.find<RcmdController>()
-          ..enableSaveLastData = value
-          ..lastRefreshAt = null;
-      } catch (e) {
-        if (kDebugMode) debugPrint('$e');
-      }
-    },
+    // Note: 该设置现在由 Riverpod controller 自动读取，无需手动更新
   ),
   SwitchModel(
     title: '显示上次看到位置提示',
@@ -38,15 +28,7 @@ List<SettingsModel> get recommendSettings => [
     leading: const Icon(Icons.tips_and_updates_outlined),
     setKey: SettingBoxKey.savedRcmdTip,
     defaultVal: true,
-    onChanged: (value) {
-      try {
-        Get.find<RcmdController>()
-          ..savedRcmdTip = value
-          ..lastRefreshAt = null;
-      } catch (e) {
-        if (kDebugMode) debugPrint('$e');
-      }
-    },
+    // Note: 该设置现在由 Riverpod controller 自动读取，无需手动更新
   ),
   getVideoFilterSelectModel(
     title: '点赞率',
