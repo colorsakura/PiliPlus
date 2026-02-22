@@ -181,6 +181,7 @@ class _VideoReplyReplyPanelState extends State<VideoReplyReplyPanel>
   Widget buildList(ThemeData theme) {
     final child = refreshIndicator(
       onRefresh: _controller.onRefresh,
+      isClampingScrollPhysics: widget.isNested,
       child: CustomScrollView(
         key: ValueKey(scrollController.hashCode),
         controller: scrollController,

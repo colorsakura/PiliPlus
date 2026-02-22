@@ -236,6 +236,7 @@ class _AudioPageState extends State<AudioPage> {
                       ),
                       child: refreshIndicator(
                         onRefresh: () => _controller.loadPrev(context),
+                        isClampingScrollPhysics: true,
                         child: CustomScrollView(
                           controller: scrollController,
                           physics: _controller.reachStart
