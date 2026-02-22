@@ -1,5 +1,4 @@
-import 'package:PiliPlus/features/home_hot/controller.dart';
-import 'package:PiliPlus/features/home_hot/view.dart';
+import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/home_live/controller.dart';
 import 'package:PiliPlus/features/home_live/view.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
@@ -11,6 +10,25 @@ import 'package:PiliPlus/pages/rank/controller.dart';
 import 'package:PiliPlus/pages/rank/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+/// Riverpod 页面的 ScrollOrRefreshMixin 代理
+/// 用于兼容旧的 HomeController 架构
+class _RiverpodScrollOrRefreshProxy with ScrollOrRefreshMixin {
+  _RiverpodScrollOrRefreshProxy();
+
+  @override
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  Future<void> onRefresh() async {
+    // Riverpod 页面自己处理刷新逻辑
+    // 这个代理只是为了满足类型要求
+  }
+
+  void dispose() {
+    scrollController.dispose();
+  }
+}
 
 enum HomeTabType implements EnumWithLabel {
   live('直播'),
@@ -25,12 +43,20 @@ enum HomeTabType implements EnumWithLabel {
   final String label;
   const HomeTabType(this.label);
 
+  // 为 Riverpod 页面创建代理的缓存
+  static final Map<HomeTabType, _RiverpodScrollOrRefreshProxy> _riverpodProxies =
+      {};
+
   ScrollOrRefreshMixin Function() get ctr => switch (this) {
     HomeTabType.live => Get.find<LiveController>,
-    HomeTabType.rcmd => () => throw UnimplementedError(
-      'RcmdPage uses Riverpod, not GetX. Access state via recommendationControllerProvider.',
+    HomeTabType.rcmd => () => _riverpodProxies.putIfAbsent(
+      HomeTabType.rcmd,
+      _RiverpodScrollOrRefreshProxy.new,
     ),
-    HomeTabType.hot => Get.find<HotController>,
+    HomeTabType.hot => () => _riverpodProxies.putIfAbsent(
+      HomeTabType.hot,
+      _RiverpodScrollOrRefreshProxy.new,
+    ),
     HomeTabType.rank => Get.find<RankController>,
     HomeTabType.bangumi ||
     HomeTabType.cinema => () => Get.find<PgcController>(tag: name),

@@ -5,28 +5,34 @@ import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/home/controller.dart';
-import 'package:PiliPlus/features/home_hot/controller.dart';
-import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
-import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/pages/rank/view.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
-class HotPage extends StatefulWidget {
+class HotPage extends ConsumerStatefulWidget {
   const HotPage({super.key});
 
   @override
-  State<HotPage> createState() => _HotPageState();
+  ConsumerState<HotPage> createState() => _HotPageState();
 }
 
-class _HotPageState extends State<HotPage>
+class _HotPageState extends ConsumerState<HotPage>
     with AutomaticKeepAliveClientMixin, GridMixin {
-  final HotController controller = Get.put(HotController());
-
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化时加载数据
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(hotVideoControllerProvider.notifier).initialize();
+    });
+  }
 
   Widget _buildEntranceItem({
     required String iconUrl,
@@ -58,11 +64,13 @@ class _HotPageState extends State<HotPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final controller = ref.watch(hotVideoControllerProvider);
+    final notifier = ref.read(hotVideoControllerProvider.notifier);
+
     return refreshIndicator(
-      onRefresh: controller.onRefresh,
+      onRefresh: notifier.onRefresh,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        controller: controller.scrollController,
         slivers: [
           if (Pref.showHotRcmd)
             SliverToBoxAdapter(
@@ -113,40 +121,44 @@ class _HotPageState extends State<HotPage>
             ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 7, bottom: 100),
-            sliver: Obx(
-              () => _buildBody(controller.loadingState.value),
-            ),
+            sliver: _buildBody(controller, notifier),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(LoadingState<List<HotVideoItemModel>?> loadingState) {
-    return switch (loadingState) {
-      Loading() => gridSkeleton,
-      Success(:final response) =>
-        response != null && response.isNotEmpty
-            ? SliverGrid.builder(
-                gridDelegate: gridDelegate,
-                itemBuilder: (context, index) {
-                  if (index == response.length - 1) {
-                    controller.onLoadMore();
-                  }
-                  return VideoCardH(
-                    videoItem: response[index],
-                    onRemove: () => controller.loadingState
-                      ..value.data!.removeAt(index)
-                      ..refresh(),
-                  );
-                },
-                itemCount: response.length,
-              )
-            : HttpError(onReload: controller.onReload),
-      Error(:final errMsg) => HttpError(
-        errMsg: errMsg,
-        onReload: controller.onReload,
-      ),
-    };
+  Widget _buildBody(HotVideoState state, HotVideoController notifier) {
+    if (state.isLoading && state.result == null) {
+      return gridSkeleton;
+    }
+
+    if (state.errorMessage != null && state.result == null) {
+      return HttpError(
+        errMsg: state.errorMessage,
+        onReload: notifier.onReload,
+      );
+    }
+
+    final videos = state.displayList;
+
+    if (videos.isEmpty) {
+      return HttpError(onReload: notifier.onReload);
+    }
+
+    return SliverGrid.builder(
+      gridDelegate: gridDelegate,
+      itemBuilder: (context, index) {
+        if (index == videos.length - 1) {
+          // 延迟到 build 完成后执行，避免在构建期间修改 provider
+          Future.microtask(() => notifier.onLoadMore());
+        }
+        return VideoCardH(
+          videoItem: videos[index],
+          onRemove: () => notifier.removeVideo(index),
+        );
+      },
+      itemCount: videos.length,
+    );
   }
 }

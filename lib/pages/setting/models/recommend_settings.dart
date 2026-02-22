@@ -2,7 +2,6 @@ import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/pages/setting/models/model.dart';
 import 'package:PiliPlus/utils/recommend_filter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 List<SettingsModel> get recommendSettings => [
@@ -14,18 +13,18 @@ List<SettingsModel> get recommendSettings => [
     defaultVal: true,
     needReboot: true,
   ),
-  SwitchModel(
+  const SwitchModel(
     title: '保留首页推荐刷新',
     subtitle: '下拉刷新时保留上次内容',
-    leading: const Icon(Icons.refresh),
+    leading: Icon(Icons.refresh),
     setKey: SettingBoxKey.enableSaveLastData,
     defaultVal: true,
     // Note: 该设置现在由 Riverpod controller 自动读取，无需手动更新
   ),
-  SwitchModel(
+  const SwitchModel(
     title: '显示上次看到位置提示',
     subtitle: '保留上次推荐时，在上次刷新位置显示提示',
-    leading: const Icon(Icons.tips_and_updates_outlined),
+    leading: Icon(Icons.tips_and_updates_outlined),
     setKey: SettingBoxKey.savedRcmdTip,
     defaultVal: true,
     // Note: 该设置现在由 Riverpod controller 自动读取，无需手动更新
