@@ -1,5 +1,5 @@
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/backup/providers/backup_providers.dart';
+import 'package:PiliPlus/features/backup/presentation/providers/backup_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,9 +64,7 @@ class _BackupPageState extends ConsumerState<BackupPage> {
     final obscureText = state.obscureText;
 
     return Scaffold(
-      appBar: widget.showAppBar
-          ? AppBar(title: Text('WebDAV 设置'))
-          : null,
+      appBar: widget.showAppBar ? AppBar(title: Text('WebDAV 设置')) : null,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -148,7 +146,8 @@ class _BackupPageState extends ConsumerState<BackupPage> {
             ],
           ),
           Positioned(
-            right: kFloatingActionButtonMargin +
+            right:
+                kFloatingActionButtonMargin +
                 (widget.showAppBar ? padding.right : 0),
             bottom: kFloatingActionButtonMargin + padding.bottom,
             child: FloatingActionButton(

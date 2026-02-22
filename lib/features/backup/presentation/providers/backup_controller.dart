@@ -1,5 +1,5 @@
 import 'package:PiliPlus/features/backup/domain/entities/webdav_config.dart';
-import 'package:PiliPlus/features/backup/providers/domain_providers.dart';
+import 'package:PiliPlus/features/backup/presentation/providers/domain_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Backup 状态
@@ -118,7 +118,7 @@ class BackupController extends Notifier<BackupState> {
     }
 
     state = state.copyWith(isLoading: true, errorMessage: null);
-    
+
     // 先确保 WebDAV 已初始化
     final initResult = await _initializeWebDavUseCase(state.config);
     if (!initResult.success) {
@@ -128,7 +128,7 @@ class BackupController extends Notifier<BackupState> {
       );
       return;
     }
-    
+
     // 执行备份
     final result = await _backupSettingsUseCase();
 
@@ -149,7 +149,7 @@ class BackupController extends Notifier<BackupState> {
     }
 
     state = state.copyWith(isLoading: true, errorMessage: null);
-    
+
     // 先确保 WebDAV 已初始化
     final initResult = await _initializeWebDavUseCase(state.config);
     if (!initResult.success) {
@@ -159,7 +159,7 @@ class BackupController extends Notifier<BackupState> {
       );
       return;
     }
-    
+
     // 执行恢复
     final result = await _restoreSettingsUseCase();
 
