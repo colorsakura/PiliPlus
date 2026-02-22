@@ -8,7 +8,7 @@ import 'dart:io' show Platform;
 import 'package:PiliPlus/common/widgets/scroll_behavior.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RefreshIndicator;
 
 double displacement = Pref.refreshDisplacement;
 
@@ -207,9 +207,11 @@ class RefreshIndicator extends StatefulWidget {
 /// Contains the state for a [RefreshIndicator]. This class can be used to
 /// programmatically show the refresh indicator, see the [show] method.
 class RefreshIndicatorState extends State<RefreshIndicator>
-    with SingleTickerProviderStateMixin<RefreshIndicator> {
+    with TickerProviderStateMixin<RefreshIndicator> {
   late AnimationController _positionController;
+  late AnimationController _scaleController;
   late Animation<double> _positionFactor;
+  late Animation<double> _scaleFactor;
   late Animation<double> _value;
   late Animation<Color?> _valueColor;
 
@@ -229,6 +231,11 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     end: _kDragSizeFactorLimit,
   );
 
+  static final Animatable<double> _oneToZeroTween = Tween<double>(
+    begin: 1.0,
+    end: 0.0,
+  );
+
   @protected
   @override
   void initState() {
@@ -238,6 +245,9 @@ class RefreshIndicatorState extends State<RefreshIndicator>
 
     // The "value" of the circular progress indicator during a drag.
     _value = _positionController.drive(_threeQuarterTween);
+
+    _scaleController = AnimationController(vsync: this);
+    _scaleFactor = _scaleController.drive(_oneToZeroTween);
   }
 
   @protected
@@ -260,6 +270,7 @@ class RefreshIndicatorState extends State<RefreshIndicator>
   @override
   void dispose() {
     _positionController.dispose();
+    _scaleController.dispose();
     super.dispose();
   }
 
@@ -295,14 +306,11 @@ class RefreshIndicatorState extends State<RefreshIndicator>
         _start();
   }
 
-  double? _viewportDimension;
-
   bool _handleScrollNotification(ScrollNotification notification) {
     if (!widget.notificationPredicate(notification)) {
       return false;
     }
     if (_shouldStart(notification)) {
-      _viewportDimension = notification.metrics.viewportDimension;
       setState(() {
         _status = RefreshIndicatorStatus.drag;
       });
@@ -363,6 +371,7 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     assert(_status == null);
     assert(_dragOffset == null);
     _dragOffset = 0.0;
+    _scaleController.value = 0.0;
     _positionController.value = 0.0;
     return true;
   }
@@ -395,7 +404,10 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     });
     switch (_status!) {
       case RefreshIndicatorStatus.done:
-        break;
+        await _scaleController.animateTo(
+          1.0,
+          duration: _kIndicatorScaleDuration,
+        );
       case RefreshIndicatorStatus.canceled:
         await _positionController.animateTo(
           0.0,
@@ -509,14 +521,17 @@ class RefreshIndicatorState extends State<RefreshIndicator>
                 padding: EdgeInsets.only(top: widget.displacement),
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: AnimatedBuilder(
-                    animation: _positionController,
-                    builder: (context, child) => RefreshProgressIndicator(
-                      value: showIndeterminateIndicator ? null : _value.value,
-                      valueColor: _valueColor,
-                      backgroundColor: widget.backgroundColor,
-                      strokeWidth: widget.strokeWidth,
-                      elevation: widget.elevation,
+                  child: ScaleTransition(
+                    scale: _scaleFactor,
+                    child: AnimatedBuilder(
+                      animation: _positionController,
+                      builder: (context, child) => RefreshProgressIndicator(
+                        value: showIndeterminateIndicator ? null : _value.value,
+                        valueColor: _valueColor,
+                        backgroundColor: widget.backgroundColor,
+                        strokeWidth: widget.strokeWidth,
+                        elevation: widget.elevation,
+                      ),
                     ),
                   ),
                 ),
@@ -538,12 +553,11 @@ class RefreshIndicatorState extends State<RefreshIndicator>
     );
   }
 
-  bool _onDrag(double offset) {
+  bool _onDrag(double offset, double viewportDimension) {
     if (_positionController.value > 0.0 &&
-        _status == RefreshIndicatorStatus.drag &&
-        _viewportDimension != null) {
+        _status == RefreshIndicatorStatus.drag) {
       _dragOffset = _dragOffset! + offset;
-      _checkDragOffset(_viewportDimension!);
+      _checkDragOffset(viewportDimension);
       return true;
     }
     return false;
@@ -577,7 +591,7 @@ class RefreshScrollBehavior extends CustomScrollBehavior {
   }
 }
 
-typedef OnDrag = bool Function(double offset);
+typedef OnDrag = bool Function(double offset, double viewportDimension);
 
 class RefreshScrollPhysics extends ClampingScrollPhysics {
   const RefreshScrollPhysics({
@@ -597,7 +611,7 @@ class RefreshScrollPhysics extends ClampingScrollPhysics {
 
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    if (offset < 0.0 && onDrag(offset)) {
+    if (offset < 0.0 && onDrag(offset, position.viewportDimension)) {
       return 0.0;
     }
     return parent?.applyPhysicsToUserOffset(position, offset) ?? offset;
