@@ -5,6 +5,7 @@ import 'package:PiliPlus/common/widgets/scroll_behavior.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/common/theme/theme_color_type.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -133,7 +134,7 @@ class MyApp extends StatelessWidget {
 
       if (corePalette != null) {
         if (kDebugMode) {
-          debugPrint('dynamic_color: Core palette detected.');
+          AppLog.fine('Dynamic color: Core palette detected', name: 'App');
         }
         _light = corePalette.toColorScheme();
         _dark = corePalette.toColorScheme(brightness: Brightness.dark);
@@ -141,7 +142,10 @@ class MyApp extends StatelessWidget {
       }
     } on PlatformException {
       if (kDebugMode) {
-        debugPrint('dynamic_color: Failed to obtain core palette.');
+        AppLog.fine(
+          'Dynamic color: Failed to obtain core palette',
+          name: 'App',
+        );
       }
     }
 
@@ -150,7 +154,7 @@ class MyApp extends StatelessWidget {
 
       if (accentColor != null) {
         if (kDebugMode) {
-          debugPrint('dynamic_color: Accent color detected.');
+          AppLog.fine('Dynamic color: Accent color detected', name: 'App');
         }
         final variant = Pref.schemeVariant;
         _light = accentColor.asColorSchemeSeed(variant, .light);
@@ -159,11 +163,14 @@ class MyApp extends StatelessWidget {
       }
     } on PlatformException {
       if (kDebugMode) {
-        debugPrint('dynamic_color: Failed to obtain accent color.');
+        AppLog.fine(
+          'Dynamic color: Failed to obtain accent color',
+          name: 'App',
+        );
       }
     }
     if (kDebugMode) {
-      debugPrint('dynamic_color: Dynamic color not detected on this device.');
+      AppLog.fine('Dynamic color: Not detected on this device', name: 'App');
     }
     GStorage.setting.put(SettingBoxKey.dynamicColor, false);
     return false;

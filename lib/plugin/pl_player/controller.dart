@@ -42,6 +42,7 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:archive/archive.dart' show getCrc32;
 import 'package:canvas_danmaku/canvas_danmaku.dart';
@@ -656,8 +657,11 @@ class PlPlayerController with BlockConfigMixin {
     } catch (err, stackTrace) {
       dataStatus.value = DataStatus.error;
       if (kDebugMode) {
-        debugPrint(stackTrace.toString());
-        debugPrint('plPlayer err:  $err');
+        AppLog.severe(
+          'Player error: $err',
+          name: 'Player',
+          stackTrace: stackTrace,
+        );
       }
     } finally {
       _processing = false;
@@ -1057,7 +1061,7 @@ class PlPlayerController with BlockConfigMixin {
         controllerStream.log.listen(((PlayerLog log) {
           if (log.level == 'error' || log.level == 'fatal') {
           } else {
-            debugPrint(log.toString());
+            AppLog.fine(log.toString(), name: 'Player');
           }
         })),
       controllerStream.error.listen((String event) {

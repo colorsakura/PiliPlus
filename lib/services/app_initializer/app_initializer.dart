@@ -14,6 +14,7 @@ import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/calc_window_position.dart' as utils;
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
@@ -70,38 +71,42 @@ class AppInitializer {
   /// - GetX 服务注册 (确保在 runApp 前可用)
   static Future<void> blockingPhase() async {
     if (_blockingPhaseCompleted) {
-      debugPrint('AppInitializer: blockingPhase already completed');
+      AppLog.info('Blocking phase already completed', name: 'AppInitializer');
       return;
     }
 
     final stopwatch = Stopwatch()..start();
-    debugPrint('🚀 AppInitializer: Starting blocking phase');
+    AppLog.info('Starting blocking phase', name: 'AppInitializer');
 
     try {
       await _initFlutterBindings();
-      debugPrint('  ✓ Flutter bindings initialized');
+      AppLog.fine('Flutter bindings initialized', name: 'AppInitializer');
 
       await _initAppPaths();
-      debugPrint('  ✓ App paths initialized');
+      AppLog.fine('App paths initialized', name: 'AppInitializer');
 
       // 完整存储初始化（因为 AccountService.onInit 需要 userInfo）
       await _initFullStorage();
-      debugPrint('  ✓ Full storage initialized');
+      AppLog.fine('Full storage initialized', name: 'AppInitializer');
 
       await _initGetXServices();
-      debugPrint('  ✓ GetX services registered');
+      AppLog.fine('GetX services registered', name: 'AppInitializer');
 
       await _initHttpClient();
-      debugPrint('  ✓ HTTP client initialized');
+      AppLog.fine('HTTP client initialized', name: 'AppInitializer');
 
       _blockingPhaseCompleted = true;
       stopwatch.stop();
-      debugPrint(
-        '✅ AppInitializer: Blocking phase completed in ${stopwatch.elapsedMilliseconds}ms',
+      AppLog.info(
+        'Blocking phase completed in ${stopwatch.elapsedMilliseconds}ms',
+        name: 'AppInitializer',
       );
     } catch (e, stack) {
-      debugPrint('❌ AppInitializer: Blocking phase failed: $e');
-      debugPrint('Stack: $stack');
+      AppLog.severe(
+        'Blocking phase failed: $e',
+        name: 'AppInitializer',
+        stackTrace: stack,
+      );
       rethrow;
     }
   }
@@ -114,35 +119,39 @@ class AppInitializer {
   /// - 平台设置 (屏幕方向、系统 UI)
   static Future<void> corePhase() async {
     if (_corePhaseCompleted) {
-      debugPrint('AppInitializer: corePhase already completed');
+      AppLog.info('Core phase already completed', name: 'AppInitializer');
       return;
     }
 
     final stopwatch = Stopwatch()..start();
-    debugPrint('⚙️ AppInitializer: Starting core phase');
+    AppLog.info('Starting core phase', name: 'AppInitializer');
 
     // 创建完成信号 (在方法开始就创建,允许 await)
     _corePhaseCompleter ??= Completer<void>();
 
     try {
       await _initDownloadPaths();
-      debugPrint('  ✓ Download paths initialized');
+      AppLog.fine('Download paths initialized', name: 'AppInitializer');
 
       await _setupPlatform();
-      debugPrint('  ✓ Platform settings configured');
+      AppLog.fine('Platform settings configured', name: 'AppInitializer');
 
       CacheManager.autoClearCache();
-      debugPrint('  ✓ Cache cleared');
+      AppLog.fine('Cache cleared', name: 'AppInitializer');
 
       _corePhaseCompleted = true;
       _corePhaseCompleter!.complete();
       stopwatch.stop();
-      debugPrint(
-        '✅ AppInitializer: Core phase completed in ${stopwatch.elapsedMilliseconds}ms',
+      AppLog.info(
+        'Core phase completed in ${stopwatch.elapsedMilliseconds}ms',
+        name: 'AppInitializer',
       );
     } catch (e, stack) {
-      debugPrint('❌ AppInitializer: Core phase failed: $e');
-      debugPrint('Stack: $stack');
+      AppLog.severe(
+        'Core phase failed: $e',
+        name: 'AppInitializer',
+        stackTrace: stack,
+      );
       // 核心阶段失败不应阻止应用运行
       _corePhaseCompleter!.completeError(e, stack);
       rethrow;
@@ -154,26 +163,29 @@ class AppInitializer {
   /// 供依赖核心服务的代码调用
   static Future<void> ensureCoreReady() async {
     if (_corePhaseCompleted) return;
-    debugPrint('⏳ AppInitializer: Waiting for core phase to complete');
+    AppLog.fine('Waiting for core phase to complete', name: 'AppInitializer');
     await _corePhaseCompleter?.future;
-    debugPrint('✓ AppInitializer: Core phase ready');
+    AppLog.fine('Core phase ready', name: 'AppInitializer');
   }
 
   /// 辅助阶段: 初始化音频服务
   static Future<void> initAudioService() async {
     await ensureCoreReady();
     if (_audioServiceInitialized) {
-      debugPrint('⏭️  AppInitializer: Audio service already initialized');
+      AppLog.info('Audio service already initialized', name: 'AppInitializer');
       return;
     }
 
-    debugPrint('🎵 AppInitializer: Initializing audio service');
+    AppLog.info('Initializing audio service', name: 'AppInitializer');
     try {
       await setupServiceLocator();
       _audioServiceInitialized = true;
-      debugPrint('✅ AppInitializer: Audio service initialized');
+      AppLog.info('Audio service initialized', name: 'AppInitializer');
     } catch (e) {
-      debugPrint('❌ AppInitializer: Audio service initialization failed: $e');
+      AppLog.severe(
+        'Audio service initialization failed: $e',
+        name: 'AppInitializer',
+      );
     }
   }
 
@@ -188,7 +200,7 @@ class AppInitializer {
     }
 
     await ensureCoreReady();
-    debugPrint('🌐 AppInitializer: Initializing WebView');
+    AppLog.info('Initializing WebView', name: 'AppInitializer');
 
     try {
       if (await WebViewEnvironment.getAvailableVersion() != null) {
@@ -204,9 +216,12 @@ class AppInitializer {
         );
       }
       _webViewInitialized = true;
-      debugPrint('✅ AppInitializer: WebView initialized');
+      AppLog.info('WebView initialized', name: 'AppInitializer');
     } catch (e) {
-      debugPrint('❌ AppInitializer: WebView initialization failed: $e');
+      AppLog.severe(
+        'WebView initialization failed: $e',
+        name: 'AppInitializer',
+      );
     }
   }
 
@@ -217,14 +232,17 @@ class AppInitializer {
     }
 
     await ensureCoreReady();
-    debugPrint('🪟 AppInitializer: Initializing window manager');
+    AppLog.info('Initializing window manager', name: 'AppInitializer');
 
     try {
       await _initWindowManagerInternal();
       _windowManagerInitialized = true;
-      debugPrint('✅ AppInitializer: Window manager initialized');
+      AppLog.info('Window manager initialized', name: 'AppInitializer');
     } catch (e) {
-      debugPrint('❌ AppInitializer: Window manager initialization failed: $e');
+      AppLog.severe(
+        'Window manager initialization failed: $e',
+        name: 'AppInitializer',
+      );
     }
   }
 
@@ -246,7 +264,7 @@ class AppInitializer {
       ScaledWidgetsFlutterBinding.instance.scaleFactor = Pref.uiScale;
     } catch (e) {
       await Utils.copyText(e.toString());
-      if (kDebugMode) debugPrint('GStorage initCritical error: $e');
+      AppLog.severe('GStorage initCritical error: $e', name: 'AppInitializer');
       exit(0);
     }
   }
@@ -281,7 +299,7 @@ class AppInitializer {
           downloadPath = defDownloadPath;
           await GStorage.setting.delete(SettingBoxKey.downloadPath);
           if (kDebugMode) {
-            debugPrint('download path error: $e');
+            AppLog.fine('Download path error: $e', name: 'AppInitializer');
           }
         }
       } else {

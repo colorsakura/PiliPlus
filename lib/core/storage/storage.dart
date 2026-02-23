@@ -8,6 +8,7 @@ import 'package:PiliPlus/core/storage/data/storage_factory.dart';
 import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/models/model_owner.dart';
 import 'package:PiliPlus/models/user/danmaku_rule_adapter.dart';
 import 'package:PiliPlus/models/user/info.dart';
@@ -89,7 +90,7 @@ abstract final class GStorage {
     }
 
     final stopwatch = Stopwatch()..start();
-    debugPrint('🚀 GStorage: Starting critical initialization (MMKV)');
+    AppLog.info('Starting critical initialization (MMKV)', name: 'Storage');
 
     // 初始化 MMKV
     await MMKV.initialize(
@@ -109,8 +110,9 @@ abstract final class GStorage {
 
     _isCriticalInitialized = true;
     stopwatch.stop();
-    debugPrint(
-      '✅ GStorage: Critical initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+    AppLog.info(
+      'Critical initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+      name: 'Storage',
     );
   }
 
@@ -123,7 +125,7 @@ abstract final class GStorage {
     }
 
     final stopwatch = Stopwatch()..start();
-    debugPrint('🚀 GStorage: Starting full initialization (MMKV)');
+    AppLog.info('Starting full initialization (MMKV)', name: 'Storage');
 
     // 迁移所有数据（如果需要）
     await Future.wait([
@@ -159,8 +161,9 @@ abstract final class GStorage {
 
     _isInitialized = true;
     stopwatch.stop();
-    debugPrint(
-      '✅ GStorage: Full initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+    AppLog.info(
+      'Full initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+      name: 'Storage',
     );
   }
 
@@ -184,17 +187,18 @@ abstract final class GStorage {
         Hive.boxExists('historyWord')
             .then((exists) => Hive.openBox('historyWord'))
             .then((box) => historyWord = box),
-        Hive.boxExists('video')
-            .then((exists) => Hive.openBox('video'))
-            .then((box) => video = box),
+        Hive.boxExists(
+          'video',
+        ).then((exists) => Hive.openBox('video')).then((box) => video = box),
         Hive.boxExists('watchProgress')
             .then((exists) => Hive.openBox<int>('watchProgress'))
             .then((box) => watchProgress = box),
         Accounts.init(),
       ]);
     } catch (e) {
-      debugPrint(
-        '⚠️  Warning: Failed to initialize Hive for compatibility: $e',
+      AppLog.warning(
+        'Failed to initialize Hive for compatibility: $e',
+        name: 'Storage',
       );
       // 即使 Hive 初始化失败，MMKV 仍然可用，所以不抛出错误
       try {
@@ -209,7 +213,10 @@ abstract final class GStorage {
           watchProgress = await Hive.openBox<int>('watchProgress');
         }
       } catch (e2) {
-        debugPrint('⚠️  Warning: Failed to create empty Hive boxes: $e2');
+        AppLog.warning(
+          'Failed to create empty Hive boxes: $e2',
+          name: 'Storage',
+        );
       }
     }
   }
@@ -261,7 +268,7 @@ abstract final class GStorage {
         // 在迁移完成后统一关闭
       }
     } catch (e) {
-      debugPrint('Failed to check Hive box $boxName: $e');
+      AppLog.fine('Failed to check Hive box $boxName: $e', name: 'Storage');
     }
 
     // 如果没有 Hive 数据，标记为已迁移并返回
@@ -272,7 +279,7 @@ abstract final class GStorage {
     }
 
     // 执行迁移
-    debugPrint('📦 Migrating $boxName from Hive to MMKV...');
+    AppLog.info('Migrating $boxName from Hive to MMKV...', name: 'Storage');
     try {
       if (isTyped && boxName == 'userInfo') {
         await StorageMigrator.migrateTypedObjects<UserInfoData>(
@@ -285,9 +292,9 @@ abstract final class GStorage {
       } else {
         await StorageMigrator.migrateBasicTypes(boxName: boxName);
       }
-      debugPrint('✅ Migration completed for $boxName');
+      AppLog.info('Migration completed for $boxName', name: 'Storage');
     } catch (e) {
-      debugPrint('❌ Migration failed for $boxName: $e');
+      AppLog.severe('Migration failed for $boxName: $e', name: 'Storage');
       // 迁移失败时继续使用，下次会重试
     }
   }

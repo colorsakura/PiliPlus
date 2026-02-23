@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/http/logging_interceptor.dart';
 import 'package:PiliPlus/http/retry_interceptor.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/utils/accounts.dart';
@@ -169,15 +170,9 @@ class Request {
     // 先于其他Interceptor
     dio.interceptors.add(RetryInterceptor(Pref.retryCount, Pref.retryDelay));
 
-    // 日志拦截器 输出请求、响应内容
+    // 统一日志拦截器
     if (kDebugMode) {
-      dio.interceptors.add(
-        LogInterceptor(
-          request: false,
-          requestHeader: false,
-          responseHeader: false,
-        ),
-      );
+      dio.interceptors.add(HttpLoggingInterceptor());
     }
 
     dio

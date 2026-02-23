@@ -19,6 +19,7 @@ import 'package:PiliPlus/services/download/download_manager.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -435,7 +436,7 @@ class DownloadService extends GetxService {
     } catch (e) {
       _updateCurStatus(DownloadStatus.failPlayUrl);
       if (kDebugMode) {
-        debugPrint('get download url error: $e');
+        AppLog.fine('Get download url error: $e', name: 'Download');
       }
     }
   }
