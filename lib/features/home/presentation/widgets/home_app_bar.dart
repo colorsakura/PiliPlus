@@ -106,7 +106,7 @@ class UserAvatar extends ConsumerWidget {
     return Semantics(
       label: "我的",
       child: GestureDetector(
-        onTap: () => mainController.toMinePage(),
+        onTap: mainController.toMinePage,
         child: Obx(
           () {
             final accountService = Get.find<AccountService>();
