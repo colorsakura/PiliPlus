@@ -36,8 +36,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   ThemeType get nextThemeType =>
       ThemeType.values[(themeType.value.index + 1) % ThemeType.values.length];
 
-  static RxBool anonymity =
-      (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
+  // 使用 late static 以延迟初始化，避免 Accounts.account 未初始化的问题
+  static late RxBool anonymity;
 
   late final list =
       <({IconData icon, double size, String title, VoidCallback onTap})>[
@@ -82,6 +82,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   @override
   void onInit() {
     super.onInit();
+    // 初始化 anonymity（必须在 Accounts.init() 之后调用）
+    anonymity = (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
     UserInfoData? userInfoCache = Pref.userInfoCache;
     if (userInfoCache != null) {
       userInfo.value = userInfoCache;

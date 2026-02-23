@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
+import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:mmkv/mmkv.dart';
@@ -22,12 +23,17 @@ class StorageMigrator {
   }
 
   /// 标记迁移完成
-  static void _markMigrated(String boxName) {
+  static void markMigrated(String boxName) {
     try {
       MMKV(boxName).encodeBool(_migrationFlagKey, true);
     } catch (e) {
       debugPrint('Failed to mark migration for $boxName: $e');
     }
+  }
+
+  /// 内部标记迁移完成（保持向后兼容）
+  static void _markMigrated(String boxName) {
+    markMigrated(boxName);
   }
 
   /// 迁移基础类型数据（Hive -> MMKV）
@@ -88,7 +94,7 @@ class StorageMigrator {
       }
 
       // 标记迁移完成
-      _markMigrated(boxName);
+      markMigrated(boxName);
 
       debugPrint(
         'Migration completed for $boxName: '
@@ -149,7 +155,7 @@ class StorageMigrator {
       }
 
       // 标记迁移完成
-      _markMigrated(boxName);
+      markMigrated(boxName);
 
       debugPrint(
         'Typed migration completed for $boxName: '
@@ -245,5 +251,71 @@ class StorageMigrator {
     }
 
     return results;
+  }
+
+  /// 迁移账户数据（Hive -> MMKV）
+  ///
+  /// 将账户数据从 Hive Box<LoginAccount> 迁移到 MMKV
+  /// 使用 JSON 序列化存储
+  static Future<bool> migrateAccounts({
+    required String boxName,
+    MMKV? targetMMKV,
+  }) async {
+    try {
+      // 检查是否已迁移
+      if (hasMigrated(boxName)) {
+        debugPrint('Account migration already completed for $boxName');
+        return true;
+      }
+
+      // 尝试获取已打开的 Box，或者打开新的 Box
+      Box<LoginAccount>? box;
+      if (Hive.isBoxOpen(boxName)) {
+        box = Hive.box(boxName) as Box<LoginAccount>;
+      } else {
+        box = await Hive.openBox<LoginAccount>(boxName);
+      }
+
+      final mmkv = targetMMKV ?? MMKV(boxName);
+
+      int successCount = 0;
+      int failCount = 0;
+
+      // 遍历所有账户
+      for (final key in box.keys) {
+        try {
+          final account = box.get(key);
+          if (account == null) continue;
+
+          // 使用 LoginAccount 的 toJson 方法
+          final json = account.toJson();
+          if (json == null) {
+            debugPrint('Account toJson returned null for key $key');
+            failCount++;
+            continue;
+          }
+
+          final jsonStr = jsonEncode(json);
+          mmkv.encodeString(key.toString(), jsonStr);
+          successCount++;
+        } catch (e) {
+          debugPrint('Failed to migrate account key $key: $e');
+          failCount++;
+        }
+      }
+
+      // 标记迁移完成
+      markMigrated(boxName);
+
+      debugPrint(
+        'Account migration completed for $boxName: '
+        '$successCount succeeded, $failCount failed',
+      );
+
+      return failCount == 0;
+    } catch (e) {
+      debugPrint('Account migration failed for $boxName: $e');
+      return false;
+    }
   }
 }

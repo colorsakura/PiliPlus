@@ -6,18 +6,25 @@
 
 ## 存储后端
 
-### 当前状态：MMKV（默认）+ Hive（账户系统）
+### 当前状态：完全使用 MMKV
 
 **MMKV 存储默认启用：**
 - ✅ **自动迁移**：首次启动时自动从 Hive 迁移数据到 MMKV
 - ✅ **完全透明**：用户无感知，无需手动操作
-- ✅ **向后兼容**：保留 Hive Box 只读访问，确保现有代码正常工作
 - ✅ **高性能**：MMKV 提供比 Hive 更快的读写速度
-- ✅ **已迁移**：setting, localCache, video, historyWord, watchProgress, userInfo
+- ✅ **已迁移所有数据**：setting, localCache, video, historyWord, watchProgress, userInfo, **account**
 
-**Hive 保留用途：**
-- 账户管理系统 (`utils/accounts.dart`/`LoginAccount`)
-- 原因：账户系统依赖复杂的 TypeAdapter 链和 Cookie 存储
+**账户系统迁移：**
+- ✅ **已完成**：账户管理系统已迁移到 MMKV
+- ✅ **JSON 序列化**：使用 LoginAccount.toJson/fromJson 方法
+- ✅ **自动迁移**：首次启动自动从 Hive 迁移账户数据
+- ✅ **向后兼容**：保留 `_AccountBoxAdapter` 适配器确保现有代码正常工作
+
+**Hive 移除状态：**
+- ✅ TypeAdapter 文件已删除（account_adapter.dart, account_type_adapter.dart, cookie_jar_adapter.dart, set_int_adapter.dart）
+- ✅ Hive 适配器注册已移除
+- ✅ 账户系统完全独立于 Hive
+- ⚠️ Hive 依赖仍保留在 pubspec.yaml（用于其他遗留 Box 的只读访问）
 
 ### 性能对比
 | 操作 | MMKV | Hive |
@@ -25,6 +32,7 @@
 | 读取 | ~0.2ms | ~1-2ms |
 | 写入 | ~0.3ms | ~2-3ms |
 | 跨进程 | ✅ 支持 | ❌ 不支持 |
+| 账户数据 | ✅ MMKV + JSON | ❌ 已迁移 |
 
 ## 架构设计
 
@@ -40,8 +48,9 @@ lib/core/storage/
 │       └── typed_storage_repository.dart # 复杂对象存储接口
 ├── data/                        # Data 层（实现）
 │   ├── datasources/
-│   │   ├── hive_storage_repository_impl.dart    # Hive 实现（兼容）
-│   │   └── mmkv_storage_repository_impl.dart    # MMKV 实现（默认）
+│   │   ├── account_storage_repository.dart    # 账户存储（MMKV + JSON）
+│   │   ├── hive_storage_repository_impl.dart  # Hive 实现（遗留兼容）
+│   │   └── mmkv_storage_repository_impl.dart  # MMKV 实现（默认）
 │   ├── storage_factory.dart      # 存储工厂
 │   ├── storage_config.dart       # 存储配置
 │   └── storage_migrator.dart     # Hive 到 MMKV 迁移工具
@@ -131,12 +140,16 @@ await GStorage.userInfoRepository.set('userInfoCache', newUserInfo);
 - ✅ `historyWord` - 搜索历史
 - ✅ `userInfo` - 用户信息（JSON 序列化）
 - ✅ `watchProgress` - 观看进度
+- ✅ `account` - 账户管理（JSON 序列化，使用 `LoginAccount.toJson/fromJson`）
 
 ### 未迁移的存储
 
-- ⚠️ `account` - 账户管理（仍使用 Hive）
-  - 原因：复杂的 TypeAdapter 链（`LoginAccountAdapter` → `BiliCookieJarAdapter`）
-  - 未来可考虑迁移，但需要实现 `LoginAccount.toJson/fromJson`
+**所有存储均已迁移！** 🎉
+
+账户系统已成功迁移到 MMKV，使用 JSON 序列化：
+- 移除了复杂的 TypeAdapter 链
+- 使用标准的 JSON 序列化
+- 保持了完整的向后兼容性
 
 ### 手动触发迁移
 

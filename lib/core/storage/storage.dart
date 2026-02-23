@@ -9,13 +9,10 @@ import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_reposito
 import 'package:PiliPlus/models/model_owner.dart';
 import 'package:PiliPlus/models/user/danmaku_rule_adapter.dart';
 import 'package:PiliPlus/models/user/info.dart';
+// 账户系统已迁移到 MMKV，需要导入 Accounts 进行初始化
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/accounts/account_adapter.dart';
-import 'package:PiliPlus/utils/accounts/account_type_adapter.dart';
-import 'package:PiliPlus/utils/accounts/cookie_jar_adapter.dart';
 import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
-import 'package:PiliPlus/utils/set_int_adapter.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -158,6 +155,9 @@ abstract final class GStorage {
       ),
     );
 
+    // 初始化账户系统（必须在 HTTP 客户端初始化之前）
+    await Accounts.init();
+
     _isInitialized = true;
     stopwatch.stop();
     AppLog.info(
@@ -167,12 +167,15 @@ abstract final class GStorage {
   }
 
   /// 初始化 Hive（用于向后兼容）
+  ///
+  /// 注意：账户系统已迁移到 MMKV，不再在此初始化
   static Future<void> _initHiveForCompatibility() async {
     try {
       await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
       _registerAdaptersIfNeeded();
 
       // 打开所有 Hive Box（用于向后兼容的只读访问）
+      // 账户系统已迁移到 MMKV，不再在此处理
       await Future.wait([
         Hive.boxExists('setting')
             .then((exists) => Hive.openBox('setting'))
@@ -192,7 +195,6 @@ abstract final class GStorage {
         Hive.boxExists('watchProgress')
             .then((exists) => Hive.openBox<int>('watchProgress'))
             .then((box) => watchProgress = box),
-        Accounts.init(),
       ]);
     } catch (e) {
       AppLog.warning(
@@ -221,6 +223,8 @@ abstract final class GStorage {
   }
 
   /// 注册 Hive 适配器（只注册一次）
+  ///
+  /// 注意：账户相关适配器和 SetIntAdapter 已移除
   static void _registerAdaptersIfNeeded() {
     if (_hiveAdaptersRegistered) {
       return;
@@ -229,10 +233,8 @@ abstract final class GStorage {
       ..registerAdapter(OwnerAdapter())
       ..registerAdapter(UserInfoDataAdapter())
       ..registerAdapter(LevelInfoAdapter())
-      ..registerAdapter(BiliCookieJarAdapter())
-      ..registerAdapter(LoginAccountAdapter())
-      ..registerAdapter(AccountTypeAdapter())
-      ..registerAdapter(SetIntAdapter())
+      // 账户相关适配器已移除（账户系统使用 MMKV）
+      // SetIntAdapter 已移除
       ..registerAdapter(RuleFilterAdapter());
     _hiveAdaptersRegistered = true;
   }

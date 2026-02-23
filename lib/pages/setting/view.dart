@@ -41,7 +41,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   late SettingType _type = SettingType.privacySetting;
-  final RxBool _noAccount = Accounts.account.isEmpty.obs;
+  late RxBool _noAccount;
   late bool _isPortrait;
 
   static const List<_SettingsModel> _items = [
@@ -139,6 +139,12 @@ class _SettingPageState extends State<SettingPage> {
               ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _noAccount = Accounts.account.isEmpty.obs;
   }
 
   @override

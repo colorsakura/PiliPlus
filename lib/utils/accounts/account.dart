@@ -4,7 +4,6 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/grpc_headers.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:hive/hive.dart';
 
 sealed class Account {
   Map<String, dynamic>? toJson() => null;
@@ -38,21 +37,17 @@ sealed class Account {
   const Account();
 }
 
-@HiveType(typeId: 9)
+// Hive 注解已移除，账户系统使用 MMKV + JSON 序列化
 class LoginAccount extends Account {
   @override
   final bool isLogin = true;
   @override
-  @HiveField(0)
   final DefaultCookieJar cookieJar;
   @override
-  @HiveField(1)
   final String? accessKey;
   @override
-  @HiveField(2)
   final String? refresh;
   @override
-  @HiveField(3)
   final Set<AccountType> type;
 
   @override
@@ -82,7 +77,7 @@ class LoginAccount extends Account {
   @override
   Future<void> delete() {
     assert(_hasDelete = true);
-    return Future.wait([cookieJar.deleteAll(), _box.delete(_midStr)]);
+    return Future.wait<void>([cookieJar.deleteAll(), _box.delete(_midStr)]);
   }
 
   @override
@@ -104,7 +99,8 @@ class LoginAccount extends Account {
       .cookie
       .value;
 
-  late final Box<LoginAccount> _box = Accounts.account;
+  /// 获取账户存储 box（通过 Accounts 访问）
+  dynamic get _box => Accounts.account;
 
   LoginAccount(
     this.cookieJar,
