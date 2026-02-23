@@ -32,23 +32,22 @@ class BackupState {
 }
 
 /// Backup Controller (使用 Riverpod 3.x 的 Notifier)
-///
-/// 通过 ref 直接访问 Provider Container 获取依赖
 class BackupController extends Notifier<BackupState> {
-  // 使用 getter 延迟获取依赖,避免在 build 中直接初始化
-  InitializeWebDavUseCase get _initializeWebDavUseCase =>
-      ref.read(initializeWebDavUseCaseProvider);
-  BackupSettingsUseCase get _backupSettingsUseCase =>
-      ref.read(backupSettingsUseCaseProvider);
-  RestoreSettingsUseCase get _restoreSettingsUseCase =>
-      ref.read(restoreSettingsUseCaseProvider);
-  GetWebDavConfigUseCase get _getWebDavConfigUseCase =>
-      ref.read(getWebDavConfigUseCaseProvider);
-  SaveWebDavConfigUseCase get _saveWebDavConfigUseCase =>
-      ref.read(saveWebDavConfigUseCaseProvider);
+  late final InitializeWebDavUseCase _initializeWebDavUseCase;
+  late final BackupSettingsUseCase _backupSettingsUseCase;
+  late final RestoreSettingsUseCase _restoreSettingsUseCase;
+  late final GetWebDavConfigUseCase _getWebDavConfigUseCase;
+  late final SaveWebDavConfigUseCase _saveWebDavConfigUseCase;
 
   @override
   BackupState build() {
+    // 注入依赖
+    _initializeWebDavUseCase = ref.read(initializeWebDavUseCaseProvider);
+    _backupSettingsUseCase = ref.read(backupSettingsUseCaseProvider);
+    _restoreSettingsUseCase = ref.read(restoreSettingsUseCaseProvider);
+    _getWebDavConfigUseCase = ref.read(getWebDavConfigUseCaseProvider);
+    _saveWebDavConfigUseCase = ref.read(saveWebDavConfigUseCaseProvider);
+
     // 加载初始配置
     final config = _getWebDavConfigUseCase();
     return BackupState(config: config);

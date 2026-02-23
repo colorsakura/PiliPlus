@@ -2,6 +2,7 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
 import 'package:PiliPlus/features/shell/domain/entities/navigation_state.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/get_navigation_config.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,14 +34,11 @@ class NavigationConfigState {
 
 /// 导航配置 Controller (使用 Riverpod 3.x 的 Notifier)
 class NavigationConfigController extends Notifier<NavigationConfigState> {
-  GetNavigationConfigUseCase? _useCase;
-
-  void setUseCase(GetNavigationConfigUseCase useCase) {
-    _useCase = useCase;
-  }
+  late final GetNavigationConfigUseCase _useCase;
 
   @override
   NavigationConfigState build() {
+    _useCase = ref.read(getNavigationConfigUseCaseProvider);
     return const NavigationConfigState(
       config: NavigationConfig(
         navigationBars: [],
@@ -54,12 +52,9 @@ class NavigationConfigController extends Notifier<NavigationConfigState> {
   }
 
   Future<void> initialize() async {
-    if (_useCase == null) {
-      return;
-    }
     state = state.copyWith(isLoading: true);
     try {
-      final config = await _useCase!();
+      final config = await _useCase();
       state = state.copyWith(config: config, isLoading: false);
     } catch (e) {
       state = state.copyWith(
@@ -77,7 +72,7 @@ class NavigationConfigController extends Notifier<NavigationConfigState> {
         config: current.copyWith(selectedIndex: index),
       );
       // 保存到本地存储
-      await _useCase?.updateDefaultIndex(index);
+      await _useCase.updateDefaultIndex(index);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/features/home/domain/usecases/fetch_search_suggestion.dart';
 import 'package:PiliPlus/features/home/presentation/providers/home_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,8 +29,11 @@ class SearchSuggestionState {
 
 /// 搜索建议 Controller
 class SearchSuggestionController extends Notifier<SearchSuggestionState> {
+  late final FetchSearchSuggestionUseCase _fetchUseCase;
+
   @override
   SearchSuggestionState build() {
+    _fetchUseCase = ref.read(fetchSearchSuggestionUseCaseProvider);
     // 启动异步获取搜索建议
     Future.microtask(fetchDefaultSearch);
     return const SearchSuggestionState();
@@ -37,10 +41,9 @@ class SearchSuggestionController extends Notifier<SearchSuggestionState> {
 
   /// 获取默认搜索建议
   Future<void> fetchDefaultSearch() async {
-    final useCase = ref.read(fetchSearchSuggestionUseCaseProvider);
     state = state.copyWith(isLoading: true);
     try {
-      final suggestion = await useCase();
+      final suggestion = await _fetchUseCase();
       state = state.copyWith(
         defaultSearch: suggestion?.displayText ?? '',
         isLoading: false,

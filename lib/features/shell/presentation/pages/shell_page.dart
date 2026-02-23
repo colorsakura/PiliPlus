@@ -150,22 +150,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
   /// 初始化导航配置和未读消息检查
   ///
-  /// 为各个 Controller 设置 Use Cases，然后：
   /// 1. 加载导航配置
   /// 2. 启动定时检查调度器
   Future<void> _initializeNavigationConfig() async {
-    // 设置 UseCase
-    final useCase = ref.read(getNavigationConfigUseCaseProvider);
-    ref.read(navigationConfigControllerProvider.notifier).setUseCase(useCase);
-
-    // 设置未读消息 UseCase
-    final msgUseCase = ref.read(checkUnreadMessagesUseCaseProvider);
-    ref.read(unreadMessageControllerProvider.notifier).setUseCase(msgUseCase);
-
-    // 设置未读动态 UseCase
-    final dynUseCase = ref.read(checkUnreadDynamicsUseCaseProvider);
-    ref.read(unreadDynamicControllerProvider.notifier).setUseCase(dynUseCase);
-
     // 初始化配置
     await ref.read(navigationConfigControllerProvider.notifier).initialize();
 

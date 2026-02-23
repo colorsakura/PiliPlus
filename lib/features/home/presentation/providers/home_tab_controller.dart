@@ -1,3 +1,4 @@
+import 'package:PiliPlus/features/home/data/datasources/home_tab_local_datasource.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/domain/usecases/get_home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/home_providers.dart';
@@ -31,22 +32,26 @@ class HomeTabConfigState {
 
 /// 首页标签配置 Controller
 class HomeTabConfigController extends Notifier<HomeTabConfigState> {
+  late final GetHomeTabConfigUseCase _useCase;
+  late final HomeTabLocalDataSource _localDataSource;
+
   @override
   HomeTabConfigState build() {
+    _useCase = ref.read(getHomeTabConfigUseCaseProvider);
+    _localDataSource = ref.read(homeTabLocalDataSourceProvider);
+
     // 同步获取初始配置
-    final useCase = ref.read(getHomeTabConfigUseCaseProvider);
-    final config = _loadConfigSync(useCase);
+    final config = _loadConfigSync();
     return HomeTabConfigState(config: config);
   }
 
   /// 同步加载配置（用于初始化）
-  HomeTabConfig _loadConfigSync(GetHomeTabConfigUseCase useCase) {
+  HomeTabConfig _loadConfigSync() {
     try {
       // 这里我们直接从本地数据源读取，因为初始化时需要同步返回
-      final localDataSource = ref.read(homeTabLocalDataSourceProvider);
-      final tabs = localDataSource.getTabSort();
-      final hideTopBar = localDataSource.getHideTopBar();
-      final enableSearchWord = localDataSource.getEnableSearchWord();
+      final tabs = _localDataSource.getTabSort();
+      final hideTopBar = _localDataSource.getHideTopBar();
+      final enableSearchWord = _localDataSource.getEnableSearchWord();
 
       // 找到推荐页的索引作为默认选中项
       final rcmdIndex = tabs.indexOf(HomeTabType.rcmd);
@@ -68,10 +73,9 @@ class HomeTabConfigController extends Notifier<HomeTabConfigState> {
 
   /// 刷新配置（异步）
   Future<void> refresh() async {
-    final useCase = ref.read(getHomeTabConfigUseCaseProvider);
     state = state.copyWith(isLoading: true);
     try {
-      final config = await useCase();
+      final config = await _useCase();
       state = state.copyWith(config: config, isLoading: false);
     } catch (e) {
       state = state.copyWith(

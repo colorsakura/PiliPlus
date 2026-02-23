@@ -3,38 +3,32 @@ import 'package:PiliPlus/features/shell/domain/entities/unread_dynamic.dart';
 import 'package:PiliPlus/features/shell/domain/entities/unread_message.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/check_unread_dynamics.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/check_unread_messages.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/msg/msg_unread_type.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 未读消息 Controller
 class UnreadMessageController extends Notifier<UnreadMessage> {
-  CheckUnreadMessagesUseCase? _useCase;
+  late final CheckUnreadMessagesUseCase _useCase;
   int _lastCheckTime = 0;
-
-  void setUseCase(CheckUnreadMessagesUseCase useCase) {
-    _useCase = useCase;
-  }
 
   @override
   UnreadMessage build() {
+    _useCase = ref.read(checkUnreadMessagesUseCaseProvider);
     return const UnreadMessage.zero();
   }
 
   /// 获取未读消息
   Future<void> fetchUnread() async {
-    if (_useCase == null) return;
-
-    final result = await _useCase!.getUnreadMessage();
+    final result = await _useCase.getUnreadMessage();
     state = result;
     _lastCheckTime = DateTime.now().millisecondsSinceEpoch;
   }
 
   /// 检查是否需要更新
   Future<void> checkIfNeeded() async {
-    if (_useCase == null) return;
-
-    final result = await _useCase!.checkUnread(_lastCheckTime);
+    final result = await _useCase.checkUnread(_lastCheckTime);
     if (result != null) {
       state = result;
       _lastCheckTime = DateTime.now().millisecondsSinceEpoch;
@@ -60,23 +54,18 @@ final unreadMessageControllerProvider =
 
 /// 未读动态 Controller
 class UnreadDynamicController extends Notifier<UnreadDynamic> {
-  CheckUnreadDynamicsUseCase? _useCase;
+  late final CheckUnreadDynamicsUseCase _useCase;
   int _lastCheckTime = 0;
-
-  void setUseCase(CheckUnreadDynamicsUseCase useCase) {
-    _useCase = useCase;
-  }
 
   @override
   UnreadDynamic build() {
+    _useCase = ref.read(checkUnreadDynamicsUseCaseProvider);
     return const UnreadDynamic.zero();
   }
 
   /// 获取未读动态
   Future<void> fetchUnread() async {
-    if (_useCase == null) return;
-
-    final result = await _useCase!.getUnreadDynamic();
+    final result = await _useCase.getUnreadDynamic();
     state = result;
     _lastCheckTime = DateTime.now().millisecondsSinceEpoch;
   }
@@ -86,9 +75,7 @@ class UnreadDynamicController extends Notifier<UnreadDynamic> {
     required bool checkDynamic,
     required int dynamicPeriod,
   }) async {
-    if (_useCase == null) return;
-
-    final result = await _useCase!.checkUnread(
+    final result = await _useCase.checkUnread(
       checkDynamic: checkDynamic,
       dynamicPeriod: dynamicPeriod,
       lastCheckTime: _lastCheckTime,
