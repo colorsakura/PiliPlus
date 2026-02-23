@@ -1,12 +1,14 @@
+import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
+import 'package:PiliPlus/features/blacklist/presentation/pages/blacklist_page.dart';
+import 'package:PiliPlus/features/history/presentation/pages/history_page.dart';
 import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
 import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
+import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
 import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
-import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/pages/article/view.dart';
 import 'package:PiliPlus/pages/article_list/view.dart';
 import 'package:PiliPlus/pages/audio/view.dart';
-import 'package:PiliPlus/features/blacklist/presentation/pages/blacklist_page.dart';
 import 'package:PiliPlus/pages/danmaku_block/view.dart';
 import 'package:PiliPlus/pages/dlna/view.dart';
 import 'package:PiliPlus/pages/download/view.dart';
@@ -24,10 +26,7 @@ import 'package:PiliPlus/pages/follow/view.dart';
 import 'package:PiliPlus/pages/follow_search/view.dart';
 import 'package:PiliPlus/pages/follow_type/follow_same/view.dart';
 import 'package:PiliPlus/pages/follow_type/followed/view.dart';
-import 'package:PiliPlus/pages/history/view.dart';
 import 'package:PiliPlus/pages/history_search/view.dart';
-import 'package:PiliPlus/pages/later/view.dart';
-import 'package:PiliPlus/pages/later_search/view.dart';
 import 'package:PiliPlus/pages/live_dm_block/view.dart';
 import 'package:PiliPlus/pages/live_room/view.dart';
 import 'package:PiliPlus/pages/login/view.dart';
@@ -92,7 +91,10 @@ class Routes {
     // 稍后再看
     GetPage(name: '/later', page: () => const LaterPage()),
     // 历史记录
-    GetPage(name: '/history', page: () => const HistoryPage()),
+    GetPage(
+      name: '/history',
+      page: () => const HistoryPage(),
+    ),
     // 搜索页面
     GetPage(name: '/search', page: () => const SearchPage()),
     // 搜索结果
@@ -138,7 +140,6 @@ class Routes {
     // 收藏搜索
     GetPage(name: '/favSearch', page: () => const FavSearchPage()),
     GetPage(name: '/historySearch', page: () => const HistorySearchPage()),
-    GetPage(name: '/laterSearch', page: () => const LaterSearchPage()),
     GetPage(name: '/followSearch', page: () => const FollowSearchPage()),
     // 消息页面
     GetPage(name: '/whisper', page: () => const WhisperPage()),
