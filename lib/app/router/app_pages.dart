@@ -2,7 +2,7 @@ import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
 import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
-import 'package:PiliPlus/pages/about/view.dart';
+import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/pages/article/view.dart';
 import 'package:PiliPlus/pages/article_list/view.dart';
 import 'package:PiliPlus/pages/audio/view.dart';
