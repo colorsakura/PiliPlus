@@ -1,12 +1,12 @@
 import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
+import 'package:PiliPlus/features/home_zone/controller.dart';
+import 'package:PiliPlus/features/home_zone/view.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/pages/pgc/controller.dart';
 import 'package:PiliPlus/pages/pgc/view.dart';
-import 'package:PiliPlus/pages/rank/controller.dart';
-import 'package:PiliPlus/pages/rank/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -43,8 +43,8 @@ enum HomeTabType implements EnumWithLabel {
   const HomeTabType(this.label);
 
   // 为 Riverpod 页面创建代理的缓存
-  static final Map<HomeTabType, _RiverpodScrollOrRefreshProxy> _riverpodProxies =
-      {};
+  static final Map<HomeTabType, _RiverpodScrollOrRefreshProxy>
+  _riverpodProxies = {};
 
   ScrollOrRefreshMixin Function() get ctr => switch (this) {
     HomeTabType.live => () => _riverpodProxies.putIfAbsent(

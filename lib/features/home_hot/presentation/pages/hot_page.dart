@@ -7,7 +7,7 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
-import 'package:PiliPlus/pages/rank/view.dart';
+import 'package:PiliPlus/features/home_zone/view.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
