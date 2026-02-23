@@ -1,6 +1,5 @@
 import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
-import 'package:PiliPlus/features/home_live/controller.dart';
-import 'package:PiliPlus/features/home_live/view.dart';
+import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
@@ -48,7 +47,10 @@ enum HomeTabType implements EnumWithLabel {
       {};
 
   ScrollOrRefreshMixin Function() get ctr => switch (this) {
-    HomeTabType.live => Get.find<LiveController>,
+    HomeTabType.live => () => _riverpodProxies.putIfAbsent(
+      HomeTabType.live,
+      _RiverpodScrollOrRefreshProxy.new,
+    ),
     HomeTabType.rcmd => () => _riverpodProxies.putIfAbsent(
       HomeTabType.rcmd,
       _RiverpodScrollOrRefreshProxy.new,

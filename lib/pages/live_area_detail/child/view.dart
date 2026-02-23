@@ -3,7 +3,8 @@ import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/self_sized_horizontal_list.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/home_live/widgets/live_item_app.dart';
+import 'package:PiliPlus/features/home_live/domain/entities/live_stream.dart';
+import 'package:PiliPlus/features/home_live/presentation/widgets/live_item_card.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/live/live_feed_index/card_data_list_item.dart';
 import 'package:PiliPlus/pages/live_area_detail/child/controller.dart';
@@ -120,7 +121,8 @@ class _LiveAreaChildPageState extends State<LiveAreaChildPage>
                     if (index == response.length - 1) {
                       _controller.onLoadMore();
                     }
-                    return LiveCardVApp(item: response[index]);
+                    final stream = LiveStream.fromCardLiveItem(response[index]);
+                    return LiveItemCard(stream: stream);
                   },
                   itemCount: response.length,
                 )
