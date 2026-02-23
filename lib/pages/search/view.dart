@@ -4,7 +4,7 @@ import 'package:PiliPlus/common/widgets/disabled_icon.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/search/search_rcmd/data.dart';
-import 'package:PiliPlus/pages/about/view.dart' show showImportExportDialog;
+import 'package:PiliPlus/features/about/presentation/pages/about_page.dart' show showImportExportDialog;
 import 'package:PiliPlus/pages/search/controller.dart';
 import 'package:PiliPlus/pages/search/widgets/hot_keyword.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';

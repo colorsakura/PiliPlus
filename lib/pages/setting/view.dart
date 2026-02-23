@@ -3,7 +3,7 @@ import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/models/common/setting_type.dart';
-import 'package:PiliPlus/pages/about/view.dart';
+import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/pages/login/controller.dart';
 import 'package:PiliPlus/pages/setting/extra_setting.dart';
 import 'package:PiliPlus/pages/setting/play_setting.dart';
