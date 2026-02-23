@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:PiliPlus/core/storage/data/datasources/hive_storage_repository_impl.dart';
-import 'package:PiliPlus/core/storage/data/datasources/mmkv_storage_repository_impl.dart';
 import 'package:PiliPlus/core/storage/data/storage_config.dart';
 import 'package:PiliPlus/core/storage/data/storage_factory.dart';
 import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
-import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/models/model_owner.dart';
 import 'package:PiliPlus/models/user/danmaku_rule_adapter.dart';
 import 'package:PiliPlus/models/user/info.dart';
@@ -16,6 +13,7 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account_adapter.dart';
 import 'package:PiliPlus/utils/accounts/account_type_adapter.dart';
 import 'package:PiliPlus/utils/accounts/cookie_jar_adapter.dart';
+import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/set_int_adapter.dart';
 import 'package:PiliPlus/utils/utils.dart';
@@ -95,6 +93,7 @@ abstract final class GStorage {
     // 初始化 MMKV
     await MMKV.initialize(
       rootDir: path.join(appSupportDirPath, 'mmkv'),
+      logLevel: MMKVLogLevel.None,
     );
 
     // 检查并迁移 setting 数据
