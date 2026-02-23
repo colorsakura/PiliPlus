@@ -80,9 +80,11 @@ class _LaterChildPageState extends ConsumerState<LaterChildPage>
 
         // 在倒数第二个触发加载更多
         if (index == state.items.length - 2) {
-          ref
-              .read(laterControllerNotifierProvider(widget.viewType))
-              .onLoadMore(widget.viewType);
+          Future.microtask(() {
+            ref
+                .read(laterControllerNotifierProvider(widget.viewType))
+                .onLoadMore(widget.viewType);
+          });
         }
 
         return LaterVideoCard(
