@@ -272,8 +272,7 @@ abstract final class GStorage {
 
     // 如果没有 Hive 数据，标记为已迁移并返回
     if (!hasHiveData) {
-      final mmkv = MMKV(boxName);
-      mmkv.encodeBool('_mmkv_migration_completed', true);
+      MMKV(boxName).encodeBool('_mmkv_migration_completed', true);
       return;
     }
 
@@ -284,7 +283,7 @@ abstract final class GStorage {
         await StorageMigrator.migrateTypedObjects<UserInfoData>(
           boxName: boxName,
           codec: JsonCodec(
-            fromJson: (json) => UserInfoData.fromJson(json),
+            fromJson: UserInfoData.fromJson,
             toJson: (data) => data.toJson(),
           ),
         );

@@ -15,10 +15,7 @@ class StorageMigrator {
   /// 检查是否已完成迁移
   static bool hasMigrated(String boxName) {
     try {
-      final mmkv = MMKV(boxName);
-      // ignore: unnecessary_null_comparison
-      final flag = mmkv.decodeBool(_migrationFlagKey);
-      return flag ?? false;
+      return MMKV(boxName).decodeBool(_migrationFlagKey);
     } catch (e) {
       return false;
     }
@@ -48,12 +45,9 @@ class StorageMigrator {
       }
 
       // 尝试获取已打开的 Box，或者打开新的 Box
-      Box<dynamic>? box;
-      if (Hive.isBoxOpen(boxName)) {
-        box = Hive.box(boxName) as Box<dynamic>;
-      } else {
-        box = await Hive.openBox<dynamic>(boxName);
-      }
+      final Box<dynamic> box = Hive.isBoxOpen(boxName)
+          ? Hive.box(boxName)
+          : await Hive.openBox<dynamic>(boxName);
 
       final mmkv = targetMMKV ?? MMKV(boxName);
 
@@ -185,8 +179,7 @@ class StorageMigrator {
 
       for (final key in mmkv.allKeys) {
         try {
-          // ignore: unnecessary_null_comparison
-          final value = mmkv.decodeString(key) ?? mmkv.decodeInt(key) ?? mmkv.decodeDouble(key) ?? mmkv.decodeBool(key);
+          final value = _decodeMMKVValue(mmkv, key);
           if (value != null) {
             await box.put(key, value);
             successCount++;
@@ -214,11 +207,29 @@ class StorageMigrator {
   /// 用于强制重新迁移
   static void clearMigrationFlag(String boxName) {
     try {
-      final mmkv = MMKV(boxName);
-      mmkv.removeValue(_migrationFlagKey);
+      MMKV(boxName).removeValue(_migrationFlagKey);
     } catch (e) {
       debugPrint('Failed to clear migration flag for $boxName: $e');
     }
+  }
+
+  /// Helper to decode value from MMKV, trying different types
+  static dynamic _decodeMMKVValue(MMKV mmkv, String key) {
+    // Try different decoders and return first non-null/non-empty result
+    final strVal = mmkv.decodeString(key);
+    if (strVal != null && strVal.isNotEmpty) return strVal;
+
+    // ignore: unnecessary_null_comparison
+    final intVal = mmkv.decodeInt(key);
+    // ignore: unnecessary_null_comparison
+    if (intVal != null) return intVal;
+
+    // ignore: dead_code
+    final doubleVal = mmkv.decodeDouble(key);
+    // ignore: unnecessary_null_comparison
+    if (doubleVal != null) return doubleVal;
+
+    return mmkv.decodeBool(key);
   }
 
   /// 批量迁移多个 Box

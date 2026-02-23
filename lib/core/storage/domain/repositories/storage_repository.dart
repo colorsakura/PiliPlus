@@ -1,6 +1,6 @@
 /// 通用存储仓库接口
 ///
-/// 定义了基本类型的存储操作，支持 String、int、double、bool 和 List<String>
+/// 定义了基本类型的存储操作，支持 `String`、`int`、`double`、`bool` 和 `List<String>`
 /// 所有实现类（Hive、MMKV 等）都应实现此接口
 abstract interface class StorageRepository {
   /// 读取字符串

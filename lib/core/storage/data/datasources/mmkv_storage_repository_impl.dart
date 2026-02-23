@@ -126,13 +126,24 @@ class MMKVStorageRepository implements StorageRepository {
   Map<dynamic, dynamic> toMap() {
     final map = <dynamic, dynamic>{};
     for (final key in _mmkv.allKeys) {
-      // ignore: unnecessary_null_comparison
-      final value = _mmkv.decodeString(key) ?? _mmkv.decodeInt(key) ?? _mmkv.decodeDouble(key) ?? _mmkv.decodeBool(key);
+      final value = _decodeValue(key);
       if (value != null) {
         map[key] = value;
       }
     }
     return map;
+  }
+
+  /// Helper to decode value from MMKV, trying different types
+  dynamic? _decodeValue(String key) {
+    // Try different decoders and return first non-null/non-empty result
+    final strVal = _mmkv.decodeString(key);
+    if (strVal != null && strVal.isNotEmpty) return strVal;
+
+    final intVal = _mmkv.decodeInt(key);
+    if (intVal != null) return intVal;
+
+    return _mmkv.decodeDouble(key) ?? _mmkv.decodeBool(key);
   }
 }
 
