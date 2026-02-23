@@ -187,12 +187,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
       this,
       ModalRoute.of(context) as PageRoute,
     );
-
-    // 更新使用底部导航 - 延迟到 build 之后执行
-    final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(navigationConfigControllerProvider.notifier).updateUseBottomNav(useBottomNav);
-    });
   }
 
   @override
@@ -451,6 +445,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
       );
     }
 
+    // 根据当前屏幕尺寸判断是否使用底部导航
+    final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
+
     Widget child = PageView(
       physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
@@ -458,7 +455,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
     );
 
     Widget? bottomNav;
-    if (config.useBottomNav) {
+    // 只有在竖屏模式且有至少2个导航项时才使用底部导航栏
+    final shouldUseBottomNav = useBottomNav && config.navigationBars.length >= 2;
+    if (shouldUseBottomNav) {
       bottomNav = _buildBottomNav(config, unreadDyn.count);
       child = Row(children: [Expanded(child: child)]);
     } else {
@@ -481,9 +480,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
       appBar: AppBar(toolbarHeight: 0),
       body: Padding(
         padding: EdgeInsets.only(
-          left: config.useBottomNav ? _padding.left : 0.0,
+          left: shouldUseBottomNav ? _padding.left : 0.0,
           right: _padding.right,
-          bottom: config.useBottomNav ? 0.0 : _padding.bottom,
+          bottom: shouldUseBottomNav ? 0.0 : _padding.bottom,
         ),
         child: child,
       ),
@@ -548,7 +547,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
   /// - true: 使用 NavigationDrawer（平板优化）
   /// - false: 使用 NavigationRail（标准侧边栏）
   Widget _buildSideBar(NavigationConfig config, ThemeData theme, int dynCount) {
-    final optTabletNav = ref.watch(checkDynamicProvider); // 临时使用，需要修正
+    final optTabletNav = ref.watch(optTabletNavProvider);
     final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
 
     return config.navigationBars.length > 1

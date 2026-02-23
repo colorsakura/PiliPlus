@@ -156,3 +156,8 @@ final dynamicPeriodProvider = Provider<int>((ref) {
 final directExitOnBackProvider = Provider<bool>((ref) {
   return Pref.directExitOnBack;
 });
+
+/// 平板优化导航
+final optTabletNavProvider = Provider<bool>((ref) {
+  return Pref.optTabletNav;
+});
