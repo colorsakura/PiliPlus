@@ -113,6 +113,34 @@ class UserInfoData {
     isSeniorMember = json['is_senior_member'];
   }
 
+  Map<String, dynamic> toJson() => {
+    'isLogin': isLogin ?? false,
+    'email_verified': emailVerified,
+    'face': face,
+    'level_info': levelInfo?.toJson(),
+    'mid': mid,
+    'mobile_verified': mobileVerified,
+    'money': money,
+    'moral': moral,
+    'official': official,
+    'officialVerify': officialVerify,
+    'pendant': pendant,
+    'scores': scores,
+    'uname': uname,
+    'vipDueDate': vipDueDate,
+    'vipStatus': vipStatus,
+    'vipType': vipType,
+    'vip_pay_type': vipPayType,
+    'vip_theme_type': vipThemeType,
+    'vip_label': vipLabel,
+    'vip_avatar_subscript': vipAvatarSub,
+    'vip_nickname_color': vipNicknameColor,
+    'wallet': wallet,
+    'has_shop': hasShop,
+    'shop_url': shopUrl,
+    'is_senior_member': isSeniorMember,
+  };
+
   @override
   int get hashCode => Object.hash(mid, uname, face, money, vipStatus);
 
@@ -157,6 +185,13 @@ class LevelInfo {
         ? json['current_exp']
         : json['next_exp'];
   }
+
+  Map<String, dynamic> toJson() => {
+    'current_level': currentLevel,
+    'current_min': currentMin,
+    'current_exp': currentExp,
+    'next_exp': nextExp,
+  };
 
   @override
   int get hashCode => currentExp.hashCode;

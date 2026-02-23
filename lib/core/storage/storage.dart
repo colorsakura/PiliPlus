@@ -1,6 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PiliPlus/core/storage/data/datasources/hive_storage_repository_impl.dart';
+import 'package:PiliPlus/core/storage/data/datasources/mmkv_storage_repository_impl.dart';
+import 'package:PiliPlus/core/storage/data/storage_config.dart';
+import 'package:PiliPlus/core/storage/data/storage_factory.dart';
+import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
+import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
+import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
 import 'package:PiliPlus/models/model_owner.dart';
 import 'package:PiliPlus/models/user/danmaku_rule_adapter.dart';
 import 'package:PiliPlus/models/user/info.dart';
@@ -11,105 +18,207 @@ import 'package:PiliPlus/utils/accounts/cookie_jar_adapter.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/set_int_adapter.dart';
 import 'package:PiliPlus/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mmkv/mmkv.dart';
 import 'package:path/path.dart' as path;
 
+/// 全局存储管理类
+///
+/// 提供统一的存储接口，内部使用 MMKV 存储后端
+/// 首次启动时自动从 Hive 迁移数据，完全透明
 abstract final class GStorage {
+  // ============ 传统 Hive Box（向后兼容） ============
+
+  /// 用户信息 Box
   static late final Box<UserInfoData> userInfo;
+
+  /// 搜索历史 Box
   static late final Box<dynamic> historyWord;
+
+  /// 本地缓存 Box
   static late final Box<dynamic> localCache;
+
+  /// 设置 Box
   static late final Box<dynamic> setting;
+
+  /// 视频 Box
   static late final Box<dynamic> video;
+
+  /// 观看进度 Box
   static late final Box<int> watchProgress;
+
+  // ============ 新架构：存储仓库 ============
+
+  /// 设置存储仓库
+  static late final StorageRepository settingRepository;
+
+  /// 本地缓存存储仓库
+  static late final StorageRepository localCacheRepository;
+
+  /// 视频存储仓库
+  static late final StorageRepository videoRepository;
+
+  /// 搜索历史存储仓库
+  static late final StorageRepository historyWordRepository;
+
+  /// 用户信息存储仓库（类型化）
+  static late final TypedStorageRepository<UserInfoData> userInfoRepository;
+
+  /// 观看进度存储仓库
+  static late final StorageRepository watchProgressRepository;
+
+  /// 是否已初始化
+  static bool _isInitialized = false;
+
+  /// 是否已完成关键初始化（仅 setting Box）
+  static bool _isCriticalInitialized = false;
+
+  /// Hive 适配器是否已注册
+  static bool _hiveAdaptersRegistered = false;
+
+  /// 是否使用 MMKV（默认 true）
+  static bool get useMMKV => true;
 
   /// 仅初始化关键 Box (用于阻塞阶段)
   ///
-  /// 只打开 setting Box,用于读取 UI 缩放等关键设置
-  /// 其他 Box 延迟到核心阶段打开,以加快启动速度
+  /// 只打开 setting MMKV，用于读取 UI 缩放等关键设置
   static Future<void> initCritical() async {
-    await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
-    regAdapter();
+    if (_isCriticalInitialized) {
+      return;
+    }
 
-    // 只打开 setting Box
-    setting = await Hive.openBox('setting');
+    final stopwatch = Stopwatch()..start();
+    debugPrint('🚀 GStorage: Starting critical initialization (MMKV)');
+
+    // 初始化 MMKV
+    await MMKV.initialize(
+      rootDir: path.join(appSupportDirPath, 'mmkv'),
+    );
+
+    // 检查并迁移 setting 数据
+    await _migrateIfNeeded('setting');
+
+    // 创建 setting 仓库
+    settingRepository = StorageFactory.getRepository(
+      const StorageConfig.mmkv(name: 'setting'),
+    );
+
+    // 初始化 Hive（用于向后兼容，只读）
+    await _initHiveForCompatibility();
+
+    _isCriticalInitialized = true;
+    stopwatch.stop();
+    debugPrint(
+      '✅ GStorage: Critical initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+    );
   }
 
+  /// 完整初始化所有 Box
+  ///
+  /// 初始化所有存储，用于核心阶段
   static Future<void> init() async {
-    // 检查是否需要初始化基础设置
-    // 使用 try-catch 来安全地检查 setting 是否已初始化
-    bool needBaseInit;
+    if (_isInitialized) {
+      return;
+    }
+
+    final stopwatch = Stopwatch()..start();
+    debugPrint('🚀 GStorage: Starting full initialization (MMKV)');
+
+    // 迁移所有数据（如果需要）
+    await Future.wait([
+      _migrateIfNeeded('localCache'),
+      _migrateIfNeeded('video'),
+      _migrateIfNeeded('historyWord'),
+      _migrateIfNeeded('userInfo', isTyped: true),
+      _migrateIfNeeded('watchProgress'),
+    ]);
+
+    // 创建所有存储仓库
+    localCacheRepository = StorageFactory.getRepository(
+      const StorageConfig.mmkv(name: 'localCache'),
+    );
+    videoRepository = StorageFactory.getRepository(
+      const StorageConfig.mmkv(name: 'video'),
+    );
+    historyWordRepository = StorageFactory.getRepository(
+      const StorageConfig.mmkv(name: 'historyWord'),
+    );
+    watchProgressRepository = StorageFactory.getRepository(
+      const StorageConfig.mmkv(name: 'watchProgress'),
+    );
+
+    // 用户信息需要 JSON 序列化
+    userInfoRepository = StorageFactory.getTypedRepository<UserInfoData>(
+      const StorageConfig.mmkv(name: 'userInfo'),
+      codec: JsonCodec(
+        fromJson: UserInfoData.fromJson,
+        toJson: (data) => data.toJson(),
+      ),
+    );
+
+    _isInitialized = true;
+    stopwatch.stop();
+    debugPrint(
+      '✅ GStorage: Full initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+    );
+  }
+
+  /// 初始化 Hive（用于向后兼容）
+  static Future<void> _initHiveForCompatibility() async {
     try {
-      needBaseInit = !setting.isOpen;
-    } catch (e) {
-      // setting 未初始化，需要进行基础初始化
-      needBaseInit = true;
-    }
-
-    if (needBaseInit) {
       await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
-      regAdapter();
-      await Hive.openBox('setting').then((res) => setting = res);
+      _registerAdaptersIfNeeded();
+
+      // 打开所有 Hive Box（用于向后兼容的只读访问）
+      await Future.wait([
+        Hive.boxExists('setting')
+            .then((exists) => Hive.openBox('setting'))
+            .then((box) => setting = box),
+        Hive.boxExists('userInfo')
+            .then((exists) => Hive.openBox<UserInfoData>('userInfo'))
+            .then((box) => userInfo = box),
+        Hive.boxExists('localCache')
+            .then((exists) => Hive.openBox('localCache'))
+            .then((box) => localCache = box),
+        Hive.boxExists('historyWord')
+            .then((exists) => Hive.openBox('historyWord'))
+            .then((box) => historyWord = box),
+        Hive.boxExists('video')
+            .then((exists) => Hive.openBox('video'))
+            .then((box) => video = box),
+        Hive.boxExists('watchProgress')
+            .then((exists) => Hive.openBox<int>('watchProgress'))
+            .then((box) => watchProgress = box),
+        Accounts.init(),
+      ]);
+    } catch (e) {
+      debugPrint(
+        '⚠️  Warning: Failed to initialize Hive for compatibility: $e',
+      );
+      // 即使 Hive 初始化失败，MMKV 仍然可用，所以不抛出错误
+      try {
+        if (!Hive.isBoxOpen('setting')) {
+          await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
+          _registerAdaptersIfNeeded();
+          setting = await Hive.openBox('setting');
+          userInfo = await Hive.openBox<UserInfoData>('userInfo');
+          localCache = await Hive.openBox('localCache');
+          historyWord = await Hive.openBox('historyWord');
+          video = await Hive.openBox('video');
+          watchProgress = await Hive.openBox<int>('watchProgress');
+        }
+      } catch (e2) {
+        debugPrint('⚠️  Warning: Failed to create empty Hive boxes: $e2');
+      }
     }
-
-    // 打开其他 Box
-    await Future.wait([
-      // 登录用户信息
-      Hive.openBox<UserInfoData>(
-        'userInfo',
-        compactionStrategy: (int entries, int deletedEntries) {
-          return deletedEntries > 2;
-        },
-      ).then((res) => userInfo = res),
-      // 本地缓存
-      Hive.openBox(
-        'localCache',
-        compactionStrategy: (int entries, int deletedEntries) {
-          return deletedEntries > 4;
-        },
-      ).then((res) => localCache = res),
-      // 搜索历史
-      Hive.openBox(
-        'historyWord',
-        compactionStrategy: (int entries, int deletedEntries) {
-          return deletedEntries > 10;
-        },
-      ).then((res) => historyWord = res),
-      // 视频设置
-      Hive.openBox('video').then((res) => video = res),
-      Accounts.init(),
-      Hive.openBox<int>(
-        'watchProgress',
-        compactionStrategy: (entries, deletedEntries) {
-          return deletedEntries > 4;
-        },
-      ).then((res) => watchProgress = res),
-    ]);
   }
 
-  static Future<File> syncToDisk([_]) {
-    final jsonPath = path.join(appSupportDirPath, 'settings.json');
-    return File(jsonPath).writeAsString(exportAllSettings());
-  }
-
-  static String exportAllSettings() {
-    return Utils.jsonEncoder.convert({
-      setting.name: setting.toMap(),
-      video.name: video.toMap(),
-    });
-  }
-
-  static Future<void> importAllSettings(String data) =>
-      importAllJsonSettings(jsonDecode(data));
-
-  static Future<bool> importAllJsonSettings(Map<String, dynamic> map) async {
-    await Future.wait([
-      setting.clear().then((_) => setting.putAll(map[setting.name])),
-      video.clear().then((_) => video.putAll(map[video.name])),
-    ]);
-    return true;
-  }
-
-  static void regAdapter() {
+  /// 注册 Hive 适配器（只注册一次）
+  static void _registerAdaptersIfNeeded() {
+    if (_hiveAdaptersRegistered) {
+      return;
+    }
     Hive
       ..registerAdapter(OwnerAdapter())
       ..registerAdapter(UserInfoDataAdapter())
@@ -119,29 +228,135 @@ abstract final class GStorage {
       ..registerAdapter(AccountTypeAdapter())
       ..registerAdapter(SetIntAdapter())
       ..registerAdapter(RuleFilterAdapter());
+    _hiveAdaptersRegistered = true;
   }
 
+  /// 注册 Hive 适配器（公共方法，保持向后兼容）
+  static void regAdapter() {
+    _registerAdaptersIfNeeded();
+  }
+
+  /// 检查并迁移数据（Hive -> MMKV）
+  static Future<void> _migrateIfNeeded(
+    String boxName, {
+    bool isTyped = false,
+  }) async {
+    // 检查是否已迁移
+    if (StorageMigrator.hasMigrated(boxName)) {
+      return;
+    }
+
+    // 检查 Hive Box 是否存在且有数据
+    bool hasHiveData = false;
+    try {
+      if (!Hive.isBoxOpen(boxName)) {
+        await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
+        _registerAdaptersIfNeeded();
+      }
+
+      if (await Hive.boxExists(boxName)) {
+        final box = await Hive.openBox<dynamic>(boxName);
+        hasHiveData = box.isNotEmpty;
+        // 注意：不要关闭 box，因为迁移工具需要它
+        // 在迁移完成后统一关闭
+      }
+    } catch (e) {
+      debugPrint('Failed to check Hive box $boxName: $e');
+    }
+
+    // 如果没有 Hive 数据，标记为已迁移并返回
+    if (!hasHiveData) {
+      final mmkv = MMKV(boxName);
+      mmkv.encodeBool('_mmkv_migration_completed', true);
+      return;
+    }
+
+    // 执行迁移
+    debugPrint('📦 Migrating $boxName from Hive to MMKV...');
+    try {
+      if (isTyped && boxName == 'userInfo') {
+        await StorageMigrator.migrateTypedObjects<UserInfoData>(
+          boxName: boxName,
+          codec: JsonCodec(
+            fromJson: (json) => UserInfoData.fromJson(json),
+            toJson: (data) => data.toJson(),
+          ),
+        );
+      } else {
+        await StorageMigrator.migrateBasicTypes(boxName: boxName);
+      }
+      debugPrint('✅ Migration completed for $boxName');
+    } catch (e) {
+      debugPrint('❌ Migration failed for $boxName: $e');
+      // 迁移失败时继续使用，下次会重试
+    }
+  }
+
+  /// 导出所有设置到文件
+  static Future<File> syncToDisk([_]) {
+    final jsonPath = path.join(appSupportDirPath, 'settings.json');
+    return File(jsonPath).writeAsString(exportAllSettings());
+  }
+
+  /// 导出所有设置为 JSON 字符串
+  static String exportAllSettings() {
+    // 从 MMKV 导出
+    return Utils.jsonEncoder.convert({
+      'setting': settingRepository.toMap(),
+      'video': videoRepository.toMap(),
+    });
+  }
+
+  /// 从 JSON 字符串导入所有设置
+  static Future<void> importAllSettings(String data) =>
+      importAllJsonSettings(jsonDecode(data));
+
+  /// 从 JSON Map 导入所有设置
+  static Future<bool> importAllJsonSettings(Map<String, dynamic> map) async {
+    // 导入到 MMKV
+    if (map['setting'] != null) {
+      final settings = map['setting'] as Map<String, dynamic>;
+      for (final entry in settings.entries) {
+        final value = entry.value;
+        if (value is String) {
+          await settingRepository.setString(entry.key, value);
+        } else if (value is int) {
+          await settingRepository.setInt(entry.key, value);
+        } else if (value is double) {
+          await settingRepository.setDouble(entry.key, value);
+        } else if (value is bool) {
+          await settingRepository.setBool(entry.key, value);
+        }
+      }
+    }
+    if (map['video'] != null) {
+      final videos = map['video'] as Map<String, dynamic>;
+      for (final entry in videos.entries) {
+        final value = entry.value;
+        if (value is String) {
+          await videoRepository.setString(entry.key, value);
+        } else if (value is int) {
+          await videoRepository.setInt(entry.key, value);
+        } else if (value is double) {
+          await videoRepository.setDouble(entry.key, value);
+        } else if (value is bool) {
+          await videoRepository.setBool(entry.key, value);
+        }
+      }
+    }
+    return true;
+  }
+
+  /// 压缩所有 Box
   static Future<void> compact() async {
-    await Future.wait([
-      userInfo.compact(),
-      historyWord.compact(),
-      localCache.compact(),
-      setting.compact(),
-      video.compact(),
-      Accounts.account.compact(),
-      watchProgress.compact(),
-    ]);
+    // MMKV 不需要手动压缩
+    debugPrint('MMKV does not need manual compaction');
   }
 
+  /// 关闭所有 Box
   static Future<void> close() async {
     await Future.wait([
-      userInfo.close(),
-      historyWord.close(),
-      localCache.close(),
-      setting.close(),
-      video.close(),
-      Accounts.account.close(),
-      watchProgress.close(),
+      Hive.close().then((_) => _isInitialized = false),
     ]);
   }
 }

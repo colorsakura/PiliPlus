@@ -1,57 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
-library;
-
-/// Storage key constants
-///
-/// This file maintains backward compatibility by re-exporting all keys from the domain layer.
-/// New code should import from 'package:PiliPlus/core/storage/domain/keys/' instead.
-
-// Re-export all domain keys for forward compatibility
-export 'domain/keys/setting/video_setting_keys.dart';
-export 'domain/keys/setting/danmaku_setting_keys.dart';
-export 'domain/keys/setting/subtitle_setting_keys.dart';
-export 'domain/keys/setting/ui_setting_keys.dart';
-export 'domain/keys/setting/desktop_setting_keys.dart';
-export 'domain/keys/setting/webdav_setting_keys.dart';
-export 'domain/keys/setting/sponsor_block_setting_keys.dart';
-export 'domain/keys/setting/proxy_setting_keys.dart';
-export 'domain/keys/local_cache_keys.dart';
-export 'domain/keys/video_keys.dart';
-
-// Backward compatibility: aggregate all setting keys into SettingBoxKey
-// This maintains the original API where all keys were in one class
-abstract final class SettingBoxKey {
-  // Video settings
-  static const String btmProgressBehavior = 'btmProgressBehavior',
-      defaultVideoQa = 'defaultVideoQa',
-      defaultVideoQaCellular = 'defaultVideoQaCellular',
-      defaultAudioQa = 'defaultAudioQa',
-      defaultAudioQaCellular = 'defaultAudioQaCellular',
-      autoPlayEnable = 'autoPlayEnable',
-      fullScreenMode = 'fullScreenMode',
-      defaultDecode = 'defaultDecode',
-      secondDecode = 'secondDecode',
-      defaultToastOp = 'defaultToastOp',
-      defaultPicQa = 'defaultPicQa',
-      enableHA = 'enableHA',
-      audioOutput = 'audioOutput',
-      expandBuffer = 'expandBuffer',
-      hardwareDecoding = 'hardwareDecoding',
-      videoSync = 'videoSync',
-      autosync = 'autosync',
-      p1080 = 'p1080',
-      enableAutoEnter = 'enableAutoEnter',
-      enableAutoExit = 'enableAutoExit',
-      enableOnlineTotal = 'enableOnlineTotal',
-      superChatType = 'superChatType',
-      keyboardControl = 'keyboardControl',
-      pauseOnMinimize = 'pauseOnMinimize',
-      pgcSkipType = 'pgcSkipType',
-      audioPlayMode = 'audioPlayMode',
-      showBatteryLevel = 'showBatteryLevel';
-
-  // UI settings
+/// UI 相关设置键
+abstract final class UISettingKeys {
+  // 视频界面设置
   static const String enableVerticalExpand = 'enableVerticalExpand',
       feedBackEnable = 'feedBackEnable',
       enableLongShowControl = 'enableLongShowControl',
@@ -172,70 +123,7 @@ abstract final class SettingBoxKey {
       showDynDispute = 'showDynDispute',
       touchSlopH = 'touchSlopH';
 
-  // Desktop settings
-  static const String minimizeOnExit = 'minimizeOnExit',
-      windowSize = 'windowSize',
-      windowPosition = 'windowPosition',
-      isWindowMaximized = 'isWindowMaximized',
-      showWindowTitleBar = 'showWindowTitleBar',
-      desktopVolume = 'desktopVolume',
-      showTrayIcon = 'showTrayIcon',
-      uiScale = 'uiScale',
-      useSSD = 'useSSD';
-
-  // Subtitle settings
-  static const String subtitlePreferenceV2 = 'subtitlePreferenceV2',
-      enableDragSubtitle = 'enableDragSubtitle',
-      subtitlePaddingH = 'subtitlePaddingH',
-      subtitlePaddingB = 'subtitlePaddingB',
-      subtitleBgOpacity = 'subtitleBgOpaticy',
-      subtitleStrokeWidth = 'subtitleStrokeWidth',
-      subtitleFontScale = 'subtitleFontScale',
-      subtitleFontScaleFS = 'subtitleFontScaleFS',
-      subtitleFontWeight = 'subtitleFontWeight';
-
-  // WebDAV settings
-  static const String webdavUri = 'webdavUri',
-      webdavUsername = 'webdavUsername',
-      webdavPassword = 'webdavPassword',
-      webdavDirectory = 'webdavDirectory';
-
-  // SponsorBlock settings
-  static const String enableSponsorBlock = 'enableSponsorBlock',
-      blockSettings = 'blockSettings',
-      blockLimit = 'blockLimit',
-      blockColor = 'blockColor',
-      blockUserID = 'blockUserID',
-      blockToast = 'blockToast',
-      blockServer = 'blockServer',
-      blockTrack = 'blockTrack';
-
-  // Danmaku settings
-  static const String enableShowDanmaku = 'enableShowDanmaku',
-      enableShowLiveDanmaku = 'enableShowLiveDanmaku',
-      pipNoDanmaku = 'pipNoDanmaku',
-      showVipDanmaku = 'showVipDanmaku',
-      mergeDanmaku = 'mergeDanmaku',
-      danmakuWeight = 'danmakuWeight',
-      danmakuBlockType = 'danmakuBlockType',
-      danmakuShowArea = 'danmakuShowArea',
-      danmakuOpacity = 'danmakuOpacity',
-      danmakuFontScale = 'danmakuFontScale',
-      danmakuFontScaleFS = 'danmakuFontScaleFS',
-      danmakuDuration = 'danmakuDuration',
-      danmakuStaticDuration = 'danmakuStaticDuration',
-      danmakuMassiveMode = 'danmakuMassiveMode',
-      danmakuFixedV = 'danmakuFixedV',
-      danmakuStatic2Scroll = 'danmakuStatic2Scroll',
-      danmakuLineHeight = 'danmakuLineHeight',
-      danmakuStrokeWidth = 'strokeWidth',
-      danmakuFontWeight = 'fontWeight';
-
-  // Proxy settings
-  static const String systemProxyHost = 'systemProxyHost',
-      systemProxyPort = 'systemProxyPort';
-
-  // Theme and appearance settings
+  // 主题和外观设置
   static const String themeMode = 'themeMode',
       defaultTextScale = 'textScale',
       dynamicColor = 'dynamicColor',
@@ -257,23 +145,4 @@ abstract final class SettingBoxKey {
       tempPlayerConf = 'tempPlayerConf',
       reduceLuxColor = 'reduceLuxColor',
       liveCdnUrl = 'liveCdnUrl';
-}
-
-/// Backward compatibility: LocalCacheKeys class
-abstract final class LocalCacheKey {
-  static const String historyPause = 'historyPause',
-      blackMids = 'blackMids',
-      danmakuFilterRules = 'danmakuFilterRules',
-      mixinKey = 'mixinKey',
-      timeStamp = 'timeStamp',
-      buvid = 'buvid';
-}
-
-/// Backward compatibility: VideoKeys class
-abstract final class VideoBoxKey {
-  static const String playRepeat = 'playRepeat',
-      playSpeedDefault = 'playSpeedDefault',
-      longPressSpeedDefault = 'longPressSpeedDefault',
-      speedsList = 'speedsList',
-      cacheVideoFit = 'cacheVideoFit';
 }
