@@ -1,80 +1,35 @@
-import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/common/widgets/badge.dart';
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/progress_bar/video_progress_indicator.dart';
-import 'package:PiliPlus/common/widgets/select_mask.dart';
 import 'package:PiliPlus/common/widgets/stat/stat.dart';
-import 'package:PiliPlus/http/search.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/later/domain/entities/later_item.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
-import 'package:PiliPlus/models/later/list.dart';
-import 'package:PiliPlus/pages/later/controller.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
-import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
-// 视频卡片 - 水平布局
-class VideoCardHLater extends StatelessWidget {
-  const VideoCardHLater({
+/// 稍后再看视频卡片
+class LaterVideoCard extends StatelessWidget {
+  const LaterVideoCard({
     super.key,
-    required this.ctr,
-    required this.index,
     required this.videoItem,
-    required this.onViewLater,
+    this.onDelete,
   });
-  final int index;
-  final BaseLaterController ctr;
-  final LaterItemModel videoItem;
-  final ValueChanged<int> onViewLater;
+
+  final LaterItemEntity videoItem;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final enableMultiSelect = ctr.enableMultiSelect.value;
-
-    final onLongPress = enableMultiSelect
-        ? null
-        : () => ctr
-            ..enableMultiSelect.value = true
-            ..onSelect(videoItem);
 
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onLongPress: onLongPress,
-        onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
-        onTap: enableMultiSelect
-            ? () => ctr.onSelect(videoItem)
-            : () async {
-                if (videoItem.isPugv ?? false) {
-                  PageUtils.viewPugv(seasonId: videoItem.aid);
-                  return;
-                }
-                if (videoItem.isPgc ?? false) {
-                  if (videoItem.bangumi?.epId != null) {
-                    PageUtils.viewPgc(epId: videoItem.bangumi!.epId);
-                  } else if (videoItem.redirectUrl?.isNotEmpty == true) {
-                    PageUtils.viewPgcFromUri(videoItem.redirectUrl!);
-                  }
-                  return;
-                }
-                try {
-                  final int? cid =
-                      videoItem.cid ??
-                      await SearchHttp.ab2c(
-                        aid: videoItem.aid,
-                        bvid: videoItem.bvid,
-                      );
-                  if (cid != null) {
-                    onViewLater(cid);
-                  }
-                } catch (err) {
-                  SmartDialog.showToast(err.toString());
-                }
-              },
+        onTap: () => _onTap(context),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: StyleString.safeSpace,
@@ -89,7 +44,7 @@ class VideoCardHLater extends StatelessWidget {
                   builder: (context, boxConstraints) {
                     final double maxWidth = boxConstraints.maxWidth;
                     final double maxHeight = boxConstraints.maxHeight;
-                    num? progress = videoItem.progress;
+                    final num? progress = videoItem.progress;
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
@@ -97,7 +52,6 @@ class VideoCardHLater extends StatelessWidget {
                           src: videoItem.pic,
                           width: maxWidth,
                           height: maxHeight,
-                          cacheWidth: videoItem.dimension?.cacheWidth,
                         ),
                         if (videoItem.isCharging == true)
                           const PBadge(
@@ -105,12 +59,6 @@ class VideoCardHLater extends StatelessWidget {
                             top: 6.0,
                             right: 6.0,
                             type: PBadgeType.error,
-                          )
-                        else if (videoItem.rights?.isCooperation == 1)
-                          const PBadge(
-                            text: '合作',
-                            top: 6.0,
-                            right: 6.0,
                           )
                         else if (videoItem.pgcLabel != null)
                           PBadge(
@@ -128,7 +76,7 @@ class VideoCardHLater extends StatelessWidget {
                           PBadge(
                             text: progress == -1
                                 ? '已看完'
-                                : '${DurationUtils.formatDuration(progress)}/${DurationUtils.formatDuration(videoItem.duration)}',
+                                : '${DurationUtils.formatDuration(progress.toInt())}/${DurationUtils.formatDuration(videoItem.duration ?? 0)}',
                             right: 6,
                             bottom: 8,
                             type: PBadgeType.gray,
@@ -143,31 +91,25 @@ class VideoCardHLater extends StatelessWidget {
                                   theme.colorScheme.secondaryContainer,
                               progress: progress == -1
                                   ? 1
-                                  : progress / videoItem.duration!,
+                                  : progress / (videoItem.duration ?? 1),
                             ),
                           ),
-                        ] else if (videoItem.duration! > 0)
+                        ] else if (videoItem.duration != null && videoItem.duration! > 0)
                           PBadge(
                             text: DurationUtils.formatDuration(
-                              videoItem.duration,
+                              videoItem.duration!,
                             ),
                             right: 6.0,
                             bottom: 6.0,
                             type: PBadgeType.gray,
                           ),
-                        Positioned.fill(
-                          child: selectMask(
-                            theme,
-                            videoItem.checked,
-                          ),
-                        ),
                       ],
                     );
                   },
                 ),
               ),
               const SizedBox(width: 10),
-              content(context, theme),
+              _content(context, theme),
             ],
           ),
         ),
@@ -175,12 +117,9 @@ class VideoCardHLater extends StatelessWidget {
     );
   }
 
-  Widget content(BuildContext context, ThemeData theme) {
-    final isPgc = videoItem.isPgc == true && videoItem.bangumi != null;
-    Widget stat = StatWidget(
-      type: StatType.play,
-      value: videoItem.stat?.view,
-    );
+  Widget _content(BuildContext context, ThemeData theme) {
+    final isPgc = videoItem.isPgc == true;
+
     return Expanded(
       child: Stack(
         clipBehavior: Clip.none,
@@ -190,7 +129,7 @@ class VideoCardHLater extends StatelessWidget {
             children: isPgc
                 ? [
                     Text(
-                      videoItem.bangumi!.season!.title!,
+                      videoItem.subtitle ?? '',
                       style: TextStyle(
                         fontSize: theme.textTheme.bodyMedium!.fontSize,
                         height: 1.42,
@@ -201,7 +140,7 @@ class VideoCardHLater extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      videoItem.subtitle!,
+                      videoItem.title ?? '',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: 13,
@@ -211,12 +150,15 @@ class VideoCardHLater extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
-                    stat,
+                    StatWidget(
+                      type: StatType.play,
+                      value: _getViewCount(),
+                    ),
                   ]
                 : [
                     Expanded(
                       child: Text(
-                        videoItem.title!,
+                        videoItem.title ?? '',
                         style: TextStyle(
                           fontSize: theme.textTheme.bodyMedium!.fontSize,
                           height: 1.42,
@@ -227,7 +169,7 @@ class VideoCardHLater extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      videoItem.owner!.name!,
+                      _getOwnerName(),
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 12,
@@ -238,12 +180,15 @@ class VideoCardHLater extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Row(
-                      spacing: 8,
                       children: [
-                        stat,
+                        StatWidget(
+                          type: StatType.play,
+                          value: _getViewCount(),
+                        ),
+                        const SizedBox(width: 8),
                         StatWidget(
                           type: StatType.danmaku,
-                          value: videoItem.stat?.danmaku,
+                          value: _getDanmakuCount(),
                         ),
                       ],
                     ),
@@ -252,15 +197,88 @@ class VideoCardHLater extends StatelessWidget {
           Positioned(
             right: 0,
             bottom: -8,
-            child: iconButton(
+            child: IconButton(
               tooltip: '移除',
-              onPressed: () => ctr.toViewDel(context, index, videoItem.aid),
+              onPressed: onDelete,
               icon: const Icon(Icons.clear),
-              iconColor: theme.colorScheme.outline,
+              color: theme.colorScheme.outline,
             ),
           ),
         ],
       ),
     );
+  }
+
+  String _getOwnerName() {
+    if (videoItem.owner == null) return '';
+    // Handle if owner is a Map (from JSON) or Owner object
+    if (videoItem.owner is Map) {
+      return (videoItem.owner as Map)['name']?.toString() ?? '';
+    }
+    // If it's an Owner object, try to access the name property via reflection
+    // This is a fallback - ideally we'd properly type the entity
+    try {
+      return videoItem.owner.toString().replaceAll('Owner(', '').replaceAll(')', '');
+    } catch (e) {
+      return '';
+    }
+  }
+
+  int? _getViewCount() {
+    if (videoItem.stat == null) return null;
+    if (videoItem.stat is Map) {
+      return (videoItem.stat as Map)['view'] as int?;
+    }
+    return null;
+  }
+
+  int? _getDanmakuCount() {
+    if (videoItem.stat == null) return null;
+    if (videoItem.stat is Map) {
+      return (videoItem.stat as Map)['danmaku'] as int?;
+    }
+    return null;
+  }
+
+  void _onTap(BuildContext context) {
+    if (videoItem.isPugv ?? false) {
+      PageUtils.viewPugv(seasonId: videoItem.aid);
+      return;
+    }
+    if (videoItem.isPgc ?? false) {
+      _handlePgcTap();
+      return;
+    }
+
+    // Handle regular video
+    if (videoItem.cid != null) {
+      PageUtils.toVideoPage(
+        bvid: videoItem.bvid,
+        cid: videoItem.cid!,
+        cover: videoItem.pic,
+        title: videoItem.title,
+      );
+    } else {
+      SmartDialog.showToast('无法播放该视频');
+    }
+  }
+
+  void _handlePgcTap() {
+    if (videoItem.bangumi == null) {
+      if (videoItem.redirectUrl != null && videoItem.redirectUrl!.isNotEmpty) {
+        PageUtils.viewPgcFromUri(videoItem.redirectUrl!);
+      }
+      return;
+    }
+
+    if (videoItem.bangumi is Map) {
+      final bangumi = videoItem.bangumi as Map;
+      final epId = bangumi['epId'];
+      if (epId != null) {
+        PageUtils.viewPgc(epId: epId);
+      } else if (videoItem.redirectUrl != null && videoItem.redirectUrl!.isNotEmpty) {
+        PageUtils.viewPgcFromUri(videoItem.redirectUrl!);
+      }
+    }
   }
 }
