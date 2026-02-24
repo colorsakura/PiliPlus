@@ -593,3 +593,94 @@ flutter analyze
 ```
 
 确保无错误后再继续。
+
+### Commit 4: Fix dynamics page data loading + Clean up (2024-02-24)
+- **Commit:** `f39e869c3` - fix: ensure dynamics tab always loads data on first visit
+- Fixed dynamics_tab_page data loading with WidgetsBinding.addPostFrameCallback
+- **Commit:** `82f9363cb` - refactor: remove unused import from dynamics_tab_page
+- **Commit:** `987fe2b1b` - refactor: clean up unused imports and update documentation
+- Cleaned up 37+ unused imports across features
+
+### Commit 5: Create Riverpod CommonListController (2024-02-24)
+- **Commit:** `b59eb4f2a` - feat: create Riverpod CommonListController with ListControllerMixin
+- Created lib/utils/mixins/list_controller_mixin.dart
+  - ListControllerMixin<T>: Pagination logic for list controllers
+  - BaseListController<T>: Base class with common list methods
+- Created lib/utils/mixins/list_controller_mixin_example.dart
+- Fixed lib/features/dynamics_tab/presentation/pages/dynamics_tab_page.dart (missing waterfall.dart import)
+- Enables migration of 54 controllers that extend CommonListController
+
+## 当前能力
+
+### 可用的公共控制器和Mixins
+
+#### Riverpod版本 (lib/core/controllers/)
+- ✅ CommonController - 基础控制器功能
+- ✅ CommonListController - 分页列表控制器
+- ✅ ReplyController - 回复功能控制器
+- ✅ CommonDynController - 动态控制器
+
+#### Riverpod Mixins (lib/utils/mixins/)
+- ✅ ListControllerMixin<T> - 分页逻辑Mixin (NEW!)
+  - 支持 LoadingState<T> 状态管理
+  - 自动处理页面跟踪、结束检测、加载状态
+  - 提供 loadData, onRefresh, onReload, onLoadMore 方法
+- ✅ DebounceStreamState - 防抖流状态
+
+#### GetX版本 (lib/pages/common/)
+- ⏳ CommonController<R, T> - 兼容性保留
+- ⏳ CommonListController<R, T> - 兼容性保留
+- ⏳ ReplyController - 兼容性保留
+- ⏳ CommonDynController - 兼容性保留
+
+### 可复用的组件 (lib/common/widgets/)
+
+#### 发布相关
+- ✅ CommonPublishPage - 通用发布页面
+- ✅ CommonRichTextPubPage - 富文本发布页面
+
+#### 加载相关
+- ✅ HttpError - 错误处理组件
+- ✅ LoadingWidget - 加载指示器
+
+## 下一步行动
+
+### 立即可做: 使用 ListControllerMixin 迁移简单列表页面
+
+以下页面现在可以使用 `BaseListController<T>` 进行迁移:
+
+1. **member_article** - 用户文章列表
+2. **member_audio** - 用户音频列表  
+3. **member_video** - 用户视频列表
+4. **search_result** - 搜索结果列表
+5. **follow** - 关注列表
+6. **fav_detail** - 收藏详情列表
+
+迁移模式示例:
+```dart
+// 1. 创建 Domain 层
+abstract class MemberArticleRepository {
+  Future<LoadingState<List<Article>>> getArticles(int page);
+}
+
+class GetArticlesUseCase {
+  final MemberArticleRepository _repository;
+  Future<LoadingState<List<Article>>> call(int page) => _repository.getArticles(page);
+}
+
+// 2. 创建 Controller
+class MemberArticleController extends BaseListController<Article> {
+  @override
+  Future<LoadingState<List<Article>>> fetchData(int page) async {
+    final useCase = ref.read(getArticlesUseCaseProvider);
+    return await useCase(page);
+  }
+}
+
+// 3. 创建 Provider
+final memberArticleControllerProvider =
+    NotifierProvider<MemberArticleController, LoadingState<List<Article>?>>(
+  MemberArticleController.new,
+);
+```
+
