@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/live_room/presentation/pages/live_room_page.dart';
+export 'package:PiliPlus/pages/live_room/view.dart';

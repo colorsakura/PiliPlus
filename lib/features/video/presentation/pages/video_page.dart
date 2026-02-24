@@ -21,7 +21,7 @@ import 'package:PiliPlus/pages/common/common_intro_controller.dart';
 import 'package:PiliPlus/features/danmaku/danmaku.dart';
 import 'package:PiliPlus/features/episode_panel/episode_panel.dart';
 import 'package:PiliPlus/pages/video/ai_conclusion/view.dart';
-import 'package:PiliPlus/features/video/presentation/pages/video_controller.dart';
+import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/local/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/local/view.dart';
 import 'package:PiliPlus/pages/video/introduction/pgc/controller.dart';

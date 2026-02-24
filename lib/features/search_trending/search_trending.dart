@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/search_trending/presentation/pages/search_trending_page.dart';
+export 'package:PiliPlus/pages/search_trending/view.dart';

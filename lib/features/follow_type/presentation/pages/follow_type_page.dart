@@ -5,7 +5,7 @@ import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/pages/follow/widgets/follow_item.dart';
-import 'package:PiliPlus/features/follow_type/presentation/pages/follow_type_controller.dart';
+import 'package:PiliPlus/pages/follow_type/controller.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;

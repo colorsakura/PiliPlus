@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/space_setting/presentation/pages/space_setting_page.dart';
+export 'package:PiliPlus/pages/space_setting/view.dart';

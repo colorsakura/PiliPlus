@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/search/presentation/pages/search_page.dart';
+export 'package:PiliPlus/pages/search/view.dart';

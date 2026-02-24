@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/subscription/presentation/pages/subscription_page.dart';
+export 'package:PiliPlus/pages/subscription/view.dart';

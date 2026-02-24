@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/common/fav_order_type.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
-import 'package:PiliPlus/features/fav_detail/presentation/pages/fav_detail_controller.dart';
+import 'package:PiliPlus/pages/fav_detail/controller.dart';
 import 'package:PiliPlus/pages/fav_detail/widget/fav_video_card.dart';
 import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:PiliPlus/utils/grid.dart';

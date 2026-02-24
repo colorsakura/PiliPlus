@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/audio/presentation/pages/audio_page.dart';
+export 'package:PiliPlus/pages/audio/view.dart';

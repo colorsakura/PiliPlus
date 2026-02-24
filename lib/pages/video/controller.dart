@@ -39,7 +39,7 @@ import 'package:PiliPlus/models/video/video_stein_edgeinfo/data.dart';
 import 'package:PiliPlus/pages/audio/view.dart';
 import 'package:PiliPlus/pages/common/publish/publish_route.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
-import 'package:PiliPlus/pages/sponsor_block/block_mixin.dart';
+import 'package:PiliPlus/features/sponsor_block/presentation/pages/block_mixin.dart';
 import 'package:PiliPlus/pages/video/download_panel/view.dart';
 import 'package:PiliPlus/pages/video/introduction/pgc/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';

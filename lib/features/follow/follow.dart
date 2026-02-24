@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/follow/presentation/pages/follow_page.dart';
+export 'package:PiliPlus/pages/follow/view.dart';
