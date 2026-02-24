@@ -18,7 +18,7 @@ import 'package:PiliPlus/features/member_contribute/member_contribute.dart';
 import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';
 import 'package:PiliPlus/features/member_favorite/member_favorite.dart';
 import 'package:PiliPlus/features/member_home/member_home.dart';
-import 'package:PiliPlus/features/member_pgc/member_pgc.dart';
+import 'package:PiliPlus/features/member_pgc/presentation/pages/member_pgc_page_v2.dart';
 import 'package:PiliPlus/features/member_shop/member_shop.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
@@ -289,7 +289,7 @@ class _MemberPageState extends State<MemberPage> {
 
   Widget get _buildBody => tabBarView(
     controller: _userController.tabController,
-    children: _userController.tab2!.map((item) {
+    children: _userController.tab2!.map<Widget>((item) {
       return switch (item.param!) {
         'home' => MemberHome(heroTag: _heroTag),
         'dynamic' => MemberDynamicsPage(mid: _mid),
@@ -300,8 +300,7 @@ class _MemberPageState extends State<MemberPage> {
             mid: _mid,
           ),
         ),
-        'bangumi' => MemberBangumi(
-          heroTag: _heroTag,
+        'bangumi' => MemberPgcPageV2(
           mid: _mid,
         ),
         'favorite' => MemberFavorite(
