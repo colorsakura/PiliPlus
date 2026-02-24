@@ -363,11 +363,138 @@ class MyPage extends ConsumerWidget {
 
 ## 下一步计划
 
-1. 完成剩余的简单页面 (article, article_list, audio, pgc等)
-2. 开始中等复杂度页面迁移 (login, search, member等)
-3. 处理Dynamics相关页面
-4. 处理Member相关页面
-5. 最后处理复杂页面 (video, setting等)
+1. ✅ 完成剩余的简单页面 (article, article_list, audio, pgc等)
+2. ✅ 开始中等复杂度页面迁移 (login, search, member等)
+3. ✅ 处理Dynamics相关页面
+4. ⏳ 处理Member相关页面
+5. ⏳ 最后处理复杂页面 (video, setting等)
+
+---
+
+## 🎯 最新迁移进度 (2025-02-24)
+
+### ✅ Whisper Block 完整迁移
+迁移 `whisper_block` 到完整的 Clean Architecture:
+
+**创建的文件:**
+- `lib/features/whisper_block/domain/entities/whisper_block_entity.dart`
+- `lib/features/whisper_block/domain/repositories/whisper_block_repository.dart`
+- `lib/features/whisper_block/domain/usecases/add_keyword_usecase.dart`
+- `lib/features/whisper_block/domain/usecases/get_keyword_blocking_list_usecase.dart`
+- `lib/features/whisper_block/data/datasources/whisper_block_remote_datasource.dart`
+- `lib/features/whisper_block/data/repositories/whisper_block_repository_impl.dart`
+- `lib/features/whisper_block/presentation/providers/whisper_block_controller.dart`
+- `lib/features/whisper_block/presentation/providers/whisper_block_providers.dart`
+- `lib/features/whisper_block/presentation/pages/whisper_block_page.dart`
+
+**关键技术点:**
+- gRPC 数据源集成 (`grpc/bilibili/app/im/v1.pb.dart`)
+- LoadingState 模式: 使用 `switch` 模式匹配而非 `.when()`
+- Success 类型: 使用 `.response` 访问数据而非 `.value`
+- Riverpod Notifier 模式实现
+
+**修复的问题:**
+1. 错误的 gRPC 导入路径 (`bilibilli` → `bilibili`)
+2. 使用 `.when()` 方法 → 改为 `switch` 模式匹配
+3. 使用 `.value` getter → 改为 `.response`
+4. 缺少 WhisperBlockEntity 导入
+
+### ✅ 全部页面结构迁移
+- ✅ 109个功能模块迁移到 `lib/features/`
+- ✅ 恢复 `lib/pages/` 目录以保持兼容性
+- ✅ 创建 re-export shims 保持向后兼容
+- ✅ 修复180+编译错误 → 0 errors
+- ✅ 应用成功编译并运行
+
+### ✅ 全部 Widgets 迁移 (88个)
+迁移所有 widgets 从 `lib/pages/*/widgets/` 到 `lib/features/*/presentation/widgets/`:
+
+**Article Widgets (3):**
+- `article_ops.dart` - 文章操作按钮
+- `html_render.dart` - HTML 渲染器
+- `opus_content.dart` - 图文内容渲染
+
+**Dynamics Widgets (18):**
+- `action_panel.dart` - 动态操作面板
+- `author_panel.dart` - 作者信息面板
+- `dyn_content.dart` - 动态内容
+- `additional_panel.dart` - 额外内容面板
+- `dislike_reason_panel.dart` - 不喜欢原因面板
+- `main_dyn_panel.dart` - 主动态面板
+- `main_dyn_title.dart` - 主动态标题
+- `more_panel.dart` - 更多选项面板
+- `topic_panel.dart` - 话题面板
+- `video_related_panel.dart` - 视频相关面板
+- 等等...
+
+**其他 Features Widgets:**
+- follow: `follow_item.dart`
+- video: introduction, reply, reply_search_item 子目录
+- download: detail 子目录
+- fav: video 子目录
+- search_panel: all, article, live, pgc, user 子目录
+
+**更新的文件:**
+- `lib/features/dynamics/dynamics.dart` - 导出所有 dynamics widgets
+- 所有导入路径通过 sed 命令全局更新
+
+### ✅ 运行时错误修复 (2个)
+
+**Error 1: DynamicsController not found**
+```
+"DynamicsController" not found. You need to call "Get.put(DynamicsController())"
+```
+**解决方案:** 在 `DynamicsTabController` 中添加懒初始化 getter
+```dart
+DynamicsController get _dynamicsController {
+  try {
+    return Get.find<DynamicsController>();
+  } catch (e) {
+    return Get.put(DynamicsController());
+  }
+}
+```
+
+**Error 2: Double SliverToBoxAdapter wrapping**
+```
+A RenderSliverToBoxAdapter expected a child of type RenderBox but received a child of type RenderSliverToBoxAdapter
+```
+**根本原因:** `HttpError` widget 已经在 `isSliver=true` 时包装内容
+**解决方案:** 移除冗余的 `SliverToBoxAdapter` 包装
+```dart
+// Before:
+return SliverToBoxAdapter(
+  child: HttpError(onReload: () => _controller.onReload()),
+);
+
+// After:
+return HttpError(onReload: () => _controller.onReload());
+```
+
+### 📊 当前状态
+
+**编译状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+- ✅ 应用成功运行 (Linux Desktop)
+
+**架构状态:**
+- `lib/pages/` - 保留原始实现 (GetX 控制器)
+- `lib/features/` - 功能模块结构 (通过导出指向 lib/pages/)
+- GetX 和 Riverpod 共存
+
+**迁移统计:**
+- 109 功能模块已迁移结构
+- 88 widgets 已迁移到 features
+- 105 GetX 控制器仍在使用 (迁移中)
+- 0 编译错误
+- 2 运行时错误已修复
+
+**待处理任务:**
+1. 继续迁移剩余 GetX 控制器到 Riverpod
+2. 测试所有主要用户流程
+3. 监控 GetX "not found" 错误
+4. 确保所有控制器有正确的生命周期管理
 
 ## 注意事项
 

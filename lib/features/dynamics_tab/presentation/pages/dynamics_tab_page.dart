@@ -37,13 +37,20 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
 
   @override
   void initState() {
+    super.initState();
+    final bool wasRegistered = Get.isRegistered<DynamicsTabController>(
+      tag: widget.dynamicsType.name,
+    );
     controller = Get.putOrFind(
       () =>
           DynamicsTabController(dynamicsType: widget.dynamicsType)
             ..mid = dynamicsController.mid.value,
       tag: widget.dynamicsType.name,
     );
-    super.initState();
+    // Trigger initial data load if controller was just created
+    if (!wasRegistered) {
+      controller.queryData();
+    }
     if (widget.dynamicsType == DynamicsTabType.up) {
       _listener = dynamicsController.mid.listen((mid) {
         if (mid != -1) {
