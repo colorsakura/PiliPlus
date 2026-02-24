@@ -13,6 +13,9 @@ import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:flutter/material.dart' hide DraggableScrollableSheet;
 import 'package:get/get.dart';
 
+/// @deprecated Use [DynamicsPage] from features/dynamics instead.
+/// This class is kept for backward compatibility and will be removed in a future release.
+/// Migrate to: `import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_page.dart';`
 class DynamicsPage extends StatefulWidget {
   const DynamicsPage({super.key});
 

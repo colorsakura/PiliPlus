@@ -12,7 +12,8 @@ import 'package:PiliPlus/pages/audio/view.dart';
 import 'package:PiliPlus/pages/danmaku_block/view.dart';
 import 'package:PiliPlus/pages/dlna/view.dart';
 import 'package:PiliPlus/pages/download/view.dart';
-import 'package:PiliPlus/pages/dynamics/view.dart';
+import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_page.dart'
+    as dynamics;
 import 'package:PiliPlus/pages/dynamics_create_vote/view.dart';
 import 'package:PiliPlus/pages/dynamics_detail/view.dart';
 import 'package:PiliPlus/pages/dynamics_topic/view.dart';
@@ -100,7 +101,7 @@ class Routes {
     // 搜索结果
     GetPage(name: '/searchResult', page: () => const SearchResultPage()),
     // 动态
-    GetPage(name: '/dynamics', page: () => const DynamicsPage()),
+    GetPage(name: '/dynamics', page: () => const dynamics.DynamicsPage()),
     // 动态详情
     GetPage(name: '/dynamicDetail', page: () => const DynamicDetailPage()),
     // 关注
