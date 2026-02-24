@@ -848,3 +848,88 @@ class FeaturePage extends ConsumerStatefulWidget {
 **当前统计:**
 - 已迁移: 6 个 fav 相关页面 (包括主页面和 4 个子页面)
 - 待迁移: 2 个复杂页面 (需要多选功能)
+
+## ✅ FAV 子页面全部迁移完成 (2025-02-24 续)
+
+**Commit:** `004fb46f5`
+
+成功迁移所有收藏功能子页面到 Clean Architecture，包括支持多选功能的复杂页面：
+
+**已迁移的所有 FAV 子页面 (6个):**
+1. ✅ fav_article (收藏文章)
+2. ✅ fav_cheese (收藏课程)
+3. ✅ fav_note (收藏笔记) - **带多选功能**
+4. ✅ fav_pgc (收藏番剧) - **带多选功能和状态更新**
+5. ✅ fav_topic (收藏话题)
+6. ✅ fav_video (收藏文件夹)
+
+**复杂功能实现:**
+
+### fav_note - 收藏笔记 (多选支持)
+- 两个标签页：未发布笔记、公开笔记
+- Provider.family 通过 `isPublish` 参数区分
+- 多选功能：
+  - 全选/取消全选
+  - 批量删除笔记
+  - 选中状态在分页时保持
+  - 长按进入多选模式
+- 删除时区分公开/未公开笔记（使用 cvid 或 noteId）
+
+### fav_pgc - 收藏番剧 (多选 + 状态更新支持)
+- 三个标签页：想看、在看、看过 (followStatus: 1, 2, 3)
+- Provider.family 通过 `(type, followStatus)` 参数区分
+- 多选功能：
+  - 全选/取消全选
+  - 批量更新关注状态
+  - 选中状态保持
+  - AnimatedSlide 底部操作栏
+- 状态更新功能：
+  - 单个项的状态更新（移动到其他标签）
+  - 批量状态更新
+  - 删除功能
+  - MultiSelectBase 适配器用于 widget 兼容性
+
+**多选状态管理实现:**
+
+```dart
+// Controller 中的多选状态
+bool _enableMultiSelect = false;
+bool _allSelected = false;
+int _checkedCount = 0;
+
+// Select all / Deselect all
+void handleSelect({bool checked = false}) {
+  // Update all items' checked state
+  // Update _allSelected and _checkedCount
+  // notifyListeners()
+}
+
+// Toggle item selection
+void onSelect(T item) {
+  item.checked = !item.checked;
+  // Update _checkedCount
+  // Update _allSelected if needed
+  // Disable multi-select if no items selected
+  // notifyListeners()
+}
+
+// Get all checked items
+Set<T> get allChecked => list?.where((v) => v.checked).toSet() ?? {};
+```
+
+**关键技术点:**
+1. Provider.family 用于参数化控制器
+2. 多选状态管理（enableMultiSelect, allSelected, checkedCount）
+3. 选中状态在数据刷新时保持
+4. 使用 dataOrNull 而非 response 处理可选类型
+5. MultiSelectBase 适配器保持 widget 兼容性
+6. 动画底部操作栏（AnimatedSlide）
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建 (Linux Desktop Release)
+- ✅ 所有 fav 子页面已迁移
+
+**当前统计:**
+- 已迁移: 8 个 fav 相关页面 (包括主页面和 6 个子页面)
+- 待迁移: 0 个 fav 页面 (全部完成！)
