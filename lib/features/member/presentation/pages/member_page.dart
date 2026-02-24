@@ -10,7 +10,7 @@ import 'package:PiliPlus/features/coin_log/presentation/pages/coin_log_controlle
 import 'package:PiliPlus/features/exp_log/presentation/pages/exp_log_controller.dart' show ExpLogController;
 import 'package:PiliPlus/features/log_table/log_table.dart';
 import 'package:PiliPlus/features/login_devices/login_devices.dart';
-import 'package:PiliPlus/features/login_log/presentation/pages/login_log_controller.dart';
+import 'package:PiliPlus/features/login_log/login_log.dart';
 import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
 import 'package:PiliPlus/pages/member/widget/user_info_card.dart';
 import 'package:PiliPlus/features/member_cheese/member_cheese.dart';
@@ -205,9 +205,11 @@ class _MemberPageState extends State<MemberPage> {
               ),
             ),
             PopupMenuItem(
-              onTap: () => Get.to(
-                const LogPage(),
-                arguments: LoginLogController(),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginLogPageV2(),
+                ),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,

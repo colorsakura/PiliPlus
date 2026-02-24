@@ -18,7 +18,7 @@ import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart'
     show FavMixin;
 import 'package:PiliPlus/pages/dynamics_repost/view.dart';
-import 'package:PiliPlus/pages/main_reply/view.dart';
+import 'package:PiliPlus/features/main_reply/main_reply.dart';
 import 'package:PiliPlus/features/sponsor_block/presentation/pages/block_mixin.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/triple_mixin.dart';
