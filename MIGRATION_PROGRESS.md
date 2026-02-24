@@ -500,40 +500,53 @@ return HttpError(onReload: () => _controller.onReload());
 
 ## 🎯 最新修复 (2025-02-24 下午)
 
-### ✅ 动态页面数据加载修复
+### ✅ 动态页面数据加载修复 (第二次修复)
 
-**问题:** 动态页面首次访问时没有数据
+**问题:** 动态页面首次访问时没有数据（第一次修复的方案不完善）
 
-**根本原因:**
-- `DynamicsTabPage` 在 `initState` 中通过 `Get.putOrFind` 创建控制器
-- `DynamicsTabController.onInit()` 会调用 `queryData()` 加载数据
-- 但 `Get.putOrFind` 不总是触发 `onInit` 如果控制器已注册
+**第一次修复的问题:**
+```dart
+// 第一次修复 - 不完善
+final bool wasRegistered = Get.isRegistered<DynamicsTabController>(...);
+controller = Get.putOrFind(...);
+if (!wasRegistered) {
+  controller.queryData();
+}
+```
+这个方案的问题是：如果控制器已经注册（用户之前访问过其他标签页），
+数据就不会加载，但当前标签页可能还没有数据。
 
-**解决方案:**
-在 `DynamicsTabPage.initState()` 中添加注册检查:
+**最终解决方案:**
+在 `DynamicsTabPage.initState()` 中使用 `WidgetsBinding.addPostFrameCallback`:
 ```dart
 @override
 void initState() {
   super.initState();
-  final bool wasRegistered = Get.isRegistered<DynamicsTabController>(
-    tag: widget.dynamicsType.name,
-  );
   controller = Get.putOrFind(
     () => DynamicsTabController(dynamicsType: widget.dynamicsType)
       ..mid = dynamicsController.mid.value,
     tag: widget.dynamicsType.name,
   );
-  // 如果是新创建的控制器，触发初始数据加载
-  if (!wasRegistered) {
-    controller.queryData();
-  }
+  // 总是在 frame 构建后加载数据
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (mounted) {
+      controller.queryData();
+    }
+  });
   // ... 其他初始化代码
 }
 ```
 
-**影响:** 现在动态页面会在首次访问时正确加载数据
+**优势:**
+1. **总是触发数据加载** - 不论控制器是否已存在
+2. **安全的时机** - 在 frame 构建后加载，避免在 build 期间修改状态
+3. **防止内存泄漏** - 检查 `mounted` 状态
 
-**提交:** `87fa1e8c1` - fix: ensure dynamics tab loads data on first visit
+**影响:** 现在动态页面会在每次首次访问时正确加载数据
+
+**提交:**
+- `87fa1e8c1` - 第一次尝试（不完善）
+- `f39e869c3` - 最终修复（使用 addPostFrameCallback）
 
 ## 注意事项
 
