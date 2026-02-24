@@ -5,7 +5,7 @@ import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/dynamics_topic_rcmd/presentation/providers/dyn_topic_rcmd_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
-import 'package:PiliPlus/pages/dynamics_select_topic/widgets/item.dart';
+import 'package:PiliPlus/features/dynamics_select_topic/dynamics_select_topic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -48,7 +48,7 @@ class DynTopicRcmdPage extends ConsumerWidget {
             ? SliverList.builder(
                 itemCount: response.length,
                 itemBuilder: (context, index) {
-                  return DynTopicItem(
+                  return TopicItemWidget(
                     item: response[index],
                     onTap: (item) => Get.toNamed(
                       '/dynTopic',
