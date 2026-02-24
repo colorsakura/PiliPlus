@@ -1,1 +1,1 @@
-export 'package:PiliPlus/features/msg_feed_top/presentation/pages/msg_feed_top_page.dart';
+export 'package:PiliPlus/pages/msg_feed_top/view.dart';
