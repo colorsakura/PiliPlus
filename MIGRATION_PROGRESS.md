@@ -1007,6 +1007,54 @@ Set<T> get allChecked => list?.where((v) => v.checked).toSet() ?? {};
 - danmaku_block (弹幕屏蔽)
 
 **当前统计:**
-- 已迁移: 10 个功能模块 (8 个 fav + 2 个其他)
+- 已迁移: 11 个功能模块 (8 个 fav + 3 个其他)
+- 0 个编译错误
+- 应用成功构建
+
+---
+
+## ✅ 额外迁移 (2025-02-24 续2)
+
+### ✅ Login Devices 完整迁移
+
+**Commit:** `30198aca4`
+
+成功迁移 `login_devices` 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/login_devices/domain/entities/login_device_entity.dart`
+- `lib/features/login_devices/domain/repositories/login_devices_repository.dart`
+- `lib/features/login_devices/domain/usecases/get_login_devices_usecase.dart`
+- `lib/features/login_devices/data/datasources/login_devices_remote_datasource.dart`
+- `lib/features/login_devices/data/repositories/login_devices_repository_impl.dart`
+- `lib/features/login_devices/presentation/providers/login_devices_controller.dart`
+- `lib/features/login_devices/presentation/providers/login_devices_providers.dart`
+- `lib/features/login_devices/presentation/pages/login_devices_page_v2.dart`
+
+**关键技术点:**
+- 简单列表页面，显示登录设备
+- 设备信息: 名称、登录时间、来源
+- 当前设备高亮显示 "(本机)"
+- 下拉刷新支持
+- 加载、错误、空状态处理
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider (与现有模式一致)
+- 正确的 LoadingState 类型转换使用 switch 模式
+- Error 类不使用类型参数 (正确用法)
+- 清晰的分层架构
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建 (Linux Desktop Release)
+
+**总计新增迁移:**
+- follow_search (关注搜索)
+- danmaku_block (弹幕屏蔽)
+- login_devices (登录设备)
+
+**当前统计:**
+- 已迁移: 11 个功能模块 (8 个 fav + 3 个其他)
 - 0 个编译错误
 - 应用成功构建
