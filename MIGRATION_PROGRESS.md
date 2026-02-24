@@ -104,9 +104,14 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 6. ✅ dynamics_select_topic (话题选择 - DebounceStreamState + 分页)
 7. ✅ dynamics_create_vote (创建投票 - 表单页面，支持文字/图片投票)
 
-**待迁移的Dynamics页面 (2个):**
-- `dynamics_detail` - 待迁移 (使用 CommonDynController)
-- `dynamics_tab` - 待迁移 (需要 DynMixin 提取)
+**复杂页面 - 部分迁移 (2个):**
+- `dynamics_detail` - Clean Architecture层已创建，页面仍使用GetX + CommonDynController
+- `dynamics_tab` - Clean Architecture层已创建，页面仍使用GetX + CommonListController
+
+**Riverpod 3.x兼容性更新 (2024-02-24):**
+- 将 `ChangeNotifierProvider` 更新为 `Provider<T>` (Riverpod 3.x已移除ChangeNotifierProvider)
+- 修复 vote_remote_datasource 的.when()用法
+- 修复 vote_form_state 的const构造函数问题
 
 **已使用迁移的基础设施的页面 (2个):**
 - `dynamics_repost` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
