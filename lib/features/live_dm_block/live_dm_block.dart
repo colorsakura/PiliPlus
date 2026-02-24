@@ -1,1 +1,4 @@
-export 'package:PiliPlus/pages/live_dm_block/view.dart';
+export 'presentation/pages/live_dm_block_page.dart'
+    show LiveDmBlockPage;
+export 'presentation/pages/live_dm_block_controller.dart'
+    show LiveDmBlockController;
