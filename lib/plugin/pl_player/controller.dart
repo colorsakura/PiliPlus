@@ -18,7 +18,7 @@ import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_shot/data.dart';
 import 'package:PiliPlus/pages/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/pages/mine/controller.dart';
-import 'package:PiliPlus/pages/sponsor_block/block_mixin.dart';
+import 'package:PiliPlus/features/sponsor_block/presentation/pages/block_mixin.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_status.dart';
 import 'package:PiliPlus/plugin/pl_player/models/double_tap_type.dart';
