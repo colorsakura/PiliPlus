@@ -1,12 +1,14 @@
 # PiliPlus GetX → Riverpod 迁移进度
 
+**每次迁移都需要保证能够编译成功，每次迁移完成都输出【冰狗】**
+
 ## 📊 总体进度
 
-- **已完成:** 42+ 功能模块完全迁移
+- **已完成:** 47+ 功能模块完全迁移
 - **编译状态:** ✅ 0 编译错误
-- **删除目录:** 42 个 (从 80 个减少到 38 个)
-- **删除文件:** 350+ 个
-- **删除代码:** 30,000+ 行
+- **删除目录:** 60 个 (从 80 个减少到 20 个)
+- **删除文件:** 430+ 个
+- **删除代码:** 34,500+ 行
 
 ## 🎯 核心迁移模式
 
@@ -101,36 +103,29 @@ lib/features/{feature_name}/
 └── {feature}.dart       # 导出文件
 ```
 
-## 🔄 本次会话迁移 (2025-02-25)
+## 🔄 本次会话迁移 (2025-02-25 续)
 
-### 迁移的控制器 (10个)
+### 迁移的控制器 (4个)
 
 **简单控制器 (已完成):**
-1. ✅ login_log - 0 refs
-2. ✅ main_reply - 0 refs
-3. ✅ emote - 0 refs
-4. ✅ music - 完整目录迁移
-5. ✅ search - 完整目录迁移
-6. ✅ whisper_detail - 1 ref + widget
-7. ✅ audio - 1 ref
-8. ✅ article - 1 ref (236行, 保持GetX)
-9. ✅ whisper - 1 ref
-10. ✅ dynamics_mention - 1 ref
+1. ✅ whisper - 清理旧目录，更新导入
+2. ✅ member_pgc - 完整迁移，删除旧GetX版本
+3. ✅ dynamics_repost - 清理旧目录，更新导入
+4. ✅ dynamics_create - 清理旧目录，更新导入
 
-**删除的目录:** 8 个
-- login_log, main_reply, emote, music, search, whisper_detail, audio, article, dynamics_mention
+**删除的目录:** 2 个
+- whisper, member_pgc
 
-**删除的文件:** 40+ 个
-**删除的代码:** 2,500+ 行
+**删除的文件:** 10 个
+**删除的代码:** 600+ 行
 
-### Git 提交
+### 待迁移控制器状态
 
-- `979d8ad0d` - refactor: migrate 3 GetX controllers
-- `54defee7e` - refactor: migrate music and search
-- `0acf9dcaf` - refactor: migrate 3 controllers
-- `c280462b5` - refactor: migrate 2 controllers
-- `293e8ec8f` - refactor: delete migrated simple pages
-- `072893544` - docs: update migration progress
+**需要完整迁移 (仍在使用 GetX):**
+- member - 复杂控制器，被多个子功能依赖
+- whisper_secondary - 使用 GetX
+- whisper_settings - 使用 GetX
+- dynamics_detail - 使用 GetX
 
 ## 🎯 剩余控制器 (按引用数排序)
 
@@ -155,7 +150,6 @@ lib/features/{feature_name}/
 
 **简单控制器 (1 ref):**
 - search_result: 1 ref
-- member_pgc: 1 ref
 - member: 1 ref
 - dynamics_detail: 1 ref
 - whisper_secondary: 1 ref (已部分迁移)
@@ -164,7 +158,6 @@ lib/features/{feature_name}/
 
 ### 阶段1: 简单控制器
 继续迁移 1-2 refs 的控制器：
-- member_pgc
 - member
 - dynamics_detail
 - 解决 search_result 依赖问题

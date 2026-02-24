@@ -21,7 +21,7 @@ import 'package:PiliPlus/models/video/video_detail/staff.dart';
 import 'package:PiliPlus/models/video/video_detail/stat_detail.dart';
 import 'package:PiliPlus/models/video/video_detail/ugc_season.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart';
-import 'package:PiliPlus/pages/dynamics_repost/view.dart';
+import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
 import 'package:PiliPlus/pages/video/pay_coins/view.dart';
 import 'package:PiliPlus/pages/video/related/controller.dart';
 import 'package:PiliPlus/pages/video/reply/controller.dart';
