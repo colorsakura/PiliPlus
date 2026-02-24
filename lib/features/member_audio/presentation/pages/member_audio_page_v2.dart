@@ -1,0 +1,154 @@
+import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
+import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/member_audio/domain/entities/member_audio_item_entity.dart';
+import 'package:PiliPlus/features/member_audio/presentation/providers/member_audio_list_provider.dart';
+import 'package:PiliPlus/features/member_audio/presentation/widgets/item.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/utils/grid.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
+    show PlaylistSource;
+
+/// Member audio page using Riverpod
+class MemberAudioPage extends ConsumerStatefulWidget {
+  const MemberAudioPage({
+    super.key,
+    required this.mid,
+  });
+
+  final int mid;
+
+  @override
+  ConsumerState<MemberAudioPage> createState() => _MemberAudioPageState();
+}
+
+class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final controller = ref.watch(memberAudioListControllerProvider(widget.mid));
+    final listState = controller.state.listState;
+    final colorScheme = ColorScheme.of(context);
+
+    return refreshIndicator(
+      onRefresh: controller.onRefresh,
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
+            ),
+            sliver: _buildBody(colorScheme, listState, controller),
+          ),
+        ],
+      ),
+    );
+  }
+
+  late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
+    mainAxisSpacing: 2,
+    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    childAspectRatio: StyleString.aspectRatio * 2.6,
+    minHeight: MediaQuery.textScalerOf(context).scale(90),
+  );
+
+  Widget _buildBody(
+    ColorScheme colorScheme,
+    LoadingState listState,
+    dynamic controller,
+  ) {
+    return switch (listState) {
+      Loading() => linearLoading,
+      Success(:final response) =>
+        response != null && response.isNotEmpty
+            ? SliverMainAxisGroup(
+                slivers: [
+                  SliverPersistentHeader(
+                    floating: true,
+                    delegate: CustomSliverPersistentHeaderDelegate(
+                      extent: 40,
+                      bgColor: colorScheme.surface,
+                      child: SizedBox(
+                        height: 40,
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 8),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6),
+                              child: Text(
+                                '共${(controller.state.totalSize ?? 0)}首',
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ),
+                            Container(
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 6),
+                              child: TextButton.icon(
+                                onPressed: () => _toViewPlayAll(controller),
+                                icon: Icon(
+                                  Icons.play_circle_outline_rounded,
+                                  size: 16,
+                                  color: colorScheme.secondary,
+                                ),
+                                label: Text(
+                                  '播放全部',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverGrid.builder(
+                    gridDelegate: gridDelegate,
+                    itemBuilder: (context, index) {
+                      if (index == response.length - 1) {
+                        controller.onLoadMore();
+                      }
+                      return MemberAudioItem(
+                        item: response[index],
+                      );
+                    },
+                    itemCount: response.length,
+                  ),
+                ],
+              )
+            : HttpError(onReload: controller.onReload),
+      Error(:final errMsg) => HttpError(
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
+    };
+  }
+
+  void _toViewPlayAll(dynamic controller) {
+    final listState = controller.state.listState;
+    if (listState is Success<List<MemberAudioItemEntity>?>) {
+      final items = listState.response;
+      if (items != null && items.isNotEmpty) {
+        final item = items.first;
+        AudioPage.toAudioPage(
+          itemType: 3,
+          id: item.uid!,
+          oid: item.id!,
+          from: PlaylistSource.MEM_SPACE,
+        );
+      }
+    }
+  }
+}
