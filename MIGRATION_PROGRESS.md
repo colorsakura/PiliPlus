@@ -113,6 +113,15 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 - 修复 vote_remote_datasource 的.when()用法
 - 修复 vote_form_state 的const构造函数问题
 
+**编译错误修复 (2024-02-24):**
+- 修复所有14个编译错误 (0 errors)
+- dynamics_mention: 使用 Consumer 包装 build 方法提供 ref 访问
+- dynamics_select_topic: 使用 Consumer 包装 build 方法提供 ref 访问
+- dynamics_create_vote: 修复 voteId getter 访问
+- topic_search_controller: 修复 Success 模式匹配和错误类型转换
+
+**总计: 19个页面已成功迁移, 0个编译错误**
+
 **已使用迁移的基础设施的页面 (2个):**
 - `dynamics_repost` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
 - `dynamics_create` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
