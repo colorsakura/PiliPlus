@@ -10,7 +10,7 @@ import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
-import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/pages/fav_detail/controller.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';

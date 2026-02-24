@@ -6,7 +6,7 @@ import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/space/space_audio/item.dart';
-import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';

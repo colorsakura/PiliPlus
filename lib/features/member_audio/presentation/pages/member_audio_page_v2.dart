@@ -7,7 +7,7 @@ import 'package:PiliPlus/features/member_audio/domain/entities/member_audio_item
 import 'package:PiliPlus/features/member_audio/presentation/providers/member_audio_list_provider.dart';
 import 'package:PiliPlus/features/member_audio/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

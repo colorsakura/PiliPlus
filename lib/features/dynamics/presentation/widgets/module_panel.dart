@@ -5,7 +5,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/forward_panel.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/live_panel.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/live_panel_sub.dart';
