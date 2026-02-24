@@ -104,11 +104,15 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 6. ✅ dynamics_select_topic (话题选择 - DebounceStreamState + 分页)
 7. ✅ dynamics_create_vote (创建投票 - 表单页面，支持文字/图片投票)
 
-**待迁移的Dynamics页面 (4个):**
+**待迁移的Dynamics页面 (2个):**
 - `dynamics_detail` - 待迁移 (使用 CommonDynController)
-- `dynamics_repost` - 待迁移 (使用 CommonRichTextPubPage)
-- `dynamics_create` - 待迁移 (使用 CommonRichTextPubPage)
 - `dynamics_tab` - 待迁移 (需要 DynMixin 提取)
+
+**已使用迁移的基础设施的页面 (2个):**
+- `dynamics_repost` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
+- `dynamics_create` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
+
+这两个页面通过导入迁移后的公共组件，已经使用了新的基础设施。
 - 其他 dynamics 相关页面
 
 ### Phase 4: Member相关页面
