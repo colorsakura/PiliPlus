@@ -9,8 +9,8 @@ import 'package:PiliPlus/features/home_live/presentation/providers/live_controll
 import 'package:PiliPlus/features/home_live/presentation/providers/live_providers.dart';
 import 'package:PiliPlus/features/home_live/presentation/widgets/live_item_card.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
-import 'package:PiliPlus/pages/live_area/view.dart';
-import 'package:PiliPlus/pages/live_follow/view.dart';
+import 'package:PiliPlus/features/live_area/live_area.dart';
+import 'package:PiliPlus/features/live_follow/live_follow.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';

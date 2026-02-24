@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
 import 'package:PiliPlus/pages/live_area_detail/child/controller.dart';
 import 'package:PiliPlus/pages/live_area_detail/child/view.dart';
 import 'package:PiliPlus/features/live_area_detail/presentation/pages/live_area_detail_controller.dart';
-import 'package:PiliPlus/pages/live_search/view.dart';
+import 'package:PiliPlus/features/live_search/live_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

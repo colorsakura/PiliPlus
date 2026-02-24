@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/pages/common/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/features/dynamics_mention/presentation/pages/dynamics_mention_controller.dart';
 import 'package:PiliPlus/features/emote/presentation/pages/emote_controller.dart';
-import 'package:PiliPlus/pages/emote/view.dart';
+import 'package:PiliPlus/features/emote/emote.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart' hide DraggableScrollableSheet, TextField;

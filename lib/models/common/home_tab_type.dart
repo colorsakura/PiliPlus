@@ -6,7 +6,7 @@ import 'package:PiliPlus/features/home_zone/view.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/features/pgc/presentation/pages/pgc_controller.dart';
-import 'package:PiliPlus/pages/pgc/view.dart';
+import 'package:PiliPlus/features/pgc/pgc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

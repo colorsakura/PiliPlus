@@ -3,7 +3,7 @@ import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show ThreeDotItem, ThreeDotItemType, IMSettingType;
 import 'package:PiliPlus/pages/common/common_whisper_controller.dart';
 import 'package:PiliPlus/features/contact/contact.dart';
-import 'package:PiliPlus/pages/whisper_settings/view.dart';
+import 'package:PiliPlus/features/whisper_settings/whisper_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';

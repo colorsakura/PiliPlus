@@ -2,7 +2,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show IMSettingType, Setting;
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/whisper_block/view.dart';
+import 'package:PiliPlus/features/whisper_block/whisper_block.dart';
 import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_controller.dart';
 import 'package:PiliPlus/pages/whisper_settings/widgets/item.dart';
 import 'package:flutter/material.dart';

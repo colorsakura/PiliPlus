@@ -7,7 +7,7 @@ import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_tab_page.
 import 'package:PiliPlus/features/dynamics/presentation/widgets/up_panel_widget.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/common/dynamic/up_panel_position.dart';
-import 'package:PiliPlus/pages/dynamics_create/view.dart';
+import 'package:PiliPlus/features/dynamics_create/dynamics_create.dart';
 
 /// Main dynamics page with clean architecture.
 ///

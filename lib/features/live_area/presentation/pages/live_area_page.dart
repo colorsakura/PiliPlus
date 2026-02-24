@@ -8,7 +8,7 @@ import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_list.dart';
 import 'package:PiliPlus/features/live_area/presentation/pages/live_area_controller.dart';
-import 'package:PiliPlus/pages/live_area_detail/view.dart';
+import 'package:PiliPlus/features/live_area_detail/live_area_detail.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:flutter/material.dart';

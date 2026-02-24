@@ -1,7 +1,7 @@
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/pages/fan/view.dart';
+import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/pages/follow/child/child_view.dart';
-import 'package:PiliPlus/pages/follow_search/view.dart';
+import 'package:PiliPlus/features/follow_search/follow_search.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';

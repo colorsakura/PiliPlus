@@ -22,7 +22,7 @@ import 'package:PiliPlus/pages/common/multi_select/base.dart';
 import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart';
 import 'package:PiliPlus/features/fav_detail/presentation/pages/fav_detail_controller.dart'
     show BaseFavController;
-import 'package:PiliPlus/pages/group_panel/view.dart';
+import 'package:PiliPlus/features/group_panel/group_panel.dart';
 import 'package:PiliPlus/pages/login/geetest/geetest_webview_dialog.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';

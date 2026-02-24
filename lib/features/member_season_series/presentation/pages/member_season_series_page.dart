@@ -6,7 +6,7 @@ import 'package:PiliPlus/models/space/space_season_series/season.dart'
     show SpaceSsModel;
 import 'package:PiliPlus/features/member_season_series/presentation/pages/member_season_series_controller.dart';
 import 'package:PiliPlus/pages/member_season_series/widget/season_series_card.dart';
-import 'package:PiliPlus/pages/member_video/view.dart';
+import 'package:PiliPlus/features/member_video/member_video.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

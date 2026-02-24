@@ -36,7 +36,7 @@ import 'package:PiliPlus/models/video/video_detail/page.dart';
 import 'package:PiliPlus/models/video/video_pbp/data.dart';
 import 'package:PiliPlus/models/video/video_play_info/subtitle.dart';
 import 'package:PiliPlus/models/video/video_stein_edgeinfo/data.dart';
-import 'package:PiliPlus/pages/audio/view.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/pages/common/publish/publish_route.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/pages/sponsor_block/block_mixin.dart';
