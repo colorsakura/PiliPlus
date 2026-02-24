@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/space/space/followings_followed_upper.dart';
 import 'package:PiliPlus/models/space/space/images.dart';
 import 'package:PiliPlus/models/space/space/live.dart';
 import 'package:PiliPlus/models/space/space/pr_info.dart';
-import 'package:PiliPlus/pages/fan/view.dart';
+import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/pages/follow/view.dart';
 import 'package:PiliPlus/pages/follow_type/followed/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';

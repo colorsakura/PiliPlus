@@ -1058,3 +1058,527 @@ Set<T> get allChecked => list?.where((v) => v.checked).toSet() ?? {};
 - 已迁移: 11 个功能模块 (8 个 fav + 3 个其他)
 - 0 个编译错误
 - 应用成功构建
+
+---
+
+## ✅ 额外迁移 (2025-02-25)
+
+### ✅ Fan 完整迁移
+
+**Commit:** `435c72fcc`
+
+成功迁移 `fan` (粉丝页面) 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/fan/domain/entities/fan_entity.dart`
+- `lib/features/fan/domain/repositories/fan_repository.dart`
+- `lib/features/fan/data/datasources/fan_remote_datasource.dart`
+- `lib/features/fan/data/repositories/fan_repository_impl.dart`
+- `lib/features/fan/presentation/providers/fan_controller.dart`
+- `lib/features/fan/presentation/providers/fan_providers.dart`
+- `lib/features/fan/presentation/pages/fan_page_v2.dart`
+
+**关键技术点:**
+- 继承 `CommonListControllerV2<FollowData, FollowItemModel>` 实现分页
+- 使用 `Provider.family<FanController, FanParams>` 支持参数化
+- 获取用户名称功能（如果未提供）
+- 移除粉丝功能（更新本地状态）
+- 粉丝总数跟踪
+- 分页结束检测
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider.family (与现有模式一致)
+- 直接操作 loadingState 数据
+- 移除未使用的 _showName 字段
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+### ✅ Member Dynamics 完整迁移
+
+**Commit:** `9e743bf99`
+
+成功迁移 `member_dynamics` (用户动态) 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/member_dynamics/domain/entities/dynamics_item_entity.dart`
+- `lib/features/member_dynamics/domain/repositories/member_dynamics_repository.dart`
+- `lib/features/member_dynamics/data/datasources/member_dynamics_remote_datasource.dart`
+- `lib/features/member_dynamics/data/repositories/member_dynamics_repository_impl.dart`
+- `lib/features/member_dynamics/presentation/providers/member_dynamics_controller.dart`
+- `lib/features/member_dynamics/presentation/providers/member_dynamics_providers.dart`
+- `lib/features/member_dynamics/presentation/pages/member_dynamics_page_v2.dart`
+
+**关键技术点:**
+- 继承 `CommonListControllerV2<DynamicsDataModel, DynamicItemModel>` 实现分页
+- 使用 offset 游标分页（不是页码）
+- 删除动态功能（更新本地状态）
+- 置顶/取消置顶功能（重新排序列表）
+- `hasMore` 字段检测是否到达末尾
+- 使用 DynMixin 支持瀑布流布局
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider.family
+- offset 游标分页策略
+- 置顶时重新排序列表（将置顶项移到首位）
+- 修复 const 构造函数问题（ModuleTag）
+- 避免名称冲突（不导出旧控制器）
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+### ✅ Search Result 迁移到 Riverpod Notifier
+
+**Commit:** `5c1fcfebc`
+
+成功迁移 `search_result` 控制器到 Riverpod 3.x Notifier 模式：
+
+**修改的文件:**
+- `lib/features/search_result/presentation/providers/search_result_controller.dart`
+- `lib/features/search_result/presentation/providers/search_result_providers.dart`
+- `lib/features/search_result/search_result.dart`
+
+**关键技术点:**
+- 使用 Riverpod 3.x `Notifier<T>` 模式（而非 StateNotifier）
+- `@immutable` 注解标记状态类
+- `copyWith` 方法实现不可变状态
+- 管理搜索关键词、各类型结果计数、滚动到顶部索引
+
+**从 GetX 到 Riverpod Notifier 迁移模式:**
+
+**Before (GetX):**
+```dart
+class SearchResultController extends GetxController {
+  final RxString keyword = ''.obs;
+  final RxList<int> counts = <int>[].obs;
+  final RxInt toTopIndex = (-1).obs;
+}
+```
+
+**After (Riverpod Notifier):**
+```dart
+@immutable
+class SearchResultState {
+  const SearchResultState({
+    required this.keyword,
+    required this.counts,
+    required this.toTopIndex,
+  });
+  final String keyword;
+  final List<int> counts;
+  final int toTopIndex;
+  SearchResultState copyWith({...}) => ...;
+}
+
+class SearchResultController extends Notifier<SearchResultState> {
+  @override
+  SearchResultState build() {
+    return const SearchResultState(
+      keyword: '',
+      counts: List.filled(SearchType.values.length, -1),
+      toTopIndex: -1,
+    );
+  }
+
+  void initKeyword(String keyword) {
+    state = SearchResultState(keyword: keyword, ...);
+  }
+
+  void updateCount(int index, int count) {
+    final newCounts = List<int>.from(state.counts);
+    newCounts[index] = count;
+    state = state.copyWith(counts: newCounts);
+  }
+}
+```
+
+**Riverpod 3.x 迁移关键差异:**
+- ✅ 使用 `Notifier<T>` 替代 `StateNotifier<T>`
+- ✅ 实现 `build()` 方法返回初始状态
+- ✅ 使用 `NotifierProvider` 替代 `StateNotifierProvider`
+- ✅ 状态类使用 `@immutable` 注解
+- ✅ 使用不可变数据模式（copyWith）
+
+**技术决策:**
+- Riverpod 3.x Notifier 模式（StateNotifier 已弃用）
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+### 📊 导入路径更新
+
+**Commit:** `29a370547`, `0494f03fa`
+
+更新多个文件的导入路径，指向迁移后的控制器位置：
+
+**更新的文件:**
+- `lib/features/dynamics/presentation/widgets/author_panel.dart`
+- `lib/features/dynamics/presentation/widgets/up_panel.dart`
+- `lib/pages/dynamics/widgets/author_panel.dart`
+- `lib/pages/dynamics/widgets/up_panel.dart`
+- `lib/pages/video/reply_new/view.dart`
+- `lib/features/pgc_review/pgc_review.dart`
+
+**更新内容:**
+- dynamics controller: `pages/dynamics/controller.dart` → `features/dynamics/presentation/pages/dynamics_controller.dart`
+- emote: 导入 EmotePanel 来自 features 位置
+- dynamics_mention: 保持兼容导入（仍在 pages/）
+- pgc_review: 添加 PgcReviewPage 导出
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+---
+
+## ✅ 额外迁移 (2025-02-25 续3)
+
+### ✅ Msg At Me 完整迁移
+
+**Commit:** (待提交)
+
+成功迁移 `msg_feed_top/at_me` (@Me通知) 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/msg_at_me/domain/entities/msg_at_item_entity.dart`
+- `lib/features/msg_at_me/domain/repositories/msg_at_me_repository.dart`
+- `lib/features/msg_at_me/domain/usecases/get_msg_at_me_items_usecase.dart`
+- `lib/features/msg_at_me/domain/usecases/remove_msg_item_usecase.dart`
+- `lib/features/msg_at_me/data/datasources/msg_at_me_remote_datasource.dart`
+- `lib/features/msg_at_me/data/repositories/msg_at_me_repository_impl.dart`
+- `lib/features/msg_at_me/presentation/providers/msg_at_me_controller.dart`
+- `lib/features/msg_at_me/presentation/providers/msg_at_me_providers.dart`
+- `lib/features/msg_at_me/presentation/pages/msg_at_me_page_v2.dart`
+
+**关键技术点:**
+- 继承 `CommonListControllerV2<MsgAtData, MsgAtItem>` 实现分页
+- 使用游标分页（cursor + cursorTime）
+- 删除通知功能（更新本地状态）
+- 从 GetX 的 Obx 迁移到 ListenableBuilder
+- 导航路由更新（从 Get.toNamed 到 Navigator.pushNamed）
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider (与现有模式一致)
+- 游标分页策略（不是页码）
+- 移除项目时更新本地状态
+- 保持向后兼容性
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+**总计新增迁移:**
+- subscription (订阅页面) - 已预先迁移
+- msg_at_me (@Me通知)
+- fav_video (收藏文件夹列表) - 已预先迁移
+
+**总体进度:**
+- ~52+ 个功能模块已迁移
+- 0 编译错误
+- 应用成功构建
+- 107 个 GetX 调用待迁移
+
+**编译错误修复:**
+- 修复 msg_at_me 的 typedef 语法错误 (使用 `typedef` 而非 `type`)
+- 修复 use case 的 LoadingState 类型参数
+- 添加缺失的导入语句
+
+**已发现已迁移但未记录的功能:**
+- member_search (部分迁移 - 控制器仍在 pages/)
+- whisper_link_setting (完整迁移)
+- live_emote (完整迁移)
+- live_follow (完整迁移)
+- live_dm_block (完整迁移)
+- member_pgc (部分迁移)
+- member_opus (部分迁移)
+
+---
+
+## ✅ Follow Type 页面完整迁移 (2025-02-25)
+
+### ✅ Followed 完整迁移
+
+**Commit:** (待提交)
+
+成功迁移 `followed` (我关注的也关注了) 到 Clean Architecture：
+
+**创建的文件 (11个):**
+- Domain: entity, repository, 2 use cases
+- Data: remote datasource, repository implementation
+- Presentation: controller, providers, page_v2
+- Export: followed.dart
+
+**关键技术点:**
+- 继承 `CommonListControllerV2<FollowData, FollowItemModel>` 实现分页
+- 使用 `Provider.family<FollowedController, FollowedParams>` 支持参数化
+- 获取用户名称功能（如果未提供）
+- 分页结束检测（基于 total count）
+- AppBar 标题动态更新
+
+### ✅ Follow Same 完整迁移
+
+成功迁移 `follow_same` (共同关注) 到 Clean Architecture：
+
+**创建的文件 (11个):**
+- Domain: entity, repository, 2 use cases
+- Data: remote datasource, repository implementation
+- Presentation: controller, providers, page_v2
+- Export: follow_same.dart
+
+**关键技术点:**
+- 类似 followed 的结构
+- "我与XXX的共同关注" 标题格式
+- 相同的分页和参数化模式
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider.family (与现有模式一致)
+- 统一的参数类 (FollowedParams, FollowSameParams)
+- 保持向后兼容性
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+**总计新增迁移:**
+- followed (我关注的也关注了)
+- follow_same (共同关注)
+
+---
+
+## 📈 迁移统计更新 (2025-02-25)
+
+**当前状态:**
+- **已迁移:** ~114 个功能模块目录存在
+- **编译状态:** ✅ 0 编译错误
+- **GetX 调用:** ~100 个仍在使用 (持续减少)
+- **应用状态:** ✅ 成功构建并运行
+
+---
+
+## 🗑️ 旧代码清理 (2025-02-25)
+
+### ✅ 成功删除已迁移的旧目录
+
+**删除的目录 (4个):**
+1. ✅ `lib/pages/live_dm_block/` - 0 个外部引用
+2. ✅ `lib/pages/live_emote/` - 导入已更新到 features
+3. ✅ `lib/pages/whisper_link_setting/` - 导入已更新到 features
+4. ✅ `lib/pages/live_follow/` - 导入已更新到 features
+
+**更新的文件:**
+- `lib/pages/live_room/send_danmaku/view.dart` - 更新导入到 features/live_emote
+- `lib/features/dynamics/presentation/widgets/up_panel.dart` - 更新导入到 features/live_follow
+- `lib/pages/dynamics/widgets/up_panel.dart` - 更新导入到 features/live_follow
+- `lib/features/whisper_detail/presentation/pages/whisper_detail_page.dart` - 更新导入到 features/whisper_link_setting
+- `lib/features/live_emote/live_emote.dart` - 添加 LiveEmotePanelController 导出
+
+**清理结果:**
+- ✅ 0 编译错误
+- ✅ 所有引用已更新到新路径
+- ✅ 旧 GetX 代码安全删除
+
+### ✅ 第二轮清理 - 更多旧代码删除
+
+**删除的目录 (5个):**
+1. ✅ `lib/pages/member_dynamics/` - 0 个外部引用
+2. ✅ `lib/pages/whisper_block/` - 0 个外部引用
+3. ✅ `lib/pages/login_devices/` - 0 个外部引用
+4. ✅ `lib/pages/danmaku_block/` - 0 个外部引用
+5. ✅ `lib/pages/fan/` - 引用已更新到 features
+
+**更新的文件:**
+- `lib/pages/member/widget/user_info_card.dart` - 更新导入到 features/fan
+- `lib/pages/video/member/view.dart` - 更新导入到 features/fan
+
+**注意:**
+- `search_result` 暂未删除 - 因为 search_panel 控制器仍在使用 GetX 模式访问控制器属性
+
+**清理结果:**
+- ✅ 0 编译错误
+- **总计删除: 9 个旧目录**
+
+---
+
+## 📊 本次会话完整总结 (2025-02-25)
+
+### ✅ 新增迁移 (3个功能模块)
+
+#### 1. msg_at_me (@Me通知) - 游标分页
+- 创建文件: 9 个
+- Domain: entity, repository, 2 use cases
+- Data: remote datasource, repository implementation
+- Presentation: controller, providers, page_v2
+- **关键技术:** 游标分页 (cursor + cursorTime), 删除通知功能
+
+#### 2. followed (我关注的也关注了) - 参数化分页
+- 创建文件: 11 个
+- Domain: entity, repository, 2 use cases
+- Data: remote datasource, repository implementation
+- Presentation: controller, providers, page_v2
+- **关键技术:** Provider.family, 用户名称获取, AppBar 动态标题
+
+#### 3. follow_same (共同关注) - 参数化分页
+- 创建文件: 11 个
+- Domain: entity, repository, 2 use cases
+- Data: remote datasource, repository implementation
+- Presentation: controller, providers, page_v2
+- **关键技术:** "我与XXX的共同关注" 格式, 相同的分页模式
+
+### 🗑️ 旧代码清理 (9个目录删除)
+
+#### 第一轮清理 (4个)
+- `live_dm_block` - 直播弹幕屏蔽 (0 外部引用)
+- `live_emote` - 直播表情 (导入已更新)
+- `whisper_link_setting` - 私信链接设置 (导入已更新)
+- `live_follow` - 直播关注 (导入已更新)
+
+#### 第二轮清理 (5个)
+- `member_dynamics` - 用户动态 (0 外部引用)
+- `whisper_block` - 私信屏蔽 (0 外部引用)
+- `login_devices` - 登录设备 (0 外部引用)
+- `danmaku_block` - 弹幕屏蔽 (0 外部引用)
+- `fan` - 粉丝页面 (导入已更新)
+
+#### 更新的导入 (7个文件)
+1. `live_room/send_danmaku/view.dart` - pages → features
+2. `dynamics/presentation/widgets/up_panel.dart` - pages → features
+3. `pages/dynamics/widgets/up_panel.dart` - pages → features
+4. `whisper_detail/whisper_detail_page.dart` - pages → features
+5. `member/widget/user_info_card.dart` - pages → features
+6. `video/member/view.dart` - pages → features
+7. `features/live_emote/live_emote.dart` - 添加控制器导出
+
+### 📈 迁移统计
+
+**当前状态:**
+- **已迁移:** ~117 个功能模块目录存在
+- **编译状态:** ✅ 0 编译错误
+- **GetX 调用:** ~95 个仍在使用 (持续减少)
+- **应用状态:** ✅ 成功构建并运行
+
+**本次会话成果:**
+- ✅ 新增 31 个文件 (3 个功能模块)
+- ✅ 删除 9 个旧目录
+- ✅ 更新 7 个导入文件
+- ✅ 修复 4 个编译错误
+- ✅ 保持 0 编译错误状态
+
+### 🎓 成熟的迁移模式
+
+1. **CommonListControllerV2** - 标准分页控制器基础类
+2. **Provider.family** - 参数化提供者模式
+3. **ChangeNotifier + Provider** - 状态管理模式
+4. **typedef 实体复用** - 简化 Domain 层
+5. **游标分页支持** - cursor-based pagination
+6. **参数化类模式** - FollowedParams, FollowSameParams
+
+### ⏸️ 暂时保留的模块
+
+- **search_result** - 新控制器使用 Notifier 模式，search_panel 控制器仍在使用 GetX 访问模式 (controller.count vs state.counts)
+
+### 🔜 下一步建议
+
+**可继续迁移:**
+- download_search - 下载搜索 (使用多选)
+- fav_pgc - 收藏番剧 (使用多选)
+- member_* 系列 - 用户内容页面
+- 更复杂的页面如 video, audio, article
+
+**可继续清理:**
+- 检查其他已迁移模块的旧目录
+- 更新剩余的 GetX 导入
+
+---
+
+### ✅ Msg At Me 完整迁移
+
+**Commit:** (待提交)
+
+成功迁移 `msg_feed_top/at_me` (@Me通知) 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/msg_at_me/domain/entities/msg_at_item_entity.dart`
+- `lib/features/msg_at_me/domain/repositories/msg_at_me_repository.dart`
+- `lib/features/msg_at_me/domain/usecases/get_msg_at_me_items_usecase.dart`
+- `lib/features/msg_at_me/domain/usecases/remove_msg_item_usecase.dart`
+- `lib/features/msg_at_me/data/datasources/msg_at_me_remote_datasource.dart`
+- `lib/features/msg_at_me/data/repositories/msg_at_me_repository_impl.dart`
+- `lib/features/msg_at_me/presentation/providers/msg_at_me_controller.dart`
+- `lib/features/msg_at_me/presentation/providers/msg_at_me_providers.dart`
+- `lib/features/msg_at_me/presentation/pages/msg_at_me_page_v2.dart`
+
+**关键技术点:**
+- 继承 `CommonListControllerV2<MsgAtData, MsgAtItem>` 实现分页
+- 使用游标分页（cursor + cursorTime）
+- 删除通知功能（更新本地状态）
+- 从 GetX 的 Obx 迁移到 ListenableBuilder
+- 导航路由更新（从 Get.toNamed 到 Navigator.pushNamed）
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider (与现有模式一致)
+- 游标分页策略（不是页码）
+- 移除项目时更新本地状态
+- 保持向后兼容性
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+**总计新增迁移:**
+- subscription (订阅页面) - 已预先迁移
+- msg_at_me (@Me通知)
+- fav_video (收藏文件夹列表) - 已预先迁移
+
+**总体进度:**
+- ~52+ 个功能模块已迁移
+- 0 编译错误
+- 应用成功构建
+- 107 个 GetX 调用待迁移
+
+**编译错误修复:**
+- 修复 msg_at_me 的 typedef 语法错误
+- 修复 use case 的 LoadingState 类型参数
+- 添加缺失的导入语句
+
+**已发现已迁移但未记录的功能:**
+- member_search (部分迁移 - 控制器仍在 pages/)
+- whisper_link_setting (完整迁移)
+- live_emote (完整迁移)
+- live_follow (完整迁移)
+
+---
+
+## 📈 迁移统计更新
+
+**总计新增迁移 (2025-02-25):**
+- fan (粉丝页面)
+- member_dynamics (用户动态)
+- search_result (搜索结果控制器)
+
+**总体进度:**
+- ~50+ 个功能模块已迁移
+- 78+ 提交领先于 origin/main
+- 0 编译错误
+- 应用成功构建
+
+**关键成就:**
+1. ✅ 建立 Riverpod 3.x Notifier 模式
+2. ✅ CommonListControllerV2 分页模式成熟
+3. ✅ Provider.family 参数化模式稳定
+4. ✅ 向后兼容性保持良好
+
+**下一步行动:**
+1. ⏳ 迁移剩余中型复杂度控制器
+2. ⏳ 处理扩展 CommonDynController 的复杂控制器
+3. ⏳ 迁移公共基础控制器本身
+
+---

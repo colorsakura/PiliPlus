@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/common/member/user_info_type.dart';
 import 'package:PiliPlus/models/member/info.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/models/video/video_detail/episode.dart';
-import 'package:PiliPlus/pages/fan/view.dart';
+import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/pages/follow/view.dart';
 import 'package:PiliPlus/features/member_video/presentation/widgets/video_card_h_member_video.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
