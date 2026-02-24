@@ -788,3 +788,63 @@ class FeaturePage extends ConsumerStatefulWidget {
 - **迁移模式:** 已建立
 - **下一步:** 应用相同模式迁移剩余列表页面
 
+
+## 最新迁移进度 (2025-02-24 续)
+
+### ✅ FAV 子页面完整迁移 (4个)
+
+**Commit:** `7c3cd520e`, `6e944c74c`
+
+成功迁移收藏功能的所有子页面到 Clean Architecture：
+
+**已迁移的 FAV 子页面 (4个):**
+1. ✅ fav_article (收藏文章)
+   - Domain: entities, repositories, use cases
+   - Data: remote datasource, repository implementation
+   - Presentation: ChangeNotifier controller, providers, pages, widgets
+   - 功能：获取收藏文章列表、取消收藏
+   
+2. ✅ fav_cheese (收藏课程)
+   - 完整的 Clean Architecture 结构
+   - 复用 member_cheese 的 widgets
+   - 功能：获取收藏课程列表、取消收藏
+   
+3. ✅ fav_topic (收藏话题)
+   - Domain: entities, repositories, use cases
+   - Data: remote datasource, repository implementation
+   - Presentation: ChangeNotifier controller, providers, pages
+   - 使用自定义 grid delegate (SliverGridDelegateWithMaxCrossAxisExtent)
+   - 功能：获取收藏话题列表、取消收藏
+   
+4. ✅ fav_video (收藏文件夹)
+   - Domain: entities, repositories, use cases
+   - Data: remote datasource, repository implementation
+   - Presentation: ChangeNotifier controller, providers, pages
+   - 处理登录状态检查
+   - 复用现有的 FavVideoItem widgets
+   - 功能：获取收藏文件夹列表、删除文件夹
+
+**关键技术点:**
+- 使用 `ChangeNotifier + Provider` 模式
+- 使用 `LoadingState<T>` 处理加载状态
+- 使用 `LoadingState.loading()` 工厂方法
+- 分页检测：通过检查 response.isEmpty 判断是否到达末尾
+- 保持向后兼容性，通过 `lib/pages/` 重新导出新实现
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建 (Linux Desktop)
+
+**待完成 FAV 页面 (2个 - 复杂):**
+- ⏳ fav_note (使用 MultiSelectController)
+- ⏳ fav_pgc (使用 MultiSelectController)
+
+这两个页面使用 MultiSelectController，需要迁移多选状态管理功能，包括：
+- 多选启用/禁用状态
+- 全选/取消全选
+- 批量删除
+- 选择计数
+
+**当前统计:**
+- 已迁移: 6 个 fav 相关页面 (包括主页面和 4 个子页面)
+- 待迁移: 2 个复杂页面 (需要多选功能)
