@@ -5,7 +5,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/member/coin_like_arc/item.dart';
 import 'package:PiliPlus/features/member_coin_arc/presentation/pages/member_coin_arc_controller.dart';
-import 'package:PiliPlus/pages/member_coin_arc/widgets/item.dart';
+import 'package:PiliPlus/features/member_coin_arc/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/utils.dart';

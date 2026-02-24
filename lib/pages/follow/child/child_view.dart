@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/common/follow_order_type.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/pages/follow/child/child_controller.dart';
 import 'package:PiliPlus/pages/follow/controller.dart';
-import 'package:PiliPlus/pages/follow/widgets/follow_item.dart';
+import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/pages/follow_type/follow_same/view.dart';
 import 'package:PiliPlus/pages/share/view.dart' show UserModel;
 import 'package:PiliPlus/utils/utils.dart';

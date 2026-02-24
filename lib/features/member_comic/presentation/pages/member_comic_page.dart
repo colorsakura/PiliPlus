@@ -3,7 +3,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/features/member_comic/presentation/pages/member_comic_controller.dart';
-import 'package:PiliPlus/pages/member_comic/widgets/item.dart';
+import 'package:PiliPlus/features/member_comic/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

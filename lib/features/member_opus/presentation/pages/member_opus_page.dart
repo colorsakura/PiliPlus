@@ -5,7 +5,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_opus/item.dart';
 import 'package:PiliPlus/features/member_opus/presentation/pages/member_opus_controller.dart';
-import 'package:PiliPlus/pages/member_opus/widgets/space_opus_item.dart';
+import 'package:PiliPlus/features/member_opus/presentation/widgets/space_opus_item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';

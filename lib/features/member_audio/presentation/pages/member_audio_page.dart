@@ -6,7 +6,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_audio/item.dart';
 import 'package:PiliPlus/features/member_audio/presentation/pages/member_audio_controller.dart';
-import 'package:PiliPlus/pages/member_audio/widgets/item.dart';
+import 'package:PiliPlus/features/member_audio/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

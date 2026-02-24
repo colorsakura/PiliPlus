@@ -2,7 +2,7 @@ import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/features/fan/presentation/pages/fan_controller.dart';
 import 'package:PiliPlus/features/follow_type/follow_type.dart';
-import 'package:PiliPlus/pages/follow_type/widgets/item.dart';
+import 'package:PiliPlus/features/follow_type/presentation/widgets/item.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';

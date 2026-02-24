@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:PiliPlus/features/dynamics/domain/entities/dynamic_item.dart';
-import 'package:PiliPlus/pages/dynamics/widgets/dynamic_panel.dart';
+import 'package:PiliPlus/features/dynamics/presentation/widgets/dynamic_panel.dart';
 
 /// Widget displaying a single dynamic post.
 ///

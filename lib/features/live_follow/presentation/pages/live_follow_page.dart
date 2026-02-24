@@ -5,7 +5,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/live/live_follow/item.dart';
 import 'package:PiliPlus/features/live_follow/presentation/pages/live_follow_controller.dart';
-import 'package:PiliPlus/pages/live_follow/widgets/live_item_follow.dart';
+import 'package:PiliPlus/features/live_follow/presentation/widgets/live_item_follow.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

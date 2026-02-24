@@ -4,7 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/pages/member_pgc_controller.dart';
-import 'package:PiliPlus/pages/member_pgc/widgets/pgc_card_v_member_pgc.dart';
+import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_member_pgc.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

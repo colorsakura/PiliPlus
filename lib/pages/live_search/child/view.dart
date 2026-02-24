@@ -6,8 +6,8 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/live/live_search_type.dart';
 import 'package:PiliPlus/pages/live_search/child/controller.dart';
-import 'package:PiliPlus/pages/live_search/widgets/live_search_room.dart';
-import 'package:PiliPlus/pages/live_search/widgets/live_search_user.dart';
+import 'package:PiliPlus/features/live_search/presentation/widgets/live_search_room.dart';
+import 'package:PiliPlus/features/live_search/presentation/widgets/live_search_user.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;

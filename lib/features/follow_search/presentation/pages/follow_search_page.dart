@@ -1,7 +1,7 @@
 import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/pages/common/search/common_search_page.dart';
-import 'package:PiliPlus/pages/follow/widgets/follow_item.dart';
+import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/features/follow_search/presentation/pages/follow_search_controller.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
