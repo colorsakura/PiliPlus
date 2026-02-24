@@ -105,9 +105,7 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
       final dynamicsList = loadingState.data;
 
       if (dynamicsList == null || dynamicsList.isEmpty) {
-        return SliverToBoxAdapter(
-          child: HttpError(onReload: () => _controller.onReload()),
-        );
+        return HttpError(onReload: () => _controller.onReload());
       }
 
       if (useWaterfall) {
@@ -146,8 +144,6 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
       );
     }
 
-    return SliverToBoxAdapter(
-      child: HttpError(onReload: () => _controller.onReload()),
-    );
+    return HttpError(onReload: () => _controller.onReload());
   }
 }
