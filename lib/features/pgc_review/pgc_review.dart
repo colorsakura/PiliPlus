@@ -9,6 +9,8 @@ export 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_c
 export 'package:PiliPlus/features/pgc_review/presentation/pages/pgc_review_page_v2.dart';
 
 // GetX implementation (deprecated, for backward compatibility)
+export 'package:PiliPlus/features/pgc_review/presentation/pages/pgc_review_page.dart'
+    show PgcReviewPage;
 export 'package:PiliPlus/pages/pgc_review/child/view.dart' show PgcReviewChildPage;
 // Note: PgcReviewController in child/controller.dart conflicts with v2 version
 

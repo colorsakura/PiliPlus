@@ -10,6 +10,7 @@ import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart' show DynamicStat;
 import 'package:PiliPlus/pages/article/controller.dart';
+import 'package:PiliPlus/features/article/article.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/article_ops.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/html_render.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/opus_content.dart';
