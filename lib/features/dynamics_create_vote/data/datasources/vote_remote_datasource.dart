@@ -43,9 +43,11 @@ class VoteRemoteDatasource {
       biz: 'vote',
     );
 
-    return res.when(
-      (response) => Success(response.imageUrl),
-      (error) => Error<LoadingState<String?>>(error.errMsg, code: error.code),
-    );
+    if (res case Success(:final response)) {
+      return Success(response.imageUrl);
+    } else {
+      final error = res as Error;
+      return Error(error.errMsg, code: error.code);
+    }
   }
 }

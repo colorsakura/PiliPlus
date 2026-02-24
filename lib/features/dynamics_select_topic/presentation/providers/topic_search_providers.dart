@@ -26,7 +26,7 @@ final searchTopicsProvider = Provider<SearchTopics>((ref) {
 
 /// Provider for the topic search controller
 final topicSearchControllerProvider =
-    ChangeNotifierProvider<TopicSearchController>((ref) {
+    Provider<TopicSearchController>((ref) {
   final searchTopics = ref.watch(searchTopicsProvider);
   final controller = TopicSearchController(searchTopics);
 

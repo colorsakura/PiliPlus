@@ -17,15 +17,16 @@ class VoteFormState {
     this.title = '',
     this.description = '',
     this.voteType = 0,
-    this.options = const [
-      Option(optDesc: '', imgUrl: ''),
-      Option(optDesc: '', imgUrl: ''),
-    ],
+    List<Option>? options,
     this.choiceCount = 1,
     required this.endTime,
     this.canCreate = false,
     this.formKey = '',
-  });
+  }) : options = options ??
+      [
+        Option(optDesc: '', imgUrl: ''),
+        Option(optDesc: '', imgUrl: ''),
+      ];
 
   VoteFormState copyWith({
     String? title,

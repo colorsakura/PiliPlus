@@ -26,7 +26,7 @@ final searchMentionsProvider = Provider<SearchMentions>((ref) {
 
 /// Provider for the dynamic mention controller
 final dynMentionControllerProvider =
-    ChangeNotifierProvider<DynMentionController>((ref) {
+    Provider<DynMentionController>((ref) {
   final searchMentions = ref.watch(searchMentionsProvider);
   final controller = DynMentionController(searchMentions);
 

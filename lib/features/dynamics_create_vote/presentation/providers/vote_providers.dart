@@ -38,7 +38,7 @@ final uploadVoteImageProvider = Provider<UploadVoteImage>((ref) {
 /// Provider for the vote controller
 ///
 /// [voteId] - Optional vote ID for editing existing votes
-final voteControllerProvider = ChangeNotifierProvider.family<VoteController, int?>(
+final voteControllerProvider = Provider.family<VoteController, int?>(
   (ref, voteId) {
     final createVote = ref.watch(createVoteProvider);
     final getVoteInfo = ref.watch(getVoteInfoProvider);
