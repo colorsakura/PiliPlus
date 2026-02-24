@@ -933,3 +933,80 @@ Set<T> get allChecked => list?.where((v) => v.checked).toSet() ?? {};
 **当前统计:**
 - 已迁移: 8 个 fav 相关页面 (包括主页面和 6 个子页面)
 - 待迁移: 0 个 fav 页面 (全部完成！)
+
+---
+
+## ✅ 额外迁移 (2025-02-24 续)
+
+### ✅ Follow Search 完整迁移
+
+**Commit:** `fe3996427`
+
+成功迁移 `follow_search` 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/follow_search/domain/entities/follow_search_item_entity.dart`
+- `lib/features/follow_search/domain/repositories/follow_search_repository.dart`
+- `lib/features/follow_search/domain/usecases/search_follows_usecase.dart`
+- `lib/features/follow_search/data/datasources/follow_search_remote_datasource.dart`
+- `lib/features/follow_search/data/repositories/follow_search_repository_impl.dart`
+- `lib/features/follow_search/presentation/providers/follow_search_controller.dart`
+- `lib/features/follow_search/presentation/providers/follow_search_providers.dart`
+- `lib/features/follow_search/presentation/pages/follow_search_page_v2.dart`
+
+**关键技术点:**
+- Provider.family 通过 `int mid` 参数区分不同用户搜索
+- LoadingState 类型转换: `LoadingState<FollowData>` → `LoadingState<List<FollowItemModel>?>`
+- 使用 switch 模式匹配进行类型转换
+- 分页支持: 自动加载更多和刷新
+- 搜索框焦点管理和文本输入处理
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建
+
+### ✅ Danmaku Block 完整迁移
+
+**Commit:** `6f636eab8`
+
+成功迁移 `danmaku_block` 到 Clean Architecture：
+
+**创建的文件:**
+- `lib/features/danmaku_block/domain/entities/danmaku_rule_entity.dart`
+- `lib/features/danmaku_block/domain/repositories/danmaku_block_repository.dart`
+- `lib/features/danmaku_block/domain/usecases/get_danmaku_filter_rules_usecase.dart`
+- `lib/features/danmaku_block/domain/usecases/delete_danmaku_rule_usecase.dart`
+- `lib/features/danmaku_block/domain/usecases/add_danmaku_rule_usecase.dart`
+- `lib/features/danmaku_block/data/datasources/danmaku_block_remote_datasource.dart`
+- `lib/features/danmaku_block/data/repositories/danmaku_block_repository_impl.dart`
+- `lib/features/danmaku_block/presentation/providers/danmaku_block_controller.dart`
+- `lib/features/danmaku_block/presentation/providers/danmaku_block_providers.dart`
+- `lib/features/danmaku_block/presentation/pages/danmaku_block_page_v2.dart`
+
+**关键技术点:**
+- 三个标签页 (keyword/regex/uid filters)
+- CRUD 操作: 获取、删除、添加弹幕屏蔽规则
+- Hash 转换: UID 过滤器使用 CRC32 哈希
+- TabController 延迟初始化 (需要 TickerProvider)
+- 状态管理: 每个标签页独立的规则列表
+- 对话框交互: 规则创建/编辑对话框
+
+**技术决策:**
+- 使用 ChangeNotifier + Provider (与现有模式一致)
+- 正确使用 DanmakuBlockDataModel 类型 (不是 DanmakuBlockData)
+- 延迟初始化: TabController 需要 TickerProvider
+- 清晰的分层架构
+- 零编译错误
+
+**构建状态:**
+- ✅ 0 编译错误
+- ✅ 应用成功构建 (Linux Desktop Release)
+
+**总计新增迁移:**
+- follow_search (关注搜索)
+- danmaku_block (弹幕屏蔽)
+
+**当前统计:**
+- 已迁移: 10 个功能模块 (8 个 fav + 2 个其他)
+- 0 个编译错误
+- 应用成功构建
