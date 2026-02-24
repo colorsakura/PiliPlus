@@ -547,6 +547,18 @@ void initState() {
 **提交:**
 - `87fa1e8c1` - 第一次尝试（不完善）
 - `f39e869c3` - 最终修复（使用 addPostFrameCallback）
+- `82f9363cb` - 代码清理（移除未使用导入）
+
+### 📝 代码质量改进
+
+持续的代码清理和优化:
+- 移除未使用的导入
+- 保持代码整洁
+- 减少编译警告
+
+**最近清理:**
+- `dynamics_tab_page.dart` - 移除未使用的 `waterfall.dart` 导入
+- `dynamics_providers.dart` - 移除未使用的 `follow_up_controller.dart` 导入
 
 ## 注意事项
 

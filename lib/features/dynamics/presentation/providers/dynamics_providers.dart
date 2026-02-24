@@ -7,7 +7,6 @@ import 'package:PiliPlus/features/dynamics/data/repositories/dynamics_tab_reposi
 import 'package:PiliPlus/features/dynamics/domain/usecases/fetch_dynamics.dart';
 import 'package:PiliPlus/features/dynamics/domain/usecases/fetch_follow_up.dart';
 import 'package:PiliPlus/features/dynamics/domain/usecases/get_dynamics_tab_config.dart';
-import 'package:PiliPlus/features/dynamics/presentation/providers/follow_up_controller.dart';
 
 /// Local data source provider.
 final dynamicsLocalDataSourceProvider = Provider<DynamicsLocalDataSource>((ref) {
