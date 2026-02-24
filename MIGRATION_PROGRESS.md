@@ -684,3 +684,107 @@ final memberArticleControllerProvider =
 );
 ```
 
+
+### Commit 6: Demonstrate Clean Architecture migration with ListControllerMixin (2024-02-24)
+- **Commit:** `416ad76ed` - refactor: migrate member_article to Clean Architecture with Riverpod
+- Created complete Clean Architecture structure for member_article:
+  - Domain: Entity, Repository interface, Use case
+  - Data: Repository implementation with LoadingStateExtension
+  - Presentation: ChangeNotifier controller, State class, Riverpod page, Providers
+- Demonstrates migration pattern for 54 list-based controllers
+- Uses ChangeNotifier + Provider.family (consistent with existing project patterns)
+- Maintains backward compatibility with GetX version
+- **Zero compilation errors achieved**
+
+## 成功模式总结
+
+### Clean Architecture 模式 (member_article 示例)
+
+**适用场景:** 简单到中等复杂度的列表页面,需要分页功能
+
+**模式:**
+```
+1. Domain 层
+   ├── entities/          # 实体类
+   ├── repositories/      # 仓库接口
+   └── usecases/         # 用例
+
+2. Data 层
+   └── repositories/      # 仓库实现
+
+3. Presentation 层
+   ├── providers/        # ChangeNotifier + Provider.family
+   └── pages/           # ConsumerWidget
+```
+
+**关键要点:**
+- ✅ 使用 ChangeNotifier + Provider.family (与项目现有模式一致)
+- ✅ 独立的状态类 (MemberArticleListState)
+- ✅ 清晰的分层架构
+- ✅ 保持向后兼容 (保留 GetX 版本)
+- ✅ 零编译错误
+
+### 可复用的代码模式
+
+#### ChangeNotifier Controller Pattern
+
+```dart
+// 1. 定义 State 类
+class FeatureState {
+  final LoadingState<List<Item>?> listState;
+  final bool isLoading;
+  final bool isEnd;
+  final int currentPage;
+  
+  FeatureState copyWith({...}) => ...;
+}
+
+// 2. 定义 Controller (继承 ChangeNotifier)
+class FeatureController extends ChangeNotifier {
+  FeatureController({
+    required this.id,
+    required FeatureUseCase useCase,
+  }) : _useCase = useCase {
+    queryData(isRefresh: true);
+  }
+  
+  final FeatureUseCase _useCase;
+  FeatureState _state = FeatureState();
+  
+  Future<void> queryData({bool isRefresh = true}) async {
+    // 分页逻辑
+    // 更新 _state
+    notifyListeners();
+  }
+  
+  Future<void> onRefresh() async { ... }
+  Future<void> onLoadMore() async { ... }
+  Future<void> onReload() async { ... }
+}
+
+// 3. 创建 Provider.family
+final featureControllerProvider =
+    Provider.family<FeatureController, int>((ref, id) {
+  return FeatureController(
+    id: id,
+    useCase: ref.watch(featureUseCaseProvider),
+  );
+});
+
+// 4. 在页面中使用
+class FeaturePage extends ConsumerStatefulWidget {
+  @override
+  Widget build(BuildContext context) {
+    final controller = ref.watch(featureControllerProvider(widget.id));
+    return ...;
+  }
+}
+```
+
+## 当前统计
+
+- **已完成:** 19+ 页面
+- **零编译错误:** ✅
+- **迁移模式:** 已建立
+- **下一步:** 应用相同模式迁移剩余列表页面
+
