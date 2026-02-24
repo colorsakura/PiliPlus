@@ -15,7 +15,7 @@ import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart' show FilePicModel;
 import 'package:PiliPlus/pages/common/publish/common_rich_text_pub_page.dart';
-import 'package:PiliPlus/pages/dynamics_mention/controller.dart';
+import 'package:PiliPlus/features/dynamics_mention/dynamics_mention.dart';
 import 'package:PiliPlus/features/emote/presentation/pages/emote_controller.dart';
 import 'package:PiliPlus/features/emote/presentation/pages/emote_panel_page.dart' show EmotePanel;
 import 'package:PiliPlus/pages/video/controller.dart';
