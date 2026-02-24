@@ -1,0 +1,46 @@
+import 'package:PiliPlus/features/member_coin_arc/domain/entities/member_coin_arc_item_entity.dart';
+import 'package:PiliPlus/features/member_coin_arc/domain/repositories/member_coin_arc_repository.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/http/member.dart';
+import 'package:PiliPlus/models/member/coin_like_arc/data.dart';
+
+/// Implementation of member coin arc repository
+class MemberCoinArcRepositoryImpl implements MemberCoinArcRepository {
+  const MemberCoinArcRepositoryImpl();
+
+  @override
+  Future<LoadingState<List<MemberCoinArcItemEntity>>> fetchMemberCoinArcs({
+    required dynamic mid,
+    required int page,
+  }) async {
+    final result = await MemberHttp.coinArc(mid: mid, page: page);
+
+    return result.when(
+      loading: LoadingState.loading,
+      success: (data) {
+        final items = data.item ?? [];
+        return Success(items);
+      },
+      error: (errMsg, {code}) => Error(errMsg, code: code),
+    );
+  }
+}
+
+/// Extension on LoadingState to provide pattern matching
+extension LoadingStateExtension<T> on LoadingState<T> {
+  R when<R>({
+    required R Function() loading,
+    required R Function(T data) success,
+    required R Function(String? errMsg, {int? code}) error,
+  }) {
+    if (this is Loading) {
+      return loading();
+    } else if (this is Success<T>) {
+      return success((this as Success<T>).response);
+    } else if (this is Error) {
+      final err = this as Error;
+      return error(err.errMsg, code: err.code);
+    }
+    throw StateError('Invalid LoadingState type');
+  }
+}
