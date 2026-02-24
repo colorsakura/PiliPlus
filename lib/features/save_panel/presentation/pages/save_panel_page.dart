@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/pages/common/publish/publish_route.dart';
 import 'package:PiliPlus/pages/dynamics/widgets/dynamic_panel.dart';
-import 'package:PiliPlus/pages/music/controller.dart';
+import 'package:PiliPlus/features/music/presentation/pages/music_controller.dart';
 import 'package:PiliPlus/pages/video/introduction/pgc/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';
 import 'package:PiliPlus/pages/video/reply/widgets/reply_item_grpc.dart';

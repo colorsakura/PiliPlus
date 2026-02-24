@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/shell/presentation/providers/navigation_provid
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

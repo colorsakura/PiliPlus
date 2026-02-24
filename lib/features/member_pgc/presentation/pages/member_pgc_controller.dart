@@ -5,7 +5,7 @@ import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/models/space/space_archive/data.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/pages/common/common_list_controller.dart';
-import 'package:PiliPlus/pages/member/controller.dart';
+import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
 import 'package:get/get.dart';
 
 class MemberBangumiCtr

@@ -4,7 +4,7 @@ import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
 import 'package:PiliPlus/models/model_video.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/pages/video/ai_conclusion/view.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';

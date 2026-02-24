@@ -29,7 +29,7 @@ import 'package:PiliPlus/pages/common/common_intro_controller.dart';
 import 'package:PiliPlus/pages/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/pages/live_room/widgets/bottom_control.dart'
     as live_bottom;
-import 'package:PiliPlus/pages/video/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/video_controller.dart';
 import 'package:PiliPlus/pages/video/introduction/pgc/controller.dart';
 import 'package:PiliPlus/pages/video/post_panel/popup_menu_text.dart';
 import 'package:PiliPlus/pages/video/post_panel/view.dart';

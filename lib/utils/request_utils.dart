@@ -19,8 +19,8 @@ import 'package:PiliPlus/models/login/model.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
 import 'package:PiliPlus/models/later/list.dart';
 import 'package:PiliPlus/pages/common/multi_select/base.dart';
-import 'package:PiliPlus/pages/dynamics_tab/controller.dart';
-import 'package:PiliPlus/pages/fav_detail/controller.dart'
+import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart';
+import 'package:PiliPlus/features/fav_detail/presentation/pages/fav_detail_controller.dart'
     show BaseFavController;
 import 'package:PiliPlus/pages/group_panel/view.dart';
 import 'package:PiliPlus/pages/login/geetest/geetest_webview_dialog.dart';

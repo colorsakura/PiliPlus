@@ -6,7 +6,7 @@ import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/models/common/dm_block_type.dart';
 import 'package:PiliPlus/models/user/danmaku_block.dart';
 import 'package:PiliPlus/models/user/danmaku_rule.dart';
-import 'package:PiliPlus/pages/danmaku_block/controller.dart';
+import 'package:PiliPlus/features/danmaku_block/presentation/pages/danmaku_block_controller.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';

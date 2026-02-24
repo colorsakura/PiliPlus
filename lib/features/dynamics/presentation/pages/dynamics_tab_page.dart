@@ -8,7 +8,7 @@ import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/pages/dynamics_tab/controller.dart' show DynamicsTabController;
+import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart' show DynamicsTabController;
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:PiliPlus/utils/grid.dart';

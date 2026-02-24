@@ -14,7 +14,7 @@ import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
 import 'package:PiliPlus/models/video/video_detail/episode.dart' as ugc;
 import 'package:PiliPlus/models/video/video_detail/page.dart';
-import 'package:PiliPlus/pages/danmaku/controller.dart';
+import 'package:PiliPlus/features/danmaku/presentation/pages/danmaku_controller.dart';
 import 'package:PiliPlus/services/download/download_manager.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';

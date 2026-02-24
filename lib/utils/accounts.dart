@@ -2,7 +2,7 @@ import 'package:PiliPlus/core/storage/data/account_storage_repository.dart';
 import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';

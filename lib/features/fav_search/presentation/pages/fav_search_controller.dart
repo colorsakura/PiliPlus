@@ -6,7 +6,7 @@ import 'package:PiliPlus/models/fav/fav_detail/data.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
 import 'package:PiliPlus/pages/common/multi_select/base.dart';
 import 'package:PiliPlus/pages/common/search/common_search_controller.dart';
-import 'package:PiliPlus/pages/fav_detail/controller.dart';
+import 'package:PiliPlus/features/fav_detail/presentation/pages/fav_detail_controller.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 

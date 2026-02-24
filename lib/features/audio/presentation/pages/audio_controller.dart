@@ -20,7 +20,7 @@ import 'package:PiliPlus/pages/common/common_intro_controller.dart'
 import 'package:PiliPlus/pages/dynamics_repost/view.dart';
 import 'package:PiliPlus/pages/main_reply/view.dart';
 import 'package:PiliPlus/pages/sponsor_block/block_mixin.dart';
-import 'package:PiliPlus/pages/video/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/video_controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/widgets/triple_mixin.dart';
 import 'package:PiliPlus/pages/video/pay_coins/view.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';

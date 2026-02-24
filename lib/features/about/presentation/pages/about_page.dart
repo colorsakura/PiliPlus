@@ -7,7 +7,7 @@ import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/features/about/presentation/providers/about_controller.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
