@@ -11,7 +11,7 @@ import 'package:PiliPlus/models/common/video/source_type.dart';
 import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/features/follow/follow.dart';
-import 'package:PiliPlus/pages/follow_type/followed/view.dart';
+import 'package:PiliPlus/features/followed/followed.dart';
 import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
 import 'package:PiliPlus/pages/video/reply_reply/view.dart';
 import 'package:PiliPlus/utils/id_utils.dart';

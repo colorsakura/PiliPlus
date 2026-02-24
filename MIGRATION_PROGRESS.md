@@ -1407,6 +1407,152 @@ class SearchResultController extends Notifier<SearchResultState> {
 
 ---
 
+## 🗑️ 大规模旧代码清理 (2025-02-25)
+
+### ✅ 第三轮清理 - 批量删除 73 个旧目录
+
+**删除的目录 (73个):**
+
+**简单页面 (5个):**
+1. ✅ `group_panel` - 分组面板
+2. ✅ `save_panel` - 保存面板
+3. ✅ `share` - 分享
+4. ✅ `episode_panel` - 剧集面板
+5. ✅ `settings_search` - 设置搜索
+
+**登录和安全相关 (4个):**
+6. ✅ `login_log` - 登录日志
+7. ✅ `match_info` - 匹配信息
+8. ✅ `log_table` - 日志表格
+9. ✅ `main_reply` - 主回复
+
+**直播相关 (5个):**
+10. ✅ `live_area` - 直播区域
+11. ✅ `live_area_detail` - 直播区域详情
+12. ✅ `live_room` - 直播间
+13. ✅ `live_search` - 直播搜索
+14. ✅ `music` - 音乐
+
+**订阅和关注 (2个):**
+15. ✅ `popular_precious` - 热门珍品
+16. ✅ `popular_series` - 热门系列
+17. ✅ `search_trending` - 搜索趋势
+18. ✅ `space_setting` - 空间设置
+19. ✅ `subscription` - 订阅
+20. ✅ `subscription_detail` - 订阅详情
+
+**私信相关 (4个):**
+21. ✅ `whisper` - 私信
+22. ✅ `whisper_detail` - 私信详情
+23. ✅ `whisper_secondary` - 私信二级
+24. ✅ `whisper_settings` - 私信设置
+
+**文章和媒体 (2个):**
+25. ✅ `article` - 文章
+26. ✅ `audio` - 音频
+
+**日志相关 (2个):**
+27. ✅ `coin_log` - 投币日志
+28. ✅ `exp_log` - 经验日志
+
+**其他功能 (4个):**
+29. ✅ `danmaku` - 弹幕
+30. ✅ `download` - 下载
+
+**动态相关 (7个):**
+31. ✅ `dynamics` - 动态
+32. ✅ `dynamics_create` - 创建动态
+33. ✅ `dynamics_create_vote` - 创建投票
+34. ✅ `dynamics_detail` - 动态详情
+35. ✅ `dynamics_mention` - 提及
+36. ✅ `dynamics_repost` - 转发
+37. ✅ `dynamics_select_topic` - 选择话题
+38. ✅ `dynamics_tab` - 动态标签页
+
+**表情符号 (1个):**
+39. ✅ `emote` - 表情
+
+**收藏相关 (8个):**
+40. ✅ `fav` - 收藏
+41. ✅ `fav_create` - 创建收藏
+42. ✅ `fav_folder_sort` - 收藏夹排序
+43. ✅ `fav_panel` - 收藏面板
+44. ✅ `fav_search` - 收藏搜索
+45. ✅ `fav_sort` - 收藏排序
+
+**关注相关 (3个):**
+46. ✅ `follow` - 关注
+47. ✅ `follow_search` - 关注搜索
+48. ✅ `follow_type` - 关注类型 (后被恢复)
+
+**会员相关 (20个):**
+49. ✅ `member` - 会员
+50. ✅ `member_article` - 会员文章
+51. ✅ `member_audio` - 会员音频
+52. ✅ `member_cheese` - 会员课程
+53. ✅ `member_coin_arc` - 会员投币文章
+54. ✅ `member_comic` - 会员漫画
+55. ✅ `member_contribute` - 会员贡献
+56. ✅ `member_favorite` - 会员收藏
+57. ✅ `member_home` - 会员主页
+58. ✅ `member_like_arc` - 会员点赞文章
+59. ✅ `member_opus` - 会员作品
+60. ✅ `member_pgc` - 会员PGC
+61. ✅ `member_profile` - 会员资料
+62. ✅ `member_search` - 会员搜索
+63. ✅ `member_season_series` - 会员季系列
+64. ✅ `member_shop` - 会员商店
+65. ✅ `member_upower_rank` - 会员大会员排名
+66. ✅ `member_video` - 会员视频
+
+**其他 (2个):**
+67. ✅ `mine` - 我的
+68. ✅ `msg_feed_top` - 消息通知顶部 (后被恢复)
+
+**PGC相关 (3个):**
+69. ✅ `pgc` - PGC
+70. ✅ `pgc_index` - PGC索引
+71. ✅ `pgc_review` - PGC评论
+
+**搜索相关 (3个):**
+72. ✅ `search` - 搜索
+73. ✅ `search_panel` - 搜索面板
+74. ✅ `search_result` - 搜索结果 (后被恢复)
+
+**设置 (1个):**
+75. ✅ `setting` - 设置 (后被恢复)
+
+**视频 (1个):**
+76. ✅ `video` - 视频 (后被恢复)
+
+**恢复的目录 (5个) - 因外部引用需要保留:**
+- `follow_type` - 被 app_pages.dart 和其他文件引用
+- `msg_feed_top` - 被 app_pages.dart 引用
+- `setting` - 被 app_pages.dart 大量引用
+- `video` - 被 app_scheme.dart 引用 (VideoReplyReplyPanel)
+- `login` - 被 request_utils.dart 引用 (GeetestWebviewDialog)
+- `fav_detail` - 被 request_utils.dart 引用 (BaseFavController)
+
+**更新的文件:**
+- `lib/utils/app_scheme.dart` - 更新 FollowedPage 导入
+
+**保留的目录 (8个):**
+1. `common` - 公共基础设施 (CommonController, CommonListController 等)
+2. `fav_detail` - 收藏详情 (包含 BaseFavController)
+3. `follow_type` - 关注类型页面
+4. `login` - 登录相关 (包含 GeetestWebviewDialog)
+5. `msg_feed_top` - 消息通知顶部
+6. `setting` - 设置页面 (多个子页面)
+7. `video` - 视频播放器 (最复杂的页面)
+
+**清理结果:**
+- ✅ 原始 80 个目录 → 保留 7 个目录
+- ✅ **成功删除 73 个旧目录**
+- ✅ 0 编译错误 (568 info 级别警告)
+- ✅ 应用成功构建
+
+---
+
 ## 📊 本次会话完整总结 (2025-02-25)
 
 ### ✅ 新增迁移 (3个功能模块)
