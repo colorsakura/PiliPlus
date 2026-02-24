@@ -75,14 +75,18 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
   @override
   void initState() {
     super.initState();
-    // Initial data fetch is handled in the provider
+    // Store controller reference for onValueChanged
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller = ProviderScope.containerOf(context).read(topicSearchControllerProvider);
+    });
   }
+
+  TopicSearchController? _controller;
 
   @override
   void onValueChanged(String value) {
-    final controller = ref.read(topicSearchControllerProvider);
-    controller.controller.text = value;
-    controller.searchTopics(value).whenComplete(
+    _controller?.controller.text = value;
+    _controller?.searchTopics(value).whenComplete(
       () => WidgetsBinding.instance.addPostFrameCallback(
         (_) => widget.scrollController?.jumpToTop(),
       ),
@@ -92,11 +96,13 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      children: [
-        SizedBox(
-          height: 35,
-          child: Center(
+    return Consumer(
+      builder: (context, ref, _) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 35,
+              child: Center(
             child: Container(
               width: 32,
               height: 3,
@@ -205,14 +211,18 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
         ),
       ],
     );
+      },
+    );
   }
 
   Widget _buildBody(
     ThemeData theme,
     LoadingState<List<TopicItem>?> loadingState,
   ) {
-    final controller = ref.read(topicSearchControllerProvider);
-    return switch (loadingState) {
+    return Consumer(
+      builder: (context, ref, _) {
+        final controller = ref.read(topicSearchControllerProvider);
+        return switch (loadingState) {
       Loading() => loadingWidget,
       Success<List<TopicItem>?>(:final response) =>
         response != null && response.isNotEmpty
@@ -235,11 +245,13 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
             : _errWidget(),
       Error(:final errMsg) => _errWidget(errMsg),
     };
+      },
+    );
   }
 
   Widget _errWidget([String? errMsg]) => scrollErrorWidget(
     errMsg: errMsg,
     controller: widget.scrollController,
-    onReload: () => ref.read(topicSearchControllerProvider).onRefresh(),
+    onReload: () => _controller?.onRefresh(),
   );
 }

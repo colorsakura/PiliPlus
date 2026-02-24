@@ -537,7 +537,7 @@ class _CreateVoteButton extends ConsumerWidget {
     final res = await controller.createVote();
 
     if (res case Success()) {
-      Get.back(result: controller.state.voteId);
+      Get.back(result: controller.voteId);
     } else {
       res.toast();
     }

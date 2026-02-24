@@ -78,14 +78,18 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
   @override
   void initState() {
     super.initState();
-    // Initial data fetch is handled in the provider
+    // Store controller reference for onValueChanged
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller = ProviderScope.containerOf(context).read(dynMentionControllerProvider);
+    });
   }
+
+  DynMentionController? _controller;
 
   @override
   void onValueChanged(String value) {
-    final controller = ref.read(dynMentionControllerProvider);
-    controller.controller.text = value;
-    controller.searchMentions(value).whenComplete(
+    _controller?.controller.text = value;
+    _controller?.searchMentions(value).whenComplete(
       () => WidgetsBinding.instance.addPostFrameCallback(
         (_) => widget.scrollController?.jumpToTop(),
       ),
@@ -97,26 +101,28 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
     final theme = Theme.of(context);
     final padding = MediaQuery.paddingOf(context).bottom;
     final viewInset = MediaQuery.viewInsetsOf(context).bottom;
-    return Column(
-      children: [
-        SizedBox(
-          height: 35,
-          child: Center(
-            child: Container(
-              width: 32,
-              height: 3,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline,
-                borderRadius: const BorderRadius.all(Radius.circular(3)),
+    return Consumer(
+      builder: (context, ref, _) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 35,
+              child: Center(
+                child: Container(
+                  width: 32,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.outline,
+                    borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 5),
-          child: TextField(
-            focusNode: ref.watch(dynMentionControllerProvider).focusNode,
-            controller: ref.watch(dynMentionControllerProvider).controller,
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 5),
+              child: TextField(
+                focusNode: ref.watch(dynMentionControllerProvider).focusNode,
+                controller: ref.watch(dynMentionControllerProvider).controller,
             onChanged: ctr!.add,
             decoration: InputDecoration(
               visualDensity: .standard,
@@ -253,14 +259,18 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
         ),
       ],
     );
+      },
+    );
   }
 
   Widget _buildBody(
     ThemeData theme,
     LoadingState<List<MentionGroup>?> loadingState,
   ) {
-    final controller = ref.read(dynMentionControllerProvider);
-    return switch (loadingState) {
+    return Consumer(
+      builder: (context, ref, _) {
+        final controller = ref.read(dynMentionControllerProvider);
+        return switch (loadingState) {
       Loading() => SliverPadding(
         padding: const EdgeInsets.only(top: 8),
         sliver: linearLoading,
@@ -309,5 +319,7 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
         onReload: controller.onRefresh,
       ),
     };
+      },
+    );
   }
 }

@@ -50,8 +50,8 @@ class TopicSearchController extends ChangeNotifier {
       _currentPage++;
 
       List<TopicItem>? currentList;
-      if (_state.searchResults case Success(:final value)) {
-        currentList = value;
+      if (_state.searchResults case Success(:final response)) {
+        currentList = response;
       }
 
       final updatedList = refresh
@@ -64,8 +64,11 @@ class TopicSearchController extends ChangeNotifier {
         isLoadingMore: false,
       ));
     } else {
+      // Error case - preserve error info but change type
+      // Since we can't directly convert LoadingState<TopicPubSearchData> to LoadingState<List<TopicItem>?>
+      // We'll cast the error result
       _updateState(_state.copyWith(
-        searchResults: result,
+        searchResults: result as LoadingState<List<TopicItem>>,
         isLoadingMore: false,
       ));
     }
