@@ -5,7 +5,6 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/live_follow/presentation/providers/live_follow_list_provider.dart';
 import 'package:PiliPlus/features/live_follow/presentation/widgets/live_item_follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/live/live_follow/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

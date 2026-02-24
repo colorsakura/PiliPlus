@@ -1,16 +1,11 @@
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/features/member_upower_rank/presentation/providers/member_upower_rank_list_provider.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/upower_rank/rank_info.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
-import 'package:PiliPlus/utils/utils.dart';
-import 'package:flutter/material.dart' hide ListTile;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MemberUpowerRankPage extends ConsumerStatefulWidget {
@@ -83,7 +78,7 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   ) {
     return switch (listState) {
       Loading() => const SliverToBoxAdapter(
-          child: LoadingWidget(),
+          child: Center(child: CircularProgressIndicator()),
         ),
       Success(:final response) =>
         response != null && response.isNotEmpty
@@ -105,40 +100,31 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   }
 
   Widget _buildListItem(UpowerRankInfo item, ThemeData theme) {
-    return CommonListTile(
-      title: Text(
-        item.user?.nickname ?? '',
-        style: theme.textTheme.titleSmall,
-      ),
-      leading: item.user?.face != null
-          ? NetworkImgLayer(
-              type: ImageType.avatar,
-              src: item.user!.face!,
-            )
-          : null,
-      trailing: _buildTrailing(item, theme),
-      onTap: () {},
-    ).marginOnly(bottom: 10);
-  }
-
-  Widget _buildTrailing(UpowerRankInfo item, ThemeData theme) {
-    final amount = item.amount ?? 0;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          '${(amount / 1000).toStringAsFixed(1)}k',
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: theme.colorScheme.primary,
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        title: Text(
+          item.nickname ?? '',
+          style: theme.textTheme.titleSmall,
         ),
-        if (item.rank != null)
-          Text(
-            'No.${item.rank}',
-            style: theme.textTheme.labelSmall,
-          ),
-      ],
+        trailing: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              item.day != null ? '${item.day}天' : '',
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.primary,
+              ),
+            ),
+            if (item.rank != null)
+              Text(
+                'No.${item.rank}',
+                style: theme.textTheme.labelSmall,
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

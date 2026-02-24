@@ -36,15 +36,13 @@ class MemberCheeseListState {
 class MemberCheeseListController extends ChangeNotifier {
   MemberCheeseListController({
     required this.mid,
-    required this._fetchCheeses,
-    this.isEnd,
-  }) : _fetchCheeses = _fetchCheeses {
+    required FetchMemberCheesesUseCase fetchCheeses,
+  }) : _fetchCheeses = fetchCheeses {
     queryData(isRefresh: true);
   }
 
   final int mid;
   final FetchMemberCheesesUseCase _fetchCheeses;
-  final bool? isEnd;
 
   MemberCheeseListState _state = MemberCheeseListState();
 

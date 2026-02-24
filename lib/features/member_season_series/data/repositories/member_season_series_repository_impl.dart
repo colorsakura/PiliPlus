@@ -32,3 +32,22 @@ class MemberSeasonSeriesRepositoryImpl
     );
   }
 }
+
+/// Extension on LoadingState to provide pattern matching
+extension LoadingStateExtension<T> on LoadingState<T> {
+  R when<R>({
+    required R Function() loading,
+    required R Function(T data) success,
+    required R Function(String? errMsg, {int? code}) error,
+  }) {
+    if (this is Loading) {
+      return loading();
+    } else if (this is Success<T>) {
+      return success((this as Success<T>).response);
+    } else if (this is Error) {
+      final err = this as Error;
+      return error(err.errMsg, code: err.code);
+    }
+    throw StateError('Invalid LoadingState type');
+  }
+}

@@ -2,7 +2,6 @@ import 'package:PiliPlus/features/member_like_arc/domain/entities/member_like_ar
 import 'package:PiliPlus/features/member_like_arc/domain/repositories/member_like_arc_repository.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
-import 'package:PiliPlus/models/member/coin_like_arc/data.dart';
 
 /// Implementation of member like arc repository
 class MemberLikeArcRepositoryImpl implements MemberLikeArcRepository {
@@ -23,5 +22,24 @@ class MemberLikeArcRepositoryImpl implements MemberLikeArcRepository {
       },
       error: (errMsg, {code}) => Error(errMsg, code: code),
     );
+  }
+}
+
+/// Extension on LoadingState to provide pattern matching
+extension LoadingStateExtension<T> on LoadingState<T> {
+  R when<R>({
+    required R Function() loading,
+    required R Function(T data) success,
+    required R Function(String? errMsg, {int? code}) error,
+  }) {
+    if (this is Loading) {
+      return loading();
+    } else if (this is Success<T>) {
+      return success((this as Success<T>).response);
+    } else if (this is Error) {
+      final err = this as Error;
+      return error(err.errMsg, code: err.code);
+    }
+    throw StateError('Invalid LoadingState type');
   }
 }

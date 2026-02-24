@@ -28,7 +28,7 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: const AppBar(title: Text('入站必刷')),
+      appBar: AppBar(title: const Text('入站必刷')),
       body: refreshIndicator(
         onRefresh: controller.onRefresh,
         child: CustomScrollView(
