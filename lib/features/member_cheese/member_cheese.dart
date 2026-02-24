@@ -4,7 +4,7 @@ export 'package:PiliPlus/features/member_cheese/presentation/pages/member_cheese
 
 // GetX implementation (deprecated, for backward compatibility)
 export 'package:PiliPlus/features/member_cheese/presentation/pages/member_cheese_page.dart'
-    hide MemberCheese;
+    show MemberCheese;
 
 // Providers (new)
 export 'package:PiliPlus/features/member_cheese/presentation/providers/member_cheese_list_provider.dart'

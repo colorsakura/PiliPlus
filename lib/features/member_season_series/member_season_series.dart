@@ -4,7 +4,7 @@ export 'package:PiliPlus/features/member_season_series/presentation/pages/member
 
 // GetX implementation (deprecated, for backward compatibility)
 export 'package:PiliPlus/features/member_season_series/presentation/pages/member_season_series_page.dart'
-    hide SeasonSeriesPage;
+    show SeasonSeriesPage;
 
 // Providers (new)
 export 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_list_provider.dart'

@@ -4,7 +4,7 @@ export 'package:PiliPlus/features/member_shop/presentation/pages/member_shop_pag
 
 // GetX implementation (deprecated, for backward compatibility)
 export 'package:PiliPlus/features/member_shop/presentation/pages/member_shop_page.dart'
-    hide MemberShop;
+    show MemberShop;
 
 // Providers (new)
 export 'package:PiliPlus/features/member_shop/presentation/providers/member_shop_list_provider.dart'
