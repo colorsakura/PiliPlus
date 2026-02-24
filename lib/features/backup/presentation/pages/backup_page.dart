@@ -64,7 +64,7 @@ class _BackupPageState extends ConsumerState<BackupPage> {
     final obscureText = state.obscureText;
 
     return Scaffold(
-      appBar: widget.showAppBar ? AppBar(title: Text('WebDAV 设置')) : null,
+      appBar: widget.showAppBar ? AppBar(title: const Text('WebDAV 设置')) : null,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -161,9 +161,8 @@ class _BackupPageState extends ConsumerState<BackupPage> {
   }
 
   Future<void> _saveConfig() async {
-    final controller = ref.read(backupControllerProvider.notifier);
-    // 更新配置值
-    controller
+    final controller = ref.read(backupControllerProvider.notifier)
+      // 更新配置值
       ..updateUri(_uriCtr.text)
       ..updateUsername(_usernameCtr.text)
       ..updatePassword(_passwordCtr.text)
