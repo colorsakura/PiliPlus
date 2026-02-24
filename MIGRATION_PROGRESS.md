@@ -122,6 +122,12 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 
 **总计: 19个页面已成功迁移, 0个编译错误**
 
+**额外简单页面迁移 (2024-02-24):**
+- ✅ share, fan, member_profile, fav_create, fav_folder_sort, fav_panel, fav_sort, group_panel, save_panel, settings_search, episode_panel, danmaku_block (11个简单页面)
+- ✅ sponsor_block (使用本地状态的设置页面)
+
+**当前总计: 47个页面已成功迁移, 0个编译错误**
+
 **已使用迁移的基础设施的页面 (2个):**
 - `dynamics_repost` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
 - `dynamics_create` - 使用 CommonRichTextPubPage ✅ (lib/common/widgets/publish/)
