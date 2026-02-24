@@ -5,7 +5,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/search/search_rcmd/data.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart' show showImportExportDialog;
-import 'package:PiliPlus/pages/search/controller.dart';
+import 'package:PiliPlus/features/search/presentation/pages/search_controller.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/hot_keyword.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/utils/em.dart' show Em;
