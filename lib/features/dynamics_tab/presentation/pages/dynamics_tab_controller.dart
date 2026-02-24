@@ -19,7 +19,15 @@ class DynamicsTabController
   String offset = '';
   int? mid;
   late final MainController mainController = Get.find<MainController>();
-  final dynamicsController = Get.find<DynamicsController>();
+
+  DynamicsController get _dynamicsController {
+    try {
+      return Get.find<DynamicsController>();
+    } catch (e) {
+      // DynamicsController not registered yet, create it
+      return Get.put(DynamicsController());
+    }
+  }
 
   @override
   void onInit() {
@@ -48,7 +56,7 @@ class DynamicsTabController
         type: dynamicsType,
         offset: offset,
         mid: mid,
-        tempBannedList: dynamicsController.tempBannedList,
+        tempBannedList: _dynamicsController.tempBannedList,
       );
 
   Future<void> onRemove(int index, dynamic dynamicId) async {
