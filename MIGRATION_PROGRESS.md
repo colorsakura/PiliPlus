@@ -88,52 +88,28 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 
 ## 下一步计划
 
-### Phase 3: Dynamics相关页面 - 公共控制器基础设施已迁移
+### Phase 3: Dynamics相关页面 - 基础设施已就绪
 
-✅ **公共控制器迁移完成 (2024-02-24):**
-- `lib/pages/common/common_controller.dart` → `lib/core/controllers/`
-- `lib/pages/common/common_list_controller.dart` → `lib/core/controllers/`
-- `lib/pages/common/reply_controller.dart` → `lib/core/controllers/`
-- `lib/pages/common/dyn/common_dyn_controller.dart` → `lib/core/controllers/`
+✅ **公共基础设施迁移完成 (2024-02-24):**
+- `lib/pages/common/` → `lib/core/controllers/` (4个控制器)
+- `lib/pages/common/publish/` → `lib/common/widgets/publish/` (2个发布页面)
+- `lib/pages/search/` → `lib/utils/mixins/` (DebounceStreamState)
 
-旧文件现在作为重新导出点，以保持向后兼容性。
+**已迁移的Dynamics页面 (7个):**
+1. ✅ dynamics_topic_rcmd (话题推荐)
+2. ✅ dynamics_topic (话题详情 - 多状态+分页)
+3. ✅ dynamics_create_reserve (创建直播预约)
+4. ✅ popular_series (每周必看 - 多数据源)
+5. ✅ dynamics_mention (提及用户 - DebounceStreamState + 多选)
+6. ✅ dynamics_select_topic (话题选择 - DebounceStreamState + 分页)
+7. ✅ dynamics_create_vote (创建投票 - 表单页面，支持文字/图片投票)
 
-**剩余Dynamics页面依赖分析:**
-- `dynamics_detail` - 使用 CommonDynController ✅ 现已可访问
-- `dynamics_tab` - 依赖 DynamicsController + DynMixin
-- `dynamics_mention` - 使用 CommonListController ✅ 现已可访问
-- `dynamics_select_topic` - 使用 DebounceStreamState ✅ 现已可访问
-- `dynamics_repost` - 使用 CommonRichTextPubPage ✅ 现已可访问
-- `dynamics_create_vote` - 独立但复杂的表单页面
-- `dynamics_create` - 使用 CommonRichTextPubPage ✅ 现已可访问
-
-**公共基础设施迁移完成 (2024-02-24):**
-- ✅ `lib/pages/common/publish/common_publish_page.dart` → `lib/common/widgets/publish/`
-- ✅ `lib/pages/common/publish/common_rich_text_pub_page.dart` → `lib/common/widgets/publish/`
-- ✅ `lib/pages/search/controller.dart` (DebounceStreamState) → `lib/utils/mixins/debounce_stream_mixin.dart`
-
-**Phase 3 进展 - dynamics_mention、dynamics_select_topic、dynamics_create_vote 迁移完成 (2024-02-24):**
-- ✅ `dynamics_mention` - 已迁移到 Clean Architecture
-  - 使用 `DebounceStreamState` 从 `lib/utils/mixins/`
-  - 完整的 Clean Architecture 结构 (domain, data, presentation)
-  - 旧的 `lib/pages/dynamics_mention/` 现在重新导出新的实现
-- ✅ `dynamics_select_topic` - 已迁移到 Clean Architecture
-  - 使用 `DebounceStreamState` 从 `lib/utils/mixins/`
-  - 支持分页加载话题搜索结果
-  - 完整的 Clean Architecture 结构 (domain, data, presentation)
-  - 旧的 `lib/pages/dynamics_select_topic/` 现在重新导出新的实现
-- ✅ `dynamics_create_vote` - 已迁移到 Clean Architecture
-  - 独立但复杂的表单页面
-  - 支持文字投票和图片投票
-  - 完整的 Clean Architecture 结构 (domain, data, presentation)
-  - 旧的 `lib/pages/dynamics_create_vote/` 现在重新导出新的实现
-
-**待完成:**
+**待迁移的Dynamics页面 (4个):**
+- `dynamics_detail` - 待迁移 (使用 CommonDynController)
 - `dynamics_repost` - 待迁移 (使用 CommonRichTextPubPage)
 - `dynamics_create` - 待迁移 (使用 CommonRichTextPubPage)
-- `dynamics_detail` - 待迁移 (使用 CommonDynController)
 - `dynamics_tab` - 待迁移 (需要 DynMixin 提取)
-- `DynMixin` 从 dynamics 页面提取为可复用的 mixin
+- 其他 dynamics 相关页面
 
 ### Phase 4: Member相关页面
 
@@ -156,8 +132,24 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 ### Phase 2: 中等复杂度 (1个)
 - pgc (多数据源页面)
 
-### Phase 3: Dynamics相关页面 (8个)
-- dynamics_topic_rcmd (话题推荐)
+### Phase 3: Dynamics相关页面 (7个)
+
+**Commit:** `28cbdb962` (2024-02-24)
+
+#### Common Infrastructure Migration
+迁移了公共控制器和发布组件到核心位置:
+- **lib/core/controllers/**
+  - `common_controller.dart` - 滚动/刷新基础控制器
+  - `common_list_controller.dart` - 分页支持
+  - `reply_controller.dart` - 评论/回复功能 (90+ 行，包含排序、置顶、反诈骗等)
+  - `common_dyn_controller.dart` - 动态评论支持
+- **lib/common/widgets/publish/**
+  - `common_publish_page.dart` - 发布页面基类，处理键盘/面板管理
+  - `common_rich_text_pub_page.dart` - 富文本编辑器，支持图片上传、@提及、表情
+- **lib/utils/mixins/**
+  - `debounce_stream_mixin.dart` - 防抖流处理混入类
+
+#### Dynamics Pages
 - dynamics_topic (话题详情 - 包含多个状态和分页)
 - dynamics_create_reserve (创建直播预约 - 表单页面)
 - popular_series (每周必看 - 多数据源页面)
@@ -166,6 +158,30 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 - dynamics_create_vote (创建投票 - 表单页面，支持文字/图片投票)
 
 **总计: 19个页面已成功迁移, 7个目录已删除, 0个编译错误**
+
+## Git 提交历史
+
+### Commit 1: Initial migration (16 pages)
+- **Commit:** `f3fc26ef8` - refactor: migrate dynamics feature to clean architecture
+- Migrated dynamics feature base pages
+
+### Commit 2: First batch (16 pages total)
+- **Commit:** `aeea8d43f` - refactor: migrate 16 pages to clean architecture with Riverpod
+- Dynamics: dynamics_topic_rcmd, dynamics_topic, dynamics_create_reserve
+- Popular: popular_series
+- Simple pages: article_list, coin_log, emote, exp_log, pgc_index, pgc_review
+- UI pages: contact, dlna, share, webview
+
+### Commit 3: Common infrastructure + 3 Dynamics pages (2024-02-24)
+- **Commit:** `28cbdb962` - refactor: migrate 3 more Dynamics pages and common infrastructure
+- **Common Infrastructure:**
+  - lib/core/controllers/ (CommonController, CommonListController, ReplyController, CommonDynController)
+  - lib/common/widgets/publish/ (CommonPublishPage, CommonRichTextPubPage)
+  - lib/utils/mixins/ (DebounceStreamState)
+- **Dynamics Pages:**
+  - dynamics_mention (用户提及面板)
+  - dynamics_select_topic (话题选择)
+  - dynamics_create_vote (创建投票)
 
 ## 清理进度
 
