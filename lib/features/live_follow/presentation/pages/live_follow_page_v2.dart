@@ -1,0 +1,94 @@
+import 'package:PiliPlus/common/skeleton/video_card_v.dart';
+import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/live_follow/presentation/providers/live_follow_list_provider.dart';
+import 'package:PiliPlus/features/live_follow/presentation/widgets/live_item_follow.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/live/live_follow/item.dart';
+import 'package:PiliPlus/utils/grid.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class LiveFollowPage extends ConsumerStatefulWidget {
+  const LiveFollowPage({super.key});
+
+  @override
+  ConsumerState<LiveFollowPage> createState() => _LiveFollowPageState();
+}
+
+class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
+  @override
+  Widget build(BuildContext context) {
+    final controller = ref.watch(liveFollowListControllerProvider);
+    final listState = controller.state.listState;
+    final padding = MediaQuery.viewPaddingOf(context);
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          controller.state.count != null
+              ? '${controller.state.count}人正在直播'
+              : '关注直播',
+        ),
+      ),
+      body: refreshIndicator(
+        onRefresh: controller.onRefresh,
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.only(
+                left: StyleString.safeSpace + padding.left,
+                right: StyleString.safeSpace + padding.right,
+                bottom: padding.bottom + 100,
+              ),
+              sliver: _buildBody(listState, controller),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
+    mainAxisSpacing: StyleString.cardSpace,
+    crossAxisSpacing: StyleString.cardSpace,
+    maxCrossAxisExtent: Grid.smallCardWidth,
+    childAspectRatio: StyleString.aspectRatio,
+    mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
+  );
+
+  Widget _buildBody(
+    LoadingState listState,
+    dynamic controller,
+  ) {
+    return switch (listState) {
+      Loading() => SliverGrid.builder(
+          gridDelegate: gridDelegate,
+          itemBuilder: (context, index) => const VideoCardVSkeleton(),
+          itemCount: 10,
+        ),
+      Success(:final response) =>
+        response != null && response.isNotEmpty
+            ? SliverGrid.builder(
+                gridDelegate: gridDelegate,
+                itemBuilder: (context, index) {
+                  if (index == response.length - 1) {
+                    controller.onLoadMore();
+                  }
+                  return LiveCardVFollow(
+                    liveItem: response[index],
+                  );
+                },
+                itemCount: response.length,
+              )
+            : HttpError(onReload: controller.onReload),
+      Error(:final errMsg) => HttpError(
+          errMsg: errMsg,
+          onReload: controller.onReload,
+        ),
+    };
+  }
+}
