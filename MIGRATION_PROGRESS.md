@@ -496,6 +496,45 @@ return HttpError(onReload: () => _controller.onReload());
 3. 监控 GetX "not found" 错误
 4. 确保所有控制器有正确的生命周期管理
 
+---
+
+## 🎯 最新修复 (2025-02-24 下午)
+
+### ✅ 动态页面数据加载修复
+
+**问题:** 动态页面首次访问时没有数据
+
+**根本原因:**
+- `DynamicsTabPage` 在 `initState` 中通过 `Get.putOrFind` 创建控制器
+- `DynamicsTabController.onInit()` 会调用 `queryData()` 加载数据
+- 但 `Get.putOrFind` 不总是触发 `onInit` 如果控制器已注册
+
+**解决方案:**
+在 `DynamicsTabPage.initState()` 中添加注册检查:
+```dart
+@override
+void initState() {
+  super.initState();
+  final bool wasRegistered = Get.isRegistered<DynamicsTabController>(
+    tag: widget.dynamicsType.name,
+  );
+  controller = Get.putOrFind(
+    () => DynamicsTabController(dynamicsType: widget.dynamicsType)
+      ..mid = dynamicsController.mid.value,
+    tag: widget.dynamicsType.name,
+  );
+  // 如果是新创建的控制器，触发初始数据加载
+  if (!wasRegistered) {
+    controller.queryData();
+  }
+  // ... 其他初始化代码
+}
+```
+
+**影响:** 现在动态页面会在首次访问时正确加载数据
+
+**提交:** `87fa1e8c1` - fix: ensure dynamics tab loads data on first visit
+
 ## 注意事项
 
 1. **依赖关系**: 某些页面依赖于 `common/` 目录下的基类,需要先迁移这些基类
