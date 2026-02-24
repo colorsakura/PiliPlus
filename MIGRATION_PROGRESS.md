@@ -1728,3 +1728,124 @@ class SearchResultController extends Notifier<SearchResultState> {
 3. ⏳ 迁移公共基础控制器本身
 
 ---
+---
+
+## ✅ 保守清理完成 (2025-02-25)
+
+### 📊 第三轮清理结果
+
+**删除的文件:**
+- 72 个文件删除
+- 3,122 行代码删除
+
+**删除的简单页面目录 (29个):**
+1. `coin_log` - 投币日志
+2. `dynamics_create_vote` - 创建投票
+3. `dynamics_select_topic` - 选择话题
+4. `exp_log` - 经验日志
+5. `fav_create` - 创建收藏
+6. `fav_folder_sort` - 收藏夹排序
+7. `fav_panel` - 收藏面板
+8. `fav_search` - 收藏搜索
+9. `follow_search` - 关注搜索
+10. `group_panel` - 分组面板
+11. `history_search` - 历史搜索
+12. `live_area` - 直播区域
+13. `log_table` - 日志表格
+14. `match_info` - 匹配信息
+15. `popular_precious` - 热门珍品
+16. `popular_series` - 热门系列
+17. `search_trending` - 搜索趋势
+18. `space_setting` - 空间设置
+19. `member_home` - 会员主页
+20. `member_profile` - 会员资料
+21. `member_like_arc` - 会员点赞文章
+22. `member_contribute` - 会员贡献
+23. `member_coin_arc` - 会员投币文章
+24. `member_shop` - 会员商店
+25. `member_upower_rank` - 会员大会员排名
+26. `member_comic` - 会员漫画
+27. `member_cheese` - 会员课程
+28. `member_audio` - 会员音频
+29. `member_opus` - 会员作品
+30. `member_video` - 会员视频
+31. `member_season_series` - 会员季系列
+32. `pgc` - PGC
+33. `pgc_index` - PGC索引
+
+**保留的目录 (47个) - 因 features/ 仍在引用:**
+- 复杂页面: article, audio, dynamics, download, video, danmaku, search, search_panel 等
+- 公共基础设施: common
+- 登录相关: login
+- 消息相关: msg_feed_top
+- 设置: setting
+- 收藏: fav, fav_detail
+- 关注: follow, follow_type
+- 直播: live_room, live_search, live_area_detail
+- 会员: member, member_article, member_favorite, member_pgc, member_search
+- 订阅: subscription, subscription_detail
+- 私信: whisper, whisper_detail, whisper_secondary, whisper_settings
+- 其他: emote, episode_panel, login_log, main_reply, mine, music, pgc_review, save_panel, share
+
+### 💡 关键发现
+
+这次清理发现了一个重要问题：**features/ 中的页面仍在大量使用 lib/pages/ 中的控制器**。
+
+**实际使用情况统计:**
+- `video`: 8 外部引用
+- `live_room`: 4 外部引用
+- `follow_type`: 4 外部引用
+- `fav_detail`: 3 外部引用
+- `mine`: 5 外部引用
+- `dynamics`: 3 外部引用
+- `dynamics_tab`: 3 外部引用
+- `follow`: 3 外部引用
+
+**这意味着:**
+1. 这些"已迁移"的功能实际上还没有完全迁移
+2. lib/pages/ 中的代码不仅仅是重新导出，而是包含实际的业务逻辑
+3. 需要先完成 features/ 对 lib/pages/ 的完全替代，才能删除旧代码
+
+### 📋 下一步行动
+
+**阶段1: 理解当前架构**
+- ✅ 识别所有 GetX 控制器的依赖关系
+- ✅ 确定哪些控制器可以安全迁移
+- ⏳ 分析复杂控制器的迁移策略
+
+**阶段2: 控制器迁移 (优先级顺序)**
+
+**简单控制器 (1-2 引用):**
+1. `login_log` - 已有 Riverpod 版本，只需更新导入
+2. `main_reply` - 简单列表页面
+3. `emote` - 表情面板
+4. `search` - 搜索功能 (中等复杂度)
+
+**中等复杂度控制器 (3-5 引用):**
+5. `dynamics_tab` - 动态标签页
+6. `dynamics` - 动态主控制器
+7. `fav_detail` - 收藏详情
+8. `follow` - 关注功能
+9. `mine` - 我的页面
+
+**复杂控制器 (高引用数):**
+10. `video` - 视频播放器 (8 引用) - 最复杂
+11. `live_room` - 直播间 (4 引用)
+12. `follow_type` - 关注类型 (4 引用)
+
+**阶段3: 清理与验证**
+- 更新所有导入路径
+- 删除 lib/pages/ 中的旧控制器
+- 验证编译和运行
+
+### 🎯 迁移策略
+
+对于每个控制器：
+1. **分析依赖** - 确定控制器继承的基类和使用的 Mixins
+2. **创建 Riverpod 版本** - 使用 ChangeNotifier 或 Notifier
+3. **更新 features/ 导入** - 指向新的控制器位置
+4. **测试编译** - 确保无错误
+5. **删除旧文件** - 从 lib/pages/ 删除
+
+**注意:** 这是一个渐进的过程，应该一次迁移一个控制器，确保每一步都能编译通过。
+
