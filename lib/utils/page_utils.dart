@@ -13,7 +13,7 @@ import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/episode.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart';
 import 'package:PiliPlus/pages/common/publish/publish_route.dart';
-import 'package:PiliPlus/pages/contact/view.dart';
+import 'package:PiliPlus/features/contact/contact.dart';
 import 'package:PiliPlus/pages/fav_panel/view.dart';
 import 'package:PiliPlus/pages/share/view.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';

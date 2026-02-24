@@ -19,7 +19,7 @@ import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
 import 'package:PiliPlus/models/dynamics/result.dart' show PicModel;
 import 'package:PiliPlus/models/dynamics/vote_model.dart';
 import 'package:PiliPlus/pages/common/publish/common_rich_text_pub_page.dart';
-import 'package:PiliPlus/pages/dynamics_create_reserve/view.dart';
+import 'package:PiliPlus/features/dynamics_create_reserve/dynamics_create_reserve.dart';
 import 'package:PiliPlus/pages/dynamics_create_vote/view.dart';
 import 'package:PiliPlus/pages/dynamics_mention/controller.dart';
 import 'package:PiliPlus/pages/dynamics_select_topic/controller.dart';
@@ -886,7 +886,7 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
     controller.keepChatPanel();
     final ReserveInfoData? reserveInfo = await Navigator.of(context).push(
       GetPageRoute(
-        page: () => CreateReservePage(sid: _reserveCard.value?.id),
+        page: () => DynCreateReservePage(sid: _reserveCard.value?.id),
       ),
     );
     if (reserveInfo != null) {

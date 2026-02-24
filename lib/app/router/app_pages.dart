@@ -1,4 +1,5 @@
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
+import 'package:PiliPlus/features/article_list/article_list.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/blacklist/presentation/pages/blacklist_page.dart';
 import 'package:PiliPlus/features/history/presentation/pages/history_page.dart';
@@ -7,17 +8,16 @@ import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
 import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
 import 'package:PiliPlus/pages/article/view.dart';
-import 'package:PiliPlus/pages/article_list/view.dart';
 import 'package:PiliPlus/pages/audio/view.dart';
 import 'package:PiliPlus/pages/danmaku_block/view.dart';
-import 'package:PiliPlus/pages/dlna/view.dart';
+import 'package:PiliPlus/features/dlna/dlna.dart';
 import 'package:PiliPlus/pages/download/view.dart';
 import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_page.dart'
     as dynamics;
 import 'package:PiliPlus/pages/dynamics_create_vote/view.dart';
 import 'package:PiliPlus/pages/dynamics_detail/view.dart';
-import 'package:PiliPlus/pages/dynamics_topic/view.dart';
-import 'package:PiliPlus/pages/dynamics_topic_rcmd/view.dart';
+import 'package:PiliPlus/features/dynamics_topic/dynamics_topic.dart';
+import 'package:PiliPlus/features/dynamics_topic_rcmd/dynamics_topic_rcmd.dart';
 import 'package:PiliPlus/pages/fan/view.dart';
 import 'package:PiliPlus/pages/fav/view.dart';
 import 'package:PiliPlus/pages/fav_create/view.dart';
@@ -45,7 +45,7 @@ import 'package:PiliPlus/pages/msg_feed_top/reply_me/view.dart';
 import 'package:PiliPlus/pages/msg_feed_top/sys_msg/view.dart';
 import 'package:PiliPlus/pages/music/view.dart';
 import 'package:PiliPlus/pages/popular_precious/view.dart';
-import 'package:PiliPlus/pages/popular_series/view.dart';
+import 'package:PiliPlus/features/popular_series/popular_series.dart';
 import 'package:PiliPlus/pages/search/view.dart';
 import 'package:PiliPlus/pages/search_result/view.dart';
 import 'package:PiliPlus/pages/search_trending/view.dart';
@@ -67,7 +67,7 @@ import 'package:PiliPlus/pages/sponsor_block/view.dart';
 import 'package:PiliPlus/pages/subscription/view.dart';
 import 'package:PiliPlus/pages/subscription_detail/view.dart';
 import 'package:PiliPlus/pages/video/view.dart';
-import 'package:PiliPlus/pages/webview/view.dart';
+import 'package:PiliPlus/features/webview/webview.dart';
 import 'package:PiliPlus/pages/whisper/view.dart';
 import 'package:PiliPlus/pages/whisper_detail/view.dart';
 import 'package:get/get.dart';
@@ -188,6 +188,6 @@ class Routes {
     GetPage(name: '/followed', page: () => const FollowedPage()),
     GetPage(name: '/sameFollowing', page: () => const FollowSamePage()),
     GetPage(name: '/download', page: () => const DownloadPage()),
-    GetPage(name: '/dlna', page: () => const DLNAPage()),
+    GetPage(name: '/dlna', page: () => const DlnaPage()),
   ];
 }

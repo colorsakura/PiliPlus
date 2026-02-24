@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/video/video_note_list/list.dart';
 import 'package:PiliPlus/pages/common/slide/common_slide_page.dart';
 import 'package:PiliPlus/pages/video/note/controller.dart';
-import 'package:PiliPlus/pages/webview/view.dart';
+import 'package:PiliPlus/features/webview/webview.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';

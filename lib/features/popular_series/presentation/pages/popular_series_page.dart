@@ -1,0 +1,92 @@
+import 'dart:math';
+
+import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
+import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
+import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/features/popular_series/presentation/providers/popular_series_providers.dart';
+import 'package:PiliPlus/features/popular_series/presentation/providers/popular_series_controller.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/common/video/source_type.dart';
+import 'package:PiliPlus/models/model_hot_video_item.dart';
+import 'package:PiliPlus/utils/grid.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+/// Popular series page (每周必看)
+class PopularSeriesPage extends ConsumerStatefulWidget {
+  const PopularSeriesPage({super.key});
+
+  @override
+  ConsumerState<PopularSeriesPage> createState() => _PopularSeriesPageState();
+}
+
+class _PopularSeriesPageState extends ConsumerState<PopularSeriesPage>
+    with GridMixin {
+  @override
+  Widget build(BuildContext context) {
+    final controller = ref.watch(popularSeriesControllerProvider);
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: controller.state.config?.name != null
+            ? Text(controller.state.config!.name!)
+            : const Text('每周必看'),
+      ),
+      body: refreshIndicator(
+        onRefresh: () => controller.onRefresh(),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            ViewSliverSafeArea(
+              sliver: _buildBody(controller.state.videoListState, controller),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(
+    LoadingState<List<HotVideoItemModel>?> value,
+    PopularSeriesController controller,
+  ) {
+    return switch (value) {
+      Loading() => gridSkeleton,
+      Success(:final response) when response != null && response.isNotEmpty =>
+        SliverGrid.builder(
+          gridDelegate: gridDelegate,
+          itemCount: response.length,
+          itemBuilder: (context, index) {
+            final item = response[index];
+            return VideoCardH(
+              videoItem: item,
+              onTap: () {
+                final config = controller.state.config;
+                PageUtils.toVideoPage(
+                  bvid: item.bvid,
+                  cid: item.cid!,
+                  extraArguments: {
+                    'sourceType': SourceType.playlist,
+                    'favTitle': '每周必看 ${config?.label ?? ''}',
+                    'mediaId': config?.mediaId,
+                    'desc': true,
+                    'oid': item.aid,
+                    'isContinuePlaying': index != 0,
+                  },
+                );
+              },
+            );
+          },
+        ),
+      Success() => HttpError(onReload: controller.onReload),
+      Error(:final errMsg) => HttpError(
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
+    };
+  }
+}
