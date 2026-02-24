@@ -8,7 +8,7 @@ import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/pages/common/multi_select/base.dart'
     show BaseMultiSelectMixin;
 import 'package:PiliPlus/pages/download/controller.dart';
-import 'package:PiliPlus/pages/download/detail/widgets/item.dart';
+import 'package:PiliPlus/features/download/presentation/pages/detail/item.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';

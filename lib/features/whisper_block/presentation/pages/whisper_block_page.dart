@@ -3,7 +3,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show KeywordBlockingItem;
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/search/widgets/search_text.dart';
+import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/features/whisper_block/domain/entities/whisper_block_state.dart';
 import "package:PiliPlus/features/whisper_block/domain/entities/whisper_block_entity.dart";
 import 'package:PiliPlus/features/whisper_block/presentation/providers/whisper_block_controller.dart';

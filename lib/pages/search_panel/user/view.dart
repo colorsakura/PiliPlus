@@ -2,7 +2,7 @@ import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/pages/search_panel/user/controller.dart';
-import 'package:PiliPlus/pages/search_panel/user/widgets/item.dart';
+import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
 import 'package:PiliPlus/pages/search_panel/view.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'

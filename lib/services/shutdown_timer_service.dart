@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/models/common/enum_with_label.dart';
-import 'package:PiliPlus/pages/video/introduction/ugc/widgets/menu_row.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/utils/page_utils.dart';

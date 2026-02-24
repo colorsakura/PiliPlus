@@ -4,7 +4,7 @@ import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/pages/subscription/controller.dart';
-import 'package:PiliPlus/pages/subscription/widgets/item.dart';
+import 'package:PiliPlus/features/subscription/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/home_live/presentation/widgets/live_item_card.
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/live/live_feed_index/card_data_list_item.dart';
 import 'package:PiliPlus/pages/live_area_detail/child/controller.dart';
-import 'package:PiliPlus/pages/search/widgets/search_text.dart';
+import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

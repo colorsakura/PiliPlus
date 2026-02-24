@@ -14,7 +14,7 @@ import 'package:PiliPlus/models/video/video_detail/page.dart';
 import 'package:PiliPlus/pages/download/view.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';
-import 'package:PiliPlus/pages/video/introduction/ugc/widgets/page.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/page.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';

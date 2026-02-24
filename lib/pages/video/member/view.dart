@@ -12,7 +12,7 @@ import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/models/video/video_detail/episode.dart';
 import 'package:PiliPlus/pages/fan/view.dart';
 import 'package:PiliPlus/pages/follow/view.dart';
-import 'package:PiliPlus/pages/member_video/widgets/video_card_h_member_video.dart';
+import 'package:PiliPlus/features/member_video/presentation/widgets/video_card_h_member_video.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';
 import 'package:PiliPlus/pages/video/member/controller.dart';

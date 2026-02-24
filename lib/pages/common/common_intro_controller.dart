@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/video/video_detail/data.dart';
 import 'package:PiliPlus/models/video/video_detail/stat_detail.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
-import 'package:PiliPlus/pages/video/introduction/ugc/widgets/triple_mixin.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/triple_mixin.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/global_data.dart';

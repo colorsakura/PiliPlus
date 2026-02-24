@@ -2,7 +2,7 @@ import 'package:PiliPlus/common/skeleton/media_bangumi.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/pages/search_panel/controller.dart';
-import 'package:PiliPlus/pages/search_panel/pgc/widgets/item.dart';
+import 'package:PiliPlus/features/search_panel/presentation/widgets/pgc/item.dart';
 import 'package:PiliPlus/pages/search_panel/view.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'

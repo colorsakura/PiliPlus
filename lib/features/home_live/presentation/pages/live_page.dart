@@ -11,7 +11,7 @@ import 'package:PiliPlus/features/home_live/presentation/widgets/live_item_card.
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/features/live_area/live_area.dart';
 import 'package:PiliPlus/features/live_follow/live_follow.dart';
-import 'package:PiliPlus/pages/search/widgets/search_text.dart';
+import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/page_utils.dart';

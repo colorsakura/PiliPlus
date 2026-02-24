@@ -4,7 +4,7 @@ import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/whisper_block/whisper_block.dart';
 import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_controller.dart';
-import 'package:PiliPlus/pages/whisper_settings/widgets/item.dart';
+import 'package:PiliPlus/features/whisper_settings/presentation/widgets/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';

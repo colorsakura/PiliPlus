@@ -3,7 +3,7 @@ import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/whisper/widgets/item.dart';
+import 'package:PiliPlus/features/whisper/presentation/widgets/item.dart';
 import 'package:PiliPlus/features/whisper_secondary/presentation/pages/whisper_secondary_controller.dart';
 import 'package:PiliPlus/utils/extension/three_dot_ext.dart';
 import 'package:flutter/material.dart';

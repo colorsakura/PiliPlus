@@ -23,7 +23,7 @@ import 'package:PiliPlus/pages/live_room/superchat/superchat_panel.dart';
 import 'package:PiliPlus/features/live_room/presentation/widgets/bottom_control.dart';
 import 'package:PiliPlus/features/live_room/presentation/widgets/chat_panel.dart';
 import 'package:PiliPlus/features/live_room/presentation/widgets/header_control.dart';
-import 'package:PiliPlus/pages/video/widgets/player_focus.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/player_focus.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/danmaku_options.dart';

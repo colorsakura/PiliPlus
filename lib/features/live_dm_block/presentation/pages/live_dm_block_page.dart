@@ -6,7 +6,7 @@ import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/models/common/live/live_dm_silent_type.dart';
 import 'package:PiliPlus/models/live/live_dm_block/shield_user_list.dart';
 import 'package:PiliPlus/features/live_dm_block/presentation/pages/live_dm_block_controller.dart';
-import 'package:PiliPlus/pages/search/widgets/search_text.dart';
+import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';

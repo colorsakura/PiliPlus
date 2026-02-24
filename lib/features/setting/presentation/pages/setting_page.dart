@@ -11,7 +11,7 @@ import 'package:PiliPlus/pages/setting/privacy_setting.dart';
 import 'package:PiliPlus/pages/setting/recommend_setting.dart';
 import 'package:PiliPlus/pages/setting/style_setting.dart';
 import 'package:PiliPlus/pages/setting/video_setting.dart';
-import 'package:PiliPlus/pages/setting/widgets/multi_select_dialog.dart';
+import 'package:PiliPlus/features/setting/presentation/widgets/multi_select_dialog.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';

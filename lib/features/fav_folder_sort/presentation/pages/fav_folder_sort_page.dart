@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_video_controller.dart';
-import 'package:PiliPlus/pages/fav/video/widgets/item.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/video/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';

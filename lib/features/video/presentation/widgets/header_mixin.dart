@@ -1,5 +1,5 @@
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/pages/video/introduction/ugc/widgets/menu_row.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/danmaku_options.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';

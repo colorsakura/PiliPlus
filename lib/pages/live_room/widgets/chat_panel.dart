@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/live/live_danmaku/danmaku_msg.dart';
 import 'package:PiliPlus/models/live/live_superchat/item.dart';
 import 'package:PiliPlus/pages/live_room/controller.dart';
 import 'package:PiliPlus/pages/live_room/superchat/superchat_card.dart';
-import 'package:PiliPlus/pages/video/widgets/header_control.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
