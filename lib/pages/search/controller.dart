@@ -1,3 +1,5 @@
+// Note: DebounceStreamMixin and DebounceStreamState are also available from
+// package:PiliPlus/utils/mixins/debounce_stream_mixin.dart for reuse
 import 'dart:async';
 
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';

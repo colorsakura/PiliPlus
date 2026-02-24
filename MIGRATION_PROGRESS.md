@@ -88,27 +88,63 @@ Future<void> queryMainList({bool isRefresh = true}) async {
 
 ## 下一步计划
 
-Phase 3: 迁移Dynamics相关页面
-- ✅ dynamics_topic_rcmd (已完成)
-- ✅ dynamics_topic (已完成)
-- ✅ dynamics_create_reserve (已完成)
-- dynamics_detail (待迁移)
-- dynamics_create_vote (待迁移)
-- dynamics_create (待迁移)
-- dynamics_mention (待迁移)
-- dynamics_repost (待迁移)
-- dynamics_select_topic (待迁移)
-- dynamics_tab (待迁移)
+### Phase 3: Dynamics相关页面 - 公共控制器基础设施已迁移
 
-Phase 4: 迁移Member相关页面
-- member, member_profile
-- member_dynamics, member_search
+✅ **公共控制器迁移完成 (2024-02-24):**
+- `lib/pages/common/common_controller.dart` → `lib/core/controllers/`
+- `lib/pages/common/common_list_controller.dart` → `lib/core/controllers/`
+- `lib/pages/common/reply_controller.dart` → `lib/core/controllers/`
+- `lib/pages/common/dyn/common_dyn_controller.dart` → `lib/core/controllers/`
 
-Phase 5: 迁移复杂页面
-- audio (音频播放器)
-- article (文章详情)
-- video (视频播放器)
-- setting (设置页面)
+旧文件现在作为重新导出点，以保持向后兼容性。
+
+**剩余Dynamics页面依赖分析:**
+- `dynamics_detail` - 使用 CommonDynController ✅ 现已可访问
+- `dynamics_tab` - 依赖 DynamicsController + DynMixin
+- `dynamics_mention` - 使用 CommonListController ✅ 现已可访问
+- `dynamics_select_topic` - 使用 DebounceStreamState ✅ 现已可访问
+- `dynamics_repost` - 使用 CommonRichTextPubPage ✅ 现已可访问
+- `dynamics_create_vote` - 独立但复杂的表单页面
+- `dynamics_create` - 使用 CommonRichTextPubPage ✅ 现已可访问
+
+**公共基础设施迁移完成 (2024-02-24):**
+- ✅ `lib/pages/common/publish/common_publish_page.dart` → `lib/common/widgets/publish/`
+- ✅ `lib/pages/common/publish/common_rich_text_pub_page.dart` → `lib/common/widgets/publish/`
+- ✅ `lib/pages/search/controller.dart` (DebounceStreamState) → `lib/utils/mixins/debounce_stream_mixin.dart`
+
+**Phase 3 进展 - dynamics_mention、dynamics_select_topic、dynamics_create_vote 迁移完成 (2024-02-24):**
+- ✅ `dynamics_mention` - 已迁移到 Clean Architecture
+  - 使用 `DebounceStreamState` 从 `lib/utils/mixins/`
+  - 完整的 Clean Architecture 结构 (domain, data, presentation)
+  - 旧的 `lib/pages/dynamics_mention/` 现在重新导出新的实现
+- ✅ `dynamics_select_topic` - 已迁移到 Clean Architecture
+  - 使用 `DebounceStreamState` 从 `lib/utils/mixins/`
+  - 支持分页加载话题搜索结果
+  - 完整的 Clean Architecture 结构 (domain, data, presentation)
+  - 旧的 `lib/pages/dynamics_select_topic/` 现在重新导出新的实现
+- ✅ `dynamics_create_vote` - 已迁移到 Clean Architecture
+  - 独立但复杂的表单页面
+  - 支持文字投票和图片投票
+  - 完整的 Clean Architecture 结构 (domain, data, presentation)
+  - 旧的 `lib/pages/dynamics_create_vote/` 现在重新导出新的实现
+
+**待完成:**
+- `dynamics_repost` - 待迁移 (使用 CommonRichTextPubPage)
+- `dynamics_create` - 待迁移 (使用 CommonRichTextPubPage)
+- `dynamics_detail` - 待迁移 (使用 CommonDynController)
+- `dynamics_tab` - 待迁移 (需要 DynMixin 提取)
+- `DynMixin` 从 dynamics 页面提取为可复用的 mixin
+
+### Phase 4: Member相关页面
+
+用户相关页面大多数依赖 member controller 和公共基础设施。
+
+### Phase 5: 复杂页面
+
+- `audio` - 音频播放器，依赖 TripleMixin, FavMixin, BlockConfigMixin
+- `video` - 视频播放器，最复杂的页面
+- `article` - 文章详情，依赖 HTML 渲染
+- `setting` - 设置页面，包含大量子页面
 
 ## 已完成迁移总结
 
@@ -120,11 +156,16 @@ Phase 5: 迁移复杂页面
 ### Phase 2: 中等复杂度 (1个)
 - pgc (多数据源页面)
 
-### Phase 3: Dynamics相关页面 (4个)
+### Phase 3: Dynamics相关页面 (8个)
 - dynamics_topic_rcmd (话题推荐)
 - dynamics_topic (话题详情 - 包含多个状态和分页)
 - dynamics_create_reserve (创建直播预约 - 表单页面)
 - popular_series (每周必看 - 多数据源页面)
+- dynamics_mention (提及用户 - 使用 DebounceStreamState)
+- dynamics_select_topic (话题选择 - 使用 DebounceStreamState + 分页)
+- dynamics_create_vote (创建投票 - 表单页面，支持文字/图片投票)
+
+**总计: 19个页面已成功迁移, 7个目录已删除, 0个编译错误**
 
 ## 清理进度
 
@@ -137,9 +178,12 @@ Phase 5: 迁移复杂页面
 - ✅ dlna
 - ✅ webview
 
-### 保留但部分迁移的目录 (5个)
+### 保留但部分迁移的目录 (8个)
 - ⏳ coin_log - controller 保留用于 GetX 兼容性
 - ⏳ exp_log - controller 保留用于 GetX 兼容性
+- ⏳ dynamics_mention - 完整迁移，旧文件重新导出新实现
+- ⏳ dynamics_select_topic - 完整迁移，旧文件重新导出新实现
+- ⏳ dynamics_create_vote - 完整迁移，旧文件重新导出新实现
 - ⏳ pgc - 仍被 home_tab_type.dart 引用
 - ⏳ pgc_index - widgets 仍被使用
 - ⏳ pgc_review - widgets 仍被使用
