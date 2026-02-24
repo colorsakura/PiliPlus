@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/live_room/view.dart';
+export 'presentation/pages/live_room_page.dart' show LiveRoomPage;

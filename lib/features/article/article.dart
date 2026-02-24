@@ -1,2 +1,1 @@
-// Article feature exports
-export 'package:PiliPlus/pages/article/view.dart';
+export 'presentation/pages/article_page.dart' show ArticlePage;

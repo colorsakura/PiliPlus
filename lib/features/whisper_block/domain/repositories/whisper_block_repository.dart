@@ -1,4 +1,5 @@
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
+import 'package:PiliPlus/http/loading_state.dart';
 
 /// Whisper block repository interface
 abstract interface class WhisperBlockRepository {

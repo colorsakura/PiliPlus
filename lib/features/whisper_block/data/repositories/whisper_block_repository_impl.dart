@@ -1,3 +1,4 @@
+import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/whisper_block/domain/repositories/whisper_block_repository.dart';
 import 'package:PiliPlus/features/whisper_block/data/datasources/whisper_block_remote_datasource.dart';

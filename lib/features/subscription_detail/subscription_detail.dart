@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/subscription_detail/view.dart';
+export 'presentation/pages/subscription_detail_page.dart' show SubDetailPage;

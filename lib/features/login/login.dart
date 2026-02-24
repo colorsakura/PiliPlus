@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/login/view.dart';
+export 'presentation/pages/login_page.dart' show LoginPage;

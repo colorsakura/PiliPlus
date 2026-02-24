@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/whisper/view.dart';
+export 'presentation/pages/whisper_page.dart' show WhisperPage;

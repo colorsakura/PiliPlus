@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/mine/view.dart';
+export 'presentation/pages/mine_page.dart' show MinePage;

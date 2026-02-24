@@ -64,18 +64,20 @@ class WhisperBlockController extends Notifier<WhisperBlockState> {
       Success() => () {
         // Update local state
         final currentData = state.data;
-        if (currentData is Success && currentData.value != null) {
-          final entity = currentData.value!;
-          final updatedList = [...entity.items, KeywordBlockingItem(keyword: keyword)];
-          final updatedEntity = WhisperBlockEntity(
-            items: updatedList,
-            count: updatedList.length,
-            listLimit: entity.listLimit,
-            charLimit: entity.charLimit,
-          );
-          state = state.copyWith(
-            data: Success(updatedEntity),
-          );
+        if (currentData is Success<WhisperBlockEntity>) {
+          final entity = currentData.response;
+          if (entity != null) {
+            final updatedList = [...entity.items, KeywordBlockingItem(keyword: keyword)];
+            final updatedEntity = WhisperBlockEntity(
+              items: updatedList,
+              count: updatedList.length,
+              listLimit: entity.listLimit,
+              charLimit: entity.charLimit,
+            );
+            state = state.copyWith(
+              data: Success(updatedEntity),
+            );
+          }
         }
         return true;
       }(),
@@ -97,18 +99,20 @@ class WhisperBlockController extends Notifier<WhisperBlockState> {
       Success() => () {
         // Update local state
         final currentData = state.data;
-        if (currentData is Success && currentData.value != null) {
-          final entity = currentData.value!;
-          final updatedList = entity.items.where((e) => e != item).toList();
-          final updatedEntity = WhisperBlockEntity(
-            items: updatedList,
-            count: updatedList.length,
-            listLimit: entity.listLimit,
-            charLimit: entity.charLimit,
-          );
-          state = state.copyWith(
-            data: Success(updatedEntity),
-          );
+        if (currentData is Success<WhisperBlockEntity>) {
+          final entity = currentData.response;
+          if (entity != null) {
+            final updatedList = entity.items.where((e) => e != item).toList();
+            final updatedEntity = WhisperBlockEntity(
+              items: updatedList,
+              count: updatedList.length,
+              listLimit: entity.listLimit,
+              charLimit: entity.charLimit,
+            );
+            state = state.copyWith(
+              data: Success(updatedEntity),
+            );
+          }
         }
         return true;
       }(),

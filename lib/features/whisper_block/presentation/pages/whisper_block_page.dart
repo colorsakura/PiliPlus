@@ -162,9 +162,10 @@ class _WhisperBlockPageState extends ConsumerState<WhisperBlockPage> {
       builder: (context) {
         final theme = Theme.of(context);
         final controllerState = ref.watch(whisperBlockControllerProvider);
-        final charLimit = controllerState.data is Success
-            ? controllerState.data.value?.charLimit
-            : null;
+        final charLimit = switch (controllerState.data) {
+          Success(:final response) => response?.charLimit,
+          _ => null,
+        };
 
         return Padding(
           padding:

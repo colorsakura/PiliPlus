@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/video/view.dart';
+export 'presentation/pages/video_page.dart' show VideoDetailPageV;

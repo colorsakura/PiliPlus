@@ -1,1 +1,1 @@
-export 'package:PiliPlus/pages/music/view.dart';
+export 'presentation/pages/music_page.dart' show MusicDetailPage;
