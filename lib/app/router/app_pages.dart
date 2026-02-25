@@ -38,7 +38,6 @@ import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';
 import 'package:PiliPlus/features/member_profile/member_profile.dart';
 import 'package:PiliPlus/features/member_search/member_search.dart';
 import 'package:PiliPlus/features/member_upower_rank/member_upower_rank.dart';
-import 'package:PiliPlus/pages/msg_feed_top/like_detail/view.dart';
 import 'package:PiliPlus/features/msg_feed/msg_feed.dart';
 import 'package:PiliPlus/features/music/music.dart';
 import 'package:PiliPlus/features/popular_precious/popular_precious.dart';
@@ -174,7 +173,14 @@ class Routes {
     GetPage(name: '/spaceSetting', page: () => const SpaceSettingPage()),
     GetPage(name: '/dynTopicRcmd', page: () => const DynTopicRcmdPage()),
     GetPage(name: '/matchInfo', page: () => const MatchInfoPage()),
-    GetPage(name: '/msgLikeDetail', page: () => const LikeDetailPage()),
+    GetPage(
+      name: '/msgLikeDetail',
+      page: () => LikeDetailPageV2(
+        cardId: Get.parameters['cardId'] ?? '',
+        uri: Get.parameters['uri'],
+        counts: int.tryParse(Get.parameters['counts'] ?? '0') ?? 0,
+      ),
+    ),
     GetPage(name: '/liveDmBlockPage', page: () => const LiveDmBlockPageV2()),
     GetPage(name: '/createVote', page: () => const CreateVotePage()),
     GetPage(name: '/musicDetail', page: () => const MusicDetailPage()),
