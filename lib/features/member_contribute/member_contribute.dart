@@ -1,6 +1,5 @@
 // Riverpod implementation
-export 'package:PiliPlus/features/member_contribute/presentation/pages/member_contribute_page_v2.dart'
-    show MemberContributePageV2;
+export 'package:PiliPlus/features/member_contribute/presentation/pages/member_contribute_page_v2.dart';
 
 // Providers
 export 'package:PiliPlus/features/member_contribute/presentation/providers/member_contribute_providers.dart'

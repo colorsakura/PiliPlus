@@ -151,8 +151,7 @@ class _MemberContributePageV2State
         mid: widget.mid,
         title: title,
       ),
-      'article' => MemberArticle(
-        heroTag: widget.heroTag,
+      'article' => MemberArticlePage(
         mid: widget.mid,
       ),
       'opus' => MemberOpus(
@@ -160,12 +159,10 @@ class _MemberContributePageV2State
         heroTag: widget.heroTag,
         mid: widget.mid,
       ),
-      'audio' => MemberAudio(
-        heroTag: widget.heroTag,
+      'audio' => MemberAudioPage(
         mid: widget.mid,
       ),
-      'comic' => MemberComic(
-        heroTag: widget.heroTag,
+      'comic' => MemberComicPage(
         mid: widget.mid,
       ),
       'season_video' => MemberVideo(
@@ -182,7 +179,7 @@ class _MemberContributePageV2State
         seriesId: seriesId is int ? seriesId : int.tryParse(seriesId?.toString() ?? ''),
         title: title,
       ),
-      'ugcSeason' => SeasonSeriesPage(
+      'ugcSeason' => MemberSeasonSeriesPage(
         mid: widget.mid,
         heroTag: widget.heroTag,
       ),
