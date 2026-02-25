@@ -58,429 +58,115 @@ Future<void> queryData({bool isRefresh = true}) async {
     _updateState(_state.copyWith(
       listState: Success(response),
       currentPage: page + 1,
-      isEnd: response.isEmpty,
     ));
   }
 }
 ```
 
-### 3. CommonListControllerV2 基类
-
-```dart
-class MemberArticleController extends BaseListController<Article> {
-  @override
-  Future<LoadingState<List<Article>>> fetchData(int page) async {
-    return await ref.read(getArticlesUseCaseProvider)(page);
-  }
-}
-```
-
-## 📝 GetX → Riverpod 迁移对照
-
-| GetX | Riverpod |
-|------|----------|
-| `GetxController` | `ChangeNotifier` 或 `Notifier<T>` |
-| `Rx<T> value` | `T value` + `copyWith()` |
-| `obs(() => ...)` | `ref.watch(provider)` |
-| `Get.find<T>()` | `ref.read(provider)` |
-| `Get.put(T())` | Provider 自动创建 |
-| `Obx(() => ...)` | `ConsumerWidget` + `ref.watch` |
-| `onInit()` | 构造函数或 `build()` 方法 |
-
-## 🗂️ 目录结构
-
-### Clean Architecture 模板
+### 3. 清晰架构结构
 
 ```
-lib/features/{feature_name}/
-├── domain/
-│   ├── entities/       # 实体类
-│   ├── repositories/   # 仓库接口
-│   └── usecases/      # 用例
-├── data/
-│   ├── datasources/    # 数据源
-│   └── repositories/    # 仓库实现
-├── presentation/
-│   ├── providers/      # Controller + Provider
-│   ├── pages/          # 页面
-│   └── widgets/        # 组件
-└── {feature}.dart       # 导出文件
+lib/features/{feature}/
+├── domain/           # 领域层
+│   ├── entities/     # 实体
+│   └── usecases/     # 用例
+├── data/             # 数据层
+│   ├── datasources/  # 数据源
+│   ├── models/       # 数据模型
+│   └── repositories/ # 仓储实现
+├── presentation/     # 表现层
+│   ├── controllers/  # Riverpod Controllers
+│   ├── notifiers/    # Riverpod Notifiers
+│   ├── providers/    # Riverpod Providers
+│   ├── pages/        # 页面
+│   └── widgets/      # 组件
+└── {feature}.dart    # 导出文件
 ```
 
-## 🔄 本次会话迁移 (2025-02-25 续8)
+## 🔄 最近会话迁移 (2025-02-25)
 
-### 本次迁移功能 (1个)
+### 本次会话已完成迁移 (5个功能模块)
 
-**已完成迁移:**
-1. ✅ home_zone - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
+1. ✅ **color_select** - 迁移 _ColorSelectController 到 Riverpod Provider
+2. ✅ **home_zone** - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
+3. ✅ **history** - 创建 HistoryPageV2 和 HistoryMultiSelectControllerV2
+4. ✅ **member_contribute** - 创建 MemberContributeTabControllerV2
+5. ✅ **download** - 创建 DownloadMultiSelectControllerV2 和 DownloadPageDataControllerV2
 
-**迁移详情:**
-- 创建 `ZoneControllerV2` 继承 `CommonControllerV2`
-- 创建 `zoneControllerProvider` 使用 Provider.family
-- 创建 `RankPageV2` 替换 `RankPage`
-- 创建 `ZonePageV2` 替换 `ZonePage`
-- 使用 `ListenableBuilder` 替换 `Obx`
-- 使用 `SingleTickerProviderStateMixin` 管理 TabController
-
-**新增文件:**
-- `lib/features/home_zone/zone/controller_v2.dart` - ZoneControllerV2
-- `lib/features/home_zone/zone/providers.dart` - Riverpod providers
-- `lib/features/home_zone/zone/view_v2.dart` - ZonePageV2
-- `lib/features/home_zone/view_v2.dart` - RankPageV2
-
-**保留旧文件:**
-- 原 RankController 和 ZoneController 保留，等待路由切换
+**技术要点:**
+- 所有 V2 控制器继承 `ChangeNotifier`
+- 使用 `Provider.family` 支持多实例
+- 使用 `ListenableBuilder` 或 `ref.watch` 替代 `Obx`
+- 移除对 GetX mixins 的依赖
 
 **编译状态:** ✅ **0 编译错误**
 
 ---
 
-## 🔄 本次会话迁移 (2025-02-25 续10)
+## 🎯 剩余控制器 (17个)
 
-### 本次迁移功能 (1个)
-
-**已完成迁移:**
-1. ✅ member_contribute - 创建 MemberContributeTabControllerV2
-
-**迁移详情:**
-- 创建 `MemberContributeTabControllerV2` 继承 `ChangeNotifier`
-- 创建 `memberContributeTabControllerProvider` 使用 Provider.family
-- 管理 TabController 和 tabs 数据
-- 支持动态添加"全部合集/列表"标签
-
-**新增文件:**
-- `lib/features/member_contribute/presentation/controllers/member_contribute_tab_controller.dart`
-- `lib/features/member_contribute/presentation/providers/member_contribute_tab_provider.dart`
-
-**保留旧文件:**
-- 原 MemberContributeCtr 保留，等待集成
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 本次会话迁移 (2025-02-25 续11)
-
-### 本次迁移功能 (1个)
-
-**已完成迁移:**
-1. ✅ download - 创建 DownloadMultiSelectControllerV2 和 DownloadPageDataControllerV2
-
-**迁移详情:**
-- 创建 `DownloadMultiSelectControllerV2` 继承 `ChangeNotifier` 处理多选逻辑
-- 创建 `DownloadPageDataControllerV2` 管理下载数据列表
-- 创建相应的 Riverpod providers
-- 移除对 `BaseMultiSelectMixin` 的依赖
-
-**新增文件:**
-- `lib/features/download/presentation/controllers/download_multi_select_controller.dart`
-- `lib/features/download/presentation/providers/download_multi_select_provider.dart`
-- `lib/features/download/presentation/controllers/download_page_data_controller.dart`
-- `lib/features/download/presentation/providers/download_page_data_provider.dart`
-
-**保留旧文件:**
-- 原 DownloadPageController 保留，等待集成
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续10)
-
-### 本次迁移功能 (1个)
-
-**已完成迁移:**
-1. ✅ member_contribute - 创建 MemberContributeTabControllerV2
-
-**迁移详情:**
-- 创建 `MemberContributeTabControllerV2` 继承 `ChangeNotifier`
-- 创建 `memberContributeTabControllerProvider` 使用 Provider.family
-- 管理 TabController 和 tabs 数据
-- 支持动态添加"全部合集/列表"标签
-
-**新增文件:**
-- `lib/features/member_contribute/presentation/controllers/member_contribute_tab_controller.dart`
-- `lib/features/member_contribute/presentation/providers/member_contribute_tab_provider.dart`
-
-**保留旧文件:**
-- 原 MemberContributeCtr 保留，等待集成
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续9)
-
-### 本次迁移功能 (1个)
-
-**已完成迁移:**
-1. ✅ history - 创建 HistoryPageV2 和 HistoryMultiSelectControllerV2
-
-**迁移详情:**
-- 创建 `HistoryMultiSelectControllerV2` 继承 `ChangeNotifier`
-- 创建 `historyMultiSelectControllerProvider`
-- 创建 `HistoryItemV2` 使用新的多选控制器
-- 创建 `HistoryPageV2` 使用 Riverpod providers
-- 移除对 GetX `MultiSelectBase` 接口的依赖
-
-**新增文件:**
-- `lib/features/history/presentation/controllers/history_multi_select_controller.dart`
-- `lib/features/history/presentation/providers/history_multi_select_provider.dart`
-- `lib/features/history/presentation/widgets/item_v2.dart`
-- `lib/features/history/presentation/pages/history_page_v2.dart`
-
-**保留旧文件:**
-- 原 HistoryMultiSelectController 保留，等待路由切换
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续8)
-
-### 本次迁移功能 (1个)
-
-**已完成迁移:**
-1. ✅ color_select - 迁移 _ColorSelectController 到 Riverpod Provider
-
-**迁移详情:**
-- 将 `ColorSelectPage` 从 `StatefulWidget` 改为 `ConsumerWidget`
-- 创建 3 个 Riverpod providers 替换 Rx 字段：
-  - `dynamicColorProvider` - 替换 `RxBool dynamicColor`
-  - `currentColorProvider` - 替换 `RxInt currentColor`
-  - `themeTypeProvider` - 替换 `Rx<ThemeType> themeType`
-- 移除 `_ColorSelectController` GetxController 类
-- 所有 `Obx` 替换为直接使用 `ref.watch` 的响应式值
-- 使用 `ref.invalidate()` 触发状态更新
-
-**更新文件:**
-- `lib/pages/setting/pages/color_select.dart` - 完全重构为 Riverpod
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续6)
-
-### 修复编译错误
-
-本次主要是修复编译错误，而非迁移新功能。
-
-**修复内容:**
-1. ✅ 修复 member_pgc.dart 导出路径 - 从 `member_pgc_page.dart` 更改为 `member_pgc_page_v2.dart`
-2. ✅ 修复 intro_detail.dart - 为 PgcReviewPageV2 添加必需的 `type` 参数
-3. ✅ 创建 GetX 兼容层 - 为 search_panel 控制器创建 GetX 版本的 SearchResultController
-4. ✅ 恢复 search_panel 控制器 - 恢复对 GetX SearchResultController 的正确引用
-
-**新增文件:**
-- `lib/pages/search_result/controller.dart` - GetX 兼容层（临时）
-
-**更新文件:**
-- `lib/features/member_pgc/member_pgc.dart` - 修正导出路径
-- `lib/pages/video/introduction/pgc/widgets/intro_detail.dart` - 添加 type 参数和导入
-- `lib/pages/search_panel/controller.dart` - 恢复原始 GetX 代码
-- `lib/features/search_panel/presentation/pages/search_panel_controller.dart` - 更新导入路径
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续4)
-
-### 本次迁移功能 (2个)
-
-1. ✅ follow_search - 切换到 FollowSearchPageV2
-2. ✅ search_result - 切换到 SearchResultPageV2
-
-**删除文件:** 3 个 GetX 页面/控制器文件
-
-**更新路由:**
-- `/followSearch` → FollowSearchPageV2
-- `/searchResult` → SearchResultPageV2
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续3)
-
-### 本次迁移功能 (17个)
-
-**Follow & Fan 系列 (4个):**
-1. ✅ fan - 切换到 FanPageV2，添加 toFansPage 别名方法
-2. ✅ follow - 切换到 FollowPageV2，实现 toFollowPage 方法
-3. ✅ followed - 切换到 FollowedPageV2，实现 toFollowedPage 方法
-4. ✅ follow_same - 切换到 FollowSamePageV2，实现 toFollowSamePage 方法
-
-**Live 系列 (3个):**
-5. ✅ live_area - 切换到 LiveAreaPageV2
-6. ✅ live_area_detail - 清理导出，使用 V2 版本
-7. ✅ live_follow - 清理导出，使用 V2 版本
-
-**Member 系列 (10个):**
-8. ✅ member_article - 使用 V2 (已导出为 MemberArticlePage)
-9. ✅ member_audio - 使用 V2 (已导出为 MemberAudioPage)
-10. ✅ member_cheese - 使用 V2 (已导出为 MemberCheesePage)
-11. ✅ member_coin_arc - 使用 V2 (已导出为 MemberCoinArcPage)
-12. ✅ member_comic - 使用 V2 (已导出为 MemberComicPage)
-13. ✅ member_contribute - 使用 V2 (MemberContributePageV2)
-14. ✅ member_dynamics - 移除旧页面导出
-15. ✅ member_pgc - 已在使用 V2
-16. ✅ member_season_series - 使用 V2 (已导出为 MemberSeasonSeriesPage)
-17. ✅ member_shop - 使用 V2 (已导出为 MemberShopPage)
-
-**删除文件:** 23 个 GetX 页面/控制器文件
-
-**更新路由:**
-- `/fan` → FanPageV2
-- `/follow` → FollowPageV2
-- `/followed` → FollowedPageV2
-- `/sameFollowing` → FollowSamePageV2
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续2)
-
-### 本次迁移功能 (6个)
-
-**已完成迁移:**
-1. ✅ danmaku_block - 切换到 Riverpod 版本 (DanmakuBlockPageV2)
-2. ✅ live_dm_block - 切换到 Riverpod 版本 (LiveDmBlockPageV2)
-3. ✅ whisper_link_setting - 切换到 Riverpod 版本 (WhisperLinkSettingPageV2)
-4. ✅ pgc_review - 切换到 Riverpod 版本 (PgcReviewPageV2)
-5. ✅ login_devices - 切换到 Riverpod 版本 (LoginDevicesPageV2)
-6. ✅ popular_precious - 切换到 Riverpod 版本 (已导出为相同名称)
-
-**删除文件:**
-- `lib/features/danmaku_block/presentation/pages/danmaku_block_page.dart`
-- `lib/features/danmaku_block/presentation/pages/danmaku_block_controller.dart`
-- `lib/features/live_dm_block/presentation/pages/live_dm_block_page.dart`
-- `lib/features/live_dm_block/presentation/pages/live_dm_block_controller.dart`
-- `lib/features/whisper_link_setting/presentation/pages/whisper_link_setting_page.dart`
-- `lib/features/whisper_link_setting/presentation/pages/whisper_link_setting_controller.dart`
-- `lib/features/pgc_review/presentation/pages/pgc_review_page.dart`
-- `lib/features/login_devices/presentation/pages/login_devices_page.dart`
-- `lib/features/popular_precious/presentation/pages/popular_precious_page.dart`
-
-**更新路由:**
-- `/danmakuBlock` → 使用 `DanmakuBlockPageV2`
-- `/liveDmBlockPage` → 使用 `LiveDmBlockPageV2`
-- 更新各功能页面的引用
-
-**编译状态:** ✅ **0 编译错误**
-
----
-
-## 🔄 上次会话迁移 (2025-02-25 续)
-
-### 迁移的控制器 (18个) + 代码清理
-
-**已完成迁移:**
-1. ✅ member - 完整迁移到 Riverpod
-2. ✅ login, mine, download, follow, dynamics - 清理重复控制器
-3. ✅ subscription/subscription_detail - 创建路由适配器
-4. ✅ member_* - 删除重复控制器 (article, favorite, season_series)
-5. ✅ danmaku, live_area_detail - 删除重复控制器
-6-11. ✅ fav/* - 删除重复控制器 (article, cheese, note, pgc, topic, video)
-
-**清理工作:**
-- 删除重导出文件和空目录
-- 移动 danmaku_model.dart 到 models/ 目录
-- 更新所有相关导入
-- 清理未使用的导入 (10+ 文件)
-
-**修复编译错误:**
-- 修复了 save_panel 和 share 功能的导入路径
-- **所有编译错误已修复！** ✅
-
-**删除统计:**
-- 目录: 6 个
-- 文件: 45+ 个
-- 代码: 3,100+ 行
-
-### 剩余 GetxControllers (17个)
-
-**lib/features (10个):**
-1. MainController (shell) - 核心导航控制器
-2. HomeController (home) - 主页控制器
-3. RankController (home_zone) - 排行榜控制器
-4. HistoryMultiSelectController (history) - 历史记录多选适配器
-5. DynamicsController (dynamics) - 动态控制器
-6. MemberContributeCtr (member_contribute) - 投稿控制器
-7. DownloadPageController (download) - 下载管理
-8. BaseSearchController (search) - 搜索基础控制器
-9. SSearchController (search) - 搜索控制器 (同文件)
-10. LoginPageController (login) - 登录页面
-11. AudioController (audio) - 音频播放器
-
-**lib/pages (7个):**
-1. CommonController - 通用控制器基类 (core/controllers)
-2. CommonIntroController - 通用介绍控制器基类
-3. SearchResultController - **兼容层** - GetX wrapper for Riverpod
-4. ReplySearchController - 回复搜索
-5. VideoDetailController - 视频详情控制器
-6. LiveRoomController - 直播间控制器
-7. LiveSearchController - 直播搜索
-8. MemberSearchController - 会员搜索
-
-## 🎯 剩余控制器 (按优先级排序)
+### 按优先级分类
 
 **高优先级 (核心功能):**
 - MainController (shell) - 导航核心
 - HomeController (home) - 主页核心
-- search相关 (3个控制器) - 搜索功能
+- search相关 (2个控制器) - 搜索功能
 
 **中优先级 (常用功能):**
 - DynamicsController - 动态
 - LoginPageController - 登录
-- DownloadPageController - 下载
+- 各种搜索控制器 (member_search, live_search, reply_search)
 
-**低优先级 (辅助功能):**
-- RankController - 排行榜
-- HistoryMultiSelectController - 历史多选
+**低优先级 (辅助功能/复杂依赖):**
 - AudioController - 音频播放
+- VideoDetailController - 视频详情
+- LiveRoomController - 直播间
+- CommonIntroController - 通用介绍基类
 
-## 📋 已发现但无法删除的旧目录
+**lib/features (10个):**
+1. MainController (shell)
+2. HomeController (home)
+3. RankController (home_zone) - 有 V2 版本
+4. HistoryMultiSelectController (history) - 有 V2 版本
+5. DynamicsController (dynamics)
+6. MemberContributeCtr (member_contribute) - 有 V2 版本
+7. DownloadPageController (download) - 有 V2 版本
+8. BaseSearchController (search)
+9. SSearchController (search)
+10. LoginPageController (login)
+11. AudioController (audio)
 
-以下功能已迁移到 Riverpod，但旧目录仍包含被引用的子文件：
-- `lib/pages/dynamics_detail/` - 控制器被使用（复杂继承链，需要迁移基类）
+**lib/pages (7个):**
+1. CommonController - 通用控制器基类
+2. CommonIntroController - 通用介绍控制器基类
+3. SearchResultController - **兼容层**
+4. ReplySearchController
+5. VideoDetailController
+6. LiveRoomController
+7. LiveSearchController
+8. MemberSearchController
 
-这些目录需要在页面完全迁移后才能删除。
-
-### 遗留错误 (非本次迁移范围)
-
-6个编译错误关于已删除目录的遗留导入：
-- `lib/pages/save_panel/` - 需要迁移 SavePanel 功能
-- `lib/pages/share/` - 需要迁移 UserModel 相关功能
-
-这些是之前会话遗留的问题，不在本次迁移范围内。
+---
 
 ## 📋 下一步计划
 
-### 阶段1: 简单控制器
-继续迁移 1-2 refs 的控制器：
-- dynamics_detail
-- 解决 search_result 依赖问题
+### 策略: 逐个迁移 V2 版本
 
-### 阶段2: 中等复杂度
-迁移 2-3 refs 的控制器：
-- subscription_detail
-- subscription
-- member_search
-- login
-- live_search
-- download
+优先选择已创建 V2 控制器的功能进行路由切换，然后继续创建剩余控制器的 V2 版本。
 
-### 阶段3: 复杂控制器
-最后处理高引用数控制器：
-- mine, fav_detail, follow
-- dynamics_tab, dynamics
-- follow_type
-- search_panel (需先解决 search_result)
-- live_room
-- video (最复杂)
+1. **路由切换** (有 V2 版本):
+   - color_select - 已完成
+   - home_zone - 已创建 V2
+   - history - 已创建 V2
+   - member_contribute - 已创建 V2
+   - download - 已创建 V2
+
+2. **创建 V2 控制器** (按复杂度):
+   - 简单: 搜索相关控制器
+   - 中等: DynamicsController
+   - 复杂: LoginPageController, AudioController
+
+---
 
 ## ⚠️ 已知问题
 
@@ -491,11 +177,8 @@ lib/features/{feature_name}/
 
 **当前解决方案:**
 已创建 GetX 兼容层 (`lib/pages/search_result/controller.dart`)，暂时保留 GetX 版本的 SearchResultController。
-search_panel 控制器仍在使用 GetX，待 search_panel 完全迁移后可删除此兼容层。
 
-**剩余工作:**
-- 迁移 `lib/pages/search_panel/` 下所有控制器到 Riverpod
-- 删除 GetX 版本的 SearchResultController 兼容层
+---
 
 ## 🔗 有用的资源
 
