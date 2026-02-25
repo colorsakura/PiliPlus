@@ -38,11 +38,8 @@ import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';
 import 'package:PiliPlus/features/member_profile/member_profile.dart';
 import 'package:PiliPlus/features/member_search/member_search.dart';
 import 'package:PiliPlus/features/member_upower_rank/member_upower_rank.dart';
-import 'package:PiliPlus/pages/msg_feed_top/at_me/view.dart';
 import 'package:PiliPlus/pages/msg_feed_top/like_detail/view.dart';
-import 'package:PiliPlus/pages/msg_feed_top/like_me/view.dart';
-import 'package:PiliPlus/pages/msg_feed_top/reply_me/view.dart';
-import 'package:PiliPlus/pages/msg_feed_top/sys_msg/view.dart';
+import 'package:PiliPlus/features/msg_feed/msg_feed.dart';
 import 'package:PiliPlus/features/music/music.dart';
 import 'package:PiliPlus/features/popular_precious/popular_precious.dart';
 import 'package:PiliPlus/features/popular_series/popular_series.dart';
@@ -146,14 +143,14 @@ class Routes {
     GetPage(name: '/whisper', page: () => const WhisperPage()),
     // 私信详情
     GetPage(name: '/whisperDetail', page: () => const WhisperDetailPage()),
-    // 回复我的
-    GetPage(name: '/replyMe', page: () => const ReplyMePage()),
-    // @我的
-    GetPage(name: '/atMe', page: () => const AtMePage()),
-    // 收到的赞
-    GetPage(name: '/likeMe', page: () => const LikeMePage()),
-    // 系统消息
-    GetPage(name: '/sysMsg', page: () => const SysMsgPage()),
+    // 回复我的 - V2 Riverpod
+    GetPage(name: '/replyMe', page: () => const MsgReplyMePageV2()),
+    // @我的 - V2 Riverpod
+    GetPage(name: '/atMe', page: () => const MsgAtMePageV2()),
+    // 收到的赞 - V2 Riverpod
+    GetPage(name: '/likeMe', page: () => const MsgLikeMePageV2()),
+    // 系统消息 - V2 Riverpod
+    GetPage(name: '/sysMsg', page: () => const MsgSysMsgPageV2()),
     // 登录页面
     GetPage(name: '/loginPage', page: () => const LoginPage()),
     // 用户动态
