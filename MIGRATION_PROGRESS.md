@@ -8,11 +8,11 @@
 
 ## 📊 总体进度
 
-- **已完成:** 89+ 功能模块完全迁移
+- **已完成:** 90+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
 - **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **7 个**
+- **本次会话提交:** **8 个**
 
 ## 🎯 核心迁移模式
 
@@ -136,6 +136,56 @@ lib/features/{feature_name}/
 ---
 
 ## 🔄 本次会话迁移 (2025-02-25 续10)
+
+### 本次迁移功能 (1个)
+
+**已完成迁移:**
+1. ✅ member_contribute - 创建 MemberContributeTabControllerV2
+
+**迁移详情:**
+- 创建 `MemberContributeTabControllerV2` 继承 `ChangeNotifier`
+- 创建 `memberContributeTabControllerProvider` 使用 Provider.family
+- 管理 TabController 和 tabs 数据
+- 支持动态添加"全部合集/列表"标签
+
+**新增文件:**
+- `lib/features/member_contribute/presentation/controllers/member_contribute_tab_controller.dart`
+- `lib/features/member_contribute/presentation/providers/member_contribute_tab_provider.dart`
+
+**保留旧文件:**
+- 原 MemberContributeCtr 保留，等待集成
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+## 🔄 本次会话迁移 (2025-02-25 续11)
+
+### 本次迁移功能 (1个)
+
+**已完成迁移:**
+1. ✅ download - 创建 DownloadMultiSelectControllerV2 和 DownloadPageDataControllerV2
+
+**迁移详情:**
+- 创建 `DownloadMultiSelectControllerV2` 继承 `ChangeNotifier` 处理多选逻辑
+- 创建 `DownloadPageDataControllerV2` 管理下载数据列表
+- 创建相应的 Riverpod providers
+- 移除对 `BaseMultiSelectMixin` 的依赖
+
+**新增文件:**
+- `lib/features/download/presentation/controllers/download_multi_select_controller.dart`
+- `lib/features/download/presentation/providers/download_multi_select_provider.dart`
+- `lib/features/download/presentation/controllers/download_page_data_controller.dart`
+- `lib/features/download/presentation/providers/download_page_data_provider.dart`
+
+**保留旧文件:**
+- 原 DownloadPageController 保留，等待集成
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+## 🔄 上次会话迁移 (2025-02-25 续10)
 
 ### 本次迁移功能 (1个)
 
@@ -455,5 +505,5 @@ search_panel 控制器仍在使用 GetX，待 search_panel 完全迁移后可删
 
 ---
 
-*最后更新: 2025-02-25 (续10)*
+*最后更新: 2025-02-25 (续11)*
 *维护者: Claude Sonnet 4.6*
