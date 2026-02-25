@@ -8,11 +8,11 @@
 
 ## 📊 总体进度
 
-- **已完成:** 91+ 功能模块完全迁移
+- **已完成:** 93+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
-- **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
+- **剩余 GetxControllers:** 15 个 (8 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **9 个**
+- **本次会话提交:** **11 个**
 
 ## 🎯 核心迁移模式
 
@@ -85,7 +85,7 @@ lib/features/{feature}/
 
 ## 🔄 最近会话迁移 (2025-02-25)
 
-### 本次会话已完成迁移 (6个功能模块)
+### 本次会话已完成迁移 (8个功能模块)
 
 1. ✅ **color_select** - 迁移 _ColorSelectController 到 Riverpod Provider
 2. ✅ **home_zone** - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
@@ -93,6 +93,8 @@ lib/features/{feature}/
 4. ✅ **member_contribute** - 创建 MemberContributeTabControllerV2
 5. ✅ **download** - 创建 DownloadMultiSelectControllerV2 和 DownloadPageDataControllerV2
 6. ✅ **common_controllers** - 创建 SimpleTabControllerV2 和 DebounceControllerV2 (通用工具类)
+7. ✅ **member_search** - 创建 MemberSearchControllerV2 和 MemberSearchChildControllerV2
+8. ✅ **live_search** - 创建 LiveSearchControllerV2 和 LiveSearchChildControllerV2
 
 **技术要点:**
 - 所有 V2 控制器继承 `ChangeNotifier`
@@ -107,11 +109,21 @@ lib/features/{feature}/
 - `lib/core/controllers/tab_providers.dart` - Tab providers
 - `lib/core/controllers/debounce_provider.dart` - Debounce providers
 
+**新增搜索功能模块:**
+- `lib/features/member_search/presentation/controllers/member_search_controller_v2.dart`
+- `lib/features/member_search/presentation/providers/member_search_providers.dart`
+- `lib/features/member_search/presentation/pages/member_search_page_v2.dart`
+- `lib/features/member_search/presentation/widgets/member_search_child_page_v2.dart`
+- `lib/features/live_search/presentation/controllers/live_search_controller_v2.dart`
+- `lib/features/live_search/presentation/providers/live_search_providers.dart`
+- `lib/features/live_search/presentation/pages/live_search_page_v2.dart`
+- `lib/features/live_search/presentation/widgets/live_search_child_page_v2.dart`
+
 **编译状态:** ✅ **0 编译错误**
 
 ---
 
-## 🎯 剩余控制器 (17个)
+## 🎯 剩余控制器 (15个)
 
 ### 按优先级分类
 
@@ -123,7 +135,7 @@ lib/features/{feature}/
 **中优先级 (常用功能):**
 - DynamicsController - 动态
 - LoginPageController - 登录
-- 各种搜索控制器 (member_search, live_search, reply_search)
+- 各种搜索控制器 (reply_search)
 
 **低优先级 (辅助功能/复杂依赖):**
 - AudioController - 音频播放
@@ -131,7 +143,7 @@ lib/features/{feature}/
 - LiveRoomController - 直播间
 - CommonIntroController - 通用介绍基类
 
-**lib/features (10个):**
+**lib/features (8个):**
 1. MainController (shell)
 2. HomeController (home)
 3. RankController (home_zone) - 有 V2 版本
@@ -151,8 +163,8 @@ lib/features/{feature}/
 4. ReplySearchController
 5. VideoDetailController
 6. LiveRoomController
-7. LiveSearchController
-8. MemberSearchController
+7. LiveSearchController - 有 V2 版本
+8. MemberSearchController - 有 V2 版本
 
 ---
 
@@ -168,9 +180,11 @@ lib/features/{feature}/
    - history - 已创建 V2
    - member_contribute - 已创建 V2
    - download - 已创建 V2
+   - member_search - 已创建 V2
+   - live_search - 已创建 V2
 
 2. **创建 V2 控制器** (按复杂度):
-   - 简单: 搜索相关控制器
+   - 简单: reply_search 控制器
    - 中等: DynamicsController
    - 复杂: LoginPageController, AudioController
 
@@ -196,5 +210,5 @@ lib/features/{feature}/
 
 ---
 
-*最后更新: 2025-02-25 (续12)*
+*最后更新: 2025-02-25 (续13)*
 *维护者: Claude Sonnet 4.6*
