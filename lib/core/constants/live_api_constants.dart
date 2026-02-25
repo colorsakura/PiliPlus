@@ -5,76 +5,98 @@ library;
 
 /// 直播相关 API 常量
 abstract class LiveApiConstants {
-  // ==================== 直播列表 ====================
-  /// 直播推荐列表
-  static const String liveList = 'https://api.live.bilibili.com/xlive/web-interface/v1/second/getUserRecommend';
-
-  /// 直播首页推荐
-  static const String liveFeedIndex = 'https://api.live.bilibili.com/xlive/web-interface/v1/webMain/getList';
-
-  /// 关注的直播
-  static const String liveFollow = 'https://api.live.bilibili.com/xlive/web-ucenter/v1/webUser/getFollowList';
-
-  /// 直播分区列表
-  static const String liveAreaList = 'https://api.live.bilibili.com/xlive/web-interface/v1/index/getAreaList';
-
-  /// 直播房间分区列表
-  static const String liveRoomAreaList = 'https://api.live.bilibili.com/xlive/web-interface/v1/webMain/getAreaRoomList';
-
-  /// 直播搜索
-  static const String liveSearch = 'https://api.live.bilibili.com/xlive/web-interface/v1/search/getSearchResult';
-
-  // ==================== 直播间信息 ====================
   /// 直播间信息
-  static const String liveRoomInfo = 'https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo';
+  static const String liveRoomInfo =
+      '/xlive/web-room/v2/index/getRoomPlayInfo';
+
+  /// 发送直播弹幕
+  static const String sendLiveMsg = '/msg/send';
 
   /// 直播间信息（H5）
-  static const String liveRoomInfoH5 = 'https://api.live.bilibili.com/xlive/web-room/v1/index/getH5InfoByRoom';
-
-  /// 直播间 init 请求
-  static const String liveRoomInit = 'https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom';
-
-  // ==================== 弹幕相关 ====================
-  /// 发送直播弹幕
-  static const String sendLiveMsg = 'https://api.live.bilibili.com/msg/send';
+  static const String liveRoomInfoH5 =
+      '/xlive/web-room/v1/index/getH5InfoByRoom';
 
   /// 直播间弹幕历史
-  static const String liveRoomDmPrefetch = 'https://api.live.bilibili.com/xlive/web-room/v1/dM/gethistory';
+  static const String liveRoomDmPrefetch =
+      '/xlive/web-room/v1/dM/gethistory';
 
   /// 直播间弹幕 Token
-  static const String liveRoomDmToken = 'https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo';
+  static const String liveRoomDmToken =
+      '/xlive/web-room/v1/index/getDanmuInfo';
 
-  // ==================== 礼物/超级聊天 ====================
-  /// 超级聊天消息列表
-  static const String superChatMsg = 'https://api.live.bilibili.com/av/v1/SuperChat/getMessageList';
+  /// 获取直播间表情
+  static const String getLiveEmoticons =
+      '/xlive/web-ucenter/v2/emoticon/GetEmoticons';
 
-  /// 礼物列表
-  static const String giftList = 'https://api.live.bilibili.com/xlive/web-interface/v1/gift/getGiftConfig';
+  /// 直播首页推荐
+  static const String liveFeedIndex =
+      '/xlive/app-interface/v2/index/feed';
 
-  /// 送礼物
-  static const String sendGift = 'https://api.live.bilibili.com/xlive/web-interface/v1/gift/send';
+  /// 关注的直播
+  static const String liveFollow =
+      '/xlive/web-ucenter/user/following';
 
-  // ==================== 直播互动 ====================
-  /// 直播点赞
-  static const String likeReport = 'https://api.live.bilibili.com/xlive/web-ucenter/v1/webHeartBeat/likeReportV3';
+  /// 直播第二页列表
+  static const String liveSecondList =
+      '/xlive/app-interface/v2/second/getList';
 
-  /// 直播弹幕互动上报
-  static const String dmReport = 'https://api.live.bilibili.com/xlive/web-ucenter/v1/webHeartBeat/dmReport';
+  /// 直播分区列表
+  static const String liveAreaList =
+      '/xlive/app-interface/v2/index/getAreaList';
 
-  /// 直播贡献排行榜
-  static const String contributionRank = 'https://api.live.bilibili.com/xlive/web-room/v1/gift/getRoomGiftTopList';
+  /// 直播房间分区列表
+  static const String liveRoomAreaList =
+      '/room/v1/Area/getList';
 
-  // ==================== 直播设置 ====================
-  /// 直播免打扰设置
-  static const String setSilent = 'https://api.live.bilibili.com/xlive/web-interface/v1/webUser/updateSilentConfigure';
+  /// 获取直播收藏标签
+  static const String getLiveFavTag =
+      '/xlive/app-interface/v2/second/get_fav_tag';
+
+  /// 设置直播收藏标签
+  static const String setLiveFavTag =
+      '/xlive/app-interface/v2/second/set_fav_tag';
+
+  /// 直播搜索
+  static const String liveSearch =
+      '/xlive/app-interface/v2/search_live';
+
+  /// 根据用户获取直播信息
+  static const String getLiveInfoByUser =
+      '/xlive/web-room/v1/index/getInfoByUser';
+
+  /// 直播静音设置
+  static const String liveSetSilent =
+      '/liveact/user_silent';
+
+  /// 添加屏蔽关键词
+  static const String addShieldKeyword =
+      '/xlive/web-ucenter/v1/banned/AddShieldKeyword';
+
+  /// 删除屏蔽关键词
+  static const String delShieldKeyword =
+      '/xlive/web-ucenter/v1/banned/DelShieldKeyword';
 
   /// 直播屏蔽用户
-  static const String shieldUser = 'https://api.live.bilibili.com/xlive/web-interface/v1/webUser/addFilter';
+  static const String liveShieldUser =
+      '/liveact/shield_user';
 
-  // ==================== 直播日志 ====================
-  /// 直播点赞日志
-  static const String likeLog = 'https://api.live.bilibili.com/xlive/web-interface/v1/webHeartBeat/likeLogV3';
+  /// 直播点赞上报
+  static const String liveLikeReport =
+      '/xlive/app-ucenter/v1/like_info_v3/like/likeReportV3';
 
-  /// 直播弹幕日志
-  static const String dmLog = 'https://api.live.bilibili.com/xlive/web-interface/v1/webHeartBeat/dmLogV3';
+  /// 超级聊天消息列表
+  static const String superChatMsg =
+      '/av/v1/SuperChat/getMessageList';
+
+  /// 直播弹幕上报
+  static const String liveDmReport =
+      '/xlive/web-ucenter/v1/dMReport/Report';
+
+  /// 直播贡献榜
+  static const String liveContributionRank =
+      '/xlive/general-interface/v1/rank/queryContributionRank';
+
+  /// 超级聊天举报
+  static const String superChatReport =
+      '/av/v1/SuperChat/report';
 }
