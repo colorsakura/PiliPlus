@@ -1,6 +1,6 @@
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/pgc.dart';
+import 'package:PiliPlus/features/pgc/data/datasources/pgc_remote_datasource.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_result/list.dart';
@@ -17,6 +17,7 @@ class PgcController
     with AccountMixin {
   PgcController({required this.tabType});
   final HomeTabType tabType;
+  final _pgcApiDataSource = PgcApiDataSource();
 
   late final showPgcTimeline =
       tabType == HomeTabType.bangumi && Pref.showPgcTimeline;
@@ -70,8 +71,8 @@ class PgcController
 
   Future<void> queryPgcTimeline() async {
     final res = await Future.wait([
-      PgcHttp.pgcTimeline(types: 1, before: 6, after: 6),
-      PgcHttp.pgcTimeline(types: 4, before: 6, after: 6),
+      _pgcApiDataSource.getPgcTimeline(types: 1, before: 6, after: 6),
+      _pgcApiDataSource.getPgcTimeline(types: 4, before: 6, after: 6),
     ]);
     final list1 = res.first.dataOrNull;
     final list2 = res[1].dataOrNull;
@@ -133,7 +134,7 @@ class PgcController
   }
 
   @override
-  Future<LoadingState<List<PgcIndexItem>?>> customGetData() => PgcHttp.pgcIndex(
+  Future<LoadingState<List<PgcIndexItem>?>> customGetData() => _pgcApiDataSource.getPgcIndex(
     page: page,
     indexType: tabType == HomeTabType.cinema ? 102 : null,
   );

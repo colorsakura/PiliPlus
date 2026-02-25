@@ -1,5 +1,5 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/pgc.dart';
+import 'package:PiliPlus/features/pgc_review/data/datasources/pgc_review_remote_datasource.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/data.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
@@ -13,6 +13,7 @@ class PgcReviewController
 
   final PgcReviewType type;
   final dynamic mediaId;
+  final _dataSource = PgcReviewRemoteDatasource();
 
   Rx<int?> count = Rx<int?>(null);
   String? next;
@@ -52,7 +53,7 @@ class PgcReviewController
   }
 
   @override
-  Future<LoadingState<PgcReviewData>> customGetData() => PgcHttp.pgcReview(
+  Future<LoadingState<PgcReviewData>> customGetData() => _dataSource.getPgcReview(
     type: type,
     mediaId: mediaId,
     next: next,
@@ -60,7 +61,7 @@ class PgcReviewController
   );
 
   Future<void> onLike(PgcReviewItemModel item, bool isLike, reviewId) async {
-    final res = await PgcHttp.pgcReviewLike(
+    final res = await _dataSource.likeReview(
       mediaId: mediaId,
       reviewId: reviewId,
     );
@@ -83,7 +84,7 @@ class PgcReviewController
     bool isDislike,
     reviewId,
   ) async {
-    final res = await PgcHttp.pgcReviewDislike(
+    final res = await _dataSource.dislikeReview(
       mediaId: mediaId,
       reviewId: reviewId,
     );
@@ -102,7 +103,7 @@ class PgcReviewController
   }
 
   Future<void> onDel(int index, int reviewId) async {
-    final res = await PgcHttp.pgcReviewDel(
+    final res = await _dataSource.deleteReview(
       mediaId: mediaId,
       reviewId: reviewId,
     );

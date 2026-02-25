@@ -1,5 +1,5 @@
 import 'package:PiliPlus/common/widgets/custom_icon.dart';
-import 'package:PiliPlus/http/pgc.dart';
+import 'package:PiliPlus/features/pgc_review/data/datasources/pgc_review_remote_datasource.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -27,6 +27,7 @@ class PgcReviewPostPanel extends StatefulWidget {
 }
 
 class _PgcReviewPostPanelState extends State<PgcReviewPostPanel> {
+  final _dataSource = PgcReviewRemoteDatasource();
   late final TextEditingController _controller;
   late final RxInt _score = (widget.score ?? 0).obs;
   late final RxBool _shareFeed = false.obs;
@@ -222,7 +223,7 @@ class _PgcReviewPostPanelState extends State<PgcReviewPostPanel> {
 
   Future<void> _onPost() async {
     if (_isMod) {
-      final res = await PgcHttp.pgcReviewMod(
+      final res = await _dataSource.modifyReview(
         mediaId: widget.mediaId,
         score: _score.value * 2,
         content: _controller.text,
@@ -240,7 +241,7 @@ class _PgcReviewPostPanelState extends State<PgcReviewPostPanel> {
       SmartDialog.showToast('账号未登录');
       return;
     }
-    final res = await PgcHttp.pgcReviewPost(
+    final res = await _dataSource.postReview(
       mediaId: widget.mediaId,
       score: _score.value * 2,
       content: _controller.text,

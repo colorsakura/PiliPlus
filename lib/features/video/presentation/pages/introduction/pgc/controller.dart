@@ -4,7 +4,7 @@ import 'dart:math' show max;
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/pgc.dart';
+import 'package:PiliPlus/features/pgc/data/datasources/pgc_remote_datasource.dart';
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
@@ -33,6 +33,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class PgcIntroController extends CommonIntroController {
+  final _pgcApiDataSource = PgcApiDataSource();
   int? seasonId;
   int? epId;
 
@@ -478,7 +479,7 @@ class PgcIntroController extends CommonIntroController {
     //   }
     // });
 
-    final res = await PgcHttp.seasonStatus(seasonId!);
+    final res = await _pgcApiDataSource.getSeasonStatus(seasonId!);
     if (res case Success(:final response)) {
       isFollowed.value = response['follow'] == 1;
       followStatus.value = response['follow_status'];
