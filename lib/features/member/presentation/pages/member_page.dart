@@ -232,7 +232,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
                     ),
                   ),
                 PopupMenuItem(
-                  onTap: () => Get.to(const LoginDevicesPage()),
+                  onTap: () => Get.to(const LoginDevicesPageV2()),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

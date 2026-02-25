@@ -1,12 +1,8 @@
-// Riverpod implementation (new - v2)
+// Riverpod implementation
 export 'package:PiliPlus/features/whisper_link_setting/presentation/pages/whisper_link_setting_page_v2.dart'
     show WhisperLinkSettingPageV2;
 
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/features/whisper_link_setting/presentation/pages/whisper_link_setting_page.dart'
-    show WhisperLinkSettingPage;
-
-// Providers (new)
+// Providers
 export 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_providers.dart'
     show
         whisperLinkSettingRemoteDatasourceProvider,

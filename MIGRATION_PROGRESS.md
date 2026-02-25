@@ -4,29 +4,10 @@
 
 ## 📊 总体进度
 
-- **已完成:** 65+ 功能模块完全迁移
+- **已完成:** 70+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
-- **剩余 pages 目录:** 29 个 (从 80 个减少 **64%**)
-- **剩余 pages 文件:** 193 个
-- **删除目录:** 72 个
-- **删除文件:** 510+ 个
-- **删除代码:** 38,700+ 行
-- **本次会话提交:** **13 个**
-
-### 重大成果
-
-🎉 **所有编译错误已修复**
-- 项目现在可以完全编译，没有任何错误
-
-📁 **代码重组**
-- danmaku_model.dart 移至 models/danmaku/
-- 符合 Clean Architecture 结构
-
-🧹 **代码清理**
-- 删除所有未使用的重导出文件
-- 清理未使用的导入 (23+ 处)
-- 警告减少: 260 → 252
-- 删除空目录和重复文件
+- **剩余 GetxControllers:** 12 个 (从 22 个减少 **45%**)
+- **本次会话提交:** **14 个**
 
 ## 🎯 核心迁移模式
 
@@ -121,7 +102,39 @@ lib/features/{feature_name}/
 └── {feature}.dart       # 导出文件
 ```
 
-## 🔄 本次会话迁移 (2025-02-25 续)
+## 🔄 本次会话迁移 (2025-02-25 续2)
+
+### 本次迁移功能 (6个)
+
+**已完成迁移:**
+1. ✅ danmaku_block - 切换到 Riverpod 版本 (DanmakuBlockPageV2)
+2. ✅ live_dm_block - 切换到 Riverpod 版本 (LiveDmBlockPageV2)
+3. ✅ whisper_link_setting - 切换到 Riverpod 版本 (WhisperLinkSettingPageV2)
+4. ✅ pgc_review - 切换到 Riverpod 版本 (PgcReviewPageV2)
+5. ✅ login_devices - 切换到 Riverpod 版本 (LoginDevicesPageV2)
+6. ✅ popular_precious - 切换到 Riverpod 版本 (已导出为相同名称)
+
+**删除文件:**
+- `lib/features/danmaku_block/presentation/pages/danmaku_block_page.dart`
+- `lib/features/danmaku_block/presentation/pages/danmaku_block_controller.dart`
+- `lib/features/live_dm_block/presentation/pages/live_dm_block_page.dart`
+- `lib/features/live_dm_block/presentation/pages/live_dm_block_controller.dart`
+- `lib/features/whisper_link_setting/presentation/pages/whisper_link_setting_page.dart`
+- `lib/features/whisper_link_setting/presentation/pages/whisper_link_setting_controller.dart`
+- `lib/features/pgc_review/presentation/pages/pgc_review_page.dart`
+- `lib/features/login_devices/presentation/pages/login_devices_page.dart`
+- `lib/features/popular_precious/presentation/pages/popular_precious_page.dart`
+
+**更新路由:**
+- `/danmakuBlock` → 使用 `DanmakuBlockPageV2`
+- `/liveDmBlockPage` → 使用 `LiveDmBlockPageV2`
+- 更新各功能页面的引用
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+## 🔄 上次会话迁移 (2025-02-25 续)
 
 ### 迁移的控制器 (18个) + 代码清理
 
@@ -150,33 +163,37 @@ lib/features/{feature_name}/
 
 ### 待迁移控制器状态
 
-**需要完整迁移 (仍在使用 GetX):**
-- dynamics_detail - 复杂继承链（CommonDynController -> ReplyController）
+**剩余 GetxControllers (12个):**
+1. MainController (shell) - 核心导航控制器
+2. HomeController (home) - 主页控制器
+3. RankController (home_zone) - 排行榜控制器
+4. HistoryMultiSelectController (history) - 历史记录多选
+5. DynamicsController (dynamics) - 动态控制器
+6. SearchResultController (search_result) - 搜索结果
+7. DownloadPageController (download) - 下载管理
+8. BaseSearchController (search) - 搜索基础控制器
+9. SSearchController (search) - 搜索控制器
+10. LoginPageController (login) - 登录页面
+11. FollowController (follow) - 关注功能
+12. AudioController (audio) - 音频播放器
 
-## 🎯 剩余控制器 (按引用数排序)
+## 🎯 剩余控制器 (按优先级排序)
 
-**复杂控制器 (>5 refs):**
-- video: 25 refs ⚠️
-- live_room: 9 refs
-- search_panel: 7 refs
-- follow_type: 6 refs
-- mine: 5 refs
-- fav_detail: 5 refs
+**高优先级 (核心功能):**
+- MainController (shell) - 导航核心
+- HomeController (home) - 主页核心
+- search相关 (3个控制器) - 搜索功能
 
-**中等复杂度 (2-5 refs):**
-- follow: 3 refs
-- dynamics_tab: 3 refs
-- dynamics: 3 refs
-- subscription_detail: 2 refs
-- subscription: 2 refs
-- member_search: 2 refs
-- login: 2 refs
-- live_search: 2 refs
-- download: 2 refs
+**中优先级 (常用功能):**
+- DynamicsController - 动态
+- FollowController - 关注
+- LoginPageController - 登录
+- DownloadPageController - 下载
 
-**简单控制器 (1 ref):**
-- search_result: 1 ref
-- dynamics_detail: 1 ref (复杂继承链)
+**低优先级 (辅助功能):**
+- RankController - 排行榜
+- HistoryMultiSelectController - 历史多选
+- AudioController - 音频播放
 
 ## 📋 已发现但无法删除的旧目录
 
@@ -238,5 +255,5 @@ lib/features/{feature_name}/
 
 ---
 
-*最后更新: 2025-02-25*
+*最后更新: 2025-02-25 (续2)*
 *维护者: Claude Sonnet 4.6*

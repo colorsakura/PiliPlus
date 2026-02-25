@@ -162,8 +162,8 @@ class Routes {
     GetPage(name: '/subscription', page: () => const SubPage()),
     // 订阅详情
     GetPage(name: '/subDetail', page: () => const SubDetailPage()),
-    // 弹幕屏蔽管理
-    GetPage(name: '/danmakuBlock', page: () => const DanmakuBlockPage()),
+    // 弹幕屏蔽管理 (Riverpod)
+    GetPage(name: '/danmakuBlock', page: () => const DanmakuBlockPageV2()),
     GetPage(name: '/sponsorBlock', page: () => const SponsorBlockPage()),
     GetPage(name: '/createFav', page: () => const CreateFavPage()),
     GetPage(name: '/editProfile', page: () => const EditProfilePage()),
@@ -178,7 +178,7 @@ class Routes {
     GetPage(name: '/dynTopicRcmd', page: () => const DynTopicRcmdPage()),
     GetPage(name: '/matchInfo', page: () => const MatchInfoPage()),
     GetPage(name: '/msgLikeDetail', page: () => const LikeDetailPage()),
-    GetPage(name: '/liveDmBlockPage', page: () => const LiveDmBlockPage()),
+    GetPage(name: '/liveDmBlockPage', page: () => const LiveDmBlockPageV2()),
     GetPage(name: '/createVote', page: () => const CreateVotePage()),
     GetPage(name: '/musicDetail', page: () => const MusicDetailPage()),
     GetPage(name: '/popularSeries', page: () => const PopularSeriesPage()),

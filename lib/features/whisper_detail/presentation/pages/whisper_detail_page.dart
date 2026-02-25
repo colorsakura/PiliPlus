@@ -104,7 +104,7 @@ class _WhisperDetailPageState
           IconButton(
             tooltip: '设置',
             onPressed: () => Get.to(
-              WhisperLinkSettingPage(
+              WhisperLinkSettingPageV2(
                 talkerUid: _whisperDetailController.talkerId,
               ),
             ),
