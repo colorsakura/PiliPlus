@@ -99,7 +99,7 @@ class Routes {
     // 搜索页面
     GetPage(name: '/search', page: () => const SearchPage()),
     // 搜索结果
-    GetPage(name: '/searchResult', page: () => const SearchResultPage()),
+    GetPage(name: '/searchResult', page: () => const SearchResultPageV2()),
     // 动态
     GetPage(name: '/dynamics', page: () => const dynamics.DynamicsPage()),
     // 动态详情
@@ -141,7 +141,7 @@ class Routes {
     // 收藏搜索
     GetPage(name: '/favSearch', page: () => const FavSearchPage()),
     GetPage(name: '/historySearch', page: () => const HistorySearchPage()),
-    GetPage(name: '/followSearch', page: () => const FollowSearchPage()),
+    GetPage(name: '/followSearch', page: () => const FollowSearchPageV2()),
     // 消息页面
     GetPage(name: '/whisper', page: () => const WhisperPage()),
     // 私信详情
