@@ -4,12 +4,12 @@
 
 ## 📊 总体进度
 
-- **已完成:** 50+ 功能模块完全迁移
-- **编译状态:** ✅ 0 编译错误 (本次迁移相关)
-- **遗留错误:** 6 个 (关于 save_panel/share 等已删除目录)
+- **已完成:** 52+ 功能模块完全迁移
+- **编译状态:** ✅ 0 新增编译错误
+- **遗留错误:** 6 个 (关于 save_panel/share 等已删除目录 - 非本次范围)
 - **删除目录:** 68 个 (从 80 个减少到 12 个)
-- **删除文件:** 480+ 个
-- **删除代码:** 35,500+ 行
+- **删除文件:** 485+ 个
+- **删除代码:** 35,700+ 行
 
 ## 🎯 核心迁移模式
 
@@ -106,7 +106,7 @@ lib/features/{feature_name}/
 
 ## 🔄 本次会话迁移 (2025-02-25 续)
 
-### 迁移的控制器 (5个)
+### 迁移的控制器 (7个)
 
 **已完成迁移:**
 1. ✅ member - 完整迁移到 Riverpod，使用 ChangeNotifier + Provider.family 模式
@@ -115,25 +115,32 @@ lib/features/{feature_name}/
 4. ✅ download - 清理重复控制器，更新所有导入
 5. ✅ follow - 清理重复控制器，更新所有导入
 6. ✅ dynamics - 清理重复控制器，更新所有导入
+7. ✅ subscription/subscription_detail - 创建适配器，删除旧GetX控制器
 
 **删除的目录:** 5 个
 - login, mine (controller), download (controller), follow (controller), dynamics (controller)
 
-**删除的文件:** 20+ 个
-**删除的代码:** 1,650+ 行
+**删除的文件:** 25+ 个
+**删除的代码:** 2,000+ 行
 
 ### 清理工作
 
-修复了以下重复的控制器文件：
-- `lib/pages/login/controller.dart` → 已删除，使用 `lib/features/login/` 版本
-- `lib/pages/mine/controller.dart` → 已删除，使用 `lib/features/mine/` 版本
-- `lib/pages/download/controller.dart` → 已删除，使用 `lib/features/download/` 版本
-- `lib/pages/follow/controller.dart` → 已删除，使用 `lib/features/follow/` 版本
-- `lib/pages/dynamics/controller.dart` → 已删除，使用 `lib/features/dynamics/` 版本
+**重复控制器清理:**
+- `lib/pages/login/controller.dart` → 已删除
+- `lib/pages/mine/controller.dart` → 已删除
+- `lib/pages/download/controller.dart` → 已删除
+- `lib/pages/follow/controller.dart` → 已删除
+- `lib/pages/dynamics/controller.dart` → 已删除
+- `lib/pages/subscription/controller.dart` → 已删除
+- `lib/pages/subscription_detail/controller.dart` → 已删除
 
-更新了所有引用这些旧文件的位置（约15个文件）。
+**Subscription 特殊处理:**
+- 创建适配器 `subscription_page_aliases.dart` 和 `subscription_detail_page_aliases.dart`
+- 适配器将 GetX 路由桥接到 Riverpod 页面
+- 保留 `pages/subscription/widgets/` 和 `pages/subscription_detail/widget/` (仍被使用)
 
-恢复了被误删的 `lib/pages/login/geetest/geetest_webview_dialog.dart` 文件。
+**恢复的文件:**
+- `lib/pages/login/geetest/geetest_webview_dialog.dart` 从 git 恢复
 
 ### 待迁移控制器状态
 

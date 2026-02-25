@@ -3,6 +3,5 @@ export 'package:PiliPlus/features/subscription/presentation/providers/subscripti
 export 'package:PiliPlus/features/subscription/presentation/providers/subscription_controller.dart';
 export 'package:PiliPlus/features/subscription/presentation/pages/subscription_page_v2.dart';
 
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/pages/subscription/controller.dart' show SubController;
-export 'package:PiliPlus/features/subscription/presentation/pages/subscription_page.dart' show SubPage;
+// Re-export v2 page with old name for backward compatibility
+export 'subscription_page_aliases.dart';
