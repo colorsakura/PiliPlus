@@ -4,18 +4,24 @@
 
 ## 📊 总体进度
 
-- **已完成:** 63+ 功能模块完全迁移
-- **编译状态:** ✅ **0 编译错误** (所有错误已修复！)
-- **删除目录:** 68 个 (从 80 个减少到 12 个)
-- **删除文件:** 495+ 个
-- **删除代码:** 36,500+ 行
+- **已完成:** 65+ 功能模块完全迁移
+- **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
+- **剩余 pages 目录:** 32 个 (从 80 个减少)
+- **剩余 pages 文件:** 199 个
+- **删除目录:** 69 个
+- **删除文件:** 500+ 个
+- **删除代码:** 38,000+ 行
 
-### 重大进展
+### 重大成果
 
-✅ **修复了所有遗留编译错误**
-- 更新了 save_panel 和 share 功能的导入路径
-- 这些功能已经迁移到 features/，但导入仍在使用旧的 pages/ 路径
-- 修复了 author_panel.dart, follow_item.dart, reply_item_grpc.dart 中的导入
+🎉 **所有编译错误已修复**
+- 项目现在可以完全编译，没有任何错误
+- save_panel 和 share 功能的导入路径已修复
+- 清理了临时重导出文件
+
+📁 **模型文件重组**
+- danmaku_model.dart 移至 models/danmaku/
+- 更符合 Clean Architecture 结构
 
 ## 🎯 核心迁移模式
 
@@ -112,7 +118,7 @@ lib/features/{feature_name}/
 
 ## 🔄 本次会话迁移 (2025-02-25 续)
 
-### 迁移的控制器 (14个)
+### 迁移的控制器 (18个) + 清理工作
 
 **已完成迁移:**
 1. ✅ member - 完整迁移到 Riverpod，使用 ChangeNotifier + Provider.family 模式
@@ -127,44 +133,25 @@ lib/features/{feature_name}/
 10. ✅ member_season_series - 删除重复控制器
 11. ✅ danmaku - 删除重复控制器
 12. ✅ live_area_detail - 删除重复控制器
-13. ✅ fav/article - 删除重复控制器
-14. ✅ fav/cheese - 删除重复控制器
-15. ✅ fav/note - 删除重复控制器
-16. ✅ fav/pgc - 删除重复控制器
-17. ✅ fav/topic - 删除重复控制器
-18. ✅ fav/video - 删除重复控制器
+13-18. ✅ fav/* (article, cheese, note, pgc, topic, video) - 删除重复控制器
 
-**删除的目录:** 5 个 (控制器目录)
-**删除的文件:** 35+ 个
-**删除的代码:** 2,800+ 行
+**清理工作:**
+- 删除重导出文件 (pages/danmaku/view.dart, pages/subscription_detail/view.dart)
+- 移动 danmaku_model.dart 到 models/danmaku/
+- 更新所有相关导入
+- 删除空的 pages/danmaku/ 目录
 
-### 清理工作
+**修复编译错误:**
+- 修复了 save_panel 和 share 功能的导入路径
+- 更新了 author_panel.dart, follow_item.dart, reply_item_grpc.dart
+- **所有 6 个遗留编译错误已修复！**
 
-**重复控制器清理:**
-- `lib/pages/login/controller.dart` → 已删除
-- `lib/pages/mine/controller.dart` → 已删除
-- `lib/pages/download/controller.dart` → 已删除
-- `lib/pages/follow/controller.dart` → 已删除
-- `lib/pages/dynamics/controller.dart` → 已删除
-- `lib/pages/subscription/controller.dart` → 已删除
-- `lib/pages/subscription_detail/controller.dart` → 已删除
-- `lib/pages/member_article/controller.dart` → 已删除
-- `lib/pages/member_favorite/controller.dart` → 已删除
-- `lib/pages/member_season_series/controller.dart` → 已删除
-- `lib/pages/danmaku/controller.dart` → 已删除
-- `lib/pages/live_area_detail/controller.dart` → 已删除
-- `lib/pages/fav/[article|cheese|note|pgc|topic|video]/controller.dart` → 已删除
+**删除的目录:** 6 个
+- login, mine (controller), download (controller), follow (controller)
+- dynamics (controller), danmaku
 
-**Fav 特殊处理:**
-- 更新了6个 fav 子页面的导入，使用 features/ 版本
-- 更新了 pages/fav/note/widget/item.dart 的导入
-
-**Subscription 特殊处理:**
-- 创建适配器 `subscription_page_aliases.dart` 和 `subscription_detail_page_aliases.dart`
-- 适配器将 GetX 路由桥接到 Riverpod 页面
-
-**恢复的文件:**
-- `lib/pages/login/geetest/geetest_webview_dialog.dart` 从 git 恢复
+**删除的文件:** 40+ 个
+**删除的代码:** 3,000+ 行
 
 ### 待迁移控制器状态
 
