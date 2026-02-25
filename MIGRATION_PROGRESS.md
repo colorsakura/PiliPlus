@@ -12,7 +12,8 @@
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
 - **剩余 GetxControllers:** 14 个 (7 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **12 个**
+- **已标记 deprecated:** MainController, HomeController (已有 V2 版本)
+- **本次会话提交:** **13 个** (含编译错误修复)
 
 ## 🎯 核心迁移模式
 
