@@ -1,5 +1,5 @@
 import 'package:PiliPlus/pages/fav/pgc/child_view.dart';
-import 'package:PiliPlus/pages/fav/pgc/controller.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/fav_pgc_controller.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
