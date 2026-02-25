@@ -7,7 +7,6 @@ import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/marquee.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/music.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
@@ -15,6 +14,7 @@ import 'package:PiliPlus/models/music/bgm_detail.dart';
 import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_page.dart';
 import 'package:PiliPlus/features/music/presentation/pages/music_controller.dart';
 import 'package:PiliPlus/features/music/presentation/pages/music_recommend_page.dart';
+import 'package:PiliPlus/features/music/data/datasources/music_api_datasource.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
@@ -312,11 +312,12 @@ class _MusicDetailPageState extends CommonDynPageState<MusicDetailPage> {
                                   return;
                                 }
                                 final hasLike = item.wishListen ?? false;
-                                final res = await MusicHttp.wishUpdate(
-                                  controller.musicId,
-                                  hasLike,
-                                );
-                                if (res.isSuccess) {
+                                try {
+                                  final dataSource = MusicRemoteDataSource();
+                                  await dataSource.wishUpdate(
+                                    controller.musicId,
+                                    hasLike,
+                                  );
                                   if (hasLike) {
                                     item.wishCount--;
                                   } else {
@@ -326,8 +327,8 @@ class _MusicDetailPageState extends CommonDynPageState<MusicDetailPage> {
                                   if (context.mounted) {
                                     (context as Element).markNeedsBuild();
                                   }
-                                } else {
-                                  res.toast();
+                                } catch (e) {
+                                  SmartDialog.showToast(e.toString());
                                 }
                               },
                             ),

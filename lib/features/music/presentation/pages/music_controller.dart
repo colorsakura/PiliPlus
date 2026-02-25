@@ -1,11 +1,13 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/music.dart';
 import 'package:PiliPlus/models/music/bgm_detail.dart';
 import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
+import 'package:PiliPlus/features/music/data/datasources/music_api_datasource.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:get/get.dart';
 
 class MusicDetailController extends CommonDynController {
+  final _dataSource = MusicRemoteDataSource();
+
   @override
   late final int oid;
   @override
@@ -31,14 +33,17 @@ class MusicDetailController extends CommonDynController {
   }
 
   Future<void> getMusicDetail() async {
-    final res = await MusicHttp.bgmDetail(musicId);
-    if (res case Success(:final response)) {
+    try {
+      final result = await _dataSource.bgmDetail(musicId);
+      final response = MusicDetail.fromJson(result);
       final comment = response.musicComment!;
       oid = comment.oid!;
       replyType = comment.pageType ?? 47;
       count.value = comment.nums ?? -1;
       queryData();
+      infoState.value = Success(response);
+    } catch (e) {
+      infoState.value = Error(e.toString());
     }
-    infoState.value = res;
   }
 }

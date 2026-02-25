@@ -1,8 +1,8 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/music.dart';
 import 'package:PiliPlus/models/music/bgm_detail.dart';
 import 'package:PiliPlus/models/music/bgm_recommend_list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/features/music/data/datasources/music_api_datasource.dart';
 import 'package:get/get.dart';
 
 typedef MusicRecommendArgs = ({String id, MusicDetail item});
@@ -11,6 +11,7 @@ class MusicRecommendController
     extends CommonListController<List<BgmRecommend>?, BgmRecommend> {
   late final String musicId;
   late final MusicDetail musicDetail;
+  final _dataSource = MusicRemoteDataSource();
 
   @override
   void onInit() {
@@ -27,6 +28,12 @@ class MusicRecommendController
   }
 
   @override
-  Future<LoadingState<List<BgmRecommend>?>> customGetData() =>
-      MusicHttp.bgmRecommend(musicId);
+  Future<LoadingState<List<BgmRecommend>?>> customGetData() async {
+    try {
+      final result = await _dataSource.bgmRecommend(musicId);
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
 }
