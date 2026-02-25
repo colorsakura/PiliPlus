@@ -1,4 +1,3 @@
-import 'package:PiliPlus/http/follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/http/user.dart';
@@ -7,6 +6,7 @@ import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
 import 'package:PiliPlus/features/follow/presentation/providers/follow_controller.dart';
+import 'package:PiliPlus/features/follow/data/datasources/follow_api_datasource.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
@@ -14,7 +14,11 @@ import 'package:get/get.dart';
 
 class FollowChildController
     extends CommonListController<FollowData, FollowItemModel> {
-  FollowChildController(this.controller, this.mid, this.tagid);
+  FollowChildController(this.controller, this.mid, this.tagid) {
+    _followDataSource = FollowRemoteDataSource();
+  }
+
+  late final FollowRemoteDataSource _followDataSource;
   final FollowController? controller;
   final int? tagid;
   final int mid;
@@ -72,16 +76,21 @@ class FollowChildController
   }
 
   @override
-  Future<LoadingState<FollowData>> customGetData() {
+  Future<LoadingState<FollowData>> customGetData() async {
     if (tagid != null) {
       return MemberHttp.followUpGroup(mid: mid, tagid: tagid, pn: page);
     }
 
-    return FollowHttp.followings(
-      vmid: mid,
-      pn: page,
-      orderType: orderType.value.type,
-    );
+    try {
+      final result = await _followDataSource.followings(
+        vmid: mid,
+        pn: page,
+        orderType: orderType.value.type,
+      );
+      return Success(FollowData.fromJson(result));
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 
   Future<void> _loadSameFollow() async {

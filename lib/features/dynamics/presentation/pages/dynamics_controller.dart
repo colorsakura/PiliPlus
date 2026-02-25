@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:PiliPlus/http/dynamics.dart';
-import 'package:PiliPlus/http/follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/up.dart';
 import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_controller.dart';
 import 'package:PiliPlus/features/dynamics_tab/presentation/pages/controller.dart';
+import 'package:PiliPlus/features/follow/data/datasources/follow_api_datasource.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
@@ -19,6 +19,7 @@ import 'package:get/get.dart';
 
 class DynamicsController extends GetxController
     with GetSingleTickerProviderStateMixin, ScrollOrRefreshMixin, AccountMixin {
+  final _followDataSource = FollowRemoteDataSource();
   @override
   final ScrollController scrollController = ScrollController();
   late final TabController tabController;
@@ -97,14 +98,14 @@ class DynamicsController extends GetxController
     if (isQuerying || _upEnd) return;
     isQuerying = true;
 
-    final res = await FollowHttp.followings(
-      vmid: Accounts.main.mid,
-      pn: _upPage,
-      orderType: 'attention',
-      ps: 50,
-    );
-
-    if (res case Success(:final response)) {
+    try {
+      final result = await _followDataSource.followings(
+        vmid: Accounts.main.mid,
+        pn: _upPage,
+        orderType: 'attention',
+        ps: 50,
+      );
+      final response = FollowData.fromJson(result);
       _upPage++;
       final list = response.list;
       if (list.isEmpty) {
@@ -115,6 +116,8 @@ class DynamicsController extends GetxController
           list..removeWhere((e) => _cacheUpList?.contains(e) == true),
         )
         ..refresh();
+    } catch (e) {
+      // Handle error
     }
 
     isQuerying = false;
@@ -138,12 +141,12 @@ class DynamicsController extends GetxController
     final res = await Future.wait([
       DynamicsHttp.followUp(),
       if (_showAllUp)
-        FollowHttp.followings(
+        _followDataSource.followings(
           vmid: Accounts.main.mid,
           pn: _upPage,
           orderType: 'attention',
           ps: 50,
-        ),
+        ).then((result) => Success(FollowData.fromJson(result))),
     ]);
 
     final first = res.first;

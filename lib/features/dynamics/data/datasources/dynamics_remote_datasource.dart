@@ -1,11 +1,14 @@
 import 'package:PiliPlus/http/dynamics.dart';
-import 'package:PiliPlus/http/follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
+import 'package:PiliPlus/features/follow/data/datasources/follow_api_datasource.dart';
+import 'package:PiliPlus/models/follow/data.dart';
 
 /// Remote data source for dynamics.
 class DynamicsRemoteDataSource {
-  const DynamicsRemoteDataSource();
+  final _followDataSource = FollowRemoteDataSource();
+
+  DynamicsRemoteDataSource();
 
   /// Get dynamics feed for a specific tab.
   Future<LoadingState> getDynamics({
@@ -31,15 +34,20 @@ class DynamicsRemoteDataSource {
   }
 
   /// Get all followings for a user.
-  Future<LoadingState> getAllFollowings({
+  Future<LoadingState<FollowData>> getAllFollowings({
     required int mid,
     required int page,
-  }) {
-    return FollowHttp.followings(
-      vmid: mid,
-      pn: page,
-      orderType: 'attention',
-      ps: 50,
-    );
+  }) async {
+    try {
+      final result = await _followDataSource.followings(
+        vmid: mid,
+        pn: page,
+        orderType: 'attention',
+        ps: 50,
+      );
+      return Success(FollowData.fromJson(result));
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 }
