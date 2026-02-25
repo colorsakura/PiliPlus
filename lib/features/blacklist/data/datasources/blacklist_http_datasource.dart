@@ -13,8 +13,8 @@ import 'package:PiliPlus/core/errors/exceptions.dart';
 import 'package:PiliPlus/models/blacklist/data.dart';
 import 'package:dio/dio.dart';
 
-/// 黑名单远程数据源
-class BlacklistRemoteDataSource {
+/// 黑名单远程数据源（内部实现）
+class BlacklistHttpDataSource {
   final Dio _httpClient = HttpClientManager.instance;
 
   /// 获取黑名单列表
