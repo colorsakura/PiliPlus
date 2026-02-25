@@ -2,7 +2,7 @@ import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/features/article_list/article_list.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/blacklist/presentation/pages/blacklist_page.dart';
-import 'package:PiliPlus/features/history/presentation/pages/history_page.dart';
+import 'package:PiliPlus/features/history/history.dart';
 import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
 import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
@@ -94,7 +94,7 @@ class Routes {
     // 历史记录
     GetPage(
       name: '/history',
-      page: () => const HistoryPage(),
+      page: () => const HistoryPageV2(),
     ),
     // 搜索页面
     GetPage(name: '/search', page: () => const SearchPage()),

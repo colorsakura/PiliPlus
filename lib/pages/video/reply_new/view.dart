@@ -20,6 +20,7 @@ import 'package:PiliPlus/features/emote/presentation/pages/emote_controller.dart
 import 'package:PiliPlus/features/emote/presentation/pages/emote_panel_page.dart' show EmotePanel;
 import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/reply_search_item/view.dart';
+import 'package:PiliPlus/features/reply_search/reply_search.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
@@ -320,7 +321,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
             onTap: () async {
               controller.keepChatPanel();
               final ({String title, String url})? res = await Get.to(
-                ReplySearchPage(type: widget.replyType, oid: widget.oid),
+                ReplySearchPageV2(type: widget.replyType, oid: widget.oid),
               );
               if (res != null) {
                 onInsertText(

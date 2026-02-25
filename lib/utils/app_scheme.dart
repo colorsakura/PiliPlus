@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
-import 'package:PiliPlus/features/home_zone/view.dart';
+import 'package:PiliPlus/features/home_zone/home_zone.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 import 'package:PiliPlus/http/search.dart';

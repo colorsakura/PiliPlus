@@ -49,7 +49,7 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const LiveSearchPage()),
+              MaterialPageRoute(builder: (_) => const LiveSearchPageV2()),
             ),
             icon: const Icon(Icons.search),
           ),
