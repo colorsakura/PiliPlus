@@ -1,7 +1,7 @@
 import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
-import 'package:PiliPlus/http/login.dart';
+import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
 import 'package:PiliPlus/models/common/setting_type.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
 import 'package:PiliPlus/features/login/presentation/pages/login_controller.dart';
@@ -40,6 +40,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  final _loginDataSource = LoginRemoteDataSource();
   late SettingType _type = SettingType.privacySetting;
   late RxBool _noAccount;
   late bool _isPortrait;
@@ -266,7 +267,7 @@ class _SettingPageState extends State<SettingPage> {
             TextButton(
               onPressed: () async {
                 SmartDialog.showLoading();
-                final res = await LoginHttp.logout(Accounts.main);
+                final res = await _loginDataSource.logout(Accounts.main);
                 if (res['status']) {
                   SmartDialog.dismiss();
                   logout();

@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/radio_widget.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/login/model.dart';
 import 'package:PiliPlus/features/login/presentation/pages/geetest/geetest_webview_dialog.dart';
@@ -22,6 +22,7 @@ import 'package:gt3_flutter_plugin/gt3_flutter_plugin.dart';
 
 class LoginPageController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  final _dataSource = LoginRemoteDataSource();
   final TextEditingController telTextController = TextEditingController();
   final TextEditingController usernameTextController = TextEditingController();
   final TextEditingController passwordTextController = TextEditingController();
@@ -73,40 +74,47 @@ class LoginPageController extends GetxController
   }
 
   Future<void> refreshQRCode() async {
-    final res = await LoginHttp.getHDcode();
-    if (res case Success(:final response)) {
-      qrCodeTimer?.cancel();
+    try {
+      final data = await _dataSource.getHDCode();
+      final res = Success((authCode: data['auth_code'] as String, url: data['url'] as String));
       codeInfo.value = res;
-      qrCodeTimer = Timer.periodic(const Duration(milliseconds: 1000), (t) {
-        final left = 180 - t.tick;
-        if (left <= 0) {
-          t.cancel();
-          statusQRCode.value = '二维码已过期，请刷新';
-          qrCodeLeftTime.value = 0;
-          return;
-        }
-        qrCodeLeftTime.value = left;
-        if (_isReq || tabController.index != 2) return;
-
-        _isReq = true;
-        LoginHttp.codePoll(response.authCode).then((value) async {
-          _isReq = false;
-          if (value['status']) {
+      if (res case Success(:final response)) {
+        qrCodeTimer?.cancel();
+        qrCodeTimer = Timer.periodic(const Duration(milliseconds: 1000), (t) {
+          final left = 180 - t.tick;
+          if (left <= 0) {
             t.cancel();
-            statusQRCode.value = '扫码成功';
-            await setAccount(
-              value['data'],
-              value['data']['cookie_info']['cookies'],
-            );
-            Get.back();
-          } else if (value['code'] == 86038) {
-            t.cancel();
+            statusQRCode.value = '二维码已过期，请刷新';
             qrCodeLeftTime.value = 0;
-          } else {
-            statusQRCode.value = value['msg'];
+            return;
           }
+          qrCodeLeftTime.value = left;
+          if (_isReq || tabController.index != 2) return;
+
+          _isReq = true;
+          _dataSource.codePoll(response.authCode).then((value) async {
+            _isReq = false;
+            if (value['status']) {
+              t.cancel();
+              statusQRCode.value = '扫码成功';
+              await setAccount(
+                value['data'],
+                value['data']['cookie_info']['cookies'],
+              );
+              Get.back();
+            } else if (value['code'] == 86038) {
+              t.cancel();
+              qrCodeLeftTime.value = 0;
+            } else {
+              statusQRCode.value = value['msg'];
+            }
+          }).catchError((e) {
+            _isReq = false;
+          });
         });
-      });
+      }
+    } catch (e) {
+      SmartDialog.showToast('获取二维码失败: $e');
     }
   }
 
@@ -288,14 +296,14 @@ class LoginPageController extends GetxController
       return;
     }
     // if ((passwordFormKey.currentState as FormState).validate()) {
-    final webKeyRes = await LoginHttp.getWebKey();
+    final webKeyRes = await _dataSource.getWebKey();
     if (!webKeyRes['status']) {
       SmartDialog.showToast(webKeyRes['msg']);
       return;
     }
     String salt = webKeyRes['data']['hash'];
     String key = webKeyRes['data']['key'];
-    final res = await LoginHttp.loginByPwd(
+    final res = await _dataSource.loginByPwd(
       username: username,
       password: password,
       key: key,
@@ -320,7 +328,7 @@ class LoginPageController extends GetxController
         //{"code":0,"message":"0","ttl":1,"data":{"status":2,"message":"本次登录环境存在风险, 需使用手机号进行验证或绑定","url":"https://passport.bilibili.com/h5-app/passport/risk/verify?tmp_token=9e785433940891dfa78f033fb7928181&request_id=e5a6d6480df04097870be56c6e60f7ef&source=risk","token_info":null,"cookie_info":null,"sso":null,"is_new":false,"is_tourist":false}}
         String url = data['url']!;
         Uri currentUri = Uri.parse(url);
-        final safeCenterRes = await LoginHttp.safeCenterGetInfo(
+        final safeCenterRes = await _dataSource.safeCenterGetInfo(
           tmpCode: currentUri.queryParameters['tmp_token']!,
         );
         //{"code":0,"message":"0","ttl":1,"data":{"account_info":{"hide_tel":"111*****111","hide_mail":"aaa*****aaaa.aaa","bind_mail":true,"bind_tel":true,"tel_verify":true,"mail_verify":true,"unneeded_check":false,"bind_safe_question":false,"mid":1111111},"member_info":{"nickname":"xxxxxxx","face":"https://i0.hdslb.com/bfs/face/xxxxxxx.jpg","realname_status":false},"sns_info":{"bind_google":false,"bind_fb":false,"bind_apple":false,"bind_qq":true,"bind_weibo":true,"bind_wechat":false},"account_safe":{"score":80}}}
@@ -392,7 +400,7 @@ class LoginPageController extends GetxController
               TextButton(
                 child: const Text("发送验证码"),
                 onPressed: () async {
-                  final preCaptureRes = await LoginHttp.preCapture();
+                  final preCaptureRes = await _dataSource.preCapture();
                   if (!preCaptureRes['status'] ||
                       preCaptureRes['data'] == null) {
                     SmartDialog.showToast(
@@ -416,7 +424,7 @@ class LoginPageController extends GetxController
                     geeChallenge,
                     () async {
                       final safeCenterSendSmsCodeRes =
-                          await LoginHttp.safeCenterSmsCode(
+                          await _dataSource.safeCenterSmsCode(
                             tmpCode: currentUri.queryParameters['tmp_token']!,
                             geeChallenge: geeChallenge,
                             geeSeccode: captchaData.seccode,
@@ -453,7 +461,7 @@ class LoginPageController extends GetxController
                     return;
                   }
                   final safeCenterSmsVerifyRes =
-                      await LoginHttp.safeCenterSmsVerify(
+                      await _dataSource.safeCenterSmsVerify(
                         code: code,
                         tmpCode: currentUri.queryParameters['tmp_token']!,
                         requestId: currentUri.queryParameters['request_id']!,
@@ -470,7 +478,7 @@ class LoginPageController extends GetxController
                   }
                   SmartDialog.showToast("验证成功，正在登录");
                   final oauth2AccessTokenRes =
-                      await LoginHttp.oauth2AccessToken(
+                      await _dataSource.oauth2AccessToken(
                         code: safeCenterSmsVerifyRes['data']['code'],
                       );
                   if (!oauth2AccessTokenRes['status']) {
@@ -557,13 +565,13 @@ class LoginPageController extends GetxController
       SmartDialog.showToast('验证码已过期，请重新获取');
       return;
     }
-    final webKeyRes = await LoginHttp.getWebKey();
+    final webKeyRes = await _dataSource.getWebKey();
     if (!webKeyRes['status']) {
       SmartDialog.showToast(webKeyRes['msg']);
       return;
     }
     String key = webKeyRes['data']['key'];
-    final res = await LoginHttp.loginBySms(
+    final res = await _dataSource.loginBySms(
       tel: telTextController.text,
       code: smsCodeTextController.text,
       captchaKey: captchaKey,
@@ -628,7 +636,7 @@ class LoginPageController extends GetxController
     // SmartDialog.showToast("短信验证码已发送，请查收");
     // captchaKey = safeCenterSendSmsCodeRes['data']['captcha_key'];
 
-    final res = await LoginHttp.sendSmsCode(
+    final res = await _dataSource.sendSmsCode(
       tel: telTextController.text,
       cid: selectedCountryCodeId.countryId,
       // deviceTouristId: guestId,
@@ -672,7 +680,7 @@ class LoginPageController extends GetxController
                 '验证信息错误：${res["msg"]}\n返回内容：${res["data"]}，尝试另一个验证码接口',
               );
             }
-            final preCaptureRes = await LoginHttp.preCapture();
+            final preCaptureRes = await _dataSource.preCapture();
             if (!preCaptureRes['status'] || preCaptureRes['data'] == null) {
               SmartDialog.showToast(
                 "获取验证码失败，请尝试其它登录方式\n"

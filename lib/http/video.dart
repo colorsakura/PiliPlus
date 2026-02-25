@@ -4,7 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/login.dart';
+import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
 import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
@@ -115,7 +115,7 @@ abstract final class VideoHttp {
       queryParameters: params,
       options: Options(
         headers: {
-          'buvid': LoginHttp.buvid,
+          'buvid': LoginRemoteDataSource.buvid,
           'fp_local':
               '1111111111111111111111111111111111111111111111111111111111111111',
           'fp_remote':
