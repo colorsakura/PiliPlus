@@ -14,7 +14,8 @@
 - **剩余 GetxControllers:** 10 个 (5 个在 lib/features，5 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
 - **已标记 deprecated:** MainController, HomeController (已有 V2 版本)
-- **本次会话提交:** **1 个** (msg_feed 迁移)
+- **本次会话提交:** **3 个** (msg_feed 迁移 + 进度更新 + 删除旧目录)
+- **lib/pages 目录:** 27 → **26** (-1 msg_feed_top)
 
 ## 🎯 核心迁移模式
 
@@ -181,19 +182,27 @@ lib/features/{feature}/
 10. LoginPageController (login)
 11. AudioController (audio)
 
-**lib/pages (5个):**
-1. CommonController - 通用控制器基类 (已重导出到 core/controllers)
-2. CommonIntroController - 通用介绍控制器基类 (保留)
-3. SearchResultController - **兼容层**
-4. VideoDetailController
-5. LiveRoomController
+**lib/pages (26个 → 剩余核心):**
 
-**已从 pages 迁移到 features:**
-- msg_feed/* - 所有消息通知页面 ✅ 新迁移
-- msg_at_me/* - @我通知 (已在 msg_feed 中)
-- msg_reply_me/* - 回复通知 (已在 msg_feed 中)
-- msg_like_me/* - 收到的赞 (已在 msg_feed 中)
-- msg_sys_msg/* - 系统消息 (已在 msg_feed 中)
+**🔴 保留核心 (不迁移):**
+1. video/ - VideoDetailController (1560行，播放器核心)
+2. live_room/ - LiveRoomController (647行，直播间核心)
+3. search_panel/ - 搜索面板 (与 search_result 耦合)
+4. search_result/ - 兼容层 (GetX wrapper)
+5. common/common_intro_controller.dart - 视频 UI mixins (被深度依赖)
+
+**🟡 通用工具 (重导出):**
+- common/common_controller.dart → core/controllers/common_controller.dart
+- common/common_list_controller.dart → core/controllers/common_list_controller.dart
+- common/reply_controller.dart → core/controllers/reply_controller.dart
+
+**🟢 待迁移简单页面:**
+- setting/pages/* - 设置页面 (相对独立)
+- dynamics/* - 动态组件 (部分已在 features)
+- download/* - 下载页面 (部分已在 features)
+
+**✅ 已删除目录:**
+- msg_feed_top/ - 完全迁移到 features/msg_feed
 
 ---
 
@@ -249,7 +258,8 @@ lib/features/{feature}/
 - 创建 lib/features/msg_feed 模块
 - 迁移 4 个消息通知页面 (at_me, reply_me, like_me, sys_msg)
 - 更新路由配置使用 V2 页面
-- 提交数: 1
+- 提交数: 3
+- **删除 lib/pages/msg_feed_top/ 目录** (10个文件，1450行代码)
 
 ### 续15 - 编译错误修复 + 新搜索模块迁移
 - 修复 V2 控制器编译错误（9个文件）
