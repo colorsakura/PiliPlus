@@ -6,8 +6,8 @@
 
 - **已完成:** 85+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
-- **剩余 GetxControllers:** 11 个 (从 22 个减少 **50%**)
-- **本次会话提交:** **17 个**
+- **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
+- **本次会话提交:** **18 个**
 
 ## 🎯 核心迁移模式
 
@@ -217,20 +217,28 @@ lib/features/{feature_name}/
 - 文件: 45+ 个
 - 代码: 3,100+ 行
 
-### 待迁移控制器状态
+### 剩余 GetxControllers (17个)
 
-**剩余 GetxControllers (11个):**
+**lib/features (10个文件，11个控制器):**
 1. MainController (shell) - 核心导航控制器
 2. HomeController (home) - 主页控制器
 3. RankController (home_zone) - 排行榜控制器
-4. HistoryMultiSelectController (history) - 历史记录多选
+4. HistoryMultiSelectController (history) - 历史记录多选适配器
 5. DynamicsController (dynamics) - 动态控制器
-6. SearchResultController (search_result) - 搜索结果
-7. DownloadPageController (download) - 下载管理
-8. BaseSearchController (search) - 搜索基础控制器
-9. SSearchController (search) - 搜索控制器
-10. LoginPageController (login) - 登录页面
-11. AudioController (audio) - 音频播放器
+6. DownloadPageController (download) - 下载管理
+7. BaseSearchController (search) - 搜索基础控制器
+8. SSearchController (search) - 搜索控制器 (同文件)
+9. LoginPageController (login) - 登录页面
+10. AudioController (audio) - 音频播放器
+
+**lib/pages (7个):**
+11. CommonIntroController - 通用介绍控制器基类
+12. ReplySearchController - 回复搜索
+13. VideoDetailController - 视频详情控制器
+14. LiveRoomController - 直播间控制器
+15. LiveSearchController - 直播搜索
+16. MemberSearchController - 会员搜索
+17. _ColorSelectController - 颜色选择控制器（私有类）
 
 ## 🎯 剩余控制器 (按优先级排序)
 
@@ -309,5 +317,5 @@ lib/features/{feature_name}/
 
 ---
 
-*最后更新: 2025-02-25 (续4)*
+*最后更新: 2025-02-25 (续5)*
 *维护者: Claude Sonnet 4.6*
