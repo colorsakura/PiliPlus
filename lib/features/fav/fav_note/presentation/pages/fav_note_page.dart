@@ -1,5 +1,4 @@
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
-import 'package:PiliPlus/features/fav/fav_note/presentation/providers/fav_note_list_controller.dart';
 import 'package:PiliPlus/features/fav/fav_note/presentation/providers/fav_note_providers.dart';
 import 'package:PiliPlus/features/fav/fav_note/presentation/pages/fav_note_child_page.dart';
 import 'package:flutter/material.dart';

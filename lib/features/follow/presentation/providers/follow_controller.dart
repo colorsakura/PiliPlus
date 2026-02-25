@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/member/tags.dart';
-import 'package:PiliPlus/models/member_card_info/data.dart';
 import 'package:PiliPlus/features/follow/domain/usecases/get_member_card_info_usecase.dart';
 import 'package:PiliPlus/features/follow/domain/usecases/get_follow_up_tags_usecase.dart';
 import 'package:PiliPlus/features/follow/domain/usecases/create_follow_tag_usecase.dart';
