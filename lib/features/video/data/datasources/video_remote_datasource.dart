@@ -127,11 +127,14 @@ class VideoRemoteDataSource {
         ...params,
         if (bvid != null) 'bvid': bvid,
         if (aid != null) 'aid': aid,
-      }) as Map<String, dynamic>;
+      });
+
+      // 转换为动态Map以避免类型问题
+      final queryParams = signedParams as Map<String, dynamic>;
 
       final response = await _httpClient.get(
         VideoApiConstants.ugcUrl,
-        queryParameters: signedParams,
+        queryParameters: queryParams,
       );
 
       if (response.data['code'] == 0) {
@@ -344,11 +347,14 @@ class VideoRemoteDataSource {
         'bvid': bvid,
         'cid': cid,
         'up_mid': upMid?.toString(),
-      }) as Map<String, dynamic>;
+      });
+
+      // 转换为动态Map
+      final queryParams = params as Map<String, dynamic>;
 
       final response = await _httpClient.get(
         VideoApiConstants.aiConclusion,
-        queryParameters: params,
+        queryParameters: queryParams,
       );
 
       if (response.data['code'] == 0) {
