@@ -1,10 +1,12 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/match.dart';
+import 'package:PiliPlus/features/match/data/datasources/match_remote_datasource.dart';
 import 'package:PiliPlus/models/match/match_info/contest.dart';
 import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
 import 'package:get/get.dart';
 
 class MatchInfoController extends CommonDynController {
+  final MatchRemoteDataSource _dataSource = MatchRemoteDataSource();
+
   @override
   final int oid = int.parse(Get.parameters['cid']!);
   @override
@@ -23,10 +25,12 @@ class MatchInfoController extends CommonDynController {
   }
 
   Future<void> getMatchInfo() async {
-    final res = await MatchHttp.matchInfo(oid);
-    if (res.isSuccess) {
+    try {
+      final result = await _dataSource.matchInfo(oid);
+      infoState.value = Success(result);
       queryData();
+    } catch (e) {
+      infoState.value = Error(e.toString());
     }
-    infoState.value = res;
   }
 }
