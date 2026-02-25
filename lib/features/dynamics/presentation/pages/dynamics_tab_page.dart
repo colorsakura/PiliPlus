@@ -10,7 +10,6 @@ import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart' show DynamicsTabController;
 import 'package:PiliPlus/utils/global_data.dart';
-import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/http/loading_state.dart';
