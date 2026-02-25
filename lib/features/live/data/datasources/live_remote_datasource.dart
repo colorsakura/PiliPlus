@@ -84,21 +84,23 @@ class LiveRemoteDataSource {
     bool onlyAudio = false,
   }) async {
     try {
+      final params = <String, Object?>{
+        'room_id': roomId,
+        'protocol': '0,1',
+        'format': '0,1,2',
+        'codec': '0,1,2',
+        'platform': 'web',
+        'ptype': 8,
+        'dolby': 5,
+        'panorama': 1,
+        'web_location': 444.8,
+      };
+      if (qn != null) params['qn'] = qn;
+      if (onlyAudio) params['only_audio'] = 1;
+
       final response = await _httpClient.get(
         LiveApiConstants.liveRoomInfo,
-        queryParameters: await WbiSign.makSign({
-          'room_id': roomId,
-          'protocol': '0,1',
-          'format': '0,1,2',
-          'codec': '0,1,2',
-          'qn': qn,
-          'platform': 'web',
-          'ptype': 8,
-          'dolby': 5,
-          'panorama': 1,
-          if (onlyAudio) 'only_audio': 1,
-          'web_location': 444.8,
-        }),
+        queryParameters: await WbiSign.makSign(params.cast<String, Object>()),
       );
 
       if (response.data['code'] == 0) {

@@ -126,11 +126,18 @@ class VideoRemoteDataSource {
       };
 
       // WBI签名
-      final signedParams = await WbiSign.makSign({
-        ...params,
-        if (bvid != null) 'bvid': bvid,
-        if (aid != null) 'aid': aid,
-      });
+      final baseParams = <String, Object?>{
+        'cid': cid,
+        'qn': qn,
+        'fnval': fnval ?? 16,
+        'fnver': fnver ?? 0,
+        'fourk': fourk ? 1 : 0,
+        'session': session,
+      };
+      if (bvid != null) baseParams['bvid'] = bvid;
+      if (aid != null) baseParams['aid'] = aid;
+
+      final signedParams = await WbiSign.makSign(baseParams.cast<String, Object>());
 
       // 转换为动态Map以避免类型问题
       final queryParams = signedParams as Map<String, dynamic>;
@@ -346,14 +353,16 @@ class VideoRemoteDataSource {
     int? upMid,
   }) async {
     try {
-      final params = await WbiSign.makSign({
+      final params = <String, Object?>{
         'bvid': bvid,
         'cid': cid,
-        'up_mid': upMid?.toString(),
-      });
+      };
+      if (upMid != null) params['up_mid'] = upMid.toString();
+
+      final signedParams = await WbiSign.makSign(params.cast<String, Object>());
 
       // 转换为动态Map
-      final queryParams = params as Map<String, dynamic>;
+      final queryParams = signedParams as Map<String, dynamic>;
 
       final response = await _httpClient.get(
         VideoApiConstants.aiConclusion,
