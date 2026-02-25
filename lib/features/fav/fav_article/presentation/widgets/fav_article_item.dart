@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/stat/stat.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/fav/fav_article/item.dart';

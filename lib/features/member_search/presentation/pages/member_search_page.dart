@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/models/common/member/search_type.dart';
 import 'package:PiliPlus/features/member_search/presentation/pages/child/view.dart';
 import 'package:PiliPlus/features/member_search/presentation/pages/controller.dart';

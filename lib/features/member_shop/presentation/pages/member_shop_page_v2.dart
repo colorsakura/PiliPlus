@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/skeleton/space_opus.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/skeleton/space_opus.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/member_shop/presentation/providers/member_shop_list_provider.dart';
 import 'package:PiliPlus/features/member_shop/presentation/widgets/item.dart';

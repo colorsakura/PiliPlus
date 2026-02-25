@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart' hide ListTile;

@@ -1,22 +1,19 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
+import 'package:PiliPlus/features/whisper_settings/whisper_settings.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pbenum.dart'
     show IMSettingType;
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_at/item.dart';
-import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
-import 'package:PiliPlus/features/whisper_settings/whisper_settings.dart';
-import 'package:PiliPlus/utils/app_scheme.dart';
-import 'package:PiliPlus/utils/date_utils.dart' show DateFormatUtils;
-import 'package:PiliPlus/utils/platform_utils.dart';
-
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 // Import PiliScheme correctly
 import 'package:PiliPlus/utils/app_scheme.dart' as app_scheme;
+import 'package:PiliPlus/utils/date_utils.dart' show DateFormatUtils;
 import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,8 +61,7 @@ class _MsgAtMePageV2State extends ConsumerState<MsgAtMePageV2> {
         ],
       ),
       body: refreshIndicator(
-        onRefresh: () =>
-            ref.read(msgAtMeControllerProvider).onRefresh(),
+        onRefresh: () => ref.read(msgAtMeControllerProvider).onRefresh(),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
@@ -76,7 +72,11 @@ class _MsgAtMePageV2State extends ConsumerState<MsgAtMePageV2> {
               sliver: Consumer(
                 builder: (context, ref, child) {
                   final controller = ref.watch(msgAtMeControllerProvider);
-                  return _buildBody(theme, controller.state.loadingState, controller);
+                  return _buildBody(
+                    theme,
+                    controller.state.loadingState,
+                    controller,
+                  );
                 },
               ),
             ),
@@ -131,7 +131,9 @@ class _MsgAtMePageV2State extends ConsumerState<MsgAtMePageV2> {
                           ? item.reply?.nickname ?? ''
                           : item.user?.nickname ?? '',
                       style: TextStyle(
-                        fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+                        fontSize: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.fontSize,
                       ),
                     ),
                     subtitle: Column(
@@ -164,7 +166,8 @@ class _MsgAtMePageV2State extends ConsumerState<MsgAtMePageV2> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.7),
                             fontSize: 13,
                           ),
                         ),

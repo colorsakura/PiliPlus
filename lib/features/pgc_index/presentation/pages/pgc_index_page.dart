@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
-import 'package:PiliPlus/common/widgets/self_sized_horizontal_list.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/self_sized_horizontal_list.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/pgc_index/domain/entities/pgc_index_item.dart';
 import 'package:PiliPlus/features/pgc_index/presentation/providers/pgc_index_providers.dart';

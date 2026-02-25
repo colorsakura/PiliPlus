@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/controller.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show MainListReply, ReplyInfo, SubjectControl, Mode;

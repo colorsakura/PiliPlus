@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/models/download/download_info.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart'
     show BaseMultiSelectMixin;

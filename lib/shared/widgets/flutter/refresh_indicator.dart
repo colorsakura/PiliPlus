@@ -5,7 +5,7 @@
 import 'dart:async' show Completer;
 import 'dart:io' show Platform;
 
-import 'package:PiliPlus/common/widgets/scroll_behavior.dart';
+import 'package:PiliPlus/shared/widgets/scroll_behavior.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/material.dart' hide RefreshIndicator;

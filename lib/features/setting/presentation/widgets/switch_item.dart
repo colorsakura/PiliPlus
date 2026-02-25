@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';

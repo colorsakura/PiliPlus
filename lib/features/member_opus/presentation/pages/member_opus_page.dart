@@ -1,11 +1,11 @@
-import 'package:PiliPlus/common/skeleton/space_opus.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/space/space_opus/item.dart';
 import 'package:PiliPlus/features/member_opus/presentation/pages/member_opus_controller.dart';
 import 'package:PiliPlus/features/member_opus/presentation/widgets/space_opus_item.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/space/space_opus/item.dart';
+import 'package:PiliPlus/shared/skeleton/space_opus.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';

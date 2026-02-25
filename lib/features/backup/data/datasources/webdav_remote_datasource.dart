@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:PiliPlus/common/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:webdav_client/webdav_client.dart' as webdav;

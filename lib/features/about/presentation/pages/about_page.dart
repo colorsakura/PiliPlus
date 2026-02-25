@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:PiliPlus/build_config.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/features/about/presentation/providers/about_controller.dart';

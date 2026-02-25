@@ -1,17 +1,17 @@
-import 'package:PiliPlus/common/skeleton/video_card_v.dart';
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/button/more_btn.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/button/more_btn.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home_live/presentation/providers/live_controller.dart';
 import 'package:PiliPlus/features/home_live/presentation/providers/live_providers.dart';
 import 'package:PiliPlus/features/home_live/presentation/widgets/live_item_card.dart';
-import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/features/live_area/live_area.dart';
 import 'package:PiliPlus/features/live_follow/live_follow.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
+import 'package:PiliPlus/models/common/image_type.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -79,7 +79,11 @@ class _LivePageState extends ConsumerState<LivePage>
     );
   }
 
-  Widget _buildTop(ThemeData theme, TextScaler textScaler, LiveControllerState state) {
+  Widget _buildTop(
+    ThemeData theme,
+    TextScaler textScaler,
+    LiveControllerState state,
+  ) {
     return SliverMainAxisGroup(
       slivers: [
         if (state.followingItems != null)
@@ -156,8 +160,9 @@ class _LivePageState extends ConsumerState<LivePage>
           slivers: [
             SliverFixedExtentList.builder(
               itemExtent: 70,
-              itemCount:
-                  totalCount > followingItems.length ? followingItems.length + 1 : followingItems.length,
+              itemCount: totalCount > followingItems.length
+                  ? followingItems.length + 1
+                  : followingItems.length,
               itemBuilder: (context, index) {
                 if (index == followingItems.length) {
                   return Align(
@@ -320,7 +325,11 @@ class _LivePageState extends ConsumerState<LivePage>
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
   );
 
-  Widget _buildBody(ThemeData theme, TextScaler textScaler, LiveControllerState state) {
+  Widget _buildBody(
+    ThemeData theme,
+    TextScaler textScaler,
+    LiveControllerState state,
+  ) {
     if (state.isLoading && state.streams.isEmpty) {
       return SliverGrid.builder(
         gridDelegate: gridDelegate,
@@ -358,7 +367,9 @@ class _LivePageState extends ConsumerState<LivePage>
                     fontSize: 14,
                   ),
                 ),
-                if (state.areaIndex == 0 && state.areaItems != null && state.areaItems!.isNotEmpty) ...[
+                if (state.areaIndex == 0 &&
+                    state.areaItems != null &&
+                    state.areaItems!.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(
                     '请选择上方分区查看更多内容',
@@ -382,13 +393,15 @@ class _LivePageState extends ConsumerState<LivePage>
       slivers.add(_buildSortTags(theme, textScaler, state));
     }
 
-    slivers.add(SliverGrid.builder(
-      gridDelegate: gridDelegate,
-      itemBuilder: (context, index) {
-        return LiveItemCard(stream: state.streams[index]);
-      },
-      itemCount: state.streams.length,
-    ));
+    slivers.add(
+      SliverGrid.builder(
+        gridDelegate: gridDelegate,
+        itemBuilder: (context, index) {
+          return LiveItemCard(stream: state.streams[index]);
+        },
+        itemCount: state.streams.length,
+      ),
+    );
 
     // 如果有多个 sliver，使用 SliverMainAxisGroup
     if (slivers.length > 1) {
@@ -423,9 +436,7 @@ class _LivePageState extends ConsumerState<LivePage>
               bgColor: isCurr
                   ? theme.colorScheme.secondaryContainer
                   : Colors.transparent,
-              textColor: isCurr
-                  ? theme.colorScheme.onSecondaryContainer
-                  : null,
+              textColor: isCurr ? theme.colorScheme.onSecondaryContainer : null,
               onTap: (_) => ref
                   .read(liveControllerProvider.notifier)
                   .selectTag(index, item.sortType),

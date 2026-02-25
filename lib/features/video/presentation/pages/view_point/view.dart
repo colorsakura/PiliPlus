@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';

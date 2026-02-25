@@ -1,7 +1,7 @@
-import 'package:PiliPlus/common/widgets/dialog/report_member.dart';
-import 'package:PiliPlus/common/widgets/dynamic_sliver_appbar_medium.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/dialog/report_member.dart';
+import 'package:PiliPlus/shared/widgets/dynamic_sliver_appbar_medium.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/features/coin_log/presentation/pages/coin_log_controller.dart' show CoinLogController;

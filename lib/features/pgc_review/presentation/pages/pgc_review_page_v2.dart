@@ -1,16 +1,18 @@
-import 'package:PiliPlus/common/skeleton/video_reply.dart';
-import 'package:PiliPlus/common/widgets/custom_icon.dart';
-import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/selectable_text.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selectable_text.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/pgc_review/presentation/pages/post/view.dart';
+import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_controller.dart';
+import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
-import 'package:PiliPlus/features/pgc_review/presentation/pages/post/view.dart';
+import 'package:PiliPlus/shared/skeleton/video_reply.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
@@ -21,8 +23,6 @@ import 'package:flutter/material.dart' hide SelectableText;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_providers.dart';
-import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_controller.dart';
 
 /// PGC Review page - V2 with Riverpod
 class PgcReviewPageV2 extends ConsumerStatefulWidget {
@@ -48,12 +48,14 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(pgcReviewControllerProvider(
-      PgcReviewParams(
-        type: widget.type,
-        mediaId: widget.mediaId,
+    _controller = ref.read(
+      pgcReviewControllerProvider(
+        PgcReviewParams(
+          type: widget.type,
+          mediaId: widget.mediaId,
+        ),
       ),
-    ));
+    );
   }
 
   @override

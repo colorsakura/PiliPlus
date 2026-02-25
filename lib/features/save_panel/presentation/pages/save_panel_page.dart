@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;

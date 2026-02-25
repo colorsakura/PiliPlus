@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/features/coin_log/domain/entities/coin_log_item.dart';
 import 'package:PiliPlus/features/coin_log/presentation/providers/coin_log_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';

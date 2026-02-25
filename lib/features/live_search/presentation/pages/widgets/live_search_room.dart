@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/image/image_save.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/image/image_save.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/live/live_search/room_item.dart';
 import 'package:PiliPlus/utils/page_utils.dart';

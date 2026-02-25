@@ -3,8 +3,8 @@ import 'dart:math' show min;
 import 'dart:ui';
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/common/widgets/pair.dart';
-import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;

@@ -12,7 +12,7 @@ library;
 
 import 'dart:ui' show lerpDouble;
 
-import 'package:PiliPlus/common/widgets/flutter/dyn/button.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'
     hide ButtonStyleButton, TextButton, InkWell;

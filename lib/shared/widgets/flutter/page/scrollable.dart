@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:PiliPlus/common/widgets/flutter/page/scrollable_helpers.dart';
+import 'package:PiliPlus/shared/widgets/flutter/page/scrollable_helpers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'

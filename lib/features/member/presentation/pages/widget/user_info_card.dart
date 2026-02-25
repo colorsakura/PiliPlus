@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/avatars.dart';
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/avatars.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/member/user_info_type.dart';

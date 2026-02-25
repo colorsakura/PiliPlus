@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/text.dart';
-import 'package:PiliPlus/common/widgets/gesture/tap_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/text.dart';
+import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
 import 'package:PiliPlus/models/video/video_ai_conclusion/model_result.dart';
 import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';

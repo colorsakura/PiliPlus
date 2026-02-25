@@ -13,7 +13,7 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:PiliPlus/common/widgets/flutter/dyn/ink_well.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide ButtonStyleButton, InkWell;
 import 'package:flutter/rendering.dart';

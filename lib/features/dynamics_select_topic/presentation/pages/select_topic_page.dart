@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:PiliPlus/common/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_topic.dart'
+import 'package:PiliPlus/shared/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_topic.dart'
     as topic_sheet;
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/presentation/providers/topic_search_controller.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/presentation/providers/topic_search_providers.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/presentation/widgets/topic_item.dart';

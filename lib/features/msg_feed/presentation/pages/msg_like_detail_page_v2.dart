@@ -1,12 +1,12 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_like_detail_controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/card.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/item.dart';
-import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_like_detail_controller.dart';
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart' show DateFormatUtils;
 import 'package:flutter/material.dart';
@@ -34,22 +34,28 @@ class _LikeDetailPageV2State extends ConsumerState<LikeDetailPageV2> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(likeDetailControllerProvider((
-        cardId: widget.cardId,
-        uri: widget.uri,
-        counts: widget.counts,
-      ))).queryData(isRefresh: true);
+      ref
+          .read(
+            likeDetailControllerProvider((
+              cardId: widget.cardId,
+              uri: widget.uri,
+              counts: widget.counts,
+            )),
+          )
+          .queryData(isRefresh: true);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final controller = ref.watch(likeDetailControllerProvider((
-      cardId: widget.cardId,
-      uri: widget.uri,
-      counts: widget.counts,
-    )));
+    final controller = ref.watch(
+      likeDetailControllerProvider((
+        cardId: widget.cardId,
+        uri: widget.uri,
+        counts: widget.counts,
+      )),
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -133,7 +139,8 @@ class _LikeDetailPageV2State extends ConsumerState<LikeDetailPageV2> {
 
   Widget _buildItem(ThemeData theme, MsgLikeDetailItem item) {
     return ListTile(
-      onTap: () => Navigator.of(context).pushNamed('/member?mid=${item.user!.mid}'),
+      onTap: () =>
+          Navigator.of(context).pushNamed('/member?mid=${item.user!.mid}'),
       leading: NetworkImgLayer(
         width: 45,
         height: 45,

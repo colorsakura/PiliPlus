@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/features/follow/presentation/pages/child/child_view.dart';
 import 'package:PiliPlus/features/follow_search/follow_search.dart';

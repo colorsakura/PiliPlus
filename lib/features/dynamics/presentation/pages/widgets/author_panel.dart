@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/common/widgets/dialog/report.dart';
-import 'package:PiliPlus/common/widgets/flutter/dyn/ink_well.dart';
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/dialog/report.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/reply/data/datasources/reply_remote_datasource.dart';

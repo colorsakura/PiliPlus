@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/feed_back.dart';

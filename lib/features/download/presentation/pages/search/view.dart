@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/features/common/presentation/pages/search/common_search_page.dart';

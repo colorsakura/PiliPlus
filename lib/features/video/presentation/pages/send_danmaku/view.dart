@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/http/danmaku.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';

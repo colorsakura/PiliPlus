@@ -1,8 +1,8 @@
 import 'dart:io' show Platform;
 
-import 'package:PiliPlus/common/widgets/gesture/tap_gesture_recognizer.dart';
-import 'package:PiliPlus/common/widgets/image/custom_grid_view.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/image/custom_grid_view.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/search.dart';

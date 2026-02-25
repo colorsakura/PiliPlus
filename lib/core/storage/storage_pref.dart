@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math' show pow, sqrt;
 
-import 'package:PiliPlus/common/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';

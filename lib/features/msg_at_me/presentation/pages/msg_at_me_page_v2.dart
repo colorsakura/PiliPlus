@@ -1,17 +1,17 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_controller.dart';
+import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_providers.dart';
+import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_page.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pbenum.dart'
     show IMSettingType;
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_at/item.dart';
-import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_providers.dart';
-import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_controller.dart';
-import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_page.dart';
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -123,8 +123,7 @@ class _MsgAtMePageV2State extends ConsumerState<MsgAtMePageV2> {
                       PiliScheme.routePushFromUrl(nativeUri);
                     },
                     onLongPress: onLongPress,
-                    onSecondaryTap:
-                        PlatformUtils.isMobile ? null : onLongPress,
+                    onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
                     leading: GestureDetector(
                       onTap: () => Navigator.of(context).pushNamed(
                         '/member?mid=${item.user?.mid}',

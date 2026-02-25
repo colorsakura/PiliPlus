@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/num_utils.dart';

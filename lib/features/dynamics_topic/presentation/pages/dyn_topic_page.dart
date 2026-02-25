@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/dynamic_sliver_appbar_medium.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dynamic_sliver_appbar_medium.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/dynamics_topic/presentation/providers/dyn_topic_controller.dart';
 import 'package:PiliPlus/features/dynamics_topic/presentation/providers/dyn_topic_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';

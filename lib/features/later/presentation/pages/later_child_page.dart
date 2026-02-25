@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/later/domain/entities/later_item.dart';
 import 'package:PiliPlus/features/later/domain/entities/later_view_type.dart';
 import 'package:PiliPlus/features/later/presentation/providers/later_controller.dart';

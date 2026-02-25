@@ -1,15 +1,15 @@
-import 'package:PiliPlus/common/skeleton/video_reply.dart';
-import 'package:PiliPlus/common/widgets/colored_box_transition.dart';
-import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/colored_box_transition.dart';
+import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
+import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
+import 'package:PiliPlus/features/video/presentation/pages/reply_reply/controller.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_grpc.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo, Mode;
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
-import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_grpc.dart';
-import 'package:PiliPlus/features/video/presentation/pages/reply_reply/controller.dart';
+import 'package:PiliPlus/shared/skeleton/video_reply.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
 import 'package:PiliPlus/utils/num_utils.dart';

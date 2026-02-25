@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/flutter/popup_menu.dart';
-import 'package:PiliPlus/common/widgets/gesture/tap_gesture_recognizer.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/flutter/popup_menu.dart';
+import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/live.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_danmaku/danmaku_msg.dart';

@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/features/member_upower_rank/presentation/providers/member_upower_rank_list_provider.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/upower_rank/rank_info.dart';

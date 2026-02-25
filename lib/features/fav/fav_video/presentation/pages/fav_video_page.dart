@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/fav/fav_video/presentation/providers/fav_video_providers.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/video/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';

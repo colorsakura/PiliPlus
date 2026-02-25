@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/common/widgets/color_palette.dart';
-import 'package:PiliPlus/common/widgets/custom_toast.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/scale_app.dart';
-import 'package:PiliPlus/common/widgets/stateful_builder.dart';
+import 'package:PiliPlus/shared/widgets/color_palette.dart';
+import 'package:PiliPlus/shared/widgets/custom_toast.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/scale_app.dart';
+import 'package:PiliPlus/shared/widgets/stateful_builder.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/common/skeleton/video_card_h.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

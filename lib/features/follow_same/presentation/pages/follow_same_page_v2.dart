@@ -1,12 +1,12 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/features/follow_same/presentation/providers/follow_same_controller.dart';
 import 'package:PiliPlus/features/follow_same/presentation/providers/follow_same_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
@@ -30,7 +30,9 @@ class FollowSamePageV2 extends ConsumerStatefulWidget {
   ConsumerState<FollowSamePageV2> createState() => _FollowSamePageV2State();
 
   static void toFollowSamePage({dynamic mid, String? name}) {
-    final midInt = mid is int ? mid : (mid != null ? int.tryParse(mid.toString()) : null);
+    final midInt = mid is int
+        ? mid
+        : (mid != null ? int.tryParse(mid.toString()) : null);
     if (midInt == null) return;
     Get.toNamed(
       '/sameFollowing',

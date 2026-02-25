@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:math' show pi, max;
 
-import 'package:PiliPlus/common/widgets/custom_icon.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
     show touchSlopH;
-import 'package:PiliPlus/common/widgets/image/custom_grid_view.dart'
+import 'package:PiliPlus/shared/widgets/image/custom_grid_view.dart'
     show CustomGridView, ImageModel;
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';

@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/flutter/vertical_tabs.dart';
+import 'package:PiliPlus/shared/widgets/flutter/vertical_tabs.dart';
 import 'package:PiliPlus/features/home_zone/zone/view_v2.dart';
 import 'package:PiliPlus/models/common/rank_type.dart';
 import 'package:flutter/material.dart';

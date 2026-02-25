@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:PiliPlus/common/widgets/image_viewer/gallery_viewer.dart';
-import 'package:PiliPlus/common/widgets/image_viewer/hero_dialog_route.dart';
+import 'package:PiliPlus/shared/widgets/image_viewer/gallery_viewer.dart';
+import 'package:PiliPlus/shared/widgets/image_viewer/hero_dialog_route.dart';
 import 'package:PiliPlus/grpc/im.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';

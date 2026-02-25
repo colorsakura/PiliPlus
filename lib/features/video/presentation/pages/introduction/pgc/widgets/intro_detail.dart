@@ -1,8 +1,8 @@
-import 'package:PiliPlus/common/widgets/flutter/page/tabs.dart';
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/text.dart';
-import 'package:PiliPlus/common/widgets/keep_alive_wrapper.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/common/widgets/stat/stat.dart';
+import 'package:PiliPlus/shared/widgets/flutter/page/tabs.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/text.dart';
+import 'package:PiliPlus/shared/widgets/keep_alive_wrapper.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';

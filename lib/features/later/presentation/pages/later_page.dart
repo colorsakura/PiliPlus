@@ -1,7 +1,7 @@
-import 'package:PiliPlus/common/widgets/flutter/page/tabs.dart';
-import 'package:PiliPlus/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/flutter/page/tabs.dart';
+import 'package:PiliPlus/shared/widgets/gesture/horizontal_drag_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/later/domain/entities/later_view_type.dart';
 import 'package:PiliPlus/features/later/presentation/pages/later_child_page.dart';
 import 'package:PiliPlus/features/later/presentation/providers/later_controller.dart';

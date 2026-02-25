@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/appbar/appbar.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/appbar/appbar.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 import 'package:PiliPlus/features/common/presentation/pages/search/common_search_controller.dart';

@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:flutter/material.dart';

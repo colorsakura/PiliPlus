@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/badge.dart';
-import 'package:PiliPlus/common/widgets/image/image_save.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/badge.dart';
+import 'package:PiliPlus/shared/widgets/image/image_save.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';

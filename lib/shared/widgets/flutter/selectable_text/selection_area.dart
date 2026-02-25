@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/selectable_region.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selectable_region.dart';
 import 'package:flutter/cupertino.dart'
     hide
         SelectableRegion,

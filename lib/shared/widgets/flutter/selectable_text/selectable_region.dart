@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/tap_and_drag.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/tap_and_drag.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart'
     hide

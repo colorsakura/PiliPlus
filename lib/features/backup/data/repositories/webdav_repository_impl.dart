@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:PiliPlus/common/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/features/backup/data/datasources/webdav_remote_datasource.dart';
 import 'package:PiliPlus/features/backup/domain/entities/backup_result.dart';
 import 'package:PiliPlus/features/backup/domain/entities/settings_data.dart';

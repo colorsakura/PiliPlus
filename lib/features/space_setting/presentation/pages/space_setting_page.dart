@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space_setting/privacy.dart';
 import 'package:PiliPlus/features/space_setting/domain/entities/space_setting_state.dart';

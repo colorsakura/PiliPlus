@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:PiliPlus/common/widgets/scale_app.dart';
+import 'package:PiliPlus/shared/widgets/scale_app.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';

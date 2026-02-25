@@ -1,10 +1,10 @@
-import 'package:PiliPlus/common/skeleton/video_card_v.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/live_follow/presentation/providers/live_follow_list_provider.dart';
 import 'package:PiliPlus/features/live_follow/presentation/widgets/live_item_follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,10 +65,10 @@ class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
   ) {
     return switch (listState) {
       Loading() => SliverGrid.builder(
-          gridDelegate: gridDelegate,
-          itemBuilder: (context, index) => const VideoCardVSkeleton(),
-          itemCount: 10,
-        ),
+        gridDelegate: gridDelegate,
+        itemBuilder: (context, index) => const VideoCardVSkeleton(),
+        itemCount: 10,
+      ),
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? SliverGrid.builder(
@@ -85,9 +85,9 @@ class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 }

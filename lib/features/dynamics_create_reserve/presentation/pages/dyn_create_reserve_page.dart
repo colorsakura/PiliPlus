@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/time_picker.dart';
+import 'package:PiliPlus/shared/widgets/time_picker.dart';
 import 'package:PiliPlus/features/dynamics_create_reserve/presentation/providers/dyn_create_reserve_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamic/dyn_reserve_info/data.dart';

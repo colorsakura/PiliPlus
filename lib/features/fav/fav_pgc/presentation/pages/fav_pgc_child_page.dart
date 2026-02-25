@@ -1,14 +1,14 @@
-import 'package:PiliPlus/common/skeleton/fav_pgc_item.dart';
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 import 'package:PiliPlus/features/fav/fav_pgc/presentation/providers/fav_pgc_list_controller.dart';
 import 'package:PiliPlus/features/fav/fav_pgc/presentation/providers/fav_pgc_providers.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/pgc/widget/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
-import 'package:PiliPlus/features/fav/presentation/pages/pgc/widget/item.dart';
+import 'package:PiliPlus/shared/skeleton/fav_pgc_item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -205,9 +205,9 @@ class _FavPgcChildPageState extends ConsumerState<FavPgcChildPage>
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 }

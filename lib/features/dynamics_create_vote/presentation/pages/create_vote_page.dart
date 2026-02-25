@@ -1,9 +1,9 @@
 import 'dart:io' show File;
 
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/time_picker.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/time_picker.dart';
 import 'package:PiliPlus/features/dynamics_create_vote/presentation/providers/vote_providers.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';

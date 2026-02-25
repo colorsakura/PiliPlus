@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/only_layout_widget.dart';
+import 'package:PiliPlus/shared/widgets/only_layout_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

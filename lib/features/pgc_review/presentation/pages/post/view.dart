@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/features/pgc_review/data/datasources/pgc_review_remote_datasource.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';

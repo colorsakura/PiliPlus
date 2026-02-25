@@ -1,13 +1,13 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_reply/item.dart';
-import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart' show DateFormatUtils;
 import 'package:flutter/material.dart' hide ListTile;
@@ -48,7 +48,11 @@ class _MsgReplyMePageV2State extends ConsumerState<MsgReplyMePageV2> {
               sliver: Consumer(
                 builder: (context, ref, child) {
                   final controller = ref.watch(msgReplyMeControllerProvider);
-                  return _buildBody(theme, controller.state.loadingState, controller);
+                  return _buildBody(
+                    theme,
+                    controller.state.loadingState,
+                    controller,
+                  );
                 },
               ),
             ),
@@ -101,7 +105,9 @@ class _MsgReplyMePageV2State extends ConsumerState<MsgReplyMePageV2> {
                     title: Text(
                       item.user?.nickname ?? '',
                       style: TextStyle(
-                        fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+                        fontSize: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.fontSize,
                       ),
                     ),
                     subtitle: Column(
@@ -121,7 +127,8 @@ class _MsgReplyMePageV2State extends ConsumerState<MsgReplyMePageV2> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.7),
                             fontSize: 13,
                           ),
                         ),

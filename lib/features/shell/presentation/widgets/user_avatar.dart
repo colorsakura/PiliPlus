@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {

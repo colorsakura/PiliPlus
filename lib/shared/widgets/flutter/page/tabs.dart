@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:PiliPlus/common/widgets/flutter/page/page_view.dart';
+import 'package:PiliPlus/shared/widgets/flutter/page/page_view.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/gestures.dart'
     show DragStartBehavior, HorizontalDragGestureRecognizer;

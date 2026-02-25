@@ -1,7 +1,7 @@
 import 'dart:async' show StreamSubscription, Timer;
 import 'dart:math' as math;
 
-import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
+import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';

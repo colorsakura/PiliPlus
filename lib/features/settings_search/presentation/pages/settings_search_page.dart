@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/search/presentation/pages/search_controller.dart' show DebounceStreamState;
 import 'package:PiliPlus/features/setting/presentation/pages/models/extra_settings.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';

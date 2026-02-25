@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:flutter/material.dart';

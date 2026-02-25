@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/flutter/dyn/text_button.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/text_button.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
 import 'package:PiliPlus/utils/num_utils.dart';

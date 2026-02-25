@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:PiliPlus/common/widgets/badge.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
-import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/shared/widgets/badge.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show Session, SessionId, SessionPageType, SessionType, UnreadStyle;
 import 'package:PiliPlus/models/common/badge_type.dart';

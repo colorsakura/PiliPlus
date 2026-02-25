@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:PiliPlus/common/widgets/flutter/selectable_text/selection_area.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selection_area.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_superchat/item.dart';
 import 'package:PiliPlus/utils/page_utils.dart';

@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_controller.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_providers.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/widgets/sub_video_card.dart';

@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/custom_height_widget.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/custom_height_widget.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';

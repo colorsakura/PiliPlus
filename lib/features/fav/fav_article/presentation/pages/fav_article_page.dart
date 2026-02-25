@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/fav/fav_article/presentation/providers/fav_article_providers.dart';
 import 'package:PiliPlus/features/fav/fav_article/presentation/widgets/fav_article_item.dart';
 import 'package:PiliPlus/http/loading_state.dart';

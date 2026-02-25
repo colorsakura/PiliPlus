@@ -1,11 +1,11 @@
-import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/msg_sys/data.dart';
-import 'package:PiliPlus/features/msg_feed/presentation/controllers/msg_feed_controllers.dart';
+import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart' show DateFormatUtils;
 import 'package:flutter/material.dart' hide ListTile;
@@ -82,12 +82,13 @@ class _MsgSysMsgPageV2State extends ConsumerState<MsgSysMsgPageV2> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     trailing: Text(
-                      DateFormatUtils.dateFormat(int.tryParse(item.timeAt ?? '0') ?? 0),
+                      DateFormatUtils.dateFormat(
+                        int.tryParse(item.timeAt ?? '0') ?? 0,
+                      ),
                       style: TextStyle(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurfaceVariant
-                            .withValues(alpha: 0.7),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                         fontSize: 13,
                       ),
                     ),

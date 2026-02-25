@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/features/live_area_detail/presentation/providers/live_area_detail_list_provider.dart';
 import 'package:PiliPlus/features/live_search/live_search.dart';
 import 'package:PiliPlus/http/loading_state.dart';

@@ -1,11 +1,11 @@
-import 'package:PiliPlus/common/skeleton/video_card_v.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/member/coin_like_arc/item.dart';
 import 'package:PiliPlus/features/member_coin_arc/presentation/widgets/item.dart';
 import 'package:PiliPlus/features/member_like_arc/presentation/pages/member_like_arc_controller.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/member/coin_like_arc/item.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/utils.dart';

@@ -2,7 +2,7 @@
 // package:PiliPlus/utils/mixins/debounce_stream_mixin.dart for reuse
 import 'dart:async';
 
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/models/search/suggest.dart';

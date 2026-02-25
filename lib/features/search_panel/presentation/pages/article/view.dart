@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/custom_sliver_persistent_header_delegate.dart';
+import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/article/controller.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/article/item.dart';

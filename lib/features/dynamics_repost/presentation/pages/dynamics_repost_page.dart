@@ -1,7 +1,7 @@
-import 'package:PiliPlus/common/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_dyn.dart'
+import 'package:PiliPlus/shared/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_dyn.dart'
     show DraggableScrollableSheet;
-import 'package:PiliPlus/common/widgets/flutter/text_field/text_field.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/models/common/member/search_type.dart';
 import 'package:PiliPlus/features/member_search/presentation/providers/member_search_providers.dart';
 import 'package:PiliPlus/features/member_search/presentation/widgets/member_search_child_page_v2.dart';

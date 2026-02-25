@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:PiliPlus/common/widgets/marquee.dart';
+import 'package:PiliPlus/shared/widgets/marquee.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';

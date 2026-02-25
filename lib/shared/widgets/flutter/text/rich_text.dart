@@ -4,7 +4,7 @@
 
 import 'dart:ui' as ui show TextHeightBehavior;
 
-import 'package:PiliPlus/common/widgets/flutter/text/paragraph.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text/paragraph.dart';
 import 'package:flutter/material.dart' hide RichText;
 import 'package:flutter/rendering.dart' hide RenderParagraph;
 

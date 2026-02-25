@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home_live/domain/entities/live_stream.dart';
 import 'package:PiliPlus/models/common/image_type.dart';

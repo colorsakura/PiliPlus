@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/avatars.dart';
-import 'package:PiliPlus/common/widgets/flutter/dyn/ink_well.dart';
-import 'package:PiliPlus/common/widgets/image/image_save.dart';
+import 'package:PiliPlus/shared/widgets/avatars.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart';
+import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/action_panel.dart';

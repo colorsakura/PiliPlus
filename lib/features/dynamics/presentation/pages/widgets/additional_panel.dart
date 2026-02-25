@@ -1,6 +1,6 @@
-import 'package:PiliPlus/common/widgets/flutter/dyn/ink_well.dart';
-import 'package:PiliPlus/common/widgets/gesture/tap_gesture_recognizer.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart';
+import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';

@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show KeywordBlockingItem;
 import 'package:PiliPlus/http/loading_state.dart';

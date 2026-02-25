@@ -1,10 +1,10 @@
-import 'package:PiliPlus/common/skeleton/video_card_v.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/providers/recommendation_controller.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,8 +68,10 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverPadding(
-              padding:
-                  const EdgeInsets.only(top: StyleString.cardSpace, bottom: 100),
+              padding: const EdgeInsets.only(
+                top: StyleString.cardSpace,
+                bottom: 100,
+              ),
               sliver: _buildBody(state),
             ),
           ],
@@ -122,8 +124,9 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
       gridDelegate: gridDelegate,
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final displayCount =
-              state.lastRefreshAt != null ? videos.length + 1 : videos.length;
+          final displayCount = state.lastRefreshAt != null
+              ? videos.length + 1
+              : videos.length;
 
           // 延迟加载更多，避免在构建过程中修改状态
           if (index == displayCount - 1) {
@@ -161,8 +164,8 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
           }
 
           // 计算实际视频索引
-          final actualIndex = state.lastRefreshAt != null &&
-                  index > state.lastRefreshAt!
+          final actualIndex =
+              state.lastRefreshAt != null && index > state.lastRefreshAt!
               ? index - 1
               : index;
 
@@ -180,8 +183,9 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
 
           return const SizedBox.shrink();
         },
-        childCount:
-            state.lastRefreshAt != null ? videos.length + 1 : videos.length,
+        childCount: state.lastRefreshAt != null
+            ? videos.length + 1
+            : videos.length,
         addAutomaticKeepAlives: true,
         addRepaintBoundaries: true,
       ),
@@ -197,12 +201,12 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
   }
 
   Widget get _buildSkeleton => SliverGrid(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => const VideoCardVSkeleton(),
-          childCount: 10,
-          addAutomaticKeepAlives: true,
-          addRepaintBoundaries: true,
-        ),
-        gridDelegate: gridDelegate,
-      );
+    delegate: SliverChildBuilderDelegate(
+      (context, index) => const VideoCardVSkeleton(),
+      childCount: 10,
+      addAutomaticKeepAlives: true,
+      addRepaintBoundaries: true,
+    ),
+    gridDelegate: gridDelegate,
+  );
 }

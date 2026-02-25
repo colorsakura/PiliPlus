@@ -1,7 +1,7 @@
-import 'package:PiliPlus/common/widgets/badge.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/progress_bar/video_progress_indicator.dart';
-import 'package:PiliPlus/common/widgets/stat/stat.dart';
+import 'package:PiliPlus/shared/widgets/badge.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/progress_bar/video_progress_indicator.dart';
+import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/later/domain/entities/later_item.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';

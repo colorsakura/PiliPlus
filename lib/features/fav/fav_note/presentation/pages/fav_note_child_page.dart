@@ -1,10 +1,10 @@
 import 'package:PiliPlus/features/fav/fav_note/presentation/providers/fav_note_list_controller.dart';
 import 'package:PiliPlus/features/fav/fav_note/presentation/providers/fav_note_providers.dart';
 import 'package:PiliPlus/features/fav/fav_note/presentation/widgets/fav_note_item.dart';
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_note/list.dart';
 import 'package:PiliPlus/utils/grid.dart';

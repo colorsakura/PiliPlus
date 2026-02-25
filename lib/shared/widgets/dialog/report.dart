@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/radio_widget.dart';
+import 'package:PiliPlus/shared/widgets/radio_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:flutter/material.dart';

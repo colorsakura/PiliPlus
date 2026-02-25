@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/fav_order_type.dart';

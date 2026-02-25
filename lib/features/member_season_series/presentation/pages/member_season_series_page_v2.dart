@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_list_provider.dart';
 import 'package:PiliPlus/features/member_season_series/presentation/widgets/season_series_card.dart';
 import 'package:PiliPlus/features/member_video/member_video.dart';

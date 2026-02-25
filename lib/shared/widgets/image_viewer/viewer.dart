@@ -17,10 +17,10 @@
 
 import 'dart:math' as math;
 
-import 'package:PiliPlus/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
+import 'package:PiliPlus/shared/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
     show touchSlopH;
-import 'package:PiliPlus/common/widgets/gesture/image_horizontal_drag_gesture_recognizer.dart';
-import 'package:PiliPlus/common/widgets/gesture/image_tap_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/gesture/image_horizontal_drag_gesture_recognizer.dart';
+import 'package:PiliPlus/shared/widgets/gesture/image_tap_gesture_recognizer.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/foundation.dart';

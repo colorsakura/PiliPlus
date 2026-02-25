@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/history/domain/entities/history_item.dart';
 import 'package:PiliPlus/features/history/presentation/providers/history_controller.dart';
 import 'package:PiliPlus/features/history/presentation/widgets/history_item_adapter.dart';

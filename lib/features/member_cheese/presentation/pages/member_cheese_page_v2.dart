@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/member_cheese/presentation/providers/member_cheese_list_provider.dart';
 import 'package:PiliPlus/features/member_cheese/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';

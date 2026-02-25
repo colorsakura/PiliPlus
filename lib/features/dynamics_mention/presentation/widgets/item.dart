@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/dynamic/dyn_mention/item.dart';
 import 'package:PiliPlus/utils/num_utils.dart';

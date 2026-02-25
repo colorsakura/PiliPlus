@@ -3,11 +3,11 @@ import 'dart:io';
 import 'dart:math' show max;
 
 import 'package:PiliPlus/app/app.dart';
-import 'package:PiliPlus/common/widgets/button/toolbar_icon_button.dart';
-import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart'
+import 'package:PiliPlus/shared/widgets/button/toolbar_icon_button.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/controller.dart'
     show RichTextType;
-import 'package:PiliPlus/common/widgets/flutter/text_field/text_field.dart';
-import 'package:PiliPlus/common/widgets/view_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
 import 'package:PiliPlus/http/loading_state.dart';

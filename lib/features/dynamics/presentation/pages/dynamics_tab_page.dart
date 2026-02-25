@@ -1,26 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:waterfall_flow/waterfall_flow.dart' as waterfall_flow;
-
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
 import 'package:PiliPlus/features/dynamics/domain/entities/dynamic_item.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/dynamic_panel_widget.dart';
-import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart'
+    show DynamicsTabController;
+import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/features/dynamics_tab/presentation/pages/dynamics_tab_controller.dart' show DynamicsTabController;
+import 'package:PiliPlus/shared/skeleton/dynamic_card.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/grid.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/common/skeleton/dynamic_card.dart';
-import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
+import 'package:waterfall_flow/waterfall_flow.dart' as waterfall_flow;
 
 /// Grid delegate for dynamics waterfall flow.
-final dynGridDelegate = waterfall_flow.SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-  maxCrossAxisExtent: Grid.smallCardWidth * 2,
-  crossAxisSpacing: 4,
-);
+final dynGridDelegate =
+    waterfall_flow.SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: Grid.smallCardWidth * 2,
+      crossAxisSpacing: 4,
+    );
 
 /// Tab page for displaying dynamics of a specific type.
 ///
@@ -82,10 +83,15 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
 
   Widget _buildBody(bool useWaterfall) {
     // Use the existing GetX controller
-    return Obx(() => _buildBodyState(_controller.loadingState.value, useWaterfall));
+    return Obx(
+      () => _buildBodyState(_controller.loadingState.value, useWaterfall),
+    );
   }
 
-  Widget _buildBodyState(LoadingState<List<DynamicItemModel>?> loadingState, bool useWaterfall) {
+  Widget _buildBodyState(
+    LoadingState<List<DynamicItemModel>?> loadingState,
+    bool useWaterfall,
+  ) {
     if (loadingState is Loading) {
       return SliverGrid.builder(
         gridDelegate: SliverGridDelegateWithExtentAndRatio(

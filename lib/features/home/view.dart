@@ -11,9 +11,9 @@
 @Deprecated(
   'Use HomePage from lib/features/home/presentation/pages/home_page.dart instead',
 )
-import 'package:PiliPlus/common/widgets/custom_height_widget.dart';
-import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
+import 'package:PiliPlus/shared/widgets/custom_height_widget.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';

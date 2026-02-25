@@ -1,5 +1,5 @@
-import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/features/follow_search/presentation/providers/follow_search_controller.dart';
 import 'package:PiliPlus/features/follow_search/presentation/providers/follow_search_providers.dart';

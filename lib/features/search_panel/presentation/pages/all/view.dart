@@ -1,12 +1,12 @@
-import 'package:PiliPlus/common/skeleton/video_card_h.dart';
-import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
+import 'package:PiliPlus/shared/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/all/controller.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/view.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/all/pgc_card_v_search.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/pgc/item.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
-import 'package:PiliPlus/features/search_panel/presentation/pages/view.dart';
+import 'package:PiliPlus/models/search/result.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';

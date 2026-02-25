@@ -1,14 +1,14 @@
 import 'dart:math' show max;
 
-import 'package:PiliPlus/common/widgets/button/icon_button.dart';
-import 'package:PiliPlus/common/widgets/button/toolbar_icon_button.dart';
-import 'package:PiliPlus/common/widgets/custom_icon.dart';
-import 'package:PiliPlus/common/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_dyn.dart'
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/button/toolbar_icon_button.dart';
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_dyn.dart'
     as dyn_sheet;
-import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
-import 'package:PiliPlus/common/widgets/flutter/text_field/text_field.dart';
-import 'package:PiliPlus/common/widgets/pair.dart';
-import 'package:PiliPlus/common/widgets/time_picker.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/controller.dart';
+import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
+import 'package:PiliPlus/shared/widgets/pair.dart';
+import 'package:PiliPlus/shared/widgets/time_picker.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';

@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:PiliPlus/app/app.dart' show MyApp;
-import 'package:PiliPlus/common/widgets/color_palette.dart';
+import 'package:PiliPlus/shared/widgets/color_palette.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';

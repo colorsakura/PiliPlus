@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
