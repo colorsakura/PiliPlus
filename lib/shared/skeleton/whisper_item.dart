@@ -1,8 +1,8 @@
-import 'package:PiliPlus/common/skeleton/skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/skeleton.dart';
 import 'package:flutter/material.dart';
 
-class MsgFeedTopSkeleton extends StatelessWidget {
-  const MsgFeedTopSkeleton({super.key});
+class WhisperItemSkeleton extends StatelessWidget {
+  const WhisperItemSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,11 @@ class MsgFeedTopSkeleton extends StatelessWidget {
         subtitle: Container(
           color: color,
           width: 125,
+          height: 11,
+        ),
+        trailing: Container(
+          color: color,
+          width: 50,
           height: 11,
         ),
       ),

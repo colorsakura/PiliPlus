@@ -1,4 +1,4 @@
-import 'package:PiliPlus/common/skeleton/skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/skeleton.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:flutter/material.dart';
 
