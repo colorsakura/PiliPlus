@@ -972,7 +972,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
           color: theme.colorScheme.outline,
         ),
       ),
-      if (MineController.anonymity.value)
+      if (MineController.anonymity?.value ?? false)
         Icon(
           MdiIcons.incognito,
           size: 15,

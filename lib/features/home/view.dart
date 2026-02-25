@@ -227,7 +227,7 @@ Widget userAvatar({
                 right: -4,
                 bottom: -4,
                 child: Obx(
-                  () => MineController.anonymity.value
+                  () => MineController.anonymity?.value ?? false
                       ? IgnorePointer(
                           child: Container(
                             padding: const .all(2),

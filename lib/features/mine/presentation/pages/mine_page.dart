@@ -163,7 +163,7 @@ class _MediaPageState extends CommonPageState<MinePage>
         ],
         Obx(
           () {
-            final anonymity = MineController.anonymity.value;
+            final anonymity = MineController.anonymity?.value ?? false;
             return IconButton(
               iconSize: iconSize,
               padding: padding,

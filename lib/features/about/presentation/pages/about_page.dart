@@ -225,7 +225,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                 );
                 await Accounts.account.putAll(res);
                 await Accounts.refresh();
-                MineController.anonymity.value = !Accounts.heartbeat.isLogin;
+                MineController.anonymity = (!Accounts.heartbeat.isLogin).obs;
                 if (Accounts.main.isLogin) {
                   await LoginUtils.onLoginMain();
                 }

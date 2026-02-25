@@ -36,8 +36,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   ThemeType get nextThemeType =>
       ThemeType.values[(themeType.value.index + 1) % ThemeType.values.length];
 
-  // 使用 late static 以延迟初始化，避免 Accounts.account 未初始化的问题
-  static late RxBool anonymity;
+  // 使用可空类型避免未初始化错误
+  static RxBool? anonymity;
 
   late final list =
       <({IconData icon, double size, String title, VoidCallback onTap})>[
@@ -83,7 +83,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   void onInit() {
     super.onInit();
     // 初始化 anonymity（必须在 Accounts.init() 之后调用）
-    anonymity = (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
+    anonymity ??= (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
     UserInfoData? userInfoCache = Pref.userInfoCache;
     if (userInfoCache != null) {
       userInfo.value = userInfoCache;
@@ -154,8 +154,11 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
       SmartDialog.showToast('请先登录');
       return;
     }
-    final newVal = !anonymity.value;
-    anonymity.value = newVal;
+    if (anonymity == null) {
+      anonymity = false.obs;
+    }
+    final newVal = !anonymity!.value;
+    anonymity!.value = newVal;
     if (newVal) {
       SmartDialog.dismiss();
       SmartDialog.show<bool>(

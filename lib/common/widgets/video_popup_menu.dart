@@ -355,8 +355,8 @@ class VideoPopupMenu extends StatelessWidget {
                   ),
                 ],
                 _VideoCustomAction(
-                  "${MineController.anonymity.value ? '退出' : '进入'}无痕模式",
-                  MineController.anonymity.value
+                  "${MineController.anonymity?.value ?? false ? '退出' : '进入'}无痕模式",
+                  MineController.anonymity?.value ?? false
                       ? const Icon(MdiIcons.incognitoOff, size: 16)
                       : const Icon(MdiIcons.incognito, size: 16),
                   MineController.onChangeAnonymity,

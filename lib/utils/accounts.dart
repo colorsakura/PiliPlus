@@ -8,6 +8,7 @@ import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
+import 'package:get/get.dart';
 
 /// 账户存储适配器
 ///
@@ -235,7 +236,7 @@ abstract final class Accounts {
             : LoginUtils.onLogoutMain());
         break;
       case AccountType.heartbeat:
-        MineController.anonymity.value = !account.isLogin;
+        MineController.anonymity = (!account.isLogin).obs;
         break;
       default:
         break;

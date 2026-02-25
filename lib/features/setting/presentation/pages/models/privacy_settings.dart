@@ -26,8 +26,8 @@ List<SettingsModel> get privacySettings => [
       setState();
     },
     leading: const Icon(Icons.privacy_tip_outlined),
-    getTitle: () => MineController.anonymity.value ? '退出无痕模式' : '进入无痕模式',
-    getSubtitle: () => MineController.anonymity.value
+    getTitle: () => MineController.anonymity?.value ?? false ? '退出无痕模式' : '进入无痕模式',
+    getSubtitle: () => MineController.anonymity?.value ?? false
         ? '已进入无痕模式，搜索、观看视频/直播不携带Cookie与CSRF，其余操作不受影响'
         : '未开启无痕模式，将使用账户信息提供完整服务',
   ),
