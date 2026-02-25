@@ -7,52 +7,71 @@ library;
 abstract class AuthApiConstants {
   // ==================== 二维码登录 ====================
   /// 获取电视登录二维码
-  static const String getTVCode = 'https://passport.bilibili.com/x/passport-tv-login/qrcode/auth_code';
+  static const String getTVCode =
+      '/x/passport-tv-login/qrcode/auth_code';
 
   /// 二维码轮询
-  static const String qrcodePoll = 'https://passport.bilibili.com/x/passport-tv-login/qrcode/poll';
-
-  /// Web 登录二维码
-  static const String getQrCode = 'https://passport.bilibili.com/x/passport-login/web/qrcode/generate';
-
-  /// Web 登录二维码轮询
-  static const String qrcodeLoginPoll = 'https://passport.bilibili.com/x/passport-login/web/qrcode/poll';
+  static const String qrcodePoll =
+      '/x/passport-tv-login/qrcode/poll';
 
   // ==================== 验证码 ====================
   /// 获取验证码
-  static const String getCaptcha = 'https://passport.bilibili.com/x/passport-login/captcha?source=main_web';
+  static const String getCaptcha =
+      '/x/passport-login/captcha?source=main_web';
+
+  /// 获取公钥（密码加密用）
+  static const String getWebKey =
+      '/x/passport-login/web/key';
 
   // ==================== 短信登录 ====================
-  /// 发送短信验证码
-  static const String smsCode = 'https://passport.bilibili.com/x/passport-login/web/sms/send';
+  /// APP发送短信验证码
+  static const String appSmsCode =
+      '/x/passport-login/sms/send';
 
-  /// 短信登录/注册
-  static const String loginBySms = 'https://passport.bilibili.com/x/passport-login/web/login/sms';
+  /// APP短信登录
+  static const String logInByAppSms =
+      '/x/passport-login/login/sms';
 
   /// 密码登录
-  static const String loginByPwdApi = 'https://passport.bilibili.com/x/passport-login/web/login';
+  static const String loginByPwdApi =
+      '/x/passport-login/oauth2/login';
+
+  // ==================== 安全中心 ====================
+  /// 获取安全中心信息
+  static const String safeCenterGetInfo =
+      '/x/safecenter/user/info';
+
+  /// 预验证码
+  static const String preCapture =
+      '/x/safecenter/captcha/pre';
+
+  /// 安全中心发送短信
+  static const String safeCenterSmsCode =
+      '/x/safecenter/common/sms/send';
+
+  /// 安全中心短信验证
+  static const String safeCenterSmsVerify =
+      '/x/safecenter/login/tel/verify';
+
+  /// OAuth2 Access Token
+  static const String oauth2AccessToken =
+      '/x/passport-login/oauth2/access_token';
 
   // ==================== 登出 ====================
   /// 退出登录
-  static const String logout = 'https://passport.bilibili.com/login/exit/v2';
-
-  // ==================== 用户信息 ====================
-  /// 导航栏用户信息
-  static const String userInfo = '/x/web-interface/nav';
-
-  /// 用户统计信息
-  static const String userStatOwner = '/x/web-interface/nav/stat';
-
-  /// 我的个人信息
-  static const String myInfo = '/x/space/acc/info';
-
-  /// 用户硬币余额
-  static const String userCoin = '/x/web-interface/coin/tick/v2';
+  static const String logout = '/login/exit/v2';
 
   // ==================== 登录设备 ====================
   /// 登录设备列表
-  static const String loginDevices = 'https://account.bilibili.com/index/pc';
+  static const String loginDevices =
+      '/x/safecenter/user_login_devices';
 
-  /// 登录日志
-  static const String loginLog = '/x/member/web/login/log';
+  // ==================== Web短信登录 ====================
+  /// Web发送短信验证码
+  static const String smsCode =
+      '/x/passport-login/web/sms/send';
+
+  /// Web密码登录
+  static const String logInByWebPwd =
+      '/x/passport-login/web/login';
 }
