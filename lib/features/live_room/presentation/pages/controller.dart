@@ -20,12 +20,17 @@ import 'package:PiliPlus/features/common/presentation/pages/publish/publish_rout
 import 'package:PiliPlus/models/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/contribution_rank/view.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/send_danmaku/view.dart';
+import 'package:PiliPlus/features/live_room/data/datasources/live_websocket_datasource_impl.dart';
+import 'package:PiliPlus/features/live_room/data/repositories/live_stream_repository_impl.dart';
+import 'package:PiliPlus/features/live_room/domain/entities/connection_config.dart';
+import 'package:PiliPlus/features/live_room/domain/entities/live_message.dart';
+import 'package:PiliPlus/features/live_room/domain/repositories/live_stream_repository.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/danmaku_options.dart';
+import 'package:PiliPlus/services/logger.dart';
 import 'package:PiliPlus/services/service_locator.dart';
-import 'package:PiliPlus/tcp/live.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/danmaku_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
@@ -38,6 +43,7 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:easy_debounce/easy_throttle.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -104,7 +110,8 @@ class LiveRoomController extends GetxController {
   late final RxList<SuperChatItem> superChatMsg = <SuperChatItem>[].obs;
   RxBool disableAutoScroll = false.obs;
   bool autoScroll = true;
-  LiveMessageStream? _msgStream;
+  StreamSubscription<LiveMessage>? _messageSubscription;
+  late final LiveStreamRepository _liveStreamRepository;
   late final ScrollController scrollController;
   late final RxInt pageIndex = 0.obs;
   PageController? pageController;
@@ -181,6 +188,9 @@ class LiveRoomController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // 初始化WebSocket仓库
+    final datasource = LiveWebSocketDatasourceImpl();
+    _liveStreamRepository = LiveStreamRepositoryImpl(datasource);
     scrollController = ScrollController()..addListener(listener);
     final account = Accounts.heartbeat;
     isLogin = account.isLogin;
@@ -330,8 +340,8 @@ class LiveRoomController extends GetxController {
   }
 
   void closeLiveMsg() {
-    _msgStream?.close();
-    _msgStream = null;
+    _messageSubscription?.cancel();
+    _messageSubscription = null;
   }
 
   @pragma('vm:notify-debugger-on-exception')
@@ -363,7 +373,7 @@ class LiveRoomController extends GetxController {
         getSuperChatMsg();
       }
     }
-    if (_msgStream != null) {
+    if (_messageSubscription != null) {
       return;
     }
     if (dmInfo != null) {
@@ -424,17 +434,28 @@ class LiveRoomController extends GetxController {
     if (info.hostList.isNullOrEmpty) {
       return;
     }
-    _msgStream =
-        LiveMessageStream(
-            streamToken: info.token!,
-            roomId: roomId,
-            uid: mid,
-            servers: info.hostList!
-                .map((host) => 'wss://${host.host}:${host.wssPort}/sub')
-                .toList(),
-          )
-          ..addEventListener(_danmakuListener)
-          ..init();
+
+    final config = LiveStreamConnectionConfig(
+      roomId: roomId,
+      uid: mid,
+      streamToken: info.token!,
+      servers: info.hostList!
+          .map((host) => 'wss://${host.host}:${host.wssPort}/sub')
+          .toList(),
+    );
+
+    _liveStreamRepository.connect(config).then((errorMessage) {
+      if (errorMessage != null) {
+        SmartDialog.showToast('弹幕连接失败: $errorMessage');
+      } else {
+        _messageSubscription = _liveStreamRepository.messageStream.listen(
+          _danmakuListener,
+          onError: (error) {
+            if (kDebugMode) logger.e('弹幕消息流错误: $error');
+          },
+        );
+      }
+    });
   }
 
   void addDm(dynamic msg, [DanmakuContentItem<DanmakuExtra>? item]) {
@@ -451,7 +472,9 @@ class LiveRoomController extends GetxController {
   }
 
   @pragma('vm:notify-debugger-on-exception')
-  void _danmakuListener(dynamic obj) {
+  void _danmakuListener(LiveMessage message) {
+    final obj = message.data;
+    if (obj == null) return;
     try {
       // logger.i(' 原始弹幕消息 ======> ${jsonEncode(obj)}');
       switch (obj['cmd']) {
