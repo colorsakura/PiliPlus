@@ -11,7 +11,7 @@ import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_controller.dart';
-import 'package:PiliPlus/pages/save_panel/view.dart';
+import 'package:PiliPlus/features/save_panel/save_panel.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';

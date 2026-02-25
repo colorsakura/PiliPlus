@@ -154,6 +154,16 @@ lib/features/{feature_name}/
 - dynamics_detail: 1 ref
 - whisper_secondary: 1 ref (已部分迁移)
 
+## 📋 已发现但无法删除的旧目录
+
+以下功能已迁移到 Riverpod，但旧目录仍包含被引用的子文件：
+- `lib/pages/whisper_secondary/` - 仍有 widgets 被引用
+- `lib/pages/whisper_settings/` - 仍有 widgets 被引用
+- `lib/pages/dynamics_detail/` - 控制器被使用
+- `lib/pages/member/` - 控制器被使用
+
+这些目录需要在页面完全迁移后才能删除。
+
 ## 📋 下一步计划
 
 ### 阶段1: 简单控制器
