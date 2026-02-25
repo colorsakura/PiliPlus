@@ -27,14 +27,20 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 class HttpClientManager {
   HttpClientManager._();
 
-  /// Dio 实例
-  static late final Dio instance;
+  /// Dio 实例（懒加载初始化）
+  static Dio? _instance;
+
+  /// 获取 Dio 实例
+  static Dio get instance {
+    _instance ??= _createDio();
+    return _instance!;
+  }
 
   /// 初始化 HTTP 客户端
   ///
-  /// 应在应用启动时调用一次
+  /// 应在应用启动时调用一次（可选，会自动懒加载）
   static void initialize() {
-    instance = _createDio();
+    _instance ??= _createDio();
   }
 
   /// 创建 Dio 实例
