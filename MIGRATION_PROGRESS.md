@@ -9,12 +9,12 @@
 
 ## 📊 总体进度
 
-- **已完成:** 94+ 功能模块完全迁移
+- **已完成:** 98+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
-- **剩余 GetxControllers:** 14 个 (7 个在 lib/features，7 个在 lib/pages)
+- **剩余 GetxControllers:** 10 个 (5 个在 lib/features，5 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
 - **已标记 deprecated:** MainController, HomeController (已有 V2 版本)
-- **本次会话提交:** **13 个** (含编译错误修复)
+- **本次会话提交:** **1 个** (msg_feed 迁移)
 
 ## 🎯 核心迁移模式
 
@@ -87,7 +87,30 @@ lib/features/{feature}/
 
 ## 🔄 最近会话迁移 (2025-02-25)
 
-### 本次会话已完成迁移 (9个功能模块)
+### 本次会话已完成迁移 (1个功能模块)
+
+1. ✅ **msg_feed** - 迁移所有消息通知页面到 Riverpod (msg_at_me, msg_reply_me, msg_like_me, msg_sys_msg)
+
+**技术要点:**
+- 所有 4 个消息通知页面迁移到 `lib/features/msg_feed/`
+- 使用 ChangeNotifier + Provider 模式替代 GetX
+- 移除对 GetX mixins 的依赖
+- 路由更新为使用 V2 页面
+
+**新增功能模块:**
+- `lib/features/msg_feed/` - 消息通知中心
+  - msg_at_me_controller.dart - @我通知
+  - msg_reply_me_controller.dart - 回复通知
+  - msg_like_me_controller.dart - 收到的赞
+  - msg_sys_msg_controller.dart - 系统消息
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+### 前一会话已完成迁移 (9个功能模块)
+
+1. ✅ **color_select** - 迁移 _ColorSelectController 到 Riverpod Provider
 
 1. ✅ **color_select** - 迁移 _ColorSelectController 到 Riverpod Provider
 2. ✅ **home_zone** - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
@@ -158,15 +181,19 @@ lib/features/{feature}/
 10. LoginPageController (login)
 11. AudioController (audio)
 
-**lib/pages (7个):**
-1. CommonController - 通用控制器基类
-2. CommonIntroController - 通用介绍控制器基类
+**lib/pages (5个):**
+1. CommonController - 通用控制器基类 (已重导出到 core/controllers)
+2. CommonIntroController - 通用介绍控制器基类 (保留)
 3. SearchResultController - **兼容层**
 4. VideoDetailController
 5. LiveRoomController
-6. ReplySearchController - 有 V2 版本
-7. LiveSearchController - 有 V2 版本
-8. MemberSearchController - 有 V2 版本
+
+**已从 pages 迁移到 features:**
+- msg_feed/* - 所有消息通知页面 ✅ 新迁移
+- msg_at_me/* - @我通知 (已在 msg_feed 中)
+- msg_reply_me/* - 回复通知 (已在 msg_feed 中)
+- msg_like_me/* - 收到的赞 (已在 msg_feed 中)
+- msg_sys_msg/* - 系统消息 (已在 msg_feed 中)
 
 ---
 
@@ -177,14 +204,15 @@ lib/features/{feature}/
 优先选择已创建 V2 控制器的功能进行路由切换，然后继续创建剩余控制器的 V2 版本。
 
 1. **路由切换** (有 V2 版本):
-   - color_select - 已完成
-   - home_zone - 已创建 V2
-   - history - 已创建 V2
-   - member_contribute - 已创建 V2
-   - download - 已创建 V2
-   - member_search - 已创建 V2
-   - live_search - 已创建 V2
-   - reply_search - 已创建 V2
+   - color_select - 已完成 ✅
+   - home_zone - 已创建 V2 ✅
+   - history - 已创建 V2 ✅
+   - member_contribute - 已创建 V2 ✅
+   - download - 已创建 V2 ✅
+   - member_search - 已创建 V2 ✅
+   - live_search - 已创建 V2 ✅
+   - reply_search - 已创建 V2 ✅
+   - **msg_feed** - 本次会话完成 ✅
 
 2. **创建 V2 控制器** (按复杂度):
    - 中等: DynamicsController
@@ -212,10 +240,16 @@ lib/features/{feature}/
 
 ---
 
-*最后更新: 2025-02-25 (续15)*
+*最后更新: 2025-02-25 (续16)*
 *维护者: Claude Sonnet 4.6*
 
 ## 📝 会话记录
+
+### 续16 - lib/pages/msg_feed_top 迁移
+- 创建 lib/features/msg_feed 模块
+- 迁移 4 个消息通知页面 (at_me, reply_me, like_me, sys_msg)
+- 更新路由配置使用 V2 页面
+- 提交数: 1
 
 ### 续15 - 编译错误修复 + 新搜索模块迁移
 - 修复 V2 控制器编译错误（9个文件）
