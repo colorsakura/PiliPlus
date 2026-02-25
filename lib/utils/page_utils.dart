@@ -247,7 +247,7 @@ abstract final class PageUtils {
             }
           }
           // redirectUrl from intro
-          final res = await VideoHttp.videoIntro(bvid: archive.bvid!);
+          final res = await VideoHttp.videoInfo(bvid: archive.bvid!);
           if (res.dataOrNull?.redirectUrl case final redirectUrl?) {
             if (viewPgcFromUri(redirectUrl)) {
               return;
