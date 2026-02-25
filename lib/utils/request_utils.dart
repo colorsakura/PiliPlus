@@ -12,7 +12,7 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/http/user.dart';
-import 'package:PiliPlus/http/validate.dart';
+import 'package:PiliPlus/features/validate/data/datasources/validate_remote_datasource.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/login/model.dart';
@@ -494,13 +494,8 @@ abstract final class RequestUtils {
       return;
     }
 
-    final res = await ValidateHttp.gaiaVgateRegister(vVoucher);
-    if (!res.isSuccess) {
-      res.toast();
-      return;
-    }
-
-    final resData = res.data;
+    final dataSource = ValidateRemoteDataSource();
+    final resData = await dataSource.gaiaVgateRegister(vVoucher);
     if (resData == null) {
       SmartDialog.showToast("null data");
       return;
@@ -525,14 +520,15 @@ abstract final class RequestUtils {
     }
 
     Future<void> gaiaVgateValidate() async {
-      final res = await ValidateHttp.gaiaVgateValidate(
-        challenge: captchaData.geetest?.challenge,
-        seccode: captchaData.seccode,
-        token: captchaData.token,
-        validate: captchaData.validate,
-      );
-      if (res case Success(:final response?)) {
-        if (response['is_valid'] == 1) {
+      final dataSource = ValidateRemoteDataSource();
+      try {
+        final response = await dataSource.gaiaVgateValidate(
+          challenge: captchaData.geetest?.challenge,
+          seccode: captchaData.seccode,
+          token: captchaData.token,
+          validate: captchaData.validate,
+        );
+        if (response != null && response['is_valid'] == 1) {
           final griskId = response['grisk_id'];
           if (griskId is String) {
             onSuccess(griskId);
@@ -540,8 +536,8 @@ abstract final class RequestUtils {
         } else {
           SmartDialog.showToast('invalid');
         }
-      } else {
-        res.toast();
+      } catch (e) {
+        SmartDialog.showToast('validation failed: $e');
       }
     }
 
