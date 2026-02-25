@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Remote datasource provider
 final danmakuBlockRemoteDatasourceProvider =
     Provider<DanmakuBlockRemoteDatasource>((ref) {
-  return const DanmakuBlockRemoteDatasource();
+  return DanmakuBlockRemoteDatasource();
 });
 
 /// Repository provider

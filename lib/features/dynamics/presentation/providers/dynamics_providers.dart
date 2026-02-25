@@ -15,7 +15,7 @@ final dynamicsLocalDataSourceProvider = Provider<DynamicsLocalDataSource>((ref) 
 
 /// Remote data source provider.
 final dynamicsRemoteDataSourceProvider = Provider<DynamicsRemoteDataSource>((ref) {
-  return const DynamicsRemoteDataSource();
+  return DynamicsRemoteDataSource();
 });
 
 /// Dynamics repository provider.
