@@ -112,7 +112,7 @@ class Routes {
     GetPage(name: '/liveRoom', page: () => const LiveRoomPage()),
     // 用户中心
     GetPage(name: '/member', page: () => const MemberPage()),
-    GetPage(name: '/memberSearch', page: () => const MemberSearchPage()),
+    GetPage(name: '/memberSearch', page: () => const MemberSearchPageV2()),
     // 推荐流设置
     GetPage(name: '/recommendSetting', page: () => const RecommendSetting()),
     // 音视频设置

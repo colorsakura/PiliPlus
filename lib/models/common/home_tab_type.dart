@@ -2,7 +2,7 @@ import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
 import 'package:PiliPlus/features/home_zone/controller.dart';
-import 'package:PiliPlus/features/home_zone/view.dart';
+import 'package:PiliPlus/features/home_zone/view_v2.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/pages/common/common_controller.dart';
 import 'package:PiliPlus/features/pgc/presentation/pages/pgc_controller.dart';
@@ -68,7 +68,7 @@ enum HomeTabType implements EnumWithLabel {
     HomeTabType.live => const LivePage(),
     HomeTabType.rcmd => const RcmdPage(),
     HomeTabType.hot => const HotPage(),
-    HomeTabType.rank => const RankPage(),
+    HomeTabType.rank => const RankPageV2(),
     HomeTabType.bangumi => const PgcPage(tabType: HomeTabType.bangumi),
     HomeTabType.cinema => const PgcPage(tabType: HomeTabType.cinema),
   };

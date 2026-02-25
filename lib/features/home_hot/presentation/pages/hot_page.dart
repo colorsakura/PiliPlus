@@ -7,7 +7,7 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
-import 'package:PiliPlus/features/home_zone/view.dart';
+import 'package:PiliPlus/features/home_zone/view_v2.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -96,7 +96,7 @@ class _HotPageState extends ConsumerState<HotPage>
                               Scaffold(
                                 resizeToAvoidBottomInset: false,
                                 appBar: AppBar(title: const Text('排行榜')),
-                                body: const ViewSafeArea(child: RankPage()),
+                                body: const ViewSafeArea(child: RankPageV2()),
                               ),
                             );
                           }

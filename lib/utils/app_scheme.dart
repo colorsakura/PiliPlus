@@ -375,7 +375,7 @@ abstract final class PiliScheme {
               Scaffold(
                 resizeToAvoidBottomInset: false,
                 appBar: AppBar(title: const Text('排行榜')),
-                body: const ViewSafeArea(child: RankPage()),
+                body: const ViewSafeArea(child: RankPageV2()),
               ),
             );
             return true;
