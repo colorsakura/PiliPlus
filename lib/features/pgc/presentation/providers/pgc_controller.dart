@@ -110,27 +110,34 @@ class PgcController extends ChangeNotifier {
 
     if (result case Success(:final response)) {
       if (response == null || response.isEmpty) {
-        _updateState(_state.copyWith(
-          mainListState: isRefresh ? result : _state.mainListState,
-          isMainEnd: true,
-        ));
+        _updateState(
+          _state.copyWith(
+            mainListState: isRefresh ? result : _state.mainListState,
+            isMainEnd: true,
+          ),
+        );
       } else if (isRefresh) {
-        _updateState(_state.copyWith(
-          mainListState: result,
-          currentPage: 2,
-          isMainEnd: response.isEmpty,
-        ));
+        _updateState(
+          _state.copyWith(
+            mainListState: result,
+            currentPage: 2,
+            isMainEnd: response.isEmpty,
+          ),
+        );
       } else {
         // Append to existing list
         final currentList = _state.mainListState is Success
-            ? (_state.mainListState as Success<List<PgcIndexItem>?>).response ?? []
+            ? (_state.mainListState as Success<List<PgcIndexItem>?>).response ??
+                  []
             : <PgcIndexItem>[];
         final newList = [...currentList, ...response];
-        _updateState(_state.copyWith(
-          mainListState: Success(newList),
-          currentPage: page + 1,
-          isMainEnd: response.isEmpty,
-        ));
+        _updateState(
+          _state.copyWith(
+            mainListState: Success(newList),
+            currentPage: page + 1,
+            isMainEnd: response.isEmpty,
+          ),
+        );
       }
     } else {
       _updateState(_state.copyWith(mainListState: result));
@@ -147,27 +154,35 @@ class PgcController extends ChangeNotifier {
 
     if (result case Success(:final response)) {
       if (response == null || response.isEmpty) {
-        _updateState(_state.copyWith(
-          followListState: isRefresh ? result : _state.followListState,
-          isFollowEnd: true,
-        ));
+        _updateState(
+          _state.copyWith(
+            followListState: isRefresh ? result : _state.followListState,
+            isFollowEnd: true,
+          ),
+        );
       } else if (isRefresh) {
-        _updateState(_state.copyWith(
-          followListState: result,
-          followPage: 2,
-          isFollowEnd: response.isEmpty,
-        ));
+        _updateState(
+          _state.copyWith(
+            followListState: result,
+            followPage: 2,
+            isFollowEnd: response.isEmpty,
+          ),
+        );
       } else {
         // Append to existing list
         final currentList = _state.followListState is Success
-            ? (_state.followListState as Success<List<FavPgcItemModel>?>).response ?? []
+            ? (_state.followListState as Success<List<FavPgcItemModel>?>)
+                      .response ??
+                  []
             : <FavPgcItemModel>[];
         final newList = [...currentList, ...response];
-        _updateState(_state.copyWith(
-          followListState: Success(newList),
-          followPage: page + 1,
-          isFollowEnd: response.isEmpty,
-        ));
+        _updateState(
+          _state.copyWith(
+            followListState: Success(newList),
+            followPage: page + 1,
+            isFollowEnd: response.isEmpty,
+          ),
+        );
       }
     } else {
       _updateState(_state.copyWith(followListState: result));

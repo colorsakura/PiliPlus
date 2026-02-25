@@ -29,10 +29,11 @@ class FollowSameParams {
 }
 
 // Remote Datasource Provider
-final followSameRemoteDatasourceProvider =
-    Provider<FollowSameRemoteDatasource>((ref) {
-  return const FollowSameRemoteDatasource();
-});
+final followSameRemoteDatasourceProvider = Provider<FollowSameRemoteDatasource>(
+  (ref) {
+    return const FollowSameRemoteDatasource();
+  },
+);
 
 // Repository Provider
 final followSameRepositoryProvider = Provider<FollowSameRepository>((ref) {
@@ -41,7 +42,9 @@ final followSameRepositoryProvider = Provider<FollowSameRepository>((ref) {
 });
 
 // Use Cases Providers
-final getSameFollowListUseCaseProvider = Provider<GetSameFollowListUseCase>((ref) {
+final getSameFollowListUseCaseProvider = Provider<GetSameFollowListUseCase>((
+  ref,
+) {
   final repository = ref.watch(followSameRepositoryProvider);
   return GetSameFollowListUseCase(repository);
 });
@@ -54,12 +57,12 @@ final getSameUserNameUseCaseProvider = Provider<GetSameUserNameUseCase>((ref) {
 // Controller Provider - uses Provider.family for parameterization
 final followSameControllerProvider =
     Provider.family<FollowSameController, FollowSameParams>((ref, params) {
-  final getListUseCase = ref.watch(getSameFollowListUseCaseProvider);
-  final getUserNameUseCase = ref.watch(getSameUserNameUseCaseProvider);
-  return FollowSameController(
-    getListUseCase: getListUseCase,
-    getUserNameUseCase: getUserNameUseCase,
-    mid: params.mid,
-    name: params.name,
-  );
-});
+      final getListUseCase = ref.watch(getSameFollowListUseCaseProvider);
+      final getUserNameUseCase = ref.watch(getSameUserNameUseCaseProvider);
+      return FollowSameController(
+        getListUseCase: getListUseCase,
+        getUserNameUseCase: getUserNameUseCase,
+        mid: params.mid,
+        name: params.name,
+      );
+    });

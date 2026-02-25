@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Remote datasource provider
 final followSearchRemoteDatasourceProvider =
     Provider<FollowSearchRemoteDatasource>((ref) {
-  return const FollowSearchRemoteDatasource();
-});
+      return const FollowSearchRemoteDatasource();
+    });
 
 /// Repository provider
 final followSearchRepositoryProvider = Provider<FollowSearchRepository>((ref) {
@@ -26,8 +26,8 @@ final searchFollowsUseCaseProvider = Provider<SearchFollowsUseCase>((ref) {
 /// Follow search controller provider (family for different mid values)
 final followSearchControllerProvider =
     Provider.family<FollowSearchController, int>((ref, mid) {
-  return FollowSearchController(
-    mid: mid,
-    searchFollowsUseCase: ref.watch(searchFollowsUseCaseProvider),
-  );
-});
+      return FollowSearchController(
+        mid: mid,
+        searchFollowsUseCase: ref.watch(searchFollowsUseCaseProvider),
+      );
+    });

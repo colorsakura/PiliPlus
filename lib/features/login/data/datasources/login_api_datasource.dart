@@ -122,11 +122,7 @@ class LoginRemoteDataSource {
       if (response.data['code'] == 0) {
         return {'status': true, 'data': response.data['data']};
       } else {
-        return {
-          'status': false,
-          'data': {},
-          'msg': response.data['message']
-        };
+        return {'status': false, 'data': {}, 'msg': response.data['message']};
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -222,9 +218,9 @@ class LoginRemoteDataSource {
   }) async {
     try {
       final dynamic publicKey = RSAKeyParser().parse(key);
-      final passwordEncrypted = Encrypter(RSA(publicKey: publicKey))
-          .encrypt(salt + password)
-          .base64;
+      final passwordEncrypted = Encrypter(
+        RSA(publicKey: publicKey),
+      ).encrypt(salt + password).base64;
 
       final data = {
         'bili_local_id': deviceId,
@@ -238,9 +234,9 @@ class LoginRemoteDataSource {
         'device_platform': 'Android14vivo',
         'disable_rcmd': '0',
         'dt': Uri.encodeComponent(
-          Encrypter(RSA(publicKey: publicKey))
-              .encrypt(Utils.generateRandomString(16))
-              .base64,
+          Encrypter(
+            RSA(publicKey: publicKey),
+          ).encrypt(Utils.generateRandomString(16)).base64,
         ),
         'from_pv': 'main.homepage.avatar-nologin.all.click',
         'from_url': Uri.encodeComponent('bilibili://pegasus/promo'),
@@ -318,9 +314,9 @@ class LoginRemoteDataSource {
         'device_platform': 'Android14vivo',
         'disable_rcmd': '0',
         'dt': Uri.encodeComponent(
-          Encrypter(RSA(publicKey: publicKey))
-              .encrypt(Utils.generateRandomString(16))
-              .base64,
+          Encrypter(
+            RSA(publicKey: publicKey),
+          ).encrypt(Utils.generateRandomString(16)).base64,
         ),
         'from_pv': 'main.my-information.my-login.0.click',
         'from_url': Uri.encodeComponent('bilibili://user_center/mine'),
@@ -548,7 +544,7 @@ class LoginRemoteDataSource {
 
       return {
         'status': response.data['code'] == 0,
-        'msg': response.data['message']
+        'msg': response.data['message'],
       };
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);

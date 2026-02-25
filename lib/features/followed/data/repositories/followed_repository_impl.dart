@@ -13,11 +13,10 @@ class FollowedRepositoryImpl implements FollowedRepository {
   Future<LoadingState<FollowData>> getFollowedList({
     required int mid,
     required int pn,
-  }) =>
-      _datasource.getFollowedList(
-        mid: mid,
-        pn: pn,
-      );
+  }) => _datasource.getFollowedList(
+    mid: mid,
+    pn: pn,
+  );
 
   @override
   Future<String?> getUserName(int mid) => _datasource.getUserName(mid);

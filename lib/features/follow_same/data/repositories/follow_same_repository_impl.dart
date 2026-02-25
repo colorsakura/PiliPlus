@@ -13,11 +13,10 @@ class FollowSameRepositoryImpl implements FollowSameRepository {
   Future<LoadingState<FollowData>> getSameFollowList({
     required int mid,
     required int pn,
-  }) =>
-      _datasource.getSameFollowList(
-        mid: mid,
-        pn: pn,
-      );
+  }) => _datasource.getSameFollowList(
+    mid: mid,
+    pn: pn,
+  );
 
   @override
   Future<String?> getUserName(int mid) => _datasource.getUserName(mid);

@@ -42,8 +42,8 @@ class NavigationConfig {
   /// 获取当前导航类型
   NavigationBarType get currentNav =>
       navigationBars.isNotEmpty && selectedIndex < navigationBars.length
-          ? navigationBars[selectedIndex]
-          : NavigationBarType.home;
+      ? navigationBars[selectedIndex]
+      : NavigationBarType.home;
 
   NavigationConfig copyWith({
     List<NavigationBarType>? navigationBars,

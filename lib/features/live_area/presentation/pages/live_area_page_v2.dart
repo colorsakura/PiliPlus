@@ -88,7 +88,8 @@ class LiveAreaPageV2 extends ConsumerWidget {
                             .map(
                               (e) => KeepAliveWrapper(
                                 builder: (context) {
-                                  if (e.areaList == null || e.areaList!.isEmpty) {
+                                  if (e.areaList == null ||
+                                      e.areaList!.isEmpty) {
                                     return const SizedBox.shrink();
                                   }
                                   return GridView.builder(

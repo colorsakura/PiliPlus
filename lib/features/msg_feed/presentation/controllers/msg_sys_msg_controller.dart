@@ -24,7 +24,9 @@ class MsgSysMsgController extends ChangeNotifier {
     _updateState(_state.copyWith(isLoading: true));
 
     try {
-      final result = await MsgHttp.msgFeedNotify(cursor: isRefresh ? null : cursor);
+      final result = await MsgHttp.msgFeedNotify(
+        cursor: isRefresh ? null : cursor,
+      );
 
       if (result case Success(:final response)) {
         final items = response ?? [];
@@ -36,23 +38,29 @@ class MsgSysMsgController extends ChangeNotifier {
 
         final allItems = isRefresh ? items : [..._state.items, ...items];
 
-        _updateState(_state.copyWith(
-          isLoading: false,
-          loadingState: Success(allItems),
-          items: allItems,
-          error: null,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            loadingState: Success(allItems),
+            items: allItems,
+            error: null,
+          ),
+        );
       } else if (result case Error(:final errMsg)) {
-        _updateState(_state.copyWith(
-          isLoading: false,
-          error: errMsg,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            error: errMsg,
+          ),
+        );
       }
     } catch (e) {
-      _updateState(_state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      ));
+      _updateState(
+        _state.copyWith(
+          isLoading: false,
+          error: e.toString(),
+        ),
+      );
     }
   }
 
@@ -111,8 +119,7 @@ class MsgSysMsgState {
   }
 }
 
-final msgSysMsgControllerProvider =
-    Provider<MsgSysMsgController>((ref) {
+final msgSysMsgControllerProvider = Provider<MsgSysMsgController>((ref) {
   final controller = MsgSysMsgController();
   ref.onDispose(controller.dispose);
   return controller;

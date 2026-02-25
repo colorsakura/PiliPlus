@@ -7,8 +7,8 @@ import 'package:PiliPlus/features/live_dm_block/presentation/providers/live_dm_b
 // Remote Datasource Provider
 final liveDmBlockRemoteDatasourceProvider =
     Provider<LiveDmBlockRemoteDatasource>((ref) {
-  return const LiveDmBlockRemoteDatasource();
-});
+      return const LiveDmBlockRemoteDatasource();
+    });
 
 // Repository Provider
 final liveDmBlockRepositoryProvider = Provider<LiveDmBlockRepository>((ref) {
@@ -19,8 +19,8 @@ final liveDmBlockRepositoryProvider = Provider<LiveDmBlockRepository>((ref) {
 // Controller Provider - uses Provider.family for different roomIds
 final liveDmBlockControllerProvider =
     Provider.family<LiveDmBlockController, String>((ref, roomId) {
-  return LiveDmBlockController(
-    roomId: roomId,
-    repository: ref.watch(liveDmBlockRepositoryProvider),
-  );
-});
+      return LiveDmBlockController(
+        roomId: roomId,
+        repository: ref.watch(liveDmBlockRepositoryProvider),
+      );
+    });

@@ -12,17 +12,15 @@ class UnreadMessage {
   });
 
   /// 创建零未读状态
-  const UnreadMessage.zero()
-      : count = 0,
-        displayText = '';
+  const UnreadMessage.zero() : count = 0, displayText = '';
 
   /// 从数量创建实体
   factory UnreadMessage.fromCount(int count) {
     final displayText = count == 0
         ? ''
         : count > 99
-            ? '99+'
-            : count.toString();
+        ? '99+'
+        : count.toString();
     return UnreadMessage(
       count: count,
       displayText: displayText,

@@ -443,7 +443,8 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
     Widget? bottomNav;
     // 只有在竖屏模式且有至少2个导航项时才使用底部导航栏
-    final shouldUseBottomNav = useBottomNav && config.navigationBars.length >= 2;
+    final shouldUseBottomNav =
+        useBottomNav && config.navigationBars.length >= 2;
     if (shouldUseBottomNav) {
       bottomNav = _buildBottomNav(config, unreadDyn.count);
       child = Row(children: [Expanded(child: child)]);
@@ -515,7 +516,11 @@ class _ShellPageState extends ConsumerState<ShellPage>
           .map(
             (e) => BottomNavigationBarItem(
               label: e.label,
-              icon: _buildIcon(type: e, dynCount: dynCount, dynamicBadgeMode: dynamicBadgeMode),
+              icon: _buildIcon(
+                type: e,
+                dynCount: dynCount,
+                dynamicBadgeMode: dynamicBadgeMode,
+              ),
               activeIcon: _buildIcon(
                 type: e,
                 selected: true,
@@ -539,78 +544,90 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
     return config.navigationBars.length > 1
         ? context.isTablet && optTabletNav
-            ? Column(
-                children: [
-                  const SizedBox(height: 25),
-                  _buildUserAndSearchVertical(theme, dynCount, dynamicBadgeMode),
-                  const Spacer(flex: 2),
-                  Expanded(
-                    flex: 5,
-                    child: SizedBox(
-                      width: 130,
-                      child: NavigationDrawer(
-                        backgroundColor: Colors.transparent,
-                        tilePadding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 12,
-                        ),
-                        indicatorShape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                        ),
-                        onDestinationSelected: _handleNavTap,
-                        selectedIndex: config.selectedIndex,
-                        children: config.navigationBars
-                            .map(
-                              (e) => NavigationDrawerDestination(
-                                label: Text(e.label),
-                                icon: _buildIcon(
-                                  type: e,
-                                  dynCount: dynCount,
-                                  dynamicBadgeMode: dynamicBadgeMode,
+              ? Column(
+                  children: [
+                    const SizedBox(height: 25),
+                    _buildUserAndSearchVertical(
+                      theme,
+                      dynCount,
+                      dynamicBadgeMode,
+                    ),
+                    const Spacer(flex: 2),
+                    Expanded(
+                      flex: 5,
+                      child: SizedBox(
+                        width: 130,
+                        child: NavigationDrawer(
+                          backgroundColor: Colors.transparent,
+                          tilePadding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 12,
+                          ),
+                          indicatorShape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          onDestinationSelected: _handleNavTap,
+                          selectedIndex: config.selectedIndex,
+                          children: config.navigationBars
+                              .map(
+                                (e) => NavigationDrawerDestination(
+                                  label: Text(e.label),
+                                  icon: _buildIcon(
+                                    type: e,
+                                    dynCount: dynCount,
+                                    dynamicBadgeMode: dynamicBadgeMode,
+                                  ),
+                                  selectedIcon: _buildIcon(
+                                    type: e,
+                                    selected: true,
+                                    dynCount: dynCount,
+                                    dynamicBadgeMode: dynamicBadgeMode,
+                                  ),
                                 ),
-                                selectedIcon: _buildIcon(
-                                  type: e,
-                                  selected: true,
-                                  dynCount: dynCount,
-                                  dynamicBadgeMode: dynamicBadgeMode,
-                                ),
-                              ),
-                            )
-                            .toList(),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
+                  ],
+                )
+              : NavigationRail(
+                  groupAlignment: 0.5,
+                  selectedIndex: config.selectedIndex,
+                  onDestinationSelected: _handleNavTap,
+                  labelType: NavigationRailLabelType.selected,
+                  leading: _buildUserAndSearchVertical(
+                    theme,
+                    dynCount,
+                    dynamicBadgeMode,
                   ),
-                ],
-              )
-            : NavigationRail(
-                groupAlignment: 0.5,
-                selectedIndex: config.selectedIndex,
-                onDestinationSelected: _handleNavTap,
-                labelType: NavigationRailLabelType.selected,
-                leading: _buildUserAndSearchVertical(theme, dynCount, dynamicBadgeMode),
-                destinations: config.navigationBars
-                    .map(
-                      (e) => NavigationRailDestination(
-                        label: Text(e.label),
-                        icon: _buildIcon(
-                          type: e,
-                          dynCount: dynCount,
-                          dynamicBadgeMode: dynamicBadgeMode,
+                  destinations: config.navigationBars
+                      .map(
+                        (e) => NavigationRailDestination(
+                          label: Text(e.label),
+                          icon: _buildIcon(
+                            type: e,
+                            dynCount: dynCount,
+                            dynamicBadgeMode: dynamicBadgeMode,
+                          ),
+                          selectedIcon: _buildIcon(
+                            type: e,
+                            selected: true,
+                            dynCount: dynCount,
+                            dynamicBadgeMode: dynamicBadgeMode,
+                          ),
                         ),
-                        selectedIcon: _buildIcon(
-                          type: e,
-                          selected: true,
-                          dynCount: dynCount,
-                          dynamicBadgeMode: dynamicBadgeMode,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              )
+                      )
+                      .toList(),
+                )
         : Container(
             width: 80,
             padding: const EdgeInsets.only(top: 10),
-            child: _buildUserAndSearchVertical(theme, dynCount, dynamicBadgeMode),
+            child: _buildUserAndSearchVertical(
+              theme,
+              dynCount,
+              dynamicBadgeMode,
+            ),
           );
   }
 
@@ -729,14 +746,19 @@ class _ShellPageState extends ConsumerState<ShellPage>
   /// - `DynamicBadgeMode.number`: 显示数字
   /// - `DynamicBadgeMode.dot`: 显示圆点
   /// - `DynamicBadgeMode.hidden`: 不显示按钮
-  Widget _buildMsgBadge(UnreadMessage unreadMsg, DynamicBadgeMode msgBadgeMode) {
+  Widget _buildMsgBadge(
+    UnreadMessage unreadMsg,
+    DynamicBadgeMode msgBadgeMode,
+  ) {
     if (!showMsgBadge(msgBadgeMode)) {
       return const SizedBox.shrink();
     }
 
     return Badge(
       isLabelVisible: unreadMsg.hasUnread,
-      label: msgBadgeMode == DynamicBadgeMode.number && unreadMsg.displayText.isNotEmpty
+      label:
+          msgBadgeMode == DynamicBadgeMode.number &&
+              unreadMsg.displayText.isNotEmpty
           ? Text(unreadMsg.displayText)
           : null,
       padding: const EdgeInsets.symmetric(horizontal: 6),

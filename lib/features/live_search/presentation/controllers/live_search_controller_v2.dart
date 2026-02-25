@@ -10,7 +10,8 @@ import 'package:PiliPlus/utils/page_utils.dart';
 /// Live search child controller V2 (Riverpod version)
 ///
 /// Handles search results for either room or user type
-class LiveSearchChildControllerV2 extends CommonListControllerV2<LiveSearchData, dynamic> {
+class LiveSearchChildControllerV2
+    extends CommonListControllerV2<LiveSearchData, dynamic> {
   LiveSearchChildControllerV2({
     required this.parentController,
     required this.searchType,

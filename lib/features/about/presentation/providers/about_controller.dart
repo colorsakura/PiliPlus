@@ -102,7 +102,6 @@ class AboutController extends Notifier<AboutState> {
 }
 
 /// AboutController Provider
-final aboutControllerProvider =
-    NotifierProvider<AboutController, AboutState>(
+final aboutControllerProvider = NotifierProvider<AboutController, AboutState>(
   AboutController.new,
 );

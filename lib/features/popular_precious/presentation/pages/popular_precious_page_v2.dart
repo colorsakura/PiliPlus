@@ -77,9 +77,9 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage>
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 }

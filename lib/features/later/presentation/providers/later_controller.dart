@@ -148,7 +148,9 @@ class LaterController extends Notifier<LaterState> {
       if (success) {
         // 从列表中移除
         final aidInt = int.tryParse(aid);
-        final updatedItems = state.items.where((item) => item.aid != aidInt).toList();
+        final updatedItems = state.items
+            .where((item) => item.aid != aidInt)
+            .toList();
         state = state.copyWith(
           items: updatedItems,
           totalCount: state.totalCount - 1,
@@ -170,9 +172,13 @@ class LaterController extends Notifier<LaterState> {
       final success = await _removeUseCase(aidsStr);
       if (success) {
         // 从列表中移除
-        final aidInts = aids.map((e) => int.tryParse(e)).whereType<int>().toSet();
-        final updatedItems =
-            state.items.where((item) => !aidInts.contains(item.aid)).toList();
+        final aidInts = aids
+            .map((e) => int.tryParse(e))
+            .whereType<int>()
+            .toSet();
+        final updatedItems = state.items
+            .where((item) => !aidInts.contains(item.aid))
+            .toList();
         state = state.copyWith(
           items: updatedItems,
           totalCount: state.totalCount - aids.length,
@@ -212,11 +218,12 @@ final _viewTypeProvider = Provider<domain.LaterViewType>(
 );
 
 /// Provider factory that creates a unique provider per viewType
-final _laterControllers = <domain.LaterViewType,
-    NotifierProvider<LaterController, LaterState>>{};
+final _laterControllers =
+    <domain.LaterViewType, NotifierProvider<LaterController, LaterState>>{};
 
 NotifierProvider<LaterController, LaterState> _getLaterControllerProvider(
-    domain.LaterViewType viewType) {
+  domain.LaterViewType viewType,
+) {
   return _laterControllers.putIfAbsent(
     viewType,
     () => NotifierProvider<LaterController, LaterState>(
@@ -229,14 +236,14 @@ NotifierProvider<LaterController, LaterState> _getLaterControllerProvider(
 /// 使用此provider获取状态
 final laterControllerProvider =
     Provider.family<LaterState, domain.LaterViewType>((ref, viewType) {
-  final provider = _getLaterControllerProvider(viewType);
-  return ref.watch(provider);
-});
+      final provider = _getLaterControllerProvider(viewType);
+      return ref.watch(provider);
+    });
 
 /// 稍后再看控制器Notifier Provider - family pattern
 /// 使用此provider获取控制器以调用方法和访问scrollController
 final laterControllerNotifierProvider =
     Provider.family<LaterController, domain.LaterViewType>((ref, viewType) {
-  final provider = _getLaterControllerProvider(viewType);
-  return ref.watch(provider.notifier);
-});
+      final provider = _getLaterControllerProvider(viewType);
+      return ref.watch(provider.notifier);
+    });

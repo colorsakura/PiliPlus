@@ -40,24 +40,30 @@ class MsgReplyMeController extends ChangeNotifier {
 
         final allItems = isRefresh ? items : [..._state.items, ...items];
 
-        _updateState(_state.copyWith(
-          isLoading: false,
-          loadingState: Success(allItems),
-          items: allItems,
-          isEnd: isEnd,
-          error: null,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            loadingState: Success(allItems),
+            items: allItems,
+            isEnd: isEnd,
+            error: null,
+          ),
+        );
       } else if (result case Error(:final errMsg)) {
-        _updateState(_state.copyWith(
-          isLoading: false,
-          error: errMsg,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            error: errMsg,
+          ),
+        );
       }
     } catch (e) {
-      _updateState(_state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      ));
+      _updateState(
+        _state.copyWith(
+          isLoading: false,
+          error: e.toString(),
+        ),
+      );
     }
   }
 
@@ -115,8 +121,7 @@ class MsgReplyMeState {
   }
 }
 
-final msgReplyMeControllerProvider =
-    Provider<MsgReplyMeController>((ref) {
+final msgReplyMeControllerProvider = Provider<MsgReplyMeController>((ref) {
   final controller = MsgReplyMeController();
   ref.onDispose(controller.dispose);
   return controller;

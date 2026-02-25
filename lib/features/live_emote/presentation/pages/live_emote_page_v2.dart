@@ -96,11 +96,11 @@ class _LiveEmotePanelV2State extends ConsumerState<LiveEmotePanelV2>
                             ),
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: widthFac * 40,
-                              mainAxisExtent: heightFac * 40,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                            ),
+                                  maxCrossAxisExtent: widthFac * 40,
+                                  mainAxisExtent: heightFac * 40,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 8,
+                                ),
                             itemCount: emote.length,
                             itemBuilder: (context, index) {
                               final e = emote[index];

@@ -21,18 +21,18 @@ final memberShopRepositoryProvider = Provider<MemberShopRepositoryImpl>((
 /// Use case provider
 final fetchMemberShopItemsUseCaseProvider =
     Provider<FetchMemberShopItemsUseCase>(
-  (ref) {
-    return FetchMemberShopItemsUseCase(
-      ref.watch(memberShopRepositoryProvider),
+      (ref) {
+        return FetchMemberShopItemsUseCase(
+          ref.watch(memberShopRepositoryProvider),
+        );
+      },
     );
-  },
-);
 
 /// Controller provider (parameterized by member ID)
 final memberShopListControllerProvider =
     Provider.family<MemberShopListController, int>((ref, mid) {
-  return MemberShopListController(
-    mid: mid,
-    fetchShopItems: ref.watch(fetchMemberShopItemsUseCaseProvider),
-  );
-});
+      return MemberShopListController(
+        mid: mid,
+        fetchShopItems: ref.watch(fetchMemberShopItemsUseCaseProvider),
+      );
+    });

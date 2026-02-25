@@ -11,8 +11,7 @@ class GetTopicTopUseCase {
 
   Future<LoadingState<TopDetails?>> call({
     required Object topicId,
-  }) =>
-      _repository.getTopicTop(topicId: topicId);
+  }) => _repository.getTopicTop(topicId: topicId);
 }
 
 /// Get topic feed use case
@@ -25,12 +24,11 @@ class GetTopicFeedUseCase {
     required Object topicId,
     required String offset,
     required int sortBy,
-  }) =>
-      _repository.getTopicFeed(
-        topicId: topicId,
-        offset: offset,
-        sortBy: sortBy,
-      );
+  }) => _repository.getTopicFeed(
+    topicId: topicId,
+    offset: offset,
+    sortBy: sortBy,
+  );
 }
 
 /// Add topic to favorites use case

@@ -18,7 +18,9 @@ class PgcIndexRemoteDataSource {
 
     return switch (result) {
       Loading() => result,
-      Success(:final response) => Success(PgcIndexConditionData.fromJson(response)),
+      Success(:final response) => Success(
+        PgcIndexConditionData.fromJson(response),
+      ),
       Error() => result,
     };
   }

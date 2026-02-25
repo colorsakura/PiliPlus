@@ -8,14 +8,15 @@ import 'package:PiliPlus/features/subscription_detail/domain/repositories/subscr
 /// Controller for subscription detail page (Clean Architecture with Riverpod)
 ///
 /// Manages subscription folder contents with pagination
-class SubscriptionDetailController extends CommonListControllerV2<SubDetailData, SubDetailItemModel> {
+class SubscriptionDetailController
+    extends CommonListControllerV2<SubDetailData, SubDetailItemModel> {
   SubscriptionDetailController({
     required int id,
     required SubscriptionDetailRepository repository,
     SubItemModel? initialSubInfo,
-  })  : _id = id,
-        _repository = repository,
-        _subInfo = initialSubInfo {
+  }) : _id = id,
+       _repository = repository,
+       _subInfo = initialSubInfo {
     queryData();
   }
 

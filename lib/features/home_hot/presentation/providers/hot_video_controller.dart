@@ -138,5 +138,5 @@ class HotVideoController extends Notifier<HotVideoState> {
 /// 热门视频Controller Provider
 final hotVideoControllerProvider =
     NotifierProvider<HotVideoController, HotVideoState>(
-  HotVideoController.new,
-);
+      HotVideoController.new,
+    );

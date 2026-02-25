@@ -11,11 +11,10 @@ class FollowSameRemoteDatasource {
   Future<LoadingState<FollowData>> getSameFollowList({
     required int mid,
     required int pn,
-  }) =>
-      UserHttp.sameFollowing(
-        mid: mid,
-        pn: pn,
-      );
+  }) => UserHttp.sameFollowing(
+    mid: mid,
+    pn: pn,
+  );
 
   /// Get user name by mid
   Future<String?> getUserName(int mid) async {

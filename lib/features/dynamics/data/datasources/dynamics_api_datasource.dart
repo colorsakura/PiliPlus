@@ -26,7 +26,9 @@ class DynamicsRemoteDataSource {
   }) async {
     try {
       final queryParams = {
-        if (mid != null) 'host_mid': mid else ...{
+        if (mid != null)
+          'host_mid': mid
+        else ...{
           'type': type,
           'timezone_offset': '-480',
         },
@@ -174,7 +176,9 @@ class DynamicsRemoteDataSource {
               ],
               if (title != null && title.isNotEmpty) 'title': title,
             },
-            if (privatePub != null || replyOption != null || publishTime != null)
+            if (privatePub != null ||
+                replyOption != null ||
+                publishTime != null)
               "option": {
                 'private_pub': privatePub,
                 "timer_pub_time": publishTime,

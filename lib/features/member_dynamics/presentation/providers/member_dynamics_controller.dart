@@ -12,8 +12,8 @@ class MemberDynamicsController
   MemberDynamicsController({
     required int mid,
     required MemberDynamicsRepository repository,
-  })  : _mid = mid,
-        _repository = repository {
+  }) : _mid = mid,
+       _repository = repository {
     queryData();
   }
 

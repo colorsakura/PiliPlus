@@ -52,15 +52,9 @@ class HistoryRepositoryImpl implements HistoryRepository {
       final list = response.list as List<dynamic>?;
       final tabData = response.tab as List<dynamic>?;
 
-      final items = list
-              ?.map(HistoryItemEntity.fromModel)
-              .toList() ??
-          [];
+      final items = list?.map(HistoryItemEntity.fromModel).toList() ?? [];
 
-      final tabs = tabData
-              ?.map(HistoryTabEntity.fromModel)
-              .toList() ??
-          [];
+      final tabs = tabData?.map(HistoryTabEntity.fromModel).toList() ?? [];
 
       final lastItem = list?.lastOrNull;
       final hasMore = list?.isNotEmpty == true;

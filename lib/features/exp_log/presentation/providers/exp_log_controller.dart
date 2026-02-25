@@ -64,17 +64,17 @@ class ExpLogController extends Notifier<ExpLogState> {
 
     state = switch (result) {
       Loading() => ExpLogState(
-          loadingState: LoadingState.loading(),
-          title: '经验记录',
-        ),
+        loadingState: LoadingState.loading(),
+        title: '经验记录',
+      ),
       Success(:final response) => ExpLogState(
-          loadingState: Success(response.items),
-          title: '经验记录',
-        ),
+        loadingState: Success(response.items),
+        title: '经验记录',
+      ),
       Error() => ExpLogState(
-          loadingState: result as LoadingState<List<ExpLogItemEntity>?>,
-          title: '经验记录',
-        ),
+        loadingState: result as LoadingState<List<ExpLogItemEntity>?>,
+        title: '经验记录',
+      ),
     };
   }
 

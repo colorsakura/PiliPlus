@@ -32,7 +32,9 @@ class _UpPanelWidgetState extends ConsumerState<UpPanelWidget> {
   Widget build(BuildContext context) {
     final followUpState = ref.watch(followUpControllerProvider);
     final positionStr = ref.watch(
-      dynamicsTabControllerProvider.select((config) => config.getUpPanelPosition()),
+      dynamicsTabControllerProvider.select(
+        (config) => config.getUpPanelPosition(),
+      ),
     );
     final position = UpPanelPosition.values.firstWhere(
       (e) => e.name == positionStr,
@@ -67,7 +69,9 @@ class _UpPanelWidgetState extends ConsumerState<UpPanelWidget> {
                 child: Container(
                   alignment: Alignment.center,
                   height: isTop ? 76 : 60,
-                  padding: isTop ? const EdgeInsets.only(left: 12, right: 6) : null,
+                  padding: isTop
+                      ? const EdgeInsets.only(left: 12, right: 6)
+                      : null,
                   child: Text.rich(
                     textAlign: TextAlign.center,
                     style: const TextStyle(

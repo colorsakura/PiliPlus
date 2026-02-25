@@ -137,7 +137,9 @@ class VideoRemoteDataSource {
       if (bvid != null) baseParams['bvid'] = bvid;
       if (aid != null) baseParams['aid'] = aid;
 
-      final signedParams = await WbiSign.makSign(baseParams.cast<String, Object>());
+      final signedParams = await WbiSign.makSign(
+        baseParams.cast<String, Object>(),
+      );
 
       // 转换为动态Map以避免类型问题
       final queryParams = signedParams as Map<String, dynamic>;
@@ -168,10 +170,12 @@ class VideoRemoteDataSource {
     try {
       final response = await _httpClient.post(
         VideoApiConstants.likeVideo,
-        data: {
-          'bvid': bvid,
-          'like': like ? 1 : 2,
-        } as Map<String, dynamic>,
+        data:
+            {
+                  'bvid': bvid,
+                  'like': like ? 1 : 2,
+                }
+                as Map<String, dynamic>,
       );
 
       if (response.data['code'] != 0) {

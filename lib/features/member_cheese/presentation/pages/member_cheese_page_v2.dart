@@ -24,7 +24,9 @@ class _MemberCheesePageState extends ConsumerState<MemberCheesePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(memberCheeseListControllerProvider(widget.mid));
+    final controller = ref.watch(
+      memberCheeseListControllerProvider(widget.mid),
+    );
     final listState = controller.state.listState;
 
     return refreshIndicator(

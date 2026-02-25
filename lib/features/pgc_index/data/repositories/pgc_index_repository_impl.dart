@@ -35,15 +35,17 @@ class PgcIndexRepositoryImpl implements PgcIndexRepository {
     return switch (result) {
       Loading() => LoadingState.loading(),
       Success(:final response) => Success(
-          _convertToEntity(response as PgcIndexResult),
-        ),
+        _convertToEntity(response as PgcIndexResult),
+      ),
       Error() => result as LoadingState<PgcIndexResultEntity>,
     };
   }
 
   PgcIndexResultEntity _convertToEntity(PgcIndexResult response) {
     return PgcIndexResultEntity(
-      items: response.list?.map((e) => PgcIndexItemEntity.fromModel(e)).toList(),
+      items: response.list
+          ?.map((e) => PgcIndexItemEntity.fromModel(e))
+          .toList(),
       hasNext: (response.hasNext ?? 0) != 0,
     );
   }

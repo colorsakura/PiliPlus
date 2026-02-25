@@ -4,8 +4,10 @@ import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
-import 'package:PiliPlus/features/coin_log/presentation/pages/coin_log_controller.dart' show CoinLogController;
-import 'package:PiliPlus/features/exp_log/presentation/pages/exp_log_controller.dart' show ExpLogController;
+import 'package:PiliPlus/features/coin_log/presentation/pages/coin_log_controller.dart'
+    show CoinLogController;
+import 'package:PiliPlus/features/exp_log/presentation/pages/exp_log_controller.dart'
+    show ExpLogController;
 import 'package:PiliPlus/features/log_table/log_table.dart';
 import 'package:PiliPlus/features/login_devices/login_devices.dart';
 import 'package:PiliPlus/features/login_log/login_log.dart';
@@ -25,7 +27,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:PiliPlus/features/coin_log/coin_log.dart' hide CoinLogController;
+import 'package:PiliPlus/features/coin_log/coin_log.dart'
+    hide CoinLogController;
 import 'package:PiliPlus/features/exp_log/exp_log.dart' hide ExpLogController;
 
 class MemberPage extends ConsumerStatefulWidget {
@@ -57,9 +60,11 @@ class _MemberPageState extends ConsumerState<MemberPage>
   @override
   Widget build(BuildContext context) {
     final fromViewAid = Get.parameters['from_view_aid'];
-    final controller = ref.watch(memberControllerProvider(
-      MemberParams(mid: _mid, fromViewAid: fromViewAid),
-    ));
+    final controller = ref.watch(
+      memberControllerProvider(
+        MemberParams(mid: _mid, fromViewAid: fromViewAid),
+      ),
+    );
 
     final state = controller.state;
     final tabs = state.tabs;
@@ -142,190 +147,183 @@ class _MemberPageState extends ConsumerState<MemberPage>
   }
 
   List<Widget> _actions(ColorScheme theme, MemberController controller) => [
-        IconButton(
-          tooltip: '搜索',
-          onPressed: () => Get.toNamed(
-            '/memberSearch?mid=$_mid&uname=${controller.state.username}',
+    IconButton(
+      tooltip: '搜索',
+      onPressed: () => Get.toNamed(
+        '/memberSearch?mid=$_mid&uname=${controller.state.username}',
+      ),
+      icon: const Icon(Icons.search_outlined),
+    ),
+    PopupMenuButton(
+      icon: const Icon(Icons.more_vert),
+      itemBuilder: (_) => <PopupMenuEntry>[
+        if (controller.account.isLogin && controller.account.mid != _mid) ...[
+          PopupMenuItem(
+            onTap: () => controller.blockUser(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.block, size: 19),
+                const SizedBox(width: 10),
+                Text(
+                  controller.state.relation != 128 ? '加入黑名单' : '移除黑名单',
+                ),
+              ],
+            ),
           ),
-          icon: const Icon(Icons.search_outlined),
+          if (controller.state.isFollowed == 1)
+            PopupMenuItem(
+              onTap: controller.onRemoveFan,
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.remove_circle_outline_outlined, size: 19),
+                  SizedBox(width: 10),
+                  Text('移除粉丝'),
+                ],
+              ),
+            ),
+        ],
+        PopupMenuItem(
+          onTap: controller.shareUser,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.share_outlined, size: 19),
+              const SizedBox(width: 10),
+              Text(
+                controller.account.mid != _mid ? '分享UP主' : '分享我的主页',
+              ),
+            ],
+          ),
         ),
-        PopupMenuButton(
-          icon: const Icon(Icons.more_vert),
-          itemBuilder: (_) => <PopupMenuEntry>[
-            if (controller.account.isLogin &&
-                controller.account.mid != _mid) ...[
+        PopupMenuItem(
+          onTap: () => Get.toNamed(
+            '/upowerRank',
+            parameters: {
+              'mid': controller.mid.toString(),
+            },
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.electric_bolt, size: 19),
+              SizedBox(width: 10),
+              Text('充电排行榜'),
+            ],
+          ),
+        ),
+        if (controller.account.isLogin)
+          if (controller.mid == controller.account.mid) ...[
+            if ((controller.state.loadingState.dataOrNull?.card?.vip?.status ??
+                    0) >
+                0)
               PopupMenuItem(
-                onTap: () => controller.blockUser(context),
-                child: Row(
+                onTap: controller.vipExpAdd,
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.block, size: 19),
-                    const SizedBox(width: 10),
-                    Text(
-                      controller.state.relation != 128 ? '加入黑名单' : '移除黑名单',
-                    ),
+                    Icon(Icons.upcoming_outlined, size: 19),
+                    SizedBox(width: 10),
+                    Text('大会员经验'),
                   ],
                 ),
               ),
-              if (controller.state.isFollowed == 1)
-                PopupMenuItem(
-                  onTap: controller.onRemoveFan,
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.remove_circle_outline_outlined, size: 19),
-                      SizedBox(width: 10),
-                      Text('移除粉丝'),
-                    ],
-                  ),
-                ),
-            ],
             PopupMenuItem(
-              onTap: controller.shareUser,
-              child: Row(
+              onTap: () => Get.to(const LoginDevicesPageV2()),
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.share_outlined, size: 19),
-                  const SizedBox(width: 10),
-                  Text(
-                    controller.account.mid != _mid ? '分享UP主' : '分享我的主页',
-                  ),
+                  Icon(Icons.devices, size: 18),
+                  SizedBox(width: 10),
+                  Text('登录设备'),
                 ],
               ),
             ),
             PopupMenuItem(
-              onTap: () => Get.toNamed(
-                '/upowerRank',
-                parameters: {
-                  'mid': controller.mid.toString(),
-                },
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginLogPageV2(),
+                ),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.electric_bolt, size: 19),
+                  Icon(Icons.login, size: 18),
                   SizedBox(width: 10),
-                  Text('充电排行榜'),
+                  Text('登录记录'),
                 ],
               ),
             ),
-            if (controller.account.isLogin)
-              if (controller.mid == controller.account.mid) ...[
-                if ((controller
-                            .state
-                            .loadingState
-                            .dataOrNull
-                            ?.card
-                            ?.vip
-                            ?.status ??
-                        0) >
-                    0)
-                  PopupMenuItem(
-                    onTap: controller.vipExpAdd,
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.upcoming_outlined, size: 19),
-                        SizedBox(width: 10),
-                        Text('大会员经验'),
-                      ],
-                    ),
+            PopupMenuItem(
+              onTap: () => Get.to(
+                const LogPage(),
+                arguments: CoinLogController(),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(FontAwesomeIcons.b, size: 16),
+                  SizedBox(width: 10),
+                  Text('硬币记录'),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              onTap: () => Get.to(
+                const LogPage(),
+                arguments: ExpLogController(),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.linear_scale, size: 18),
+                  SizedBox(width: 10),
+                  Text('经验记录'),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              onTap: () => Get.toNamed('/spaceSetting'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.settings_outlined, size: 19),
+                  SizedBox(width: 10),
+                  Text('空间设置'),
+                ],
+              ),
+            ),
+          ] else ...[
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              onTap: () => showMemberReportDialog(
+                context,
+                name: controller.state.username ?? '',
+                mid: _mid,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 19,
+                    color: theme.error,
                   ),
-                PopupMenuItem(
-                  onTap: () => Get.to(const LoginDevicesPageV2()),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.devices, size: 18),
-                      SizedBox(width: 10),
-                      Text('登录设备'),
-                    ],
+                  const SizedBox(width: 10),
+                  Text(
+                    '举报',
+                    style: TextStyle(color: theme.error),
                   ),
-                ),
-                PopupMenuItem(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginLogPageV2(),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.login, size: 18),
-                      SizedBox(width: 10),
-                      Text('登录记录'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  onTap: () => Get.to(
-                    const LogPage(),
-                    arguments: CoinLogController(),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(FontAwesomeIcons.b, size: 16),
-                      SizedBox(width: 10),
-                      Text('硬币记录'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  onTap: () => Get.to(
-                    const LogPage(),
-                    arguments: ExpLogController(),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.linear_scale, size: 18),
-                      SizedBox(width: 10),
-                      Text('经验记录'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  onTap: () => Get.toNamed('/spaceSetting'),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.settings_outlined, size: 19),
-                      SizedBox(width: 10),
-                      Text('空间设置'),
-                    ],
-                  ),
-                ),
-              ] else ...[
-                const PopupMenuDivider(),
-                PopupMenuItem(
-                  onTap: () => showMemberReportDialog(
-                    context,
-                    name: controller.state.username ?? '',
-                    mid: _mid,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 19,
-                        color: theme.error,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        '举报',
-                        style: TextStyle(color: theme.error),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
+            ),
           ],
-        ),
-        const SizedBox(width: 4),
-      ];
+      ],
+    ),
+    const SizedBox(width: 4),
+  ];
 
   Widget _buildBody(MemberController controller, MemberState state) {
     if (_tabController == null || state.tab2 == null) {

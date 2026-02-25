@@ -36,12 +36,14 @@ class _MemberPgcPageV2State extends ConsumerState<MemberPgcPageV2>
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(memberPgcControllerProvider(
-      MemberPgcParams(
-        mid: widget.mid,
-        initialData: widget.initialData,
+    _controller = ref.read(
+      memberPgcControllerProvider(
+        MemberPgcParams(
+          mid: widget.mid,
+          initialData: widget.initialData,
+        ),
       ),
-    ));
+    );
   }
 
   @override

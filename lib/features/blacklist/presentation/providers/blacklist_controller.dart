@@ -152,7 +152,9 @@ class BlacklistController extends Notifier<BlacklistState> {
 
   /// 从列表中移除视频（用于UI直接更新）
   void removeVideo(int index) {
-    if (state.result != null && index >= 0 && index < state.result!.items.length) {
+    if (state.result != null &&
+        index >= 0 &&
+        index < state.result!.items.length) {
       final updatedItems = List<BlacklistItemEntity>.from(state.result!.items)
         ..removeAt(index);
 
@@ -171,5 +173,5 @@ class BlacklistController extends Notifier<BlacklistState> {
 /// 黑名单Controller Provider
 final blacklistControllerProvider =
     NotifierProvider<BlacklistController, BlacklistState>(
-  BlacklistController.new,
-);
+      BlacklistController.new,
+    );

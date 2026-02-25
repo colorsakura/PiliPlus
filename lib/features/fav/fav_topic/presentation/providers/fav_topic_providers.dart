@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/fav/fav_topic/domain/usecases/remove_topic_use
 import 'package:PiliPlus/features/fav/fav_topic/presentation/providers/fav_topic_list_controller.dart';
 
 /// Provider for FavTopicRemoteDatasource
-final favTopicRemoteDatasourceProvider =
-    Provider<FavTopicRemoteDatasource>((ref) {
+final favTopicRemoteDatasourceProvider = Provider<FavTopicRemoteDatasource>((
+  ref,
+) {
   return FavTopicRemoteDatasource();
 });
 
@@ -31,8 +32,7 @@ final removeTopicUseCaseProvider = Provider<RemoveTopicUseCase>((ref) {
 });
 
 /// Provider for FavTopicController
-final favTopicControllerProvider =
-    Provider<FavTopicController>((ref) {
+final favTopicControllerProvider = Provider<FavTopicController>((ref) {
   return FavTopicController(
     getFavTopicsUseCase: ref.watch(getFavTopicsUseCaseProvider),
     removeTopicUseCase: ref.watch(removeTopicUseCaseProvider),

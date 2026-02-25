@@ -68,11 +68,13 @@ class _FavArticlePageState extends ConsumerState<FavArticlePage>
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: ref.read(favArticleControllerProvider).onReload),
+            : HttpError(
+                onReload: ref.read(favArticleControllerProvider).onReload,
+              ),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: ref.read(favArticleControllerProvider).onReload,
-        ),
+        errMsg: errMsg,
+        onReload: ref.read(favArticleControllerProvider).onReload,
+      ),
     };
   }
 

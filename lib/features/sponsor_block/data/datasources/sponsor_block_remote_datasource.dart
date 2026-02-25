@@ -35,15 +35,15 @@ class SponsorBlockRemoteDataSource {
 
   /// 获取请求选项
   Options get _options => Options(
-        followRedirects: true,
-        headers: kDebugMode
-            ? null
-            : {
-                'origin': Constants.appName,
-                'x-ext-version': BuildConfig.versionName,
-              },
-        validateStatus: (status) => true,
-      );
+    followRedirects: true,
+    headers: kDebugMode
+        ? null
+        : {
+            'origin': Constants.appName,
+            'x-ext-version': BuildConfig.versionName,
+          },
+    validateStatus: (status) => true,
+  );
 
   /// 获取错误消息
   Exception _getErrMsg(Response res) {
@@ -109,7 +109,7 @@ class SponsorBlockRemoteDataSource {
   }) async {
     try {
       assert((type == null) == (category == null));
-      
+
       final response = await _httpClient.post(
         _api(SponsorBlockApiConstants.voteOnSponsorTime),
         queryParameters: {

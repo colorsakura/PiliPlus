@@ -12,22 +12,22 @@ final memberApiDataSourceProvider = Provider<MemberRemoteDataSource>((ref) {
 /// Repository provider
 final memberUpowerRankRepositoryProvider =
     Provider<MemberUpowerRankRepositoryImpl>((
-  ref,
-) {
-  return MemberUpowerRankRepositoryImpl(
-    remoteDataSource: ref.watch(memberApiDataSourceProvider),
-  );
-});
+      ref,
+    ) {
+      return MemberUpowerRankRepositoryImpl(
+        remoteDataSource: ref.watch(memberApiDataSourceProvider),
+      );
+    });
 
 /// Use case provider
 final fetchMemberUpowerRankUseCaseProvider =
     Provider<FetchMemberUpowerRankUseCase>(
-  (ref) {
-    return FetchMemberUpowerRankUseCase(
-      ref.watch(memberUpowerRankRepositoryProvider),
+      (ref) {
+        return FetchMemberUpowerRankUseCase(
+          ref.watch(memberUpowerRankRepositoryProvider),
+        );
+      },
     );
-  },
-);
 
 /// Controller provider (parameterized by member ID)
 final memberUpowerRankListControllerProvider =

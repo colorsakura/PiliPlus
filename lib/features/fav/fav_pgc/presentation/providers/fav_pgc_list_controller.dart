@@ -105,11 +105,13 @@ class FavPgcController extends ChangeNotifier {
       // Detect end by checking if response is empty
       final isEnd = response.isEmpty;
 
-      _updateState(_state.copyWith(
-        listState: Success(newList),
-        currentPage: page + 1,
-        isEnd: isEnd,
-      ));
+      _updateState(
+        _state.copyWith(
+          listState: Success(newList),
+          currentPage: page + 1,
+          isEnd: isEnd,
+        ),
+      );
     } else if (result case Error(:final errMsg)) {
       _updateState(_state.copyWith(listState: Error(errMsg)));
     }
@@ -127,11 +129,13 @@ class FavPgcController extends ChangeNotifier {
 
   /// Reload the list
   Future<void> onReload() async {
-    _updateState(FavPgcListState(
-      listState: LoadingState.loading(),
-      currentPage: _state.currentPage,
-      isEnd: _state.isEnd,
-    ));
+    _updateState(
+      FavPgcListState(
+        listState: LoadingState.loading(),
+        currentPage: _state.currentPage,
+        isEnd: _state.isEnd,
+      ),
+    );
     await queryData(isRefresh: true);
   }
 
@@ -147,7 +151,8 @@ class FavPgcController extends ChangeNotifier {
   /// Handle select all / deselect all
   void handleSelect({bool checked = false}) {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavPgcItemModel>?>).response;
       if (list != null) {
         for (final item in list) {
           item.checked = checked;
@@ -155,7 +160,9 @@ class FavPgcController extends ChangeNotifier {
       }
     }
     _allSelected = checked;
-    _checkedCount = checked ? (_state.listState as Success).response?.length ?? 0 : 0;
+    _checkedCount = checked
+        ? (_state.listState as Success).response?.length ?? 0
+        : 0;
     notifyListeners();
   }
 
@@ -169,7 +176,8 @@ class FavPgcController extends ChangeNotifier {
     }
 
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavPgcItemModel>?>).response;
       if (list != null && list.isNotEmpty) {
         _allSelected = _checkedCount == list.length;
       }
@@ -185,7 +193,8 @@ class FavPgcController extends ChangeNotifier {
   /// Get all checked items
   Set<FavPgcItemModel> get allChecked {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavPgcItemModel>?>).response;
       return list?.where((v) => v.checked).toSet() ?? {};
     }
     return {};
@@ -196,7 +205,8 @@ class FavPgcController extends ChangeNotifier {
     final result = await removePgcUseCase(seasonId);
     if (result.isSuccess) {
       if (_state.listState is Success) {
-        final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+        final list =
+            (_state.listState as Success<List<FavPgcItemModel>?>).response;
         list?.removeAt(index);
         _updateState(_state.copyWith(listState: Success(list)));
       }
@@ -208,10 +218,14 @@ class FavPgcController extends ChangeNotifier {
   /// Update follow status for a single item
   Future<String?> onUpdate(int index, int followStatus, int? seasonId) async {
     if (seasonId == null) return null;
-    final result = await updatePgcFollowStatusUseCase(seasonId.toString(), followStatus);
+    final result = await updatePgcFollowStatusUseCase(
+      seasonId.toString(),
+      followStatus,
+    );
     if (result.isSuccess) {
       if (_state.listState is Success) {
-        final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+        final list =
+            (_state.listState as Success<List<FavPgcItemModel>?>).response;
         final item = list?.removeAt(index);
         _updateState(_state.copyWith(listState: Success(list)));
 
@@ -229,7 +243,10 @@ class FavPgcController extends ChangeNotifier {
     final removeList = allChecked;
     final seasonIds = removeList.map((item) => item.seasonId).join(',');
 
-    final result = await updatePgcFollowStatusUseCase(seasonIds, newFollowStatus);
+    final result = await updatePgcFollowStatusUseCase(
+      seasonIds,
+      newFollowStatus,
+    );
     if (result.isSuccess) {
       // Note: Original implementation moves items to different controller
       // and resets checked state. For simplicity, we just remove them here.
@@ -244,7 +261,8 @@ class FavPgcController extends ChangeNotifier {
   /// Handle post-delete/update cleanup
   void afterDelete(Set<FavPgcItemModel> removeList) {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavPgcItemModel>?>).response;
       if (list != null) {
         if (removeList.length == list.length) {
           list.clear();
@@ -257,7 +275,8 @@ class FavPgcController extends ChangeNotifier {
     }
 
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavPgcItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavPgcItemModel>?>).response;
       if (list != null && list.isNotEmpty || _state.isEnd) {
         _updateState(_state.copyWith(listState: Success(list)));
       } else {

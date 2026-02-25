@@ -134,10 +134,11 @@ class PgcController
   }
 
   @override
-  Future<LoadingState<List<PgcIndexItem>?>> customGetData() => _pgcApiDataSource.getPgcIndex(
-    page: page,
-    indexType: tabType == HomeTabType.cinema ? 102 : null,
-  );
+  Future<LoadingState<List<PgcIndexItem>?>> customGetData() =>
+      _pgcApiDataSource.getPgcIndex(
+        page: page,
+        indexType: tabType == HomeTabType.cinema ? 102 : null,
+      );
 
   @override
   void onClose() {

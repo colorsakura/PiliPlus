@@ -19,7 +19,9 @@ class PopularPreciousRepositoryImpl implements PopularPreciousRepository {
       final data = await _remoteDataSource.popularPrecious(page: page);
       final items = data['list'] as List? ?? [];
       // Convert List<dynamic> to List<PopularPreciousItemEntity>
-      final entityList = items.map((item) => item as PopularPreciousItemEntity).toList();
+      final entityList = items
+          .map((item) => item as PopularPreciousItemEntity)
+          .toList();
       return Success(entityList);
     } catch (e) {
       return Error(e.toString());

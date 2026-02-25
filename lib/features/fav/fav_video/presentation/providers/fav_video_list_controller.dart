@@ -67,11 +67,13 @@ class FavVideoController extends ChangeNotifier {
       // Detect end by checking if response is empty
       final isEnd = response.isEmpty;
 
-      _updateState(_state.copyWith(
-        listState: Success(newList),
-        currentPage: page + 1,
-        isEnd: isEnd,
-      ));
+      _updateState(
+        _state.copyWith(
+          listState: Success(newList),
+          currentPage: page + 1,
+          isEnd: isEnd,
+        ),
+      );
     } else if (result case Error(:final errMsg)) {
       _updateState(_state.copyWith(listState: Error(errMsg)));
     }
@@ -89,11 +91,13 @@ class FavVideoController extends ChangeNotifier {
 
   /// Reload the list
   Future<void> onReload() async {
-    _updateState(FavVideoListState(
-      listState: LoadingState.loading(),
-      currentPage: _state.currentPage,
-      isEnd: _state.isEnd,
-    ));
+    _updateState(
+      FavVideoListState(
+        listState: LoadingState.loading(),
+        currentPage: _state.currentPage,
+        isEnd: _state.isEnd,
+      ),
+    );
     await queryData(isRefresh: true);
   }
 
@@ -102,7 +106,7 @@ class FavVideoController extends ChangeNotifier {
     if (_state.listState is Success) {
       final currentList =
           (_state.listState as Success<List<FavFolderInfo>?>).response ??
-              <FavFolderInfo>[];
+          <FavFolderInfo>[];
       final newList = List<FavFolderInfo>.from(currentList)..removeAt(index);
       _updateState(_state.copyWith(listState: Success(newList)));
     }

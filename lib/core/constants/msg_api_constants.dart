@@ -69,7 +69,8 @@ abstract class MsgApiConstants {
   static const String imUserInfos = '/x/im/user_infos';
 
   /// 获取会话设置
-  static const String getSessionSs = '/link_setting/v1/link_setting/get_session_ss';
+  static const String getSessionSs =
+      '/link_setting/v1/link_setting/get_session_ss';
 
   /// 获取消息勿扰设置
   static const String getMsgDnd = '/link_setting/v1/link_setting/get_msg_dnd';

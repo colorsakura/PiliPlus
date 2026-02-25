@@ -10,7 +10,9 @@ class FavArticleRepositoryImpl implements FavArticleRepository {
   final FavArticleRemoteDatasource _remoteDatasource;
 
   @override
-  Future<LoadingState<List<FavArticleItemModel>>> getFavArticles(int page) async {
+  Future<LoadingState<List<FavArticleItemModel>>> getFavArticles(
+    int page,
+  ) async {
     final result = await _remoteDatasource.getFavArticles(page: page);
     return switch (result) {
       Loading() => LoadingState.loading(),

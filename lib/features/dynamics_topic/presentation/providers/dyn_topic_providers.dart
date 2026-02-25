@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/dynamics_topic/presentation/providers/dyn_topi
 import 'package:PiliPlus/utils/accounts.dart';
 
 /// Dynamics topic remote data source provider
-final dynTopicRemoteDataSourceProvider =
-    Provider<DynTopicRemoteDataSource>((ref) {
+final dynTopicRemoteDataSourceProvider = Provider<DynTopicRemoteDataSource>((
+  ref,
+) {
   return DynTopicRemoteDataSource();
 });
 
@@ -51,15 +52,18 @@ final likeTopicUseCaseProvider = Provider<LikeTopicUseCase>((ref) {
 /// Dynamics topic controller provider family
 /// Uses topic ID as the key
 final dynTopicControllerProvider =
-    Provider.family<DynTopicController, ({String id, String name})>((ref, params) {
-  return DynTopicController(
-    getTopicTopUseCase: ref.read(getTopicTopUseCaseProvider),
-    getTopicFeedUseCase: ref.read(getTopicFeedUseCaseProvider),
-    addFavTopicUseCase: ref.read(addFavTopicUseCaseProvider),
-    delFavTopicUseCase: ref.read(delFavTopicUseCaseProvider),
-    likeTopicUseCase: ref.read(likeTopicUseCaseProvider),
-    topicId: params.id,
-    topicName: params.name,
-    isLogin: Accounts.main.isLogin,
-  );
-});
+    Provider.family<DynTopicController, ({String id, String name})>((
+      ref,
+      params,
+    ) {
+      return DynTopicController(
+        getTopicTopUseCase: ref.read(getTopicTopUseCaseProvider),
+        getTopicFeedUseCase: ref.read(getTopicFeedUseCaseProvider),
+        addFavTopicUseCase: ref.read(addFavTopicUseCaseProvider),
+        delFavTopicUseCase: ref.read(delFavTopicUseCaseProvider),
+        likeTopicUseCase: ref.read(likeTopicUseCaseProvider),
+        topicId: params.id,
+        topicName: params.name,
+        isLogin: Accounts.main.isLogin,
+      );
+    });

@@ -72,7 +72,8 @@ class _PgcPageState extends ConsumerState<PgcPage>
                 return Column(
                   children: [
                     _buildFollow(controller, theme),
-                    if (_showPgcTimeline) _buildTimelineSection(controller, theme),
+                    if (_showPgcTimeline)
+                      _buildTimelineSection(controller, theme),
                   ],
                 );
               },
@@ -88,7 +89,8 @@ class _PgcPageState extends ConsumerState<PgcPage>
     final followState = controller.state.followListState;
 
     return SizedBox(
-      height: Grid.smallCardWidth / 2 / 0.75 +
+      height:
+          Grid.smallCardWidth / 2 / 0.75 +
           MediaQuery.textScalerOf(context).scale(112),
       child: switch (followState) {
         Loading() => const SizedBox(),
@@ -106,7 +108,8 @@ class _PgcPageState extends ConsumerState<PgcPage>
     final timelineState = controller.state.timelineState;
 
     return SizedBox(
-      height: Grid.smallCardWidth / 2 / 0.75 +
+      height:
+          Grid.smallCardWidth / 2 / 0.75 +
           MediaQuery.textScalerOf(context).scale(96),
       child: switch (timelineState) {
         Loading() => loadingWidget,
@@ -127,7 +130,10 @@ class _PgcPageState extends ConsumerState<PgcPage>
         // Check if controller is still valid
         if (!controller.hasListeners) {
           return const SliverToBoxAdapter(
-            child: SizedBox(height: 200, child: Center(child: Text('Loading...'))),
+            child: SizedBox(
+              height: 200,
+              child: Center(child: Text('Loading...')),
+            ),
           );
         }
 
@@ -135,11 +141,11 @@ class _PgcPageState extends ConsumerState<PgcPage>
 
         return switch (mainListState) {
           Loading() => const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 300,
-                child: Center(child: CircularProgressIndicator()),
-              ),
+            child: SizedBox(
+              height: 300,
+              child: Center(child: CircularProgressIndicator()),
             ),
+          ),
           Success(:final response) =>
             response != null && response.isNotEmpty
                 ? SliverGrid.builder(
@@ -148,7 +154,9 @@ class _PgcPageState extends ConsumerState<PgcPage>
                       crossAxisSpacing: StyleString.cardSpace,
                       maxCrossAxisExtent: Grid.smallCardWidth * 0.6,
                       childAspectRatio: 0.75,
-                      mainAxisExtent: MediaQuery.textScalerOf(context).scale(50),
+                      mainAxisExtent: MediaQuery.textScalerOf(
+                        context,
+                      ).scale(50),
                     ),
                     itemBuilder: (context, index) {
                       return PgcCardVPgcIndex(item: response[index]);
@@ -156,16 +164,22 @@ class _PgcPageState extends ConsumerState<PgcPage>
                     itemCount: response.length,
                   )
                 : const SliverToBoxAdapter(
-                  child: SizedBox(height: 200, child: Center(child: Text('No data'))),
-                ),
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(child: Text('No data')),
+                    ),
+                  ),
           Error(:final errMsg) => SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200,
-                child: Center(child: Text('Error loading data: $errMsg')),
-              ),
+            child: SizedBox(
+              height: 200,
+              child: Center(child: Text('Error loading data: $errMsg')),
             ),
+          ),
           _ => const SliverToBoxAdapter(
-            child: SizedBox(height: 200, child: Center(child: Text('Unknown state'))),
+            child: SizedBox(
+              height: 200,
+              child: Center(child: Text('Unknown state')),
+            ),
           ),
         };
       },

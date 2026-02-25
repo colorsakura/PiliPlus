@@ -63,8 +63,10 @@ class _FavNotePageState extends ConsumerState<FavNotePage>
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
                 labelStyle:
-                    TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 14) ??
-                        const TextStyle(fontSize: 14),
+                    TabBarTheme.of(
+                      context,
+                    ).labelStyle?.copyWith(fontSize: 14) ??
+                    const TextStyle(fontSize: 14),
                 labelColor: theme.colorScheme.onSecondaryContainer,
                 unselectedLabelColor: theme.colorScheme.outline,
                 tabs: const [
@@ -74,7 +76,9 @@ class _FavNotePageState extends ConsumerState<FavNotePage>
                 onTap: (index) {
                   if (!_tabController.indexIsChanging) {
                     final isPublish = index == 1;
-                    final controller = ref.read(favNoteControllerProvider(isPublish));
+                    final controller = ref.read(
+                      favNoteControllerProvider(isPublish),
+                    );
                     controller.scrollController.animToTop();
                   }
                 },

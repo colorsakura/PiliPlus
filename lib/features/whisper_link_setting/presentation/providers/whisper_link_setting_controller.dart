@@ -3,7 +3,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/im_user_infos/datum.dart';
 import 'package:PiliPlus/models/msg/msg_dnd/uid_setting.dart';
 import 'package:PiliPlus/models/msg/session_ss/data.dart';
-import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart' show SessionId, PrivateId;
+import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
+    show SessionId, PrivateId;
 import 'package:PiliPlus/features/whisper_link_setting/domain/repositories/whisper_link_setting_repository.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:fixnum/fixnum.dart';
@@ -42,12 +43,12 @@ class WhisperLinkSettingController extends ChangeNotifier {
   WhisperLinkSettingController({
     required this.talkerUid,
     required WhisperLinkSettingRepository repository,
-  })  : _repository = repository,
-        _state = WhisperLinkSettingState(
-          userState: LoadingState.loading(),
-          sessionSs: LoadingState.loading(),
-          msgDnd: LoadingState.loading(),
-        ) {
+  }) : _repository = repository,
+       _state = WhisperLinkSettingState(
+         userState: LoadingState.loading(),
+         sessionSs: LoadingState.loading(),
+         msgDnd: LoadingState.loading(),
+       ) {
     // Session ID for gRPC calls
     _sessionId = SessionId(
       privateId: PrivateId(talkerUid: Int64(talkerUid)),
@@ -109,9 +110,11 @@ class WhisperLinkSettingController extends ChangeNotifier {
     );
     if (result.isSuccess && _state.sessionSs is Success) {
       final currentResponse = (_state.sessionSs as Success).response;
-      _updateState(_state.copyWith(
-        sessionSs: Success(currentResponse.copyWith(pushSetting: setting)),
-      ));
+      _updateState(
+        _state.copyWith(
+          sessionSs: Success(currentResponse.copyWith(pushSetting: setting)),
+        ),
+      );
     }
   }
 
@@ -156,9 +159,11 @@ class WhisperLinkSettingController extends ChangeNotifier {
     );
     if (result.isSuccess && _state.sessionSs is Success) {
       final currentResponse = (_state.sessionSs as Success).response;
-      _updateState(_state.copyWith(
-        sessionSs: Success(currentResponse.copyWith(followStatus: 128)),
-      ));
+      _updateState(
+        _state.copyWith(
+          sessionSs: Success(currentResponse.copyWith(followStatus: 128)),
+        ),
+      );
     }
   }
 
@@ -171,9 +176,11 @@ class WhisperLinkSettingController extends ChangeNotifier {
     );
     if (result.isSuccess && _state.sessionSs is Success) {
       final currentResponse = (_state.sessionSs as Success).response;
-      _updateState(_state.copyWith(
-        sessionSs: Success(currentResponse.copyWith(followStatus: null)),
-      ));
+      _updateState(
+        _state.copyWith(
+          sessionSs: Success(currentResponse.copyWith(followStatus: null)),
+        ),
+      );
     }
   }
 

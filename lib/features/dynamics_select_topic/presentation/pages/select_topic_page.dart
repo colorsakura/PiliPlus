@@ -68,7 +68,8 @@ class SelectTopicPanel extends StatefulWidget {
   State<SelectTopicPanel> createState() => _SelectTopicPanelState();
 }
 
-class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, String> {
+class _SelectTopicPanelState
+    extends DebounceStreamState<SelectTopicPanel, String> {
   @override
   Duration get duration => const Duration(milliseconds: 300);
 
@@ -77,7 +78,9 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
     super.initState();
     // Store controller reference for onValueChanged
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller = ProviderScope.containerOf(context).read(topicSearchControllerProvider);
+      _controller = ProviderScope.containerOf(
+        context,
+      ).read(topicSearchControllerProvider);
     });
   }
 
@@ -86,11 +89,13 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
   @override
   void onValueChanged(String value) {
     _controller?.controller.text = value;
-    _controller?.searchTopics(value).whenComplete(
-      () => WidgetsBinding.instance.addPostFrameCallback(
-        (_) => widget.scrollController?.jumpToTop(),
-      ),
-    );
+    _controller
+        ?.searchTopics(value)
+        .whenComplete(
+          () => WidgetsBinding.instance.addPostFrameCallback(
+            (_) => widget.scrollController?.jumpToTop(),
+          ),
+        );
   }
 
   @override
@@ -103,114 +108,124 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
             SizedBox(
               height: 35,
               child: Center(
-            child: Container(
-              width: 32,
-              height: 3,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline,
-                borderRadius: const BorderRadius.all(Radius.circular(3)),
+                child: Container(
+                  width: 32,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.outline,
+                    borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 5),
-          child: TextField(
-            focusNode: ref.watch(topicSearchControllerProvider).focusNode,
-            controller: ref.watch(topicSearchControllerProvider).controller,
-            onChanged: ctr!.add,
-            decoration: InputDecoration(
-              visualDensity: .standard,
-              border: const OutlineInputBorder(
-                gapPadding: 0,
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-              ),
-              isDense: true,
-              filled: true,
-              fillColor: theme.colorScheme.onInverseSurface,
-              hintText: '搜索话题',
-              hintStyle: const TextStyle(fontSize: 14),
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(left: 12, right: 4),
-                child: Icon(Icons.search, size: 20),
-              ),
-              prefixIconConstraints: const BoxConstraints(
-                minHeight: 0,
-                minWidth: 0,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 6,
-              ),
-              suffixIcon: Consumer(
-                builder: (context, ref, _) {
-                  final controllerState = ref.watch(topicSearchControllerProvider);
-                  final controller = controllerState.controller;
-                  final enableClear = controller.text.isNotEmpty;
-                  return enableClear
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            child: Container(
-                              padding: const EdgeInsetsDirectional.all(2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: theme.colorScheme.secondaryContainer,
-                              ),
-                              child: Icon(
-                                Icons.clear,
-                                size: 16,
-                                color: theme.colorScheme.onSecondaryContainer,
-                              ),
-                            ),
-                            onTap: () {
-                              controller.clear();
-                              ctr!.add('');
-                              ref
-                                  .read(topicSearchControllerProvider)
-                                  .searchTopics()
-                                  .whenComplete(
-                                () => WidgetsBinding.instance.addPostFrameCallback(
-                                  (_) => widget.scrollController?.jumpToTop(),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 5),
+              child: TextField(
+                focusNode: ref.watch(topicSearchControllerProvider).focusNode,
+                controller: ref.watch(topicSearchControllerProvider).controller,
+                onChanged: ctr!.add,
+                decoration: InputDecoration(
+                  visualDensity: .standard,
+                  border: const OutlineInputBorder(
+                    gapPadding: 0,
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                  ),
+                  isDense: true,
+                  filled: true,
+                  fillColor: theme.colorScheme.onInverseSurface,
+                  hintText: '搜索话题',
+                  hintStyle: const TextStyle(fontSize: 14),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 12, right: 4),
+                    child: Icon(Icons.search, size: 20),
+                  ),
+                  prefixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
+                  suffixIcon: Consumer(
+                    builder: (context, ref, _) {
+                      final controllerState = ref.watch(
+                        topicSearchControllerProvider,
+                      );
+                      final controller = controllerState.controller;
+                      final enableClear = controller.text.isNotEmpty;
+                      return enableClear
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: GestureDetector(
+                                child: Container(
+                                  padding: const EdgeInsetsDirectional.all(2),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: theme.colorScheme.secondaryContainer,
+                                  ),
+                                  child: Icon(
+                                    Icons.clear,
+                                    size: 16,
+                                    color:
+                                        theme.colorScheme.onSecondaryContainer,
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        )
-                      : const SizedBox.shrink();
+                                onTap: () {
+                                  controller.clear();
+                                  ctr!.add('');
+                                  ref
+                                      .read(topicSearchControllerProvider)
+                                      .searchTopics()
+                                      .whenComplete(
+                                        () => WidgetsBinding.instance
+                                            .addPostFrameCallback(
+                                              (_) => widget.scrollController
+                                                  ?.jumpToTop(),
+                                            ),
+                                      );
+                                },
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    },
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is UserScrollNotification) {
+                    final controller = ref.watch(topicSearchControllerProvider);
+                    if (controller.focusNode.hasFocus) {
+                      controller.focusNode.unfocus();
+                    }
+                  } else if (notification is ScrollEndNotification) {
+                    widget.onCachePos?.call(notification.metrics.pixels);
+                  }
+                  return false;
                 },
-              ),
-              suffixIconConstraints: const BoxConstraints(
-                minHeight: 0,
-                minWidth: 0,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final controllerState = ref.watch(
+                      topicSearchControllerProvider,
+                    );
+                    return _buildBody(
+                      theme,
+                      controllerState.state.searchResults,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is UserScrollNotification) {
-                final controller = ref.watch(topicSearchControllerProvider);
-                if (controller.focusNode.hasFocus) {
-                  controller.focusNode.unfocus();
-                }
-              } else if (notification is ScrollEndNotification) {
-                widget.onCachePos?.call(notification.metrics.pixels);
-              }
-              return false;
-            },
-            child: Consumer(
-              builder: (context, ref, _) {
-                final controllerState = ref.watch(topicSearchControllerProvider);
-                return _buildBody(theme, controllerState.state.searchResults);
-              },
-            ),
-          ),
-        ),
-      ],
-    );
+          ],
+        );
       },
     );
   }
@@ -223,28 +238,28 @@ class _SelectTopicPanelState extends DebounceStreamState<SelectTopicPanel, Strin
       builder: (context, ref, _) {
         final controller = ref.read(topicSearchControllerProvider);
         return switch (loadingState) {
-      Loading() => loadingWidget,
-      Success<List<TopicItem>?>(:final response) =>
-        response != null && response.isNotEmpty
-            ? ListView.builder(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
-                ),
-                controller: widget.scrollController,
-                itemBuilder: (context, index) {
-                  if (index == response.length - 1) {
-                    controller.loadMore();
-                  }
-                  return TopicItemWidget(
-                    item: response[index],
-                    onTap: (item) => Get.back(result: item),
-                  );
-                },
-                itemCount: response.length,
-              )
-            : _errWidget(),
-      Error(:final errMsg) => _errWidget(errMsg),
-    };
+          Loading() => loadingWidget,
+          Success<List<TopicItem>?>(:final response) =>
+            response != null && response.isNotEmpty
+                ? ListView.builder(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
+                    ),
+                    controller: widget.scrollController,
+                    itemBuilder: (context, index) {
+                      if (index == response.length - 1) {
+                        controller.loadMore();
+                      }
+                      return TopicItemWidget(
+                        item: response[index],
+                        onTap: (item) => Get.back(result: item),
+                      );
+                    },
+                    itemCount: response.length,
+                  )
+                : _errWidget(),
+          Error(:final errMsg) => _errWidget(errMsg),
+        };
       },
     );
   }

@@ -14,15 +14,21 @@ import 'package:PiliPlus/features/shell/domain/usecases/periodic_check_scheduler
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 数据源 Providers
-final navigationLocalDataSourceProvider = Provider<NavigationLocalDataSource>((ref) {
+final navigationLocalDataSourceProvider = Provider<NavigationLocalDataSource>((
+  ref,
+) {
   return NavigationLocalDataSource();
 });
 
-final messageRemoteDataSourceProvider = Provider<MessageRemoteDataSource>((ref) {
+final messageRemoteDataSourceProvider = Provider<MessageRemoteDataSource>((
+  ref,
+) {
   return MessageRemoteDataSource();
 });
 
-final dynamicRemoteDataSourceProvider = Provider<DynamicRemoteDataSource>((ref) {
+final dynamicRemoteDataSourceProvider = Provider<DynamicRemoteDataSource>((
+  ref,
+) {
   return DynamicRemoteDataSource();
 });
 
@@ -46,23 +52,29 @@ final dynamicRepositoryProvider = Provider<DynamicRepository>((ref) {
 });
 
 /// Use Case Providers
-final getNavigationConfigUseCaseProvider = Provider<GetNavigationConfigUseCase>((ref) {
-  return GetNavigationConfigUseCase(
-    ref.watch(navigationRepositoryProvider),
-  );
-});
+final getNavigationConfigUseCaseProvider = Provider<GetNavigationConfigUseCase>(
+  (ref) {
+    return GetNavigationConfigUseCase(
+      ref.watch(navigationRepositoryProvider),
+    );
+  },
+);
 
-final checkUnreadMessagesUseCaseProvider = Provider<CheckUnreadMessagesUseCase>((ref) {
-  return CheckUnreadMessagesUseCase(
-    ref.watch(messageRepositoryProvider),
-  );
-});
+final checkUnreadMessagesUseCaseProvider = Provider<CheckUnreadMessagesUseCase>(
+  (ref) {
+    return CheckUnreadMessagesUseCase(
+      ref.watch(messageRepositoryProvider),
+    );
+  },
+);
 
-final checkUnreadDynamicsUseCaseProvider = Provider<CheckUnreadDynamicsUseCase>((ref) {
-  return CheckUnreadDynamicsUseCase(
-    ref.watch(dynamicRepositoryProvider),
-  );
-});
+final checkUnreadDynamicsUseCaseProvider = Provider<CheckUnreadDynamicsUseCase>(
+  (ref) {
+    return CheckUnreadDynamicsUseCase(
+      ref.watch(dynamicRepositoryProvider),
+    );
+  },
+);
 
 /// 定时检查调度器 Provider
 final periodicCheckSchedulerProvider = Provider<PeriodicCheckScheduler>((ref) {

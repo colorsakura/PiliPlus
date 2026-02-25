@@ -6,14 +6,14 @@ import 'package:PiliPlus/features/member_contribute/presentation/providers/membe
 /// Uses Provider.family to create unique controllers for each (heroTag, initialIndex) combination
 final memberContributeControllerProvider =
     Provider.family<MemberContributeController, _MemberContributeParams>(
-  (ref, params) {
-    return MemberContributeController(
-      contributeTab: params.contributeTab,
-      hasSeasonOrSeries: params.hasSeasonOrSeries,
-      initialIndex: params.initialIndex,
+      (ref, params) {
+        return MemberContributeController(
+          contributeTab: params.contributeTab,
+          hasSeasonOrSeries: params.hasSeasonOrSeries,
+          initialIndex: params.initialIndex,
+        );
+      },
     );
-  },
-);
 
 /// Parameters for MemberContributeController
 class _MemberContributeParams {

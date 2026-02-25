@@ -6,8 +6,9 @@ import 'package:PiliPlus/features/fav/fav_video/domain/usecases/get_fav_folders_
 import 'package:PiliPlus/features/fav/fav_video/presentation/providers/fav_video_list_controller.dart';
 
 /// Provider for FavVideoRemoteDatasource
-final favVideoRemoteDatasourceProvider =
-    Provider<FavVideoRemoteDatasource>((ref) {
+final favVideoRemoteDatasourceProvider = Provider<FavVideoRemoteDatasource>((
+  ref,
+) {
   return FavVideoRemoteDatasource();
 });
 
@@ -24,8 +25,7 @@ final getFavFoldersUseCaseProvider = Provider<GetFavFoldersUseCase>((ref) {
 });
 
 /// Provider for FavVideoController
-final favVideoControllerProvider =
-    Provider<FavVideoController>((ref) {
+final favVideoControllerProvider = Provider<FavVideoController>((ref) {
   return FavVideoController(
     getFavFoldersUseCase: ref.watch(getFavFoldersUseCaseProvider),
   );

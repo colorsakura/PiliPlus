@@ -10,7 +10,11 @@ class FavPgcRepositoryImpl implements FavPgcRepository {
   final FavPgcRemoteDatasource _remoteDatasource;
 
   @override
-  Future<LoadingState<List<FavPgcItemModel>>> getFavPgc(int page, int type, int followStatus) async {
+  Future<LoadingState<List<FavPgcItemModel>>> getFavPgc(
+    int page,
+    int type,
+    int followStatus,
+  ) async {
     final result = await _remoteDatasource.getFavPgc(
       page: page,
       type: type,
@@ -29,7 +33,10 @@ class FavPgcRepositoryImpl implements FavPgcRepository {
   }
 
   @override
-  Future<LoadingState<String?>> updatePgcFollowStatus(String seasonId, int followStatus) {
+  Future<LoadingState<String?>> updatePgcFollowStatus(
+    String seasonId,
+    int followStatus,
+  ) {
     return _remoteDatasource.updatePgcFollowStatus(
       seasonId: seasonId,
       followStatus: followStatus,

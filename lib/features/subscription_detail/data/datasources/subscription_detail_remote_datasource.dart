@@ -11,10 +11,9 @@ class SubscriptionDetailRemoteDatasource {
     required int id,
     required int ps,
     required int pn,
-  }) =>
-      FavHttp.favSeasonList(
-        id: id,
-        ps: ps,
-        pn: pn,
-      );
+  }) => FavHttp.favSeasonList(
+    id: id,
+    ps: ps,
+    pn: pn,
+  );
 }

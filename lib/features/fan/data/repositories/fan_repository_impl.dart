@@ -14,22 +14,20 @@ class FanRepositoryImpl implements FanRepository {
     required int vmid,
     required int pn,
     required String orderType,
-  }) =>
-      _datasource.getFans(
-        vmid: vmid,
-        pn: pn,
-        orderType: orderType,
-      );
+  }) => _datasource.getFans(
+    vmid: vmid,
+    pn: pn,
+    orderType: orderType,
+  );
 
   @override
   Future<LoadingState<void>> removeFan({
     required int mid,
     required int act,
     required int reSrc,
-  }) =>
-      _datasource.removeFan(
-        mid: mid,
-        act: act,
-        reSrc: reSrc,
-      );
+  }) => _datasource.removeFan(
+    mid: mid,
+    act: act,
+    reSrc: reSrc,
+  );
 }

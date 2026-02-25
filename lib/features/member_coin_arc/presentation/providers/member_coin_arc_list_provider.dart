@@ -30,8 +30,8 @@ final fetchMemberCoinArcsUseCaseProvider = Provider<FetchMemberCoinArcsUseCase>(
 /// Controller provider (parameterized by member ID)
 final memberCoinArcListControllerProvider =
     Provider.family<MemberCoinArcListController, dynamic>((ref, mid) {
-  return MemberCoinArcListController(
-    mid: mid,
-    fetchCoinArcs: ref.watch(fetchMemberCoinArcsUseCaseProvider),
-  );
-});
+      return MemberCoinArcListController(
+        mid: mid,
+        fetchCoinArcs: ref.watch(fetchMemberCoinArcsUseCaseProvider),
+      );
+    });

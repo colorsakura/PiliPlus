@@ -73,8 +73,8 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   ) {
     return switch (listState) {
       Loading() => const SliverToBoxAdapter(
-          child: Center(child: CircularProgressIndicator()),
-        ),
+        child: Center(child: CircularProgressIndicator()),
+      ),
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? SliverList(
@@ -88,9 +88,9 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 

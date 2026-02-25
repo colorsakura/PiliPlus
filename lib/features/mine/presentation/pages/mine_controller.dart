@@ -83,7 +83,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   void onInit() {
     super.onInit();
     // 初始化 anonymity（必须在 Accounts.init() 之后调用）
-    anonymity ??= (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
+    anonymity ??=
+        (Accounts.account.isNotEmpty && !Accounts.heartbeat.isLogin).obs;
     UserInfoData? userInfoCache = Pref.userInfoCache;
     if (userInfoCache != null) {
       userInfo.value = userInfoCache;

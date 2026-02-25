@@ -5,7 +5,8 @@ import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.da
 
 /// 简单的多选控制器适配器
 /// 用于在Clean Architecture中使用需要GetX MultiSelectBase的现有组件
-class HistoryMultiSelectController extends GetxController implements MultiSelectBase<HistoryItemModel> {
+class HistoryMultiSelectController extends GetxController
+    implements MultiSelectBase<HistoryItemModel> {
   @override
   final RxBool enableMultiSelect = false.obs;
 

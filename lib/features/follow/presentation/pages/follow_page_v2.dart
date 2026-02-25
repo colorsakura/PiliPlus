@@ -41,7 +41,9 @@ class FollowPageV2 extends ConsumerStatefulWidget {
     String? name,
     bool isOwner = false,
   }) {
-    final midInt = mid is int ? mid : (mid != null ? int.tryParse(mid.toString()) : null);
+    final midInt = mid is int
+        ? mid
+        : (mid != null ? int.tryParse(mid.toString()) : null);
     if (midInt == null) return;
     Get.toNamed(
       '/follow',
@@ -63,11 +65,15 @@ class _FollowPageV2State extends ConsumerState<FollowPageV2>
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(followControllerProvider(FollowParams(
-      mid: widget.mid,
-      isOwner: widget.isOwner,
-      userName: widget.userName,
-    )));
+    _controller = ref.read(
+      followControllerProvider(
+        FollowParams(
+          mid: widget.mid,
+          isOwner: widget.isOwner,
+          userName: widget.userName,
+        ),
+      ),
+    );
 
     // Initialize TabController when tabs are loaded
     _controller.addListener(() {
@@ -142,9 +148,7 @@ class _FollowPageV2State extends ConsumerState<FollowPageV2>
               ]
             : null,
       ),
-      body: widget.isOwner
-          ? _buildBody(state)
-          : _childPage(),
+      body: widget.isOwner ? _buildBody(state) : _childPage(),
     );
   }
 
@@ -152,48 +156,50 @@ class _FollowPageV2State extends ConsumerState<FollowPageV2>
     return switch (state.tabsState) {
       Loading() => loadingWidget,
       Success() => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ViewSafeArea(
-              child: TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                controller: _tabController,
-                tabs: (_controller.tabs ?? []).map((item) {
-                  final isCustom = _isCustomTag(item.tagid);
-                  return Tab(
-                    child: isCustom
-                        ? GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onLongPress: () {
-                              Feedback.forLongPress(context);
-                              _onHandleTag(item);
-                            },
-                            onSecondaryTap: PlatformUtils.isMobile
-                                ? null
-                                : () => _onHandleTag(item),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${item.name}${item.count != null ? '(${item.count})' : ''} ',
-                                ),
-                                const Icon(Icons.menu, size: 18),
-                              ],
-                            ),
-                          )
-                        : Text('${item.name}${item.count != null ? '(${item.count})' : ''}'),
-                  );
-                }).toList(),
-              ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ViewSafeArea(
+            child: TabBar(
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              controller: _tabController,
+              tabs: (_controller.tabs ?? []).map((item) {
+                final isCustom = _isCustomTag(item.tagid);
+                return Tab(
+                  child: isCustom
+                      ? GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onLongPress: () {
+                            Feedback.forLongPress(context);
+                            _onHandleTag(item);
+                          },
+                          onSecondaryTap: PlatformUtils.isMobile
+                              ? null
+                              : () => _onHandleTag(item),
+                          child: Row(
+                            children: [
+                              Text(
+                                '${item.name}${item.count != null ? '(${item.count})' : ''} ',
+                              ),
+                              const Icon(Icons.menu, size: 18),
+                            ],
+                          ),
+                        )
+                      : Text(
+                          '${item.name}${item.count != null ? '(${item.count})' : ''}',
+                        ),
+                );
+              }).toList(),
             ),
-            Expanded(
-              child: tabBarView(
-                controller: _tabController,
-                children: (_controller.tabs ?? []).map(_childPage).toList(),
-              ),
+          ),
+          Expanded(
+            child: tabBarView(
+              controller: _tabController,
+              children: (_controller.tabs ?? []).map(_childPage).toList(),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
       Error(:final errMsg) => Center(child: Text(errMsg ?? '加载失败')),
     };
   }

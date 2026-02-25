@@ -56,25 +56,32 @@ class _DynTopicPageState extends ConsumerState<DynTopicPage> with DynMixin {
   Widget _buildAppBar(LoadingState<TopDetails?> topState) {
     return switch (topState) {
       Loading() => const SliverAppBar(),
-      Success(:final response) when response != null => DynamicSliverAppBarMedium(
-        pinned: true,
-        title: IgnorePointer(child: Text(response.topicItem?.name ?? '')),
-        flexibleSpace: _buildFlexibleSpace(response),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO: Implement share
-            },
-            icon: const Icon(MdiIcons.share),
-          ),
-        ],
-      ),
+      Success(:final response) when response != null =>
+        DynamicSliverAppBarMedium(
+          pinned: true,
+          title: IgnorePointer(child: Text(response.topicItem?.name ?? '')),
+          flexibleSpace: _buildFlexibleSpace(response),
+          actions: [
+            IconButton(
+              onPressed: () {
+                // TODO: Implement share
+              },
+              icon: const Icon(MdiIcons.share),
+            ),
+          ],
+        ),
       _ => SliverAppBar(
         pinned: true,
-        title: Text(ref.read(dynTopicControllerProvider((
-          id: '0',
-          name: '',
-        ))).topicName),
+        title: Text(
+          ref
+              .read(
+                dynTopicControllerProvider((
+                  id: '0',
+                  name: '',
+                )),
+              )
+              .topicName,
+        ),
       ),
     };
   }
@@ -154,54 +161,56 @@ class _DynTopicPageState extends ConsumerState<DynTopicPage> with DynMixin {
   }
 
   Widget _buildFeedBody(LoadingState<List<TopicCardItem>?> feedListState) {
-    final controller = ref.read(dynTopicControllerProvider((
-      id: '0',
-      name: '',
-    )));
+    final controller = ref.read(
+      dynTopicControllerProvider((
+        id: '0',
+        name: '',
+      )),
+    );
 
     return switch (feedListState) {
       Loading() => dynSkeleton,
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? GlobalData().dynamicsWaterfallFlow
-                ? SliverWaterfallFlow(
-                    gridDelegate: dynGridDelegate,
-                    delegate: SliverChildBuilderDelegate(
-                      (_, index) {
+                  ? SliverWaterfallFlow(
+                      gridDelegate: dynGridDelegate,
+                      delegate: SliverChildBuilderDelegate(
+                        (_, index) {
+                          if (index == response.length - 1) {
+                            controller.queryFeedList(isRefresh: false);
+                          }
+
+                          final item = response[index];
+                          if (item.dynamicCardItem != null) {
+                            return DynamicPanel(
+                              item: item.dynamicCardItem!,
+                              maxWidth: maxWidth,
+                            );
+                          }
+
+                          return Text(item.topicType ?? 'err');
+                        },
+                        childCount: response.length,
+                      ),
+                    )
+                  : SliverList.builder(
+                      itemBuilder: (context, index) {
                         if (index == response.length - 1) {
                           controller.queryFeedList(isRefresh: false);
                         }
-
                         final item = response[index];
                         if (item.dynamicCardItem != null) {
                           return DynamicPanel(
                             item: item.dynamicCardItem!,
                             maxWidth: maxWidth,
                           );
+                        } else {
+                          return Text(item.topicType ?? 'err');
                         }
-
-                        return Text(item.topicType ?? 'err');
                       },
-                      childCount: response.length,
-                    ),
-                  )
-                : SliverList.builder(
-                    itemBuilder: (context, index) {
-                      if (index == response.length - 1) {
-                        controller.queryFeedList(isRefresh: false);
-                      }
-                      final item = response[index];
-                      if (item.dynamicCardItem != null) {
-                        return DynamicPanel(
-                          item: item.dynamicCardItem!,
-                          maxWidth: maxWidth,
-                        );
-                      } else {
-                        return Text(item.topicType ?? 'err');
-                      }
-                    },
-                    itemCount: response.length,
-                  )
+                      itemCount: response.length,
+                    )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,

@@ -20,14 +20,13 @@ class DlnaPage extends StatefulWidget {
   static void toDlnaPage({
     required String url,
     String? title,
-  }) =>
-      Get.toNamed(
-        '/dlna',
-        parameters: {
-          'url': url,
-          if (title != null) 'title': title,
-        },
-      );
+  }) => Get.toNamed(
+    '/dlna',
+    parameters: {
+      'url': url,
+      if (title != null) 'title': title,
+    },
+  );
 }
 
 class _DlnaPageState extends State<DlnaPage> {

@@ -662,10 +662,12 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
 
                               SmartDialog.showLoading();
                               final dataSource = SponsorBlockRemoteDataSource();
-                              final hasPortVideo = (await dataSource.getPortVideo(
-                                bvid: bvid,
-                                cid: cid,
-                              )) == ytbId;
+                              final hasPortVideo =
+                                  (await dataSource.getPortVideo(
+                                    bvid: bvid,
+                                    cid: cid,
+                                  )) ==
+                                  ytbId;
                               SmartDialog.dismiss();
 
                               if (!mounted) return;
@@ -676,7 +678,8 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                                     '${hasPortVideo ? "" : "是否将"}该视频${hasPortVideo ? "已" : ""}绑定到此YouTube视频($ytbId)',
                               );
                               if (!hasPortVideo && confirmed) {
-                                final dataSource = SponsorBlockRemoteDataSource();
+                                final dataSource =
+                                    SponsorBlockRemoteDataSource();
                                 try {
                                   await dataSource.postPortVideo(
                                     bvid: bvid,

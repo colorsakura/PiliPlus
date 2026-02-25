@@ -39,10 +39,10 @@ class DanmakuBlockController extends ChangeNotifier {
     required GetDanmakuFilterRulesUseCase getDanmakuFilterRulesUseCase,
     required DeleteDanmakuRuleUseCase deleteDanmakuRuleUseCase,
     required AddDanmakuRuleUseCase addDanmakuRuleUseCase,
-  })  : _getDanmakuFilterRulesUseCase = getDanmakuFilterRulesUseCase,
-        _deleteDanmakuRuleUseCase = deleteDanmakuRuleUseCase,
-        _addDanmakuRuleUseCase = addDanmakuRuleUseCase,
-        _state = const DanmakuBlockState(rules: [[], [], []]);
+  }) : _getDanmakuFilterRulesUseCase = getDanmakuFilterRulesUseCase,
+       _deleteDanmakuRuleUseCase = deleteDanmakuRuleUseCase,
+       _addDanmakuRuleUseCase = addDanmakuRuleUseCase,
+       _state = const DanmakuBlockState(rules: [[], [], []]);
 
   final GetDanmakuFilterRulesUseCase _getDanmakuFilterRulesUseCase;
   final DeleteDanmakuRuleUseCase _deleteDanmakuRuleUseCase;
@@ -86,7 +86,8 @@ class DanmakuBlockController extends ChangeNotifier {
 
     if (result.isSuccess) {
       final newRules = List<List<SimpleRule>>.from(_state.rules);
-      newRules[tabIndex] = List<SimpleRule>.from(newRules[tabIndex])..removeAt(itemIndex);
+      newRules[tabIndex] = List<SimpleRule>.from(newRules[tabIndex])
+        ..removeAt(itemIndex);
       _state = _state.copyWith(rules: newRules);
       notifyListeners();
     }

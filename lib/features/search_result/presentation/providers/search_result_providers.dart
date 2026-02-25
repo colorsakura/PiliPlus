@@ -7,5 +7,5 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Uses NotifierProvider for state management
 final searchResultControllerProvider =
     NotifierProvider<SearchResultController, SearchResultState>(
-  SearchResultController.new,
-);
+      SearchResultController.new,
+    );

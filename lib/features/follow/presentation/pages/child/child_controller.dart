@@ -61,9 +61,7 @@ class FollowChildController
   bool customHandleResponse(bool isRefresh, Success<FollowData> response) {
     if (controller != null) {
       try {
-        if (controller!.isOwner &&
-            tagid == null &&
-            isRefresh) {
+        if (controller!.isOwner && tagid == null && isRefresh) {
           final tabs = controller!.tabs;
           if (tabs != null && tabs.isNotEmpty) {
             tabs[0].count = response.response.total;

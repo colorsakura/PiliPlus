@@ -10,6 +10,5 @@ class RemoveMsgItemUseCase {
   /// Execute the use case
   Future<LoadingState<void>> call({
     required Object id,
-  }) =>
-      _repository.removeMsgItem(id: id);
+  }) => _repository.removeMsgItem(id: id);
 }

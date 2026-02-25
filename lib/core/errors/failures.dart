@@ -26,7 +26,8 @@ class ServerFailure extends Failure {
   const ServerFailure(super.message, {this.code});
 
   @override
-  String toString() => 'ServerFailure: $message${code != null ? ' (code: $code)' : ''}';
+  String toString() =>
+      'ServerFailure: $message${code != null ? ' (code: $code)' : ''}';
 }
 
 /// 网络失败
@@ -78,7 +79,8 @@ class BusinessLogicFailure extends Failure {
   const BusinessLogicFailure(super.message, {this.code});
 
   @override
-  String toString() => 'BusinessLogicFailure: $message${code != null ? ' (code: $code)' : ''}';
+  String toString() =>
+      'BusinessLogicFailure: $message${code != null ? ' (code: $code)' : ''}';
 }
 
 /// 未知失败
@@ -90,5 +92,6 @@ class UnknownFailure extends Failure {
   const UnknownFailure(super.message, {this.originalError});
 
   @override
-  String toString() => 'UnknownFailure: $message${originalError != null ? ' ($originalError)' : ''}';
+  String toString() =>
+      'UnknownFailure: $message${originalError != null ? ' ($originalError)' : ''}';
 }

@@ -9,14 +9,15 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 /// Controller for fan/follower page (Clean Architecture with Riverpod)
 ///
 /// Manages list of fans (followers) with pagination
-class FanController extends CommonListControllerV2<FollowData, FollowItemModel> {
+class FanController
+    extends CommonListControllerV2<FollowData, FollowItemModel> {
   FanController({
     required int mid,
     required FanRepository repository,
     String? name,
-  })  : _mid = mid,
-        _repository = repository,
-        _name = name {
+  }) : _mid = mid,
+       _repository = repository,
+       _name = name {
     if (name == null) {
       _queryUserName();
     }
@@ -56,10 +57,10 @@ class FanController extends CommonListControllerV2<FollowData, FollowItemModel> 
 
   @override
   Future<LoadingState<FollowData>> customGetData() => _repository.getFans(
-        vmid: _mid,
-        pn: page,
-        orderType: 'attention',
-      );
+    vmid: _mid,
+    pn: page,
+    orderType: 'attention',
+  );
 
   /// Remove a fan from the list
   Future<void> removeFan(int index, int mid) async {
@@ -71,8 +72,7 @@ class FanController extends CommonListControllerV2<FollowData, FollowItemModel> 
     if (res.isSuccess) {
       final currentList = loadingState;
       if (currentList case Success(:final response)) {
-        final newList = List<FollowItemModel>.from(response!)
-          ..removeAt(index);
+        final newList = List<FollowItemModel>.from(response!)..removeAt(index);
         loadingState = Success(newList);
         if (total != null && total! > 0) {
           total = total! - 1;

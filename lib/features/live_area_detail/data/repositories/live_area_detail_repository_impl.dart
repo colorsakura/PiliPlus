@@ -20,7 +20,9 @@ class LiveAreaDetailRepositoryImpl implements LiveAreaDetailRepository {
         parentid: parentAreaId,
       );
       // Convert List<dynamic> to List<LiveAreaItemEntity>
-      final entityList = items.map((item) => item as LiveAreaItemEntity).toList();
+      final entityList = items
+          .map((item) => item as LiveAreaItemEntity)
+          .toList();
       return Success(entityList);
     } catch (e) {
       return Error(e.toString());

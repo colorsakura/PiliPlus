@@ -73,10 +73,10 @@ class MemberController extends ChangeNotifier {
     final relation = data.relation == -1
         ? 128
         : data.card?.relation?.isFollow == 1
-            ? data.relSpecial == 1
-                ? -10
-                : data.card?.relation?.status ?? 2
-            : 0;
+        ? data.relSpecial == 1
+              ? -10
+              : data.card?.relation?.status ?? 2
+        : 0;
 
     final tab2 = data.tab2;
     final live = data.live;
@@ -114,37 +114,43 @@ class MemberController extends ChangeNotifier {
           });
         }
 
-        final tabs = filteredTab2.map((item) => Tab(text: item.title ?? '')).toList();
+        final tabs = filteredTab2
+            .map((item) => Tab(text: item.title ?? ''))
+            .toList();
         final contributeInitialIndex = max(0, initialIndex);
 
-        _updateState(_state.copyWith(
-          loadingState: Success(data),
-          username: username,
-          isFollowed: isFollowed,
-          relation: relation,
-          tab2: filteredTab2,
-          live: live,
-          silence: silence,
-          hasSeasonOrSeries: hasSeasonOrSeries,
-          tabs: tabs,
-          contributeInitialIndex: contributeInitialIndex,
-          spaceSetting: mid == account.mid ? data.setting : null,
-        ));
+        _updateState(
+          _state.copyWith(
+            loadingState: Success(data),
+            username: username,
+            isFollowed: isFollowed,
+            relation: relation,
+            tab2: filteredTab2,
+            live: live,
+            silence: silence,
+            hasSeasonOrSeries: hasSeasonOrSeries,
+            tabs: tabs,
+            contributeInitialIndex: contributeInitialIndex,
+            spaceSetting: mid == account.mid ? data.setting : null,
+          ),
+        );
         return;
       }
     }
 
-    _updateState(_state.copyWith(
-      loadingState: Success(data),
-      username: username,
-      isFollowed: isFollowed,
-      relation: relation,
-      tab2: filteredTab2,
-      live: live,
-      silence: silence,
-      hasSeasonOrSeries: hasSeasonOrSeries,
-      spaceSetting: mid == account.mid ? data.setting : null,
-    ));
+    _updateState(
+      _state.copyWith(
+        loadingState: Success(data),
+        username: username,
+        isFollowed: isFollowed,
+        relation: relation,
+        tab2: filteredTab2,
+        live: live,
+        silence: silence,
+        hasSeasonOrSeries: hasSeasonOrSeries,
+        spaceSetting: mid == account.mid ? data.setting : null,
+      ),
+    );
   }
 
   void _handleError(String? errMsg) {
@@ -160,12 +166,14 @@ class MemberController extends ChangeNotifier {
     ];
     final tabs = fallbackTab2.map((item) => Tab(text: item.title)).toList();
 
-    _updateState(_state.copyWith(
-      loadingState: Error(errMsg ?? '加载失败'),
-      username: errMsg,
-      tab2: fallbackTab2,
-      tabs: tabs,
-    ));
+    _updateState(
+      _state.copyWith(
+        loadingState: Error(errMsg ?? '加载失败'),
+        username: errMsg,
+        tab2: fallbackTab2,
+        tabs: tabs,
+      ),
+    );
   }
 
   Future<void> onReload() => queryData();

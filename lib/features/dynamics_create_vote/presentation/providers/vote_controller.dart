@@ -38,18 +38,20 @@ class VoteController extends ChangeNotifier {
     if (voteId != null) {
       final result = await _getVoteInfo(voteId!);
       if (result case Success(:final response)) {
-        _updateState(VoteFormState(
-          title: response.title ?? '',
-          description: response.desc ?? '',
-          voteType: response.options.first.imgUrl?.isNotEmpty == true ? 1 : 0,
-          options: response.options,
-          choiceCount: response.choiceCnt ?? 1,
-          endTime: DateTime.fromMillisecondsSinceEpoch(
-            response.endTime! * 1000,
+        _updateState(
+          VoteFormState(
+            title: response.title ?? '',
+            description: response.desc ?? '',
+            voteType: response.options.first.imgUrl?.isNotEmpty == true ? 1 : 0,
+            options: response.options,
+            choiceCount: response.choiceCnt ?? 1,
+            endTime: DateTime.fromMillisecondsSinceEpoch(
+              response.endTime! * 1000,
+            ),
+            canCreate: true,
+            formKey: Utils.generateRandomString(6),
           ),
-          canCreate: true,
-          formKey: Utils.generateRandomString(6),
-        ));
+        );
       }
       // Error handling is done by the UI layer
     }
@@ -93,12 +95,15 @@ class VoteController extends ChangeNotifier {
   /// Remove an option
   void removeOption(int index) {
     final newOptions = List<Option>.from(_state.options)..removeAt(index);
-    final newChoiceCount =
-        _state.choiceCount > newOptions.length ? newOptions.length : _state.choiceCount;
-    _updateState(_state.copyWith(
-      options: newOptions,
-      choiceCount: newChoiceCount,
-    ));
+    final newChoiceCount = _state.choiceCount > newOptions.length
+        ? newOptions.length
+        : _state.choiceCount;
+    _updateState(
+      _state.copyWith(
+        options: newOptions,
+        choiceCount: newChoiceCount,
+      ),
+    );
     _validateForm();
   }
 
@@ -151,13 +156,17 @@ class VoteController extends ChangeNotifier {
 
     if (_state.voteType == 0) {
       // Text vote: just need title and all option descriptions
-      canCreate = _state.title.isNotEmpty &&
+      canCreate =
+          _state.title.isNotEmpty &&
           _state.options.every((e) => e.optDesc?.isNotEmpty == true);
     } else {
       // Image vote: need title, all option descriptions, and all images
-      canCreate = _state.title.isNotEmpty &&
-          _state.options.every((e) =>
-              e.optDesc?.isNotEmpty == true && e.imgUrl?.isNotEmpty == true);
+      canCreate =
+          _state.title.isNotEmpty &&
+          _state.options.every(
+            (e) =>
+                e.optDesc?.isNotEmpty == true && e.imgUrl?.isNotEmpty == true,
+          );
     }
 
     _updateState(_state.copyWith(canCreate: canCreate));

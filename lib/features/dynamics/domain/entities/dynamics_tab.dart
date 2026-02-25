@@ -1,5 +1,6 @@
 // Re-export DynamicsTabType from models
-export 'package:PiliPlus/models/common/dynamic/dynamics_type.dart' show DynamicsTabType;
+export 'package:PiliPlus/models/common/dynamic/dynamics_type.dart'
+    show DynamicsTabType;
 
 /// Configuration for dynamics tabs.
 class DynamicsTabConfig {

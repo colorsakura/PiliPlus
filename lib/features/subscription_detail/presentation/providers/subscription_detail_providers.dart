@@ -8,14 +8,15 @@ import 'package:PiliPlus/features/subscription_detail/presentation/providers/sub
 // Remote Datasource Provider
 final subscriptionDetailRemoteDatasourceProvider =
     Provider<SubscriptionDetailRemoteDatasource>((ref) {
-  return const SubscriptionDetailRemoteDatasource();
-});
+      return const SubscriptionDetailRemoteDatasource();
+    });
 
 // Repository Provider
-final subscriptionDetailRepositoryProvider = Provider<SubscriptionDetailRepository>((ref) {
-  final datasource = ref.watch(subscriptionDetailRemoteDatasourceProvider);
-  return SubscriptionDetailRepositoryImpl(datasource);
-});
+final subscriptionDetailRepositoryProvider =
+    Provider<SubscriptionDetailRepository>((ref) {
+      final datasource = ref.watch(subscriptionDetailRemoteDatasourceProvider);
+      return SubscriptionDetailRepositoryImpl(datasource);
+    });
 
 /// Controller parameters
 class SubscriptionDetailParams {
@@ -30,10 +31,13 @@ class SubscriptionDetailParams {
 
 // Controller Provider - uses Provider.family for different ids
 final subscriptionDetailControllerProvider =
-    Provider.family<SubscriptionDetailController, SubscriptionDetailParams>((ref, params) {
-  return SubscriptionDetailController(
-    id: params.id,
-    repository: ref.watch(subscriptionDetailRepositoryProvider),
-    initialSubInfo: params.initialSubInfo,
-  );
-});
+    Provider.family<SubscriptionDetailController, SubscriptionDetailParams>((
+      ref,
+      params,
+    ) {
+      return SubscriptionDetailController(
+        id: params.id,
+        repository: ref.watch(subscriptionDetailRepositoryProvider),
+        initialSubInfo: params.initialSubInfo,
+      );
+    });

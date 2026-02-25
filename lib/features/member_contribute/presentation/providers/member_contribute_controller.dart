@@ -12,7 +12,7 @@ class MemberContributeController extends ChangeNotifier {
     required this.contributeTab,
     required this.hasSeasonOrSeries,
     required int? initialIndex,
-  })  : _state = MemberContributeState(items: contributeTab.items ?? []) {
+  }) : _state = MemberContributeState(items: contributeTab.items ?? []) {
     _initializeTabs(initialIndex);
   }
 

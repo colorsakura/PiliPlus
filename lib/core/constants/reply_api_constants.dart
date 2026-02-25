@@ -20,7 +20,8 @@ abstract class ReplyApiConstants {
   static const String hateReply = '/x/v2/reply/hate';
 
   /// 评论区互动信息
-  static const String replyInteraction = '/x/v2/reply/subject/interaction-status';
+  static const String replyInteraction =
+      '/x/v2/reply/subject/interaction-status';
 
   // ==================== 评论操作 ====================
   /// 设置评论置顶

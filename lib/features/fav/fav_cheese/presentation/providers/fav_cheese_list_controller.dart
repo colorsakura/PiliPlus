@@ -70,11 +70,13 @@ class FavCheeseController extends ChangeNotifier {
       // Detect end by checking if response is empty
       final isEnd = response.isEmpty;
 
-      _updateState(_state.copyWith(
-        listState: Success(newList),
-        currentPage: page + 1,
-        isEnd: isEnd,
-      ));
+      _updateState(
+        _state.copyWith(
+          listState: Success(newList),
+          currentPage: page + 1,
+          isEnd: isEnd,
+        ),
+      );
     } else if (result case Error(:final errMsg)) {
       _updateState(_state.copyWith(listState: Error(errMsg)));
     }
@@ -92,11 +94,13 @@ class FavCheeseController extends ChangeNotifier {
 
   /// Reload the list
   Future<void> onReload() async {
-    _updateState(FavCheeseListState(
-      listState: LoadingState.loading(),
-      currentPage: _state.currentPage,
-      isEnd: _state.isEnd,
-    ));
+    _updateState(
+      FavCheeseListState(
+        listState: LoadingState.loading(),
+        currentPage: _state.currentPage,
+        isEnd: _state.isEnd,
+      ),
+    );
     await queryData(isRefresh: true);
   }
 
@@ -106,7 +110,7 @@ class FavCheeseController extends ChangeNotifier {
     if (result.isSuccess && _state.listState is Success) {
       final currentList =
           (_state.listState as Success<List<SpaceCheeseItem>?>).response ??
-              <SpaceCheeseItem>[];
+          <SpaceCheeseItem>[];
       final newList = List<SpaceCheeseItem>.from(currentList)..removeAt(index);
       _updateState(_state.copyWith(listState: Success(newList)));
       return true;

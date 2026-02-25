@@ -8,12 +8,11 @@ import 'package:PiliPlus/features/dynamics_topic_rcmd/presentation/providers/dyn
 /// Dynamics topic recommendation remote data source provider
 final dynTopicRcmdRemoteDataSourceProvider =
     Provider<DynTopicRcmdRemoteDataSource>((ref) {
-  return DynTopicRcmdRemoteDataSource();
-});
+      return DynTopicRcmdRemoteDataSource();
+    });
 
 /// Dynamics topic recommendation repository provider
-final dynTopicRcmdRepositoryProvider =
-    Provider<DynTopicRcmdRepository>((ref) {
+final dynTopicRcmdRepositoryProvider = Provider<DynTopicRcmdRepository>((ref) {
   final remoteDataSource = ref.watch(dynTopicRcmdRemoteDataSourceProvider);
   return DynTopicRcmdRepositoryImpl(remoteDataSource);
 });
@@ -25,8 +24,7 @@ final getDynTopicRcmdUseCaseProvider = Provider<GetDynTopicRcmdUseCase>((ref) {
 });
 
 /// Dynamics topic recommendation controller provider
-final dynTopicRcmdControllerProvider =
-    Provider<DynTopicRcmdController>((ref) {
+final dynTopicRcmdControllerProvider = Provider<DynTopicRcmdController>((ref) {
   return DynTopicRcmdController(
     getDynTopicRcmdUseCase: ref.read(getDynTopicRcmdUseCaseProvider),
   );

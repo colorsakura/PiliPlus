@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/user/data/datasources/user_remote_datasource.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 黑名单远程数据源Provider
-final blacklistRemoteDataSourceProvider =
-    Provider<BlacklistRemoteDataSource>((ref) {
+final blacklistRemoteDataSourceProvider = Provider<BlacklistRemoteDataSource>((
+  ref,
+) {
   return BlacklistRemoteDataSource();
 });
 

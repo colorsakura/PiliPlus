@@ -25,7 +25,9 @@ class _DynCreateReservePageState extends ConsumerState<DynCreateReservePage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(dynCreateReserveControllerProvider(widget.sid));
+    final controller = ref.watch(
+      dynCreateReserveControllerProvider(widget.sid),
+    );
     final theme = Theme.of(context);
 
     _leadingStyle = TextStyle(
@@ -62,9 +64,9 @@ class _DynCreateReservePageState extends ConsumerState<DynCreateReservePage> {
               PopupMenuButton(
                 requestFocus: false,
                 initialValue: controller.state.subType,
-                onSelected: (value) =>
-                    ref.read(dynCreateReserveControllerProvider(widget.sid))
-                        .updateSubType(value),
+                onSelected: (value) => ref
+                    .read(dynCreateReserveControllerProvider(widget.sid))
+                    .updateSubType(value),
                 itemBuilder: (context) {
                   return const [
                     PopupMenuItem(
@@ -120,7 +122,9 @@ class _DynCreateReservePageState extends ConsumerState<DynCreateReservePage> {
                         if (newEndtime.difference(DateTime.now()) >=
                             const Duration(minutes: 5)) {
                           ref
-                              .read(dynCreateReserveControllerProvider(widget.sid))
+                              .read(
+                                dynCreateReserveControllerProvider(widget.sid),
+                              )
                               .updateDate(newEndtime);
                         } else {
                           SmartDialog.showToast('至少选择5分钟之后');
@@ -208,7 +212,9 @@ class _DynCreateReservePageState extends ConsumerState<DynCreateReservePage> {
         .onCreate();
 
     if (result case Success(:final response)) {
-      final controller = ref.read(dynCreateReserveControllerProvider(widget.sid));
+      final controller = ref.read(
+        dynCreateReserveControllerProvider(widget.sid),
+      );
       Navigator.of(context).pop(
         ReserveInfoData(
           id: widget.sid ?? response as int,

@@ -4,7 +4,7 @@ import 'package:PiliPlus/features/history/presentation/controllers/history_multi
 /// Provider for HistoryMultiSelectControllerV2
 final historyMultiSelectControllerProvider =
     Provider<HistoryMultiSelectControllerV2>((ref) {
-  final controller = HistoryMultiSelectControllerV2();
-  ref.onDispose(controller.dispose);
-  return controller;
-});
+      final controller = HistoryMultiSelectControllerV2();
+      ref.onDispose(controller.dispose);
+      return controller;
+    });

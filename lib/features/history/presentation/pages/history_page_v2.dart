@@ -31,7 +31,9 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
       _hasInitialized = true;
       // Trigger initial data load
       Future.microtask(() {
-        ref.read(historyControllerNotifierProvider(widget.type)).initialize(type: widget.type);
+        ref
+            .read(historyControllerNotifierProvider(widget.type))
+            .initialize(type: widget.type);
       });
     }
   }
@@ -39,7 +41,9 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(historyControllerProvider(widget.type));
-    final multiSelectController = ref.watch(historyMultiSelectControllerProvider);
+    final multiSelectController = ref.watch(
+      historyMultiSelectControllerProvider,
+    );
     final padding = MediaQuery.viewPaddingOf(context);
     final gridDelegate = Grid.videoCardHDelegate(context);
 
@@ -74,7 +78,12 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
                 top: 7,
                 bottom: padding.bottom + 100,
               ),
-              sliver: _buildBody(state, gridDelegate, widget.type, multiSelectController),
+              sliver: _buildBody(
+                state,
+                gridDelegate,
+                widget.type,
+                multiSelectController,
+              ),
             ),
           ],
         ),
@@ -82,7 +91,12 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
     );
   }
 
-  Widget _buildBody(HistoryState state, gridDelegate, String? type, multiSelectController) {
+  Widget _buildBody(
+    HistoryState state,
+    gridDelegate,
+    String? type,
+    multiSelectController,
+  ) {
     if (state.isLoading && state.result == null) {
       return SliverGrid.builder(
         gridDelegate: gridDelegate,
@@ -109,8 +123,9 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
 
     if (items.isEmpty) {
       return HttpError(
-        onReload: () =>
-            ref.read(historyControllerNotifierProvider(type)).onReload(type: type),
+        onReload: () => ref
+            .read(historyControllerNotifierProvider(type))
+            .onReload(type: type),
       );
     }
 

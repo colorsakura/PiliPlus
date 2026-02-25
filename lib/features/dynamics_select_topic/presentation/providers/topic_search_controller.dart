@@ -30,10 +30,12 @@ class TopicSearchController extends ChangeNotifier {
   Future<void> searchTopics([String? keywords, bool refresh = true]) async {
     if (refresh) {
       _currentPage = 1;
-      _updateState(_state.copyWith(
-        searchResults: LoadingState.loading(),
-        isEnd: false,
-      ));
+      _updateState(
+        _state.copyWith(
+          searchResults: LoadingState.loading(),
+          isEnd: false,
+        ),
+      );
     } else {
       _updateState(_state.copyWith(isLoadingMore: true));
     }
@@ -54,23 +56,25 @@ class TopicSearchController extends ChangeNotifier {
         currentList = response;
       }
 
-      final updatedList = refresh
-          ? newTopics
-          : [...?currentList, ...newTopics];
+      final updatedList = refresh ? newTopics : [...?currentList, ...newTopics];
 
-      _updateState(_state.copyWith(
-        searchResults: Success(updatedList),
-        isEnd: !hasMore,
-        isLoadingMore: false,
-      ));
+      _updateState(
+        _state.copyWith(
+          searchResults: Success(updatedList),
+          isEnd: !hasMore,
+          isLoadingMore: false,
+        ),
+      );
     } else {
       // Error case - preserve error info but change type
       // Since we can't directly convert LoadingState<TopicPubSearchData> to LoadingState<List<TopicItem>?>
       // We'll cast the error result
-      _updateState(_state.copyWith(
-        searchResults: result as LoadingState<List<TopicItem>>,
-        isLoadingMore: false,
-      ));
+      _updateState(
+        _state.copyWith(
+          searchResults: result as LoadingState<List<TopicItem>>,
+          isLoadingMore: false,
+        ),
+      );
     }
   }
 

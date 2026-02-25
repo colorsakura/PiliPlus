@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Provider for the topic search remote data source
 final topicSearchRemoteDatasourceProvider =
     Provider<TopicSearchRemoteDatasource>((ref) {
-  return TopicSearchRemoteDatasource();
-});
+      return TopicSearchRemoteDatasource();
+    });
 
 /// Provider for the topic search repository
 final topicSearchRepositoryProvider = Provider<TopicSearchRepository>((ref) {
@@ -24,8 +24,7 @@ final searchTopicsProvider = Provider<SearchTopics>((ref) {
 });
 
 /// Provider for the topic search controller
-final topicSearchControllerProvider =
-    Provider<TopicSearchController>((ref) {
+final topicSearchControllerProvider = Provider<TopicSearchController>((ref) {
   final searchTopics = ref.watch(searchTopicsProvider);
   final controller = TopicSearchController(searchTopics);
 

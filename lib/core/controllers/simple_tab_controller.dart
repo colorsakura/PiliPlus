@@ -10,10 +10,10 @@ class SimpleTabControllerV2 extends ChangeNotifier {
     required int length,
     TickerProvider? vsync,
     int initialIndex = 0,
-  })  : assert(length > 0),
-        assert(initialIndex >= 0 && initialIndex < length),
-        _length = length,
-        _initialIndex = initialIndex {
+  }) : assert(length > 0),
+       assert(initialIndex >= 0 && initialIndex < length),
+       _length = length,
+       _initialIndex = initialIndex {
     if (vsync != null) {
       _tabController = TabController(
         vsync: vsync,

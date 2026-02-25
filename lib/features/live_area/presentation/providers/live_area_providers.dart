@@ -9,8 +9,9 @@ import 'package:PiliPlus/features/live_area/domain/usecases/set_live_fav_tag_use
 import 'package:PiliPlus/features/live_area/presentation/providers/live_area_controller.dart';
 
 // Remote Datasource Provider
-final liveAreaRemoteDatasourceProvider =
-    Provider<LiveAreaRemoteDatasource>((ref) {
+final liveAreaRemoteDatasourceProvider = Provider<LiveAreaRemoteDatasource>((
+  ref,
+) {
   return const LiveAreaRemoteDatasource();
 });
 

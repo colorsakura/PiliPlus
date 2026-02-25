@@ -30,16 +30,16 @@ class AuthRemoteDataSource {
 
   /// 请求头
   Map<String, String> get headers => {
-        'buvid': buvid,
-        'env': 'prod',
-        'app-key': 'android_hd',
-        'user-agent': 'Mozilla/5.0 BiliTV/1.0.0',
-        'x-bili-trace-id': _generateTraceId(),
-        'x-bili-aurora-eid': '',
-        'x-bili-aurora-zone': '',
-        'bili-http-engine': 'cronet',
-        'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      };
+    'buvid': buvid,
+    'env': 'prod',
+    'app-key': 'android_hd',
+    'user-agent': 'Mozilla/5.0 BiliTV/1.0.0',
+    'x-bili-trace-id': _generateTraceId(),
+    'x-bili-aurora-eid': '',
+    'x-bili-aurora-zone': '',
+    'bili-http-engine': 'cronet',
+    'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+  };
 
   /// 获取电视登录二维码
   Future<Map<String, dynamic>> getHDCode() async {
@@ -181,13 +181,15 @@ class AuthRemoteDataSource {
 
       final response = await _httpClient.post(
         AuthApiConstants.loginByPwdApi,
-        queryParameters: {
-          'username': username,
-          'password': encryptedPassword,
-          'captcha_key': hash,
-          if (captchaKey != null) 'captcha': captchaKey,
-          if (captchaValue != null) 'captcha_value': captchaValue,
-        } as Map<String, dynamic>,
+        queryParameters:
+            {
+                  'username': username,
+                  'password': encryptedPassword,
+                  'captcha_key': hash,
+                  if (captchaKey != null) 'captcha': captchaKey,
+                  if (captchaValue != null) 'captcha_value': captchaValue,
+                }
+                as Map<String, dynamic>,
       );
 
       if (response.data['code'] == 0) {
@@ -418,8 +420,10 @@ class AuthRemoteDataSource {
   String _generateTraceId() {
     final now = DateTime.now().millisecondsSinceEpoch;
     final random = (now % 1000000).toString().padLeft(6, '0');
-    final hash =
-        sha256.convert(utf8.encode('$now$random')).toString().substring(0, 16);
+    final hash = sha256
+        .convert(utf8.encode('$now$random'))
+        .toString()
+        .substring(0, 16);
     return '$now$random:$hash:0.0';
   }
 }

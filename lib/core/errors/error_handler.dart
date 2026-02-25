@@ -18,21 +18,22 @@ class ErrorHandler {
   static Failure handleException(AppException exception) {
     return switch (exception) {
       ServerException(:final message, :final code) => ServerFailure(
-          message,
-          code: code,
-        ),
+        message,
+        code: code,
+      ),
       NetworkException(:final message) => NetworkFailure(message),
       UnauthorizedException() => const UnauthorizedFailure(),
       CacheException(:final message) => CacheFailure(message),
       ParseException(:final message) => ParseFailure(message),
-      BusinessLogicException(:final message, :final code) => BusinessLogicFailure(
+      BusinessLogicException(:final message, :final code) =>
+        BusinessLogicFailure(
           message,
           code: code,
         ),
       _ => UnknownFailure(
-          exception.message,
-          originalError: exception,
-        ),
+        exception.message,
+        originalError: exception,
+      ),
     };
   }
 
@@ -47,8 +48,8 @@ class ErrorHandler {
       DioExceptionType.cancel => NetworkException('请求已取消'),
       DioExceptionType.badCertificate => NetworkException('证书验证失败'),
       DioExceptionType.unknown => NetworkException(
-          '网络请求失败: ${error.message ?? "未知错误"}',
-        ),
+        '网络请求失败: ${error.message ?? "未知错误"}',
+      ),
     };
   }
 
@@ -68,21 +69,21 @@ class ErrorHandler {
     return switch (statusCode) {
       401 || 403 => UnauthorizedException(),
       404 => ServerException(
-          errorMessage ?? '请求的资源不存在',
-          code: statusCode,
-        ),
+        errorMessage ?? '请求的资源不存在',
+        code: statusCode,
+      ),
       400 => ServerException(
-          errorMessage ?? '请求参数错误',
-          code: statusCode,
-        ),
+        errorMessage ?? '请求参数错误',
+        code: statusCode,
+      ),
       500 || 502 || 503 || 504 => ServerException(
-          errorMessage ?? '服务器错误，请稍后重试',
-          code: statusCode,
-        ),
+        errorMessage ?? '服务器错误，请稍后重试',
+        code: statusCode,
+      ),
       _ => ServerException(
-          errorMessage ?? '请求失败',
-          code: statusCode,
-        ),
+        errorMessage ?? '请求失败',
+        code: statusCode,
+      ),
     };
   }
 

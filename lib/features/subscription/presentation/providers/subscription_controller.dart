@@ -7,12 +7,13 @@ import 'package:PiliPlus/features/subscription/domain/repositories/subscription_
 /// Controller for subscription page (Clean Architecture with Riverpod)
 ///
 /// Manages user subscription folders with pagination
-class SubscriptionController extends CommonListControllerV2<SubData, SubItemModel> {
+class SubscriptionController
+    extends CommonListControllerV2<SubData, SubItemModel> {
   SubscriptionController({
     required SubscriptionRepository repository,
     required bool isLogin,
-  })  : _repository = repository,
-        _isLogin = isLogin {
+  }) : _repository = repository,
+       _isLogin = isLogin {
     if (_isLogin) {
       queryData();
     } else {
@@ -63,9 +64,11 @@ class SubscriptionController extends CommonListControllerV2<SubData, SubItemMode
       type: subFolderItem.type!,
     );
     if (res.isSuccess && loadingState is Success) {
-      final currentList = (loadingState as Success<List<SubItemModel>?>).response;
+      final currentList =
+          (loadingState as Success<List<SubItemModel>?>).response;
       if (currentList != null) {
-        final newList = List<SubItemModel>.from(currentList)..remove(subFolderItem);
+        final newList = List<SubItemModel>.from(currentList)
+          ..remove(subFolderItem);
         loadingState = Success(newList);
         return true;
       }

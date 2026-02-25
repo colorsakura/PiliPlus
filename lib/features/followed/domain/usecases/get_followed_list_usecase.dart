@@ -12,9 +12,8 @@ class GetFollowedListUseCase {
   Future<LoadingState<FollowData>> call({
     required int mid,
     required int pn,
-  }) =>
-      _repository.getFollowedList(
-        mid: mid,
-        pn: pn,
-      );
+  }) => _repository.getFollowedList(
+    mid: mid,
+    pn: pn,
+  );
 }

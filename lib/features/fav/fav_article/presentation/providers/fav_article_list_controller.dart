@@ -62,7 +62,9 @@ class FavArticleController extends ChangeNotifier {
 
     if (result case Success(:final response)) {
       final currentList = _state.listState is Success
-          ? (_state.listState as Success<List<FavArticleItemModel>?>).response ?? []
+          ? (_state.listState as Success<List<FavArticleItemModel>?>)
+                    .response ??
+                []
           : <FavArticleItemModel>[];
 
       final newList = isRefresh ? response : [...currentList, ...response];
@@ -70,11 +72,13 @@ class FavArticleController extends ChangeNotifier {
       // Detect end by checking if response is empty
       final isEnd = response.isEmpty;
 
-      _updateState(_state.copyWith(
-        listState: Success(newList),
-        currentPage: page + 1,
-        isEnd: isEnd,
-      ));
+      _updateState(
+        _state.copyWith(
+          listState: Success(newList),
+          currentPage: page + 1,
+          isEnd: isEnd,
+        ),
+      );
     } else if (result case Error(:final errMsg)) {
       _updateState(_state.copyWith(listState: Error(errMsg)));
     }
@@ -92,11 +96,13 @@ class FavArticleController extends ChangeNotifier {
 
   /// Reload the list
   Future<void> onReload() async {
-    _updateState(FavArticleListState(
-      listState: LoadingState.loading(),
-      currentPage: _state.currentPage,
-      isEnd: _state.isEnd,
-    ));
+    _updateState(
+      FavArticleListState(
+        listState: LoadingState.loading(),
+        currentPage: _state.currentPage,
+        isEnd: _state.isEnd,
+      ),
+    );
     await queryData(isRefresh: true);
   }
 
@@ -106,8 +112,9 @@ class FavArticleController extends ChangeNotifier {
     if (result.isSuccess && _state.listState is Success) {
       final currentList =
           (_state.listState as Success<List<FavArticleItemModel>?>).response ??
-              <FavArticleItemModel>[];
-      final newList = List<FavArticleItemModel>.from(currentList)..removeAt(index);
+          <FavArticleItemModel>[];
+      final newList = List<FavArticleItemModel>.from(currentList)
+        ..removeAt(index);
       _updateState(_state.copyWith(listState: Success(newList)));
       return true;
     }

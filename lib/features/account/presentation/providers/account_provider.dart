@@ -48,5 +48,5 @@ class AccountController extends Notifier<AccountState> {
 /// 账户状态 Provider
 final accountControllerProvider =
     NotifierProvider<AccountController, AccountState>(
-  AccountController.new,
-);
+      AccountController.new,
+    );

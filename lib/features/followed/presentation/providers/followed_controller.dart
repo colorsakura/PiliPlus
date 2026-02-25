@@ -8,16 +8,17 @@ import 'package:PiliPlus/models/follow/list.dart';
 /// Controller for "also followed" page (Clean Architecture with Riverpod)
 ///
 /// Shows users that are also followed by the target user
-class FollowedController extends CommonListControllerV2<FollowData, FollowItemModel> {
+class FollowedController
+    extends CommonListControllerV2<FollowData, FollowItemModel> {
   FollowedController({
     required GetFollowedListUseCase getListUseCase,
     required GetUserNameUseCase getUserNameUseCase,
     required int mid,
     String? name,
-  })  : _getListUseCase = getListUseCase,
-        _getUserNameUseCase = getUserNameUseCase,
-        _mid = mid,
-        _name = name {
+  }) : _getListUseCase = getListUseCase,
+       _getUserNameUseCase = getUserNameUseCase,
+       _mid = mid,
+       _name = name {
     if (_name == null) {
       _fetchUserName();
     }
@@ -60,9 +61,8 @@ class FollowedController extends CommonListControllerV2<FollowData, FollowItemMo
   }
 
   @override
-  Future<LoadingState<FollowData>> customGetData() =>
-      _getListUseCase(
-        mid: _mid,
-        pn: page,
-      );
+  Future<LoadingState<FollowData>> customGetData() => _getListUseCase(
+    mid: _mid,
+    pn: page,
+  );
 }

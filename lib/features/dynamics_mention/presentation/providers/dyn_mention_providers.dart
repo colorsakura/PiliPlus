@@ -6,10 +6,11 @@ import 'package:PiliPlus/features/dynamics_mention/presentation/providers/dyn_me
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provider for the dynamic mention remote data source
-final dynMentionRemoteDatasourceProvider =
-    Provider<DynMentionRemoteDatasource>((ref) {
-  return DynMentionRemoteDatasource();
-});
+final dynMentionRemoteDatasourceProvider = Provider<DynMentionRemoteDatasource>(
+  (ref) {
+    return DynMentionRemoteDatasource();
+  },
+);
 
 /// Provider for the dynamic mention repository
 final dynMentionRepositoryProvider = Provider<DynMentionRepository>((ref) {
@@ -24,8 +25,7 @@ final searchMentionsProvider = Provider<SearchMentions>((ref) {
 });
 
 /// Provider for the dynamic mention controller
-final dynMentionControllerProvider =
-    Provider<DynMentionController>((ref) {
+final dynMentionControllerProvider = Provider<DynMentionController>((ref) {
   final searchMentions = ref.watch(searchMentionsProvider);
   final controller = DynMentionController(searchMentions);
 

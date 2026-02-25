@@ -8,7 +8,11 @@ class GetFavPgcUseCase {
 
   final FavPgcRepository _repository;
 
-  Future<LoadingState<List<FavPgcItemModel>>> call(int page, int type, int followStatus) {
+  Future<LoadingState<List<FavPgcItemModel>>> call(
+    int page,
+    int type,
+    int followStatus,
+  ) {
     return _repository.getFavPgc(page, type, followStatus);
   }
 }

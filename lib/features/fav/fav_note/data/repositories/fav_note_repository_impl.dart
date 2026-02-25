@@ -10,8 +10,14 @@ class FavNoteRepositoryImpl implements FavNoteRepository {
   final FavNoteRemoteDatasource _remoteDatasource;
 
   @override
-  Future<LoadingState<List<FavNoteItemModel>>> getFavNotes(int page, bool isPublish) async {
-    final result = await _remoteDatasource.getFavNotes(page: page, isPublish: isPublish);
+  Future<LoadingState<List<FavNoteItemModel>>> getFavNotes(
+    int page,
+    bool isPublish,
+  ) async {
+    final result = await _remoteDatasource.getFavNotes(
+      page: page,
+      isPublish: isPublish,
+    );
     return switch (result) {
       Loading() => LoadingState.loading(),
       Success(:final response) => Success(response ?? []),
@@ -20,7 +26,10 @@ class FavNoteRepositoryImpl implements FavNoteRepository {
   }
 
   @override
-  Future<LoadingState<void>> removeNotes(Set<FavNoteItemModel> notes, bool isPublish) {
+  Future<LoadingState<void>> removeNotes(
+    Set<FavNoteItemModel> notes,
+    bool isPublish,
+  ) {
     return _remoteDatasource.removeNotes(notes: notes, isPublish: isPublish);
   }
 }

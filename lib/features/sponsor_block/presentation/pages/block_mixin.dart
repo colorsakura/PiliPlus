@@ -322,11 +322,14 @@ mixin BlockMixin on GetxController {
   }
 
   void _doVote(String uuid, int type) {
-    _dataSource.voteOnSponsorTime(uuid: uuid, type: type).then((_) {
-      SmartDialog.showToast('投票成功');
-    }).catchError((e) {
-      SmartDialog.showToast('投票失败: $e');
-    });
+    _dataSource
+        .voteOnSponsorTime(uuid: uuid, type: type)
+        .then((_) {
+          SmartDialog.showToast('投票成功');
+        })
+        .catchError((e) {
+          SmartDialog.showToast('投票失败: $e');
+        });
   }
 
   void _showCategoryDialog(SegmentModel segment) {
@@ -344,14 +347,17 @@ mixin BlockMixin on GetxController {
                     dense: true,
                     onTap: () {
                       Get.back();
-                      _dataSource.voteOnSponsorTime(
-                        uuid: segment.uuid,
-                        category: item,
-                      ).then((_) {
-                        SmartDialog.showToast('类别更改成功');
-                      }).catchError((e) {
-                        SmartDialog.showToast('类别更改失败: $e');
-                      });
+                      _dataSource
+                          .voteOnSponsorTime(
+                            uuid: segment.uuid,
+                            category: item,
+                          )
+                          .then((_) {
+                            SmartDialog.showToast('类别更改成功');
+                          })
+                          .catchError((e) {
+                            SmartDialog.showToast('类别更改失败: $e');
+                          });
                     },
                     title: Text.rich(
                       TextSpan(

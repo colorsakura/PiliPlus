@@ -61,9 +61,9 @@ class DynCreateReserveController extends ChangeNotifier {
     required CreateReserveUseCase createReserveUseCase,
     required UpdateReserveUseCase updateReserveUseCase,
     this.sid,
-  })  : _getReserveInfoUseCase = getReserveInfoUseCase,
-        _createReserveUseCase = createReserveUseCase,
-        _updateReserveUseCase = updateReserveUseCase {
+  }) : _getReserveInfoUseCase = getReserveInfoUseCase,
+       _createReserveUseCase = createReserveUseCase,
+       _updateReserveUseCase = updateReserveUseCase {
     // Load initial data if editing
     if (sid != null) {
       Future.microtask(() => queryData());
@@ -82,10 +82,12 @@ class DynCreateReserveController extends ChangeNotifier {
 
   /// Update title
   void updateTitle(String title) {
-    _updateState(_state.copyWith(
-      title: title,
-      canCreate: title.trim().isNotEmpty,
-    ));
+    _updateState(
+      _state.copyWith(
+        title: title,
+        canCreate: title.trim().isNotEmpty,
+      ),
+    );
   }
 
   /// Update date
@@ -98,14 +100,16 @@ class DynCreateReserveController extends ChangeNotifier {
     if (sid == null) return;
     final result = await _getReserveInfoUseCase(sid: sid!);
     if (result case Success(:final response)) {
-      _updateState(_state.copyWith(
-        reserveInfoState: result,
-        title: response.title,
-        date: DateTime.fromMillisecondsSinceEpoch(
-          response.livePlanStartTime! * 1000,
+      _updateState(
+        _state.copyWith(
+          reserveInfoState: result,
+          title: response.title,
+          date: DateTime.fromMillisecondsSinceEpoch(
+            response.livePlanStartTime! * 1000,
+          ),
+          canCreate: true,
         ),
-        canCreate: true,
-      ));
+      );
     } else {
       _updateState(_state.copyWith(reserveInfoState: result));
     }

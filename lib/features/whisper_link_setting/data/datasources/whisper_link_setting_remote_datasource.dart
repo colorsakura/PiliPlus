@@ -4,7 +4,8 @@ import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/msg/im_user_infos/datum.dart';
 import 'package:PiliPlus/models/msg/msg_dnd/uid_setting.dart';
 import 'package:PiliPlus/models/msg/session_ss/data.dart';
-import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart' show SessionId, SessionUpdateReply;
+import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
+    show SessionId, SessionUpdateReply;
 import 'package:PiliPlus/grpc/im.dart';
 import 'package:PiliPlus/features/whisper_link_setting/domain/repositories/whisper_link_setting_repository.dart';
 
@@ -29,11 +30,10 @@ class WhisperLinkSettingRemoteDatasource
   Future<LoadingState<void>> setPushSs({
     required int setting,
     required int talkerUid,
-  }) =>
-      MsgHttp.setPushSs(
-        setting: setting,
-        talkerUid: talkerUid,
-      );
+  }) => MsgHttp.setPushSs(
+    setting: setting,
+    talkerUid: talkerUid,
+  );
 
   @override
   Future<LoadingState<SessionUpdateReply>> sessionUpdate(SessionId sessionId) =>
@@ -52,22 +52,20 @@ class WhisperLinkSettingRemoteDatasource
     required int uid,
     required int setting,
     required int dndUid,
-  }) =>
-      MsgHttp.setMsgDnd(
-        uid: uid,
-        setting: setting,
-        dndUid: dndUid,
-      );
+  }) => MsgHttp.setMsgDnd(
+    uid: uid,
+    setting: setting,
+    dndUid: dndUid,
+  );
 
   @override
   Future<LoadingState<void>> relationMod({
     required int mid,
     required int act,
     required int reSrc,
-  }) =>
-      VideoHttp.relationMod(
-        mid: mid,
-        act: act,
-        reSrc: reSrc,
-      );
+  }) => VideoHttp.relationMod(
+    mid: mid,
+    act: act,
+    reSrc: reSrc,
+  );
 }

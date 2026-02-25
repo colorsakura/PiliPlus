@@ -1597,7 +1597,9 @@ class PlPlayerController with BlockConfigMixin {
     if (isLive) {
       return null;
     }
-    if (!enableHeart || (MineController.anonymity?.value ?? false) || progress == 0) {
+    if (!enableHeart ||
+        (MineController.anonymity?.value ?? false) ||
+        progress == 0) {
       return null;
     } else if (playerStatus.isPaused) {
       if (!isManual) {

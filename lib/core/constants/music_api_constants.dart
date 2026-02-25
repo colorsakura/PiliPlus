@@ -6,8 +6,7 @@ library;
 /// 音乐相关 API 常量
 abstract class MusicApiConstants {
   /// BGM详情
-  static const String bgmDetail =
-      '/x/copyright-music-publicity/bgm/detail';
+  static const String bgmDetail = '/x/copyright-music-publicity/bgm/detail';
 
   /// 更新收藏状态
   static const String wishUpdate =

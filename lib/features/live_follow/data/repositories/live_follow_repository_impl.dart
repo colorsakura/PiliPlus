@@ -19,7 +19,9 @@ class LiveFollowRepositoryImpl implements LiveFollowRepository {
       final data = await _remoteDataSource.liveFollow(page);
       final items = data['list'] as List? ?? [];
       // Convert List<dynamic> to List<LiveFollowItemEntity>
-      final entityList = items.map((item) => item as LiveFollowItemEntity).toList();
+      final entityList = items
+          .map((item) => item as LiveFollowItemEntity)
+          .toList();
       return Success(entityList);
     } catch (e) {
       return Error(e.toString());

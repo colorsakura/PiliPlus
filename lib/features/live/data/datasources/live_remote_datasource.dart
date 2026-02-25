@@ -227,29 +227,31 @@ class LiveRemoteDataSource {
     bool moduleSelect = false,
   }) async {
     try {
-      final params = {
-        'access_key': _recommend.accessKey,
-        'channel': 'master',
-        'actionKey': 'appkey',
-        'build': 8430300,
-        'version': '8.43.0',
-        'c_locale': 'zh_CN',
-        'device': 'android',
-        'device_name': 'android',
-        'device_type': 0,
-        'fnval': 912,
-        'disable_rcmd': 0,
-        'https_url_req': 1,
-        if (moduleSelect) 'module_select': 1,
-        'mobi_app': 'android',
-        'network': 'wifi',
-        'page': pn,
-        'platform': 'android',
-        if (_recommend.isLogin) 'relation_page': 1,
-        's_locale': 'zh_CN',
-        'scale': 2,
-        'statistics': _getStatisticsApp(),
-      } as Map<String, dynamic>;
+      final params =
+          {
+                'access_key': _recommend.accessKey,
+                'channel': 'master',
+                'actionKey': 'appkey',
+                'build': 8430300,
+                'version': '8.43.0',
+                'c_locale': 'zh_CN',
+                'device': 'android',
+                'device_name': 'android',
+                'device_type': 0,
+                'fnval': 912,
+                'disable_rcmd': 0,
+                'https_url_req': 1,
+                if (moduleSelect) 'module_select': 1,
+                'mobi_app': 'android',
+                'network': 'wifi',
+                'page': pn,
+                'platform': 'android',
+                if (_recommend.isLogin) 'relation_page': 1,
+                's_locale': 'zh_CN',
+                'scale': 2,
+                'statistics': _getStatisticsApp(),
+              }
+              as Map<String, dynamic>;
       AppSign.appSign(params);
 
       final response = await _httpClient.get(
@@ -301,23 +303,25 @@ class LiveRemoteDataSource {
     required Object parentid,
   }) async {
     try {
-      final params = {
-        'access_key': _recommend.accessKey,
-        'actionKey': 'appkey',
-        'build': 8430300,
-        'channel': 'master',
-        'version': '8.43.0',
-        'c_locale': 'zh_CN',
-        'device': 'android',
-        'disable_rcmd': 0,
-        'need_entrance': 1,
-        'parent_id': parentid,
-        'source_id': 2,
-        'mobi_app': 'android',
-        'platform': 'android',
-        's_locale': 'zh_CN',
-        'statistics': _getStatisticsApp(),
-      } as Map<String, dynamic>;
+      final params =
+          {
+                'access_key': _recommend.accessKey,
+                'actionKey': 'appkey',
+                'build': 8430300,
+                'channel': 'master',
+                'version': '8.43.0',
+                'c_locale': 'zh_CN',
+                'device': 'android',
+                'disable_rcmd': 0,
+                'need_entrance': 1,
+                'parent_id': parentid,
+                'source_id': 2,
+                'mobi_app': 'android',
+                'platform': 'android',
+                's_locale': 'zh_CN',
+                'statistics': _getStatisticsApp(),
+              }
+              as Map<String, dynamic>;
       AppSign.appSign(params);
 
       final response = await _httpClient.get(
@@ -341,20 +345,22 @@ class LiveRemoteDataSource {
   /// 直播分区列表
   Future<Map<String, dynamic>?> liveAreaList() async {
     try {
-      final params = {
-        'access_key': _recommend.accessKey,
-        'actionKey': 'appkey',
-        'build': 8430300,
-        'channel': 'master',
-        'version': '8.43.0',
-        'c_locale': 'zh_CN',
-        'device': 'android',
-        'disable_rcmd': 0,
-        'mobi_app': 'android',
-        'platform': 'android',
-        's_locale': 'zh_CN',
-        'statistics': _getStatisticsApp(),
-      } as Map<String, dynamic>;
+      final params =
+          {
+                'access_key': _recommend.accessKey,
+                'actionKey': 'appkey',
+                'build': 8430300,
+                'channel': 'master',
+                'version': '8.43.0',
+                'c_locale': 'zh_CN',
+                'device': 'android',
+                'disable_rcmd': 0,
+                'mobi_app': 'android',
+                'platform': 'android',
+                's_locale': 'zh_CN',
+                'statistics': _getStatisticsApp(),
+              }
+              as Map<String, dynamic>;
       AppSign.appSign(params);
 
       final response = await _httpClient.get(
@@ -382,24 +388,26 @@ class LiveRemoteDataSource {
     required String type,
   }) async {
     try {
-      final params = {
-        'access_key': _recommend.accessKey,
-        'actionKey': 'appkey',
-        'build': 8430300,
-        'channel': 'master',
-        'version': '8.43.0',
-        'c_locale': 'zh_CN',
-        'device': 'android',
-        'page': page,
-        'pagesize': 30,
-        'keyword': keyword,
-        'disable_rcmd': 0,
-        'mobi_app': 'android',
-        'platform': 'android',
-        's_locale': 'zh_CN',
-        'statistics': _getStatisticsApp(),
-        'type': type,
-      } as Map<String, dynamic>;
+      final params =
+          {
+                'access_key': _recommend.accessKey,
+                'actionKey': 'appkey',
+                'build': 8430300,
+                'channel': 'master',
+                'version': '8.43.0',
+                'c_locale': 'zh_CN',
+                'device': 'android',
+                'page': page,
+                'pagesize': 30,
+                'keyword': keyword,
+                'disable_rcmd': 0,
+                'mobi_app': 'android',
+                'platform': 'android',
+                's_locale': 'zh_CN',
+                'statistics': _getStatisticsApp(),
+                'type': type,
+              }
+              as Map<String, dynamic>;
       AppSign.appSign(params);
 
       final response = await _httpClient.get(

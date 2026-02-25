@@ -6,8 +6,9 @@ import 'package:PiliPlus/features/pgc_review/domain/repositories/pgc_review_repo
 import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_controller.dart';
 
 // Remote Datasource Provider
-final pgcReviewRemoteDatasourceProvider =
-    Provider<PgcReviewRemoteDatasource>((ref) {
+final pgcReviewRemoteDatasourceProvider = Provider<PgcReviewRemoteDatasource>((
+  ref,
+) {
   return PgcReviewRemoteDatasource();
 });
 
@@ -31,9 +32,9 @@ class PgcReviewParams {
 // Controller Provider - uses Provider.family for different params
 final pgcReviewControllerProvider =
     Provider.family<PgcReviewController, PgcReviewParams>((ref, params) {
-  return PgcReviewController(
-    type: params.type,
-    mediaId: params.mediaId,
-    repository: ref.watch(pgcReviewRepositoryProvider),
-  );
-});
+      return PgcReviewController(
+        type: params.type,
+        mediaId: params.mediaId,
+        repository: ref.watch(pgcReviewRepositoryProvider),
+      );
+    });

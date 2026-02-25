@@ -37,5 +37,5 @@ class DynamicsTabController extends Notifier<DynamicsTabConfig> {
 /// Dynamics tab controller notifier provider.
 final dynamicsTabControllerNotifierProvider =
     NotifierProvider<DynamicsTabController, DynamicsTabConfig>(
-  DynamicsTabController.new,
-);
+      DynamicsTabController.new,
+    );

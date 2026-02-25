@@ -11,7 +11,10 @@ class GetPgcIndexUseCase {
 
   const GetPgcIndexUseCase(this._repository);
 
-  Future<LoadingState<List<PgcIndexItem>?>> call(int page, HomeTabType tabType) {
+  Future<LoadingState<List<PgcIndexItem>?>> call(
+    int page,
+    HomeTabType tabType,
+  ) {
     return _repository.getPgcIndex(page, tabType);
   }
 }

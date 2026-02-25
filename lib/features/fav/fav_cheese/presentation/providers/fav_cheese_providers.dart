@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/fav/fav_cheese/domain/usecases/remove_cheese_u
 import 'package:PiliPlus/features/fav/fav_cheese/presentation/providers/fav_cheese_list_controller.dart';
 
 /// Provider for FavCheeseRemoteDatasource
-final favCheeseRemoteDatasourceProvider =
-    Provider<FavCheeseRemoteDatasource>((ref) {
+final favCheeseRemoteDatasourceProvider = Provider<FavCheeseRemoteDatasource>((
+  ref,
+) {
   return FavCheeseRemoteDatasource();
 });
 
@@ -31,8 +32,7 @@ final removeCheeseUseCaseProvider = Provider<RemoveCheeseUseCase>((ref) {
 });
 
 /// Provider for FavCheeseController
-final favCheeseControllerProvider =
-    Provider<FavCheeseController>((ref) {
+final favCheeseControllerProvider = Provider<FavCheeseController>((ref) {
   return FavCheeseController(
     getFavCheeseUseCase: ref.watch(getFavCheeseUseCaseProvider),
     removeCheeseUseCase: ref.watch(removeCheeseUseCaseProvider),

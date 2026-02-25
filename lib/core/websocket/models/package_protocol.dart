@@ -77,14 +77,19 @@ class PackageHeaderRes extends PackageHeader {
 class OperationCode {
   /// 心跳请求
   static const int heartbeat = 2;
+
   /// 心跳响应
   static const int heartbeatReply = 3;
+
   /// 认证请求
   static const int auth = 7;
+
   /// 认证响应
   static const int authReply = 8;
+
   /// 消息请求
   static const int message = 9;
+
   /// 消息响应
   static const int messageReply = 10;
 }
@@ -93,10 +98,13 @@ class OperationCode {
 class ProtocolVersion {
   /// JSON格式
   static const int json = 0;
+
   /// 也是JSON
   static const int jsonV1 = 1;
+
   /// GZIP压缩
   static const int gzip = 2;
+
   /// Brotli压缩
   static const int brotli = 3;
 }

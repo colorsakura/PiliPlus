@@ -71,7 +71,8 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
           builder: (context) => _buildKeyword(state.keywordList, _controller),
         ),
         KeepAliveWrapper(
-          builder: (context) => _buildKeyword(state.shieldUserList, _controller),
+          builder: (context) =>
+              _buildKeyword(state.shieldUserList, _controller),
         ),
       ],
     );

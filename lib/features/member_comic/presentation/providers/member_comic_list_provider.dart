@@ -30,8 +30,8 @@ final fetchMemberComicsUseCaseProvider = Provider<FetchMemberComicsUseCase>(
 /// Controller provider (parameterized by member ID)
 final memberComicListControllerProvider =
     Provider.family<MemberComicListController, int>((ref, mid) {
-  return MemberComicListController(
-    mid: mid,
-    fetchComics: ref.watch(fetchMemberComicsUseCaseProvider),
-  );
-});
+      return MemberComicListController(
+        mid: mid,
+        fetchComics: ref.watch(fetchMemberComicsUseCaseProvider),
+      );
+    });

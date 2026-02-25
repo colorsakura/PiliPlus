@@ -95,7 +95,9 @@ class PgcIndexController extends Notifier<PgcIndexState> {
       // 获取数据
       fetchResult();
     } else {
-      state = state.copyWith(conditionState: res as LoadingState<PgcIndexConditionData>);
+      state = state.copyWith(
+        conditionState: res as LoadingState<PgcIndexConditionData>,
+      );
     }
   }
 
@@ -113,10 +115,14 @@ class PgcIndexController extends Notifier<PgcIndexState> {
 
     if (res case Success(:final response)) {
       final currentList = state.loadingState is Success
-          ? (state.loadingState as Success<List<PgcIndexItemEntity>?>).response ?? []
+          ? (state.loadingState as Success<List<PgcIndexItemEntity>?>)
+                    .response ??
+                []
           : <PgcIndexItemEntity>[];
 
-      final newList = isRefresh ? (response ?? []) : [...currentList, ...?response];
+      final newList = isRefresh
+          ? (response ?? [])
+          : [...currentList, ...?response];
       final isEnd = response == null || response.isEmpty;
 
       state = state.copyWith(
@@ -125,7 +131,9 @@ class PgcIndexController extends Notifier<PgcIndexState> {
         isEnd: isEnd,
       );
     } else {
-      state = state.copyWith(loadingState: res as LoadingState<List<PgcIndexItemEntity>?>);
+      state = state.copyWith(
+        loadingState: res as LoadingState<List<PgcIndexItemEntity>?>,
+      );
     }
   }
 

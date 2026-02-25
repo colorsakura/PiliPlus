@@ -7,12 +7,13 @@ import 'package:PiliPlus/features/member_dynamics/presentation/providers/member_
 // Remote Datasource Provider
 final memberDynamicsRemoteDatasourceProvider =
     Provider<MemberDynamicsRemoteDatasource>((ref) {
-  return const MemberDynamicsRemoteDatasource();
-});
+      return const MemberDynamicsRemoteDatasource();
+    });
 
 // Repository Provider
-final memberDynamicsRepositoryProvider =
-    Provider<MemberDynamicsRepository>((ref) {
+final memberDynamicsRepositoryProvider = Provider<MemberDynamicsRepository>((
+  ref,
+) {
   final datasource = ref.watch(memberDynamicsRemoteDatasourceProvider);
   return MemberDynamicsRepositoryImpl(datasource);
 });
@@ -28,9 +29,12 @@ class MemberDynamicsParams {
 
 // Controller Provider - uses Provider.family for different mids
 final memberDynamicsControllerProvider =
-    Provider.family<MemberDynamicsController, MemberDynamicsParams>((ref, params) {
-  return MemberDynamicsController(
-    mid: params.mid,
-    repository: ref.watch(memberDynamicsRepositoryProvider),
-  );
-});
+    Provider.family<MemberDynamicsController, MemberDynamicsParams>((
+      ref,
+      params,
+    ) {
+      return MemberDynamicsController(
+        mid: params.mid,
+        repository: ref.watch(memberDynamicsRepositoryProvider),
+      );
+    });

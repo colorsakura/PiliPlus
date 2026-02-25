@@ -95,8 +95,8 @@ class NavigationConfigController extends Notifier<NavigationConfigState> {
 /// 导航配置 Provider
 final navigationConfigControllerProvider =
     NotifierProvider<NavigationConfigController, NavigationConfigState>(
-  NavigationConfigController.new,
-);
+      NavigationConfigController.new,
+    );
 
 /// 导航状态（滚动偏移等）
 class NavigationStateController extends Notifier<NavigationState> {
@@ -124,8 +124,8 @@ class NavigationStateController extends Notifier<NavigationState> {
 /// 导航状态 Provider
 final navigationStateControllerProvider =
     NotifierProvider<NavigationStateController, NavigationState>(
-  NavigationStateController.new,
-);
+      NavigationStateController.new,
+    );
 
 /// 动态角标模式
 final dynamicBadgeModeProvider = Provider<DynamicBadgeMode>((ref) {

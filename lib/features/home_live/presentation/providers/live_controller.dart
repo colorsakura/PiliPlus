@@ -310,8 +310,10 @@ class LiveController extends Notifier<LiveControllerState> {
           state.areaId != null &&
           result.areaItems != null) {
         final idx = result.areaItems!.indexWhere(
-              (e) => e.areaV2Id == state.areaId && e.areaV2ParentId == state.parentAreaId,
-            );
+          (e) =>
+              e.areaV2Id == state.areaId &&
+              e.areaV2ParentId == state.parentAreaId,
+        );
         if (idx >= 0) {
           foundAreaIndex = idx + 1;
         }

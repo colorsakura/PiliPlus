@@ -11,11 +11,10 @@ class FollowedRemoteDatasource {
   Future<LoadingState<FollowData>> getFollowedList({
     required int mid,
     required int pn,
-  }) =>
-      UserHttp.followedUp(
-        mid: mid,
-        pn: pn,
-      );
+  }) => UserHttp.followedUp(
+    mid: mid,
+    pn: pn,
+  );
 
   /// Get user name by mid
   Future<String?> getUserName(int mid) async {

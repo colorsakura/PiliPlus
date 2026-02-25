@@ -133,7 +133,9 @@ class MemberRemoteDataSource {
         },
       );
       if (response.data['code'] == 0) {
-        return SpaceSsData.fromJson(response.data['data']?['items_lists'] ?? {});
+        return SpaceSsData.fromJson(
+          response.data['data']?['items_lists'] ?? {},
+        );
       } else {
         throw ServerException(
           response.data['message'] ?? '获取番剧系列列表失败',
@@ -191,7 +193,7 @@ class MemberRemoteDataSource {
         'statistics': Constants.statisticsApp,
         'vmid': mid,
       };
-      
+
       final endpoint = switch (type) {
         ContributeType.video => MemberApiConstants.spaceArchive,
         ContributeType.charging => MemberApiConstants.spaceChargingArchive,
@@ -200,7 +202,7 @@ class MemberRemoteDataSource {
         ContributeType.bangumi => MemberApiConstants.spaceBangumi,
         ContributeType.comic => MemberApiConstants.spaceComic,
       };
-      
+
       final response = await _httpClient.get(
         endpoint,
         queryParameters: params,

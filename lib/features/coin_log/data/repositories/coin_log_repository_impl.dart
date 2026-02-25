@@ -19,8 +19,8 @@ class CoinLogRepositoryImpl implements CoinLogRepository {
     return switch (result) {
       Loading() => LoadingState.loading(),
       Success(:final response) => Success(
-          CoinLogResultEntity.fromModel(response.list),
-        ),
+        CoinLogResultEntity.fromModel(response.list),
+      ),
       Error() => result as LoadingState<CoinLogResultEntity>,
     };
   }

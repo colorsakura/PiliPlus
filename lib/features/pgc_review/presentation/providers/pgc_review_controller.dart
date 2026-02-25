@@ -8,13 +8,14 @@ import 'package:PiliPlus/features/pgc_review/domain/repositories/pgc_review_repo
 /// Controller for PGC review page (Clean Architecture with Riverpod)
 ///
 /// Manages PGC reviews with cursor-based pagination
-class PgcReviewController extends CommonListControllerV2<PgcReviewData, PgcReviewItemModel> {
+class PgcReviewController
+    extends CommonListControllerV2<PgcReviewData, PgcReviewItemModel> {
   PgcReviewController({
     required this.type,
     required this.mediaId,
     required PgcReviewRepository repository,
-  })  : _repository = repository,
-        _sortType = PgcReviewSortType.def {
+  }) : _repository = repository,
+       _sortType = PgcReviewSortType.def {
     queryData();
   }
 
@@ -43,8 +44,7 @@ class PgcReviewController extends CommonListControllerV2<PgcReviewData, PgcRevie
 
   @override
   List<PgcReviewItemModel>? getDataList(PgcReviewData response) {
-    if (type == PgcReviewType.long &&
-        _sortType == PgcReviewSortType.latest) {
+    if (type == PgcReviewType.long && _sortType == PgcReviewSortType.latest) {
       count = null;
     } else {
       count = response.count;
@@ -82,7 +82,11 @@ class PgcReviewController extends CommonListControllerV2<PgcReviewData, PgcRevie
   }
 
   /// Dislike a review
-  Future<void> onDislike(PgcReviewItemModel item, bool isDislike, reviewId) async {
+  Future<void> onDislike(
+    PgcReviewItemModel item,
+    bool isDislike,
+    reviewId,
+  ) async {
     final res = await _repository.dislikeReview(
       mediaId: mediaId,
       reviewId: reviewId,
@@ -106,9 +110,11 @@ class PgcReviewController extends CommonListControllerV2<PgcReviewData, PgcRevie
       reviewId: reviewId,
     );
     if (res.isSuccess && loadingState is Success) {
-      final currentList = (loadingState as Success<List<PgcReviewItemModel>?>).response;
+      final currentList =
+          (loadingState as Success<List<PgcReviewItemModel>?>).response;
       if (currentList != null) {
-        final newList = List<PgcReviewItemModel>.from(currentList)..removeAt(index);
+        final newList = List<PgcReviewItemModel>.from(currentList)
+          ..removeAt(index);
         loadingState = Success(newList);
       }
     }

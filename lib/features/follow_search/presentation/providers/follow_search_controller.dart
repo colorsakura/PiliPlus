@@ -77,7 +77,8 @@ class FollowSearchController extends ChangeNotifier {
         );
       } else {
         final currentList = _state.listState is Success
-            ? (_state.listState as Success<List<FollowItemModel>?>).response ?? []
+            ? (_state.listState as Success<List<FollowItemModel>?>).response ??
+                  []
             : <FollowItemModel>[];
         _state = _state.copyWith(
           listState: Success([...currentList, ...newList]),

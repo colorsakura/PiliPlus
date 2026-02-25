@@ -35,17 +35,17 @@ class WhisperBlockController extends Notifier<WhisperBlockState> {
 
     state = switch (result) {
       Loading() => WhisperBlockState(
-          data: LoadingState.loading(),
-        ),
+        data: LoadingState.loading(),
+      ),
       Success(:final response) => () {
-          final entity = WhisperBlockEntity.fromResponse(response);
-          return WhisperBlockState(
-            data: Success(entity),
-          );
-        }(),
+        final entity = WhisperBlockEntity.fromResponse(response);
+        return WhisperBlockState(
+          data: Success(entity),
+        );
+      }(),
       Error() => WhisperBlockState(
-          data: result,
-        ),
+        data: result,
+      ),
     };
   }
 
@@ -67,7 +67,10 @@ class WhisperBlockController extends Notifier<WhisperBlockState> {
         if (currentData is Success<WhisperBlockEntity>) {
           final entity = currentData.response;
           if (entity != null) {
-            final updatedList = [...entity.items, KeywordBlockingItem(keyword: keyword)];
+            final updatedList = [
+              ...entity.items,
+              KeywordBlockingItem(keyword: keyword),
+            ];
             final updatedEntity = WhisperBlockEntity(
               items: updatedList,
               count: updatedList.length,
@@ -126,5 +129,5 @@ class WhisperBlockController extends Notifier<WhisperBlockState> {
 /// Whisper block controller provider
 final whisperBlockControllerProvider =
     NotifierProvider<WhisperBlockController, WhisperBlockState>(
-  WhisperBlockController.new,
-);
+      WhisperBlockController.new,
+    );

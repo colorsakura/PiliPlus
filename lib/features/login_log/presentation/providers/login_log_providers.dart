@@ -6,8 +6,9 @@ import 'package:PiliPlus/features/login_log/domain/usecases/get_login_log_usecas
 import 'package:PiliPlus/features/login_log/presentation/providers/login_log_controller.dart';
 
 // Remote Datasource Provider
-final loginLogRemoteDatasourceProvider =
-    Provider<LoginLogRemoteDatasource>((ref) {
+final loginLogRemoteDatasourceProvider = Provider<LoginLogRemoteDatasource>((
+  ref,
+) {
   return const LoginLogRemoteDatasource();
 });
 

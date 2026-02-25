@@ -13,11 +13,10 @@ class MemberDynamicsRepositoryImpl implements MemberDynamicsRepository {
   Future<LoadingState<DynamicsDataModel>> getMemberDynamics({
     required int mid,
     required String offset,
-  }) =>
-      _datasource.getMemberDynamics(
-        mid: mid,
-        offset: offset,
-      );
+  }) => _datasource.getMemberDynamics(
+    mid: mid,
+    offset: offset,
+  );
 
   @override
   Future<LoadingState<void>> removeDynamic({required dynamic dynIdStr}) =>
@@ -27,8 +26,7 @@ class MemberDynamicsRepositoryImpl implements MemberDynamicsRepository {
   Future<LoadingState<void>> setDynamicTop({
     required dynamic dynamicId,
     required bool isTop,
-  }) =>
-      isTop
-          ? _datasource.rmDynamicTop(dynamicId: dynamicId)
-          : _datasource.setDynamicTop(dynamicId: dynamicId);
+  }) => isTop
+      ? _datasource.rmDynamicTop(dynamicId: dynamicId)
+      : _datasource.setDynamicTop(dynamicId: dynamicId);
 }

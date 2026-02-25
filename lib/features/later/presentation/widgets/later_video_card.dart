@@ -94,7 +94,8 @@ class LaterVideoCard extends StatelessWidget {
                                   : progress / (videoItem.duration ?? 1),
                             ),
                           ),
-                        ] else if (videoItem.duration != null && videoItem.duration! > 0)
+                        ] else if (videoItem.duration != null &&
+                            videoItem.duration! > 0)
                           PBadge(
                             text: DurationUtils.formatDuration(
                               videoItem.duration!,
@@ -218,7 +219,10 @@ class LaterVideoCard extends StatelessWidget {
     // If it's an Owner object, try to access the name property via reflection
     // This is a fallback - ideally we'd properly type the entity
     try {
-      return videoItem.owner.toString().replaceAll('Owner(', '').replaceAll(')', '');
+      return videoItem.owner
+          .toString()
+          .replaceAll('Owner(', '')
+          .replaceAll(')', '');
     } catch (e) {
       return '';
     }
@@ -276,7 +280,8 @@ class LaterVideoCard extends StatelessWidget {
       final epId = bangumi['epId'];
       if (epId != null) {
         PageUtils.viewPgc(epId: epId);
-      } else if (videoItem.redirectUrl != null && videoItem.redirectUrl!.isNotEmpty) {
+      } else if (videoItem.redirectUrl != null &&
+          videoItem.redirectUrl!.isNotEmpty) {
         PageUtils.viewPgcFromUri(videoItem.redirectUrl!);
       }
     }

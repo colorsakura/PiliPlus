@@ -12,11 +12,10 @@ class MemberDynamicsRemoteDatasource {
   Future<LoadingState<DynamicsDataModel>> getMemberDynamics({
     required int mid,
     required String offset,
-  }) =>
-      MemberHttp.memberDynamic(
-        offset: offset,
-        mid: mid,
-      );
+  }) => MemberHttp.memberDynamic(
+    offset: offset,
+    mid: mid,
+  );
 
   /// Remove a dynamic post
   Future<LoadingState<void>> removeDynamic({required dynamic dynIdStr}) =>

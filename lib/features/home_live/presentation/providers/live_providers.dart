@@ -25,8 +25,9 @@ final fetchLiveFeedUseCaseProvider = Provider<FetchLiveFeedUseCase>((ref) {
 });
 
 /// 获取直播分区列表用例 Provider
-final fetchLiveAreaListUseCaseProvider =
-    Provider<FetchLiveAreaListUseCase>((ref) {
+final fetchLiveAreaListUseCaseProvider = Provider<FetchLiveAreaListUseCase>((
+  ref,
+) {
   final repository = ref.watch(liveRepositoryProvider);
   return FetchLiveAreaListUseCase(repository);
 });

@@ -4,8 +4,7 @@ import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.
 import 'package:PiliPlus/http/loading_state.dart';
 
 /// Implementation of member upower rank repository
-class MemberUpowerRankRepositoryImpl
-    implements MemberUpowerRankRepository {
+class MemberUpowerRankRepositoryImpl implements MemberUpowerRankRepository {
   final MemberRemoteDataSource _remoteDataSource;
 
   MemberUpowerRankRepositoryImpl({

@@ -38,28 +38,30 @@ class SearchTrendingController extends Notifier<SearchTrendingState> {
 
     state = switch (result) {
       Loading() => SearchTrendingState(
-          items: LoadingState.loading(),
-          topCount: 0,
-        ),
+        items: LoadingState.loading(),
+        topCount: 0,
+      ),
       Success(:final data) => () {
-          if (data != null) {
-            // Calculate top count (items with icons are top items)
-            final topCount = data.where((item) => item.icon?.isNotEmpty == true).length;
+        if (data != null) {
+          // Calculate top count (items with icons are top items)
+          final topCount = data
+              .where((item) => item.icon?.isNotEmpty == true)
+              .length;
 
-            return SearchTrendingState(
-              items: Success(data),
-              topCount: topCount,
-            );
-          }
           return SearchTrendingState(
-            items: Success([]),
-            topCount: 0,
+            items: Success(data),
+            topCount: topCount,
           );
-        }(),
-      Error() => SearchTrendingState(
-          items: result,
+        }
+        return SearchTrendingState(
+          items: Success([]),
           topCount: 0,
-        ),
+        );
+      }(),
+      Error() => SearchTrendingState(
+        items: result,
+        topCount: 0,
+      ),
     };
   }
 
@@ -70,5 +72,5 @@ class SearchTrendingController extends Notifier<SearchTrendingState> {
 /// Search trending controller provider
 final searchTrendingControllerProvider =
     NotifierProvider<SearchTrendingController, SearchTrendingState>(
-  SearchTrendingController.new,
-);
+      SearchTrendingController.new,
+    );

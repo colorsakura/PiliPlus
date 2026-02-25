@@ -5,7 +5,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 /// Whisper block remote data source
 class WhisperBlockRemoteDatasource {
   /// Get keyword blocking list from gRPC
-  Future<LoadingState<KeywordBlockingListReply>> getKeywordBlockingList() async {
+  Future<LoadingState<KeywordBlockingListReply>>
+  getKeywordBlockingList() async {
     return ImGrpc.keywordBlockingList();
   }
 

@@ -37,9 +37,11 @@ class _LiveSearchPageV2State extends ConsumerState<LiveSearchPageV2>
     final mid = args is Map ? args['mid'] as String? : null;
     final uname = args is Map ? args['uname'] as String? : null;
 
-    final controller = ref.watch(liveSearchControllerProvider(
-      (mid: mid, uname: uname),
-    ));
+    final controller = ref.watch(
+      liveSearchControllerProvider(
+        (mid: mid, uname: uname),
+      ),
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

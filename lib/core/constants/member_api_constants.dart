@@ -105,5 +105,6 @@ abstract class MemberApiConstants {
   static const String likeArc = '/x/v2/space/likearc';
 
   /// 用户空间商店
-  static const String spaceShop = '/mall/community-hub/small_shop/feed/tab/item';
+  static const String spaceShop =
+      '/mall/community-hub/small_shop/feed/tab/item';
 }

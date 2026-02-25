@@ -16,37 +16,33 @@ class LiveDmBlockRepositoryImpl implements LiveDmBlockRepository {
     required String type,
     required int level,
     required String roomId,
-  }) =>
-      _datasource.setSilent(type: type, level: level, roomId: roomId);
+  }) => _datasource.setSilent(type: type, level: level, roomId: roomId);
 
   @override
   Future<bool> setEnable({
     required bool enable,
     required String roomId,
-  }) =>
-      _datasource.setEnable(enable: enable, roomId: roomId);
+  }) => _datasource.setEnable(enable: enable, roomId: roomId);
 
   @override
   Future<bool> addShieldItem({
     required bool isKeyword,
     required String value,
     required String roomId,
-  }) =>
-      _datasource.addShieldItem(
-        isKeyword: isKeyword,
-        value: value,
-        roomId: roomId,
-      );
+  }) => _datasource.addShieldItem(
+    isKeyword: isKeyword,
+    value: value,
+    roomId: roomId,
+  );
 
   @override
   Future<bool> removeShieldItem({
     required int index,
     required Object item,
     required String roomId,
-  }) =>
-      _datasource.removeShieldItem(
-        index: index,
-        item: item,
-        roomId: roomId,
-      );
+  }) => _datasource.removeShieldItem(
+    index: index,
+    item: item,
+    roomId: roomId,
+  );
 }

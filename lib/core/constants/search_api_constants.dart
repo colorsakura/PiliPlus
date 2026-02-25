@@ -12,12 +12,10 @@ abstract class SearchApiConstants {
 
   // ==================== 分类搜索 ====================
   /// 分类搜索
-  static const String searchByType =
-      '/x/web-interface/wbi/search/type';
+  static const String searchByType = '/x/web-interface/wbi/search/type';
 
   /// 综合搜索
-  static const String searchAll =
-      '/x/web-interface/wbi/search/all/v2';
+  static const String searchAll = '/x/web-interface/wbi/search/all/v2';
 
   // ==================== PGC搜索 ====================
   /// 番剧信息
@@ -34,15 +32,12 @@ abstract class SearchApiConstants {
 
   // ==================== 搜索推荐 ====================
   /// 搜索推荐
-  static const String searchRecommend =
-      '/x/v2/search/recommend';
+  static const String searchRecommend = '/x/v2/search/recommend';
 
   /// 搜索热搜榜
-  static const String searchTrending =
-      '/x/v2/search/trending/ranking';
+  static const String searchTrending = '/x/v2/search/trending/ranking';
 
   // ==================== 话题搜索 ====================
   /// 话题发布搜索
-  static const String topicPubSearch =
-      '/x/topic/pub/search';
+  static const String topicPubSearch = '/x/topic/pub/search';
 }

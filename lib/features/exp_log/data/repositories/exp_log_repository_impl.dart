@@ -19,8 +19,8 @@ class ExpLogRepositoryImpl implements ExpLogRepository {
     return switch (result) {
       Loading() => LoadingState.loading(),
       Success(:final response) => Success(
-          ExpLogResultEntity.fromModel(response.list),
-        ),
+        ExpLogResultEntity.fromModel(response.list),
+      ),
       Error() => result as LoadingState<ExpLogResultEntity>,
     };
   }

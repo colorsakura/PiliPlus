@@ -41,8 +41,10 @@ final getPgcTimelineUseCaseProvider = Provider<GetPgcTimelineUseCase>((ref) {
 ///
 /// Uses Provider.family to create a unique controller for each tab type
 /// Note: Not using autoDispose because the page uses AutomaticKeepAliveClientMixin
-final pgcControllerProvider =
-    Provider.family<PgcController, HomeTabType>((ref, tabType) {
+final pgcControllerProvider = Provider.family<PgcController, HomeTabType>((
+  ref,
+  tabType,
+) {
   final controller = PgcController(
     tabType: tabType,
     getPgcIndexUseCase: ref.read(getPgcIndexUseCaseProvider),

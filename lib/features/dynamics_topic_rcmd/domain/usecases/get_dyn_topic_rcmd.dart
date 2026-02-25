@@ -9,5 +9,6 @@ class GetDynTopicRcmdUseCase {
   const GetDynTopicRcmdUseCase(this._repository);
 
   /// Execute the use case
-  Future<LoadingState<List<TopicItem>?>> call() => _repository.getDynTopicRcmd();
+  Future<LoadingState<List<TopicItem>?>> call() =>
+      _repository.getDynTopicRcmd();
 }

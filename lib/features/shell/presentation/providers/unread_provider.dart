@@ -49,8 +49,8 @@ class UnreadMessageController extends Notifier<UnreadMessage> {
 /// 未读消息 Provider
 final unreadMessageControllerProvider =
     NotifierProvider<UnreadMessageController, UnreadMessage>(
-  UnreadMessageController.new,
-);
+      UnreadMessageController.new,
+    );
 
 /// 未读动态 Controller
 class UnreadDynamicController extends Notifier<UnreadDynamic> {
@@ -106,8 +106,8 @@ class UnreadDynamicController extends Notifier<UnreadDynamic> {
 /// 未读动态 Provider
 final unreadDynamicControllerProvider =
     NotifierProvider<UnreadDynamicController, UnreadDynamic>(
-  UnreadDynamicController.new,
-);
+      UnreadDynamicController.new,
+    );
 
 /// 消息未读类型配置
 final msgUnreadTypesProvider = Provider<Set<MsgUnReadType>>((ref) {

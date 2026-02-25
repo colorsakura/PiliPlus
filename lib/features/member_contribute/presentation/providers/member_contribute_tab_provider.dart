@@ -6,20 +6,20 @@ import 'package:PiliPlus/models/space/space/tab2.dart';
 /// Provider family for MemberContributeTabControllerV2
 final memberContributeTabControllerProvider =
     Provider.family<MemberContributeTabControllerV2?, _ContributeTabConfig>(
-  (ref, config) {
-    if (config.items.isEmpty) {
-      return null;
-    }
-    final controller = MemberContributeTabControllerV2(
-      items: config.items,
-      hasSeasonOrSeries: config.hasSeasonOrSeries,
-      vsync: config.vsync,
-      initialIndex: config.initialIndex,
+      (ref, config) {
+        if (config.items.isEmpty) {
+          return null;
+        }
+        final controller = MemberContributeTabControllerV2(
+          items: config.items,
+          hasSeasonOrSeries: config.hasSeasonOrSeries,
+          vsync: config.vsync,
+          initialIndex: config.initialIndex,
+        );
+        ref.onDispose(controller.dispose);
+        return controller;
+      },
     );
-    ref.onDispose(controller.dispose);
-    return controller;
-  },
-);
 
 /// Configuration for MemberContributeTabControllerV2
 class _ContributeTabConfig {

@@ -14,20 +14,18 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
     required int pn,
     required int ps,
     required int mid,
-  }) =>
-      _datasource.getUserSubFolders(
-        pn: pn,
-        ps: ps,
-        mid: mid,
-      );
+  }) => _datasource.getUserSubFolders(
+    pn: pn,
+    ps: ps,
+    mid: mid,
+  );
 
   @override
   Future<LoadingState<void>> cancelSub({
     required int id,
     required int type,
-  }) =>
-      _datasource.cancelSub(
-        id: id,
-        type: type,
-      );
+  }) => _datasource.cancelSub(
+    id: id,
+    type: type,
+  );
 }

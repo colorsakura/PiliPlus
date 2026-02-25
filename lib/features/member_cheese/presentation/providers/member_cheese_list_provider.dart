@@ -30,8 +30,8 @@ final fetchMemberCheesesUseCaseProvider = Provider<FetchMemberCheesesUseCase>(
 /// Controller provider (parameterized by member ID)
 final memberCheeseListControllerProvider =
     Provider.family<MemberCheeseListController, int>((ref, mid) {
-  return MemberCheeseListController(
-    mid: mid,
-    fetchCheeses: ref.watch(fetchMemberCheesesUseCaseProvider),
-  );
-});
+      return MemberCheeseListController(
+        mid: mid,
+        fetchCheeses: ref.watch(fetchMemberCheesesUseCaseProvider),
+      );
+    });

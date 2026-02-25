@@ -282,7 +282,9 @@ class _VoteOptionsList extends ConsumerWidget {
                       key: ObjectKey(state.options[i]),
                       initialValue: state.options[i].optDesc,
                       onChanged: (value) {
-                        ref.read(voteControllerProvider(voteId)).updateOptionDesc(i, value);
+                        ref
+                            .read(voteControllerProvider(voteId))
+                            .updateOptionDesc(i, value);
                       },
                       decoration: InputDecoration(
                         isDense: true,
@@ -291,7 +293,9 @@ class _VoteOptionsList extends ConsumerWidget {
                         hintText: '选项内容，最多20字',
                         hintStyle: TextStyle(
                           fontSize: 15,
-                          color: theme.colorScheme.outline.withValues(alpha: 0.7),
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.7,
+                          ),
                         ),
                       ),
                       inputFormatters: [
@@ -319,7 +323,9 @@ class _VoteOptionsList extends ConsumerWidget {
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        ref.read(voteControllerProvider(voteId)).removeOption(i);
+                        ref
+                            .read(voteControllerProvider(voteId))
+                            .removeOption(i);
                       },
                       iconColor: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -402,7 +408,9 @@ class _VoteChoiceSelector extends ConsumerWidget {
     final state = controller.state;
     final leadingStyle = TextStyle(
       fontSize: 15,
-      color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
+      color: Theme.of(
+        context,
+      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
     );
 
     final choiceCnt = state.choiceCount;
@@ -458,7 +466,9 @@ class _VoteEndTimePicker extends ConsumerWidget {
     final state = controller.state;
     final leadingStyle = TextStyle(
       fontSize: 15,
-      color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
+      color: Theme.of(
+        context,
+      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
     );
 
     return Row(
@@ -493,7 +503,9 @@ class _VoteEndTimePicker extends ConsumerWidget {
                 );
                 if (newEndtime.difference(DateTime.now()) >=
                     const Duration(minutes: 5)) {
-                  ref.read(voteControllerProvider(voteId)).updateEndTime(newEndtime);
+                  ref
+                      .read(voteControllerProvider(voteId))
+                      .updateEndTime(newEndtime);
                 } else {
                   SmartDialog.showToast('至少选择5分钟之后');
                 }
@@ -530,7 +542,11 @@ class _CreateVoteButton extends ConsumerWidget {
     );
   }
 
-  Future<void> _onCreate(BuildContext context, WidgetRef ref, int? voteId) async {
+  Future<void> _onCreate(
+    BuildContext context,
+    WidgetRef ref,
+    int? voteId,
+  ) async {
     final controller = ref.read(voteControllerProvider(voteId));
     final res = await controller.createVote();
 

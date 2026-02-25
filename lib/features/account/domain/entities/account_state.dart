@@ -17,9 +17,9 @@ class AccountState {
 
   /// 创建未登录状态
   const AccountState.loggedOut()
-      : face = '',
-        isLogin = false,
-        isAnonymous = false;
+    : face = '',
+      isLogin = false,
+      isAnonymous = false;
 
   /// 是否有头像
   bool get hasFace => face.isNotEmpty;

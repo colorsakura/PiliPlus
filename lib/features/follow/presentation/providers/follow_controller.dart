@@ -25,12 +25,12 @@ class FollowController extends ChangeNotifier {
     required CreateFollowTagUseCase createFollowTagUseCase,
     required UpdateFollowTagUseCase updateFollowTagUseCase,
     required DeleteFollowTagUseCase deleteFollowTagUseCase,
-  })  : _getMemberCardInfoUseCase = getMemberCardInfoUseCase,
-        _getFollowUpTagsUseCase = getFollowUpTagsUseCase,
-        _createFollowTagUseCase = createFollowTagUseCase,
-        _updateFollowTagUseCase = updateFollowTagUseCase,
-        _deleteFollowTagUseCase = deleteFollowTagUseCase,
-        _state = FollowState(tabsState: LoadingState.loading()) {
+  }) : _getMemberCardInfoUseCase = getMemberCardInfoUseCase,
+       _getFollowUpTagsUseCase = getFollowUpTagsUseCase,
+       _createFollowTagUseCase = createFollowTagUseCase,
+       _updateFollowTagUseCase = updateFollowTagUseCase,
+       _deleteFollowTagUseCase = deleteFollowTagUseCase,
+       _state = FollowState(tabsState: LoadingState.loading()) {
     if (!isOwner && userName == null) {
       queryUserName();
     }
@@ -69,9 +69,11 @@ class FollowController extends ChangeNotifier {
   Future<void> queryUserName() async {
     final result = await _getMemberCardInfoUseCase(mid);
     if (result case Success(:final response)) {
-      _updateState(_state.copyWith(
-        userName: response.card?.name,
-      ));
+      _updateState(
+        _state.copyWith(
+          userName: response.card?.name,
+        ),
+      );
     }
   }
 

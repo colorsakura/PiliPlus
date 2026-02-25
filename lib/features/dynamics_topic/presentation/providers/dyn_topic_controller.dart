@@ -91,14 +91,14 @@ class DynTopicController extends ChangeNotifier {
     required String topicId,
     required String topicName,
     required bool isLogin,
-  })  : _getTopicTopUseCase = getTopicTopUseCase,
-        _getTopicFeedUseCase = getTopicFeedUseCase,
-        _addFavTopicUseCase = addFavTopicUseCase,
-        _delFavTopicUseCase = delFavTopicUseCase,
-        _likeTopicUseCase = likeTopicUseCase,
-        _topicId = topicId,
-        _topicName = topicName,
-        _isLogin = isLogin {
+  }) : _getTopicTopUseCase = getTopicTopUseCase,
+       _getTopicFeedUseCase = getTopicFeedUseCase,
+       _addFavTopicUseCase = addFavTopicUseCase,
+       _delFavTopicUseCase = delFavTopicUseCase,
+       _likeTopicUseCase = likeTopicUseCase,
+       _topicId = topicId,
+       _topicName = topicName,
+       _isLogin = isLogin {
     // Load initial data
     Future.microtask(() {
       queryTop();
@@ -118,11 +118,13 @@ class DynTopicController extends ChangeNotifier {
       final topicItem = response?.topicItem;
       if (topicItem != null) {
         _topicName = topicItem.name;
-        _updateState(_state.copyWith(
-          topState: result,
-          isFav: topicItem.isFav,
-          isLike: topicItem.isLike,
-        ));
+        _updateState(
+          _state.copyWith(
+            topState: result,
+            isFav: topicItem.isFav,
+            isLike: topicItem.isLike,
+          ),
+        );
       } else {
         _updateState(_state.copyWith(topState: result));
       }
@@ -144,30 +146,37 @@ class DynTopicController extends ChangeNotifier {
 
     if (result case Success(:final response)) {
       if (response == null || response.items?.isEmpty == true) {
-        _updateState(_state.copyWith(
-          feedListState: isRefresh
-              ? Success(response?.items)
-              : _state.feedListState,
-          isEnd: true,
-        ));
+        _updateState(
+          _state.copyWith(
+            feedListState: isRefresh
+                ? Success(response?.items)
+                : _state.feedListState,
+            isEnd: true,
+          ),
+        );
       } else if (isRefresh) {
-        _updateState(_state.copyWith(
-          feedListState: Success(response.items),
-          offset: response.offset ?? '',
-          isEnd: response.hasMore == false,
-        ));
+        _updateState(
+          _state.copyWith(
+            feedListState: Success(response.items),
+            offset: response.offset ?? '',
+            isEnd: response.hasMore == false,
+          ),
+        );
       } else {
         // Append to existing list
         final currentList = _state.feedListState is Success
-            ? (_state.feedListState as Success<List<TopicCardItem>?>).response ??
-                []
+            ? (_state.feedListState as Success<List<TopicCardItem>?>)
+                      .response ??
+                  []
             : <TopicCardItem>[];
         final newList = [...currentList, ...response.items!];
-        _updateState(_state.copyWith(
-          feedListState: Success(newList),
-          offset: response.offset ?? '',
-          isEnd: response.hasMore == false,
-        ));
+        _updateState(
+          _state.copyWith(
+            feedListState: Success(newList),
+            offset: response.offset ?? '',
+            isEnd: response.hasMore == false,
+          ),
+        );
       }
     } else if (result is Error) {
       _updateState(_state.copyWith(feedListState: result));
@@ -217,10 +226,12 @@ class DynTopicController extends ChangeNotifier {
           topicItem.fav += 1;
         }
       }
-      _updateState(_state.copyWith(
-        isFav: !isFav,
-        topState: Success(response),
-      ));
+      _updateState(
+        _state.copyWith(
+          isFav: !isFav,
+          topState: Success(response),
+        ),
+      );
     }
   }
 
@@ -246,10 +257,12 @@ class DynTopicController extends ChangeNotifier {
           topicItem.like += 1;
         }
       }
-      _updateState(_state.copyWith(
-        isLike: !isLike,
-        topState: Success(response),
-      ));
+      _updateState(
+        _state.copyWith(
+          isLike: !isLike,
+          topState: Success(response),
+        ),
+      );
     }
   }
 

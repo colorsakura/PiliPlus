@@ -20,15 +20,15 @@ sealed class LoadingState<T> {
 
   /// 获取数据（成功时返回数据，失败时抛出异常）
   T get data => switch (this) {
-        Success(:final response) => response,
-        _ => throw this,
-      };
+    Success(:final response) => response,
+    _ => throw this,
+  };
 
   /// 获取数据（安全，失败时返回 null）
   T? get dataOrNull => switch (this) {
-        Success(:final response) => response,
-        _ => null,
-      };
+    Success(:final response) => response,
+    _ => null,
+  };
 
   /// 显示 Toast 提示
   Future<void> toast() => SmartDialog.showToast(toString());

@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/msg_at_me/domain/usecases/remove_msg_item_usec
 import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_controller.dart';
 
 // Remote Datasource Provider
-final msgAtMeRemoteDatasourceProvider =
-    Provider<MsgAtMeRemoteDatasource>((ref) {
+final msgAtMeRemoteDatasourceProvider = Provider<MsgAtMeRemoteDatasource>((
+  ref,
+) {
   return const MsgAtMeRemoteDatasource();
 });
 

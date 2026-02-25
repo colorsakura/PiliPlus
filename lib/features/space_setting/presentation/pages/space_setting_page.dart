@@ -96,7 +96,8 @@ class _SpaceSettingPageState extends ConsumerState<SpaceSettingPage> {
               ),
       Error(:final errMsg) => scrollErrorWidget(
         errMsg: errMsg,
-        onReload: () => ref.read(spaceSettingControllerProvider.notifier).onReload(),
+        onReload: () =>
+            ref.read(spaceSettingControllerProvider.notifier).onReload(),
       ),
     };
   }

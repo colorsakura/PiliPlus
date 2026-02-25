@@ -42,33 +42,33 @@ class _DynamicsPageState extends ConsumerState<DynamicsPage>
   }
 
   Widget _createDynamicBtn(ThemeData theme, {bool isRight = true}) => Center(
-        child: Container(
-          width: 34,
-          height: 34,
-          margin: EdgeInsets.only(
-            left: !isRight ? 16 : 0,
-            right: isRight ? 16 : 0,
-          ),
-          child: IconButton(
-            tooltip: '发布动态',
-            style: ButtonStyle(
-              padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-              backgroundColor: WidgetStatePropertyAll(
-                theme.colorScheme.secondaryContainer,
-              ),
-            ),
-            onPressed: () {
-              // TODO: Check login status
-              CreateDynPanel.onCreateDyn(context);
-            },
-            icon: Icon(
-              Icons.add,
-              size: 18,
-              color: theme.colorScheme.onSecondaryContainer,
-            ),
+    child: Container(
+      width: 34,
+      height: 34,
+      margin: EdgeInsets.only(
+        left: !isRight ? 16 : 0,
+        right: isRight ? 16 : 0,
+      ),
+      child: IconButton(
+        tooltip: '发布动态',
+        style: ButtonStyle(
+          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+          backgroundColor: WidgetStatePropertyAll(
+            theme.colorScheme.secondaryContainer,
           ),
         ),
-      );
+        onPressed: () {
+          // TODO: Check login status
+          CreateDynPanel.onCreateDyn(context);
+        },
+        icon: Icon(
+          Icons.add,
+          size: 18,
+          color: theme.colorScheme.onSecondaryContainer,
+        ),
+      ),
+    ),
+  );
 
   Widget upPanelPart(ThemeData theme, UpPanelPosition position) {
     final isTop = position == UpPanelPosition.top;
@@ -90,7 +90,9 @@ class _DynamicsPageState extends ConsumerState<DynamicsPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final upPanelPositionStr = ref.watch(
-      dynamicsTabControllerProvider.select((config) => config.getUpPanelPosition()),
+      dynamicsTabControllerProvider.select(
+        (config) => config.getUpPanelPosition(),
+      ),
     );
 
     final upPanelPosition = UpPanelPosition.values.firstWhere(
@@ -165,7 +167,7 @@ class _DynamicsPageState extends ConsumerState<DynamicsPage>
             unselectedLabelColor: theme.colorScheme.onSurface,
             labelStyle:
                 TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 13) ??
-                    const TextStyle(fontSize: 13),
+                const TextStyle(fontSize: 13),
             tabs: DynamicsTabType.values
                 .map((e) => Tab(text: e.label))
                 .toList(),

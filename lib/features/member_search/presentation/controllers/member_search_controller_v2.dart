@@ -9,7 +9,8 @@ import 'package:PiliPlus/core/controllers/common_list_controller_v2.dart';
 /// Member search child controller V2 (Riverpod version)
 ///
 /// Handles search results for either archive or dynamic type
-class MemberSearchChildControllerV2 extends CommonListControllerV2<dynamic, dynamic> {
+class MemberSearchChildControllerV2
+    extends CommonListControllerV2<dynamic, dynamic> {
   MemberSearchChildControllerV2({
     required this.parentController,
     required this.searchType,
@@ -67,17 +68,17 @@ class MemberSearchChildControllerV2 extends CommonListControllerV2<dynamic, dyna
     final keyword = parentController.editingController.text;
     return switch (searchType) {
       MemberSearchType.archive => MemberHttp.searchArchive(
-          mid: parentController.mid,
-          pn: page,
-          keyword: keyword,
-          order: 'pubdate',
-        ),
+        mid: parentController.mid,
+        pn: page,
+        keyword: keyword,
+        order: 'pubdate',
+      ),
       MemberSearchType.dynamic => MemberHttp.dynSearch(
-          mid: parentController.mid,
-          pn: page,
-          offset: offset ?? '',
-          keyword: keyword,
-        ),
+        mid: parentController.mid,
+        pn: page,
+        offset: offset ?? '',
+        keyword: keyword,
+      ),
     };
   }
 }

@@ -21,7 +21,9 @@ final followRepositoryProvider = Provider<FollowRepository>((ref) {
 });
 
 // Use Case Providers
-final getMemberCardInfoUseCaseProvider = Provider<GetMemberCardInfoUseCase>((ref) {
+final getMemberCardInfoUseCaseProvider = Provider<GetMemberCardInfoUseCase>((
+  ref,
+) {
   final repository = ref.watch(followRepositoryProvider);
   return GetMemberCardInfoUseCase(repository);
 });
@@ -47,18 +49,19 @@ final deleteFollowTagUseCaseProvider = Provider<DeleteFollowTagUseCase>((ref) {
 });
 
 // Controller Provider - uses Provider.family for different (mid, isOwner, userName) combinations
-final followControllerProvider = Provider.family<FollowController, FollowParams>((ref, params) {
-  return FollowController(
-    mid: params.mid,
-    isOwner: params.isOwner,
-    userName: params.userName,
-    getMemberCardInfoUseCase: ref.watch(getMemberCardInfoUseCaseProvider),
-    getFollowUpTagsUseCase: ref.watch(getFollowUpTagsUseCaseProvider),
-    createFollowTagUseCase: ref.watch(createFollowTagUseCaseProvider),
-    updateFollowTagUseCase: ref.watch(updateFollowTagUseCaseProvider),
-    deleteFollowTagUseCase: ref.watch(deleteFollowTagUseCaseProvider),
-  );
-});
+final followControllerProvider =
+    Provider.family<FollowController, FollowParams>((ref, params) {
+      return FollowController(
+        mid: params.mid,
+        isOwner: params.isOwner,
+        userName: params.userName,
+        getMemberCardInfoUseCase: ref.watch(getMemberCardInfoUseCaseProvider),
+        getFollowUpTagsUseCase: ref.watch(getFollowUpTagsUseCaseProvider),
+        createFollowTagUseCase: ref.watch(createFollowTagUseCaseProvider),
+        updateFollowTagUseCase: ref.watch(updateFollowTagUseCaseProvider),
+        deleteFollowTagUseCase: ref.watch(deleteFollowTagUseCaseProvider),
+      );
+    });
 
 /// Parameters for FollowController
 class FollowParams {

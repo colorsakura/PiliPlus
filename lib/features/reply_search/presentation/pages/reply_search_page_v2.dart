@@ -18,8 +18,7 @@ class ReplySearchPageV2 extends ConsumerStatefulWidget {
   final int oid;
 
   @override
-  ConsumerState<ReplySearchPageV2> createState() =>
-      _ReplySearchPageV2State();
+  ConsumerState<ReplySearchPageV2> createState() => _ReplySearchPageV2State();
 }
 
 class _ReplySearchPageV2State extends ConsumerState<ReplySearchPageV2>
@@ -40,9 +39,11 @@ class _ReplySearchPageV2State extends ConsumerState<ReplySearchPageV2>
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(replySearchControllerProvider(
-      (type: widget.type, oid: widget.oid),
-    ));
+    final controller = ref.watch(
+      replySearchControllerProvider(
+        (type: widget.type, oid: widget.oid),
+      ),
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -9,8 +9,7 @@ class NavigationLocalDataSource {
   /// 获取导航栏排序配置
   List<NavigationBarType> getNavBarSort() {
     final List<int>? navBarSort =
-        (GStorage.setting.get(SettingBoxKey.navBarSort) as List?)
-            ?.cast<int>();
+        (GStorage.setting.get(SettingBoxKey.navBarSort) as List?)?.cast<int>();
 
     if (navBarSort == null || navBarSort.isEmpty) {
       return NavigationBarType.values;

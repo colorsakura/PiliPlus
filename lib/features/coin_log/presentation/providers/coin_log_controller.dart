@@ -64,17 +64,17 @@ class CoinLogController extends Notifier<CoinLogState> {
 
     state = switch (result) {
       Loading() => CoinLogState(
-          loadingState: LoadingState.loading(),
-          title: '硬币记录',
-        ),
+        loadingState: LoadingState.loading(),
+        title: '硬币记录',
+      ),
       Success(:final response) => CoinLogState(
-          loadingState: Success(response.items),
-          title: '硬币记录',
-        ),
+        loadingState: Success(response.items),
+        title: '硬币记录',
+      ),
       Error() => CoinLogState(
-          loadingState: result as LoadingState<List<CoinLogItemEntity>?>,
-          title: '硬币记录',
-        ),
+        loadingState: result as LoadingState<List<CoinLogItemEntity>?>,
+        title: '硬币记录',
+      ),
     };
   }
 

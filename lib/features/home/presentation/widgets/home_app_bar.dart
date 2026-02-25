@@ -138,8 +138,9 @@ class UserAvatar extends ConsumerWidget {
             type: MaterialType.transparency,
             child: InkWell(
               onTap: () => _handleTap(context, ref),
-              splashColor:
-                  theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+              splashColor: theme.colorScheme.primaryContainer.withValues(
+                alpha: 0.3,
+              ),
               customBorder: const CircleBorder(),
             ),
           ),

@@ -71,7 +71,8 @@ class DynMentionPanel extends StatefulWidget {
   State<DynMentionPanel> createState() => _DynMentionPanelState();
 }
 
-class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String> {
+class _DynMentionPanelState
+    extends DebounceStreamState<DynMentionPanel, String> {
   @override
   Duration get duration => const Duration(milliseconds: 300);
 
@@ -80,7 +81,9 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
     super.initState();
     // Store controller reference for onValueChanged
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller = ProviderScope.containerOf(context).read(dynMentionControllerProvider);
+      _controller = ProviderScope.containerOf(
+        context,
+      ).read(dynMentionControllerProvider);
     });
   }
 
@@ -89,11 +92,13 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
   @override
   void onValueChanged(String value) {
     _controller?.controller.text = value;
-    _controller?.searchMentions(value).whenComplete(
-      () => WidgetsBinding.instance.addPostFrameCallback(
-        (_) => widget.scrollController?.jumpToTop(),
-      ),
-    );
+    _controller
+        ?.searchMentions(value)
+        .whenComplete(
+          () => WidgetsBinding.instance.addPostFrameCallback(
+            (_) => widget.scrollController?.jumpToTop(),
+          ),
+        );
   }
 
   @override
@@ -123,142 +128,160 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
               child: TextField(
                 focusNode: ref.watch(dynMentionControllerProvider).focusNode,
                 controller: ref.watch(dynMentionControllerProvider).controller,
-            onChanged: ctr!.add,
-            decoration: InputDecoration(
-              visualDensity: .standard,
-              border: const OutlineInputBorder(
-                gapPadding: 0,
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-              ),
-              isDense: true,
-              filled: true,
-              fillColor: theme.colorScheme.onInverseSurface,
-              hintText: '输入你想@的人',
-              hintStyle: const TextStyle(fontSize: 14),
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(left: 12, right: 4),
-                child: Icon(Icons.search, size: 20),
-              ),
-              prefixIconConstraints: const BoxConstraints(
-                minHeight: 0,
-                minWidth: 0,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 6,
-              ),
-              suffixIcon: Consumer(
-                builder: (context, ref, _) {
-                  final controllerState = ref.watch(dynMentionControllerProvider);
-                  final controller = controllerState.controller;
-                  final enableClear = controller.text.isNotEmpty;
-                  return enableClear
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: GestureDetector(
-                            child: Container(
-                              padding: const EdgeInsetsDirectional.all(2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: theme.colorScheme.secondaryContainer,
-                              ),
-                              child: Icon(
-                                Icons.clear,
-                                size: 16,
-                                color: theme.colorScheme.onSecondaryContainer,
-                              ),
-                            ),
-                            onTap: () {
-                              controller.clear();
-                              ctr!.add('');
-                              ref
-                                  .read(dynMentionControllerProvider)
-                                  .searchMentions()
-                                  .whenComplete(
-                                () => WidgetsBinding.instance.addPostFrameCallback(
-                                  (_) => widget.scrollController?.jumpToTop(),
+                onChanged: ctr!.add,
+                decoration: InputDecoration(
+                  visualDensity: .standard,
+                  border: const OutlineInputBorder(
+                    gapPadding: 0,
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                  ),
+                  isDense: true,
+                  filled: true,
+                  fillColor: theme.colorScheme.onInverseSurface,
+                  hintText: '输入你想@的人',
+                  hintStyle: const TextStyle(fontSize: 14),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 12, right: 4),
+                    child: Icon(Icons.search, size: 20),
+                  ),
+                  prefixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
+                  suffixIcon: Consumer(
+                    builder: (context, ref, _) {
+                      final controllerState = ref.watch(
+                        dynMentionControllerProvider,
+                      );
+                      final controller = controllerState.controller;
+                      final enableClear = controller.text.isNotEmpty;
+                      return enableClear
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: GestureDetector(
+                                child: Container(
+                                  padding: const EdgeInsetsDirectional.all(2),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: theme.colorScheme.secondaryContainer,
+                                  ),
+                                  child: Icon(
+                                    Icons.clear,
+                                    size: 16,
+                                    color:
+                                        theme.colorScheme.onSecondaryContainer,
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-              suffixIconConstraints: const BoxConstraints(
-                minHeight: 0,
-                minWidth: 0,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is UserScrollNotification) {
-                    final controller = ref.watch(dynMentionControllerProvider);
-                    if (controller.focusNode.hasFocus) {
-                      controller.focusNode.unfocus();
-                    }
-                  } else if (notification is ScrollEndNotification) {
-                    widget.onCachePos?.call(notification.metrics.pixels);
-                  }
-                  return false;
-                },
-                child: CustomScrollView(
-                  controller: widget.scrollController,
-                  slivers: [
-                    Consumer(
-                      builder: (context, ref, _) {
-                        final controllerState =
-                            ref.watch(dynMentionControllerProvider);
-                        return _buildBody(theme, controllerState.state.searchResults);
-                      },
-                    ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(height: padding + viewInset + 100),
-                    ),
-                  ],
+                                onTap: () {
+                                  controller.clear();
+                                  ctr!.add('');
+                                  ref
+                                      .read(dynMentionControllerProvider)
+                                      .searchMentions()
+                                      .whenComplete(
+                                        () => WidgetsBinding.instance
+                                            .addPostFrameCallback(
+                                              (_) => widget.scrollController
+                                                  ?.jumpToTop(),
+                                            ),
+                                      );
+                                },
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    },
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
+                  ),
                 ),
               ),
-              Consumer(
-                builder: (context, ref, _) {
-                  final controllerState = ref.watch(dynMentionControllerProvider);
-                  final showBtn = controllerState.state.showConfirmButton;
-                  return Positioned(
-                    right: kFloatingActionButtonMargin,
-                    bottom:
-                        padding +
-                        kFloatingActionButtonMargin +
-                        (showBtn ? viewInset : 0),
-                    child: AnimatedSlide(
-                      offset: showBtn ? Offset.zero : const Offset(0, 3),
-                      duration: const Duration(milliseconds: 120),
-                      child: FloatingActionButton(
-                        onPressed: () {
-                          final controller = ref.read(dynMentionControllerProvider);
-                          if (controller.state.selectedMentions?.isEmpty ?? true) {
-                            controller.clearSelection();
-                            return;
-                          }
-                          Get.back(result: controller.state.selectedMentions);
-                          controller.clearSelection();
-                        },
-                        child: const Icon(Icons.check),
-                      ),
+            ),
+            Expanded(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification is UserScrollNotification) {
+                        final controller = ref.watch(
+                          dynMentionControllerProvider,
+                        );
+                        if (controller.focusNode.hasFocus) {
+                          controller.focusNode.unfocus();
+                        }
+                      } else if (notification is ScrollEndNotification) {
+                        widget.onCachePos?.call(notification.metrics.pixels);
+                      }
+                      return false;
+                    },
+                    child: CustomScrollView(
+                      controller: widget.scrollController,
+                      slivers: [
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final controllerState = ref.watch(
+                              dynMentionControllerProvider,
+                            );
+                            return _buildBody(
+                              theme,
+                              controllerState.state.searchResults,
+                            );
+                          },
+                        ),
+                        SliverToBoxAdapter(
+                          child: SizedBox(height: padding + viewInset + 100),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final controllerState = ref.watch(
+                        dynMentionControllerProvider,
+                      );
+                      final showBtn = controllerState.state.showConfirmButton;
+                      return Positioned(
+                        right: kFloatingActionButtonMargin,
+                        bottom:
+                            padding +
+                            kFloatingActionButtonMargin +
+                            (showBtn ? viewInset : 0),
+                        child: AnimatedSlide(
+                          offset: showBtn ? Offset.zero : const Offset(0, 3),
+                          duration: const Duration(milliseconds: 120),
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              final controller = ref.read(
+                                dynMentionControllerProvider,
+                              );
+                              if (controller.state.selectedMentions?.isEmpty ??
+                                  true) {
+                                controller.clearSelection();
+                                return;
+                              }
+                              Get.back(
+                                result: controller.state.selectedMentions,
+                              );
+                              controller.clearSelection();
+                            },
+                            child: const Icon(Icons.check),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
-    );
+            ),
+          ],
+        );
       },
     );
   }
@@ -271,54 +294,57 @@ class _DynMentionPanelState extends DebounceStreamState<DynMentionPanel, String>
       builder: (context, ref, _) {
         final controller = ref.read(dynMentionControllerProvider);
         return switch (loadingState) {
-      Loading() => SliverPadding(
-        padding: const EdgeInsets.only(top: 8),
-        sliver: linearLoading,
-      ),
-      Success<List<MentionGroup>?>(:final response) =>
-        response != null && response.isNotEmpty
-            ? SliverMainAxisGroup(
-                slivers: response.map((group) {
-                  if (group.items.isNullOrEmpty) {
-                    return const SliverToBoxAdapter();
-                  }
-                  return SliverMainAxisGroup(
-                    slivers: [
-                      SliverPersistentHeader(
-                        pinned: true,
-                        delegate: CustomSliverPersistentHeaderDelegate(
-                          extent: 40,
-                          needRebuild: true,
-                          bgColor: theme.colorScheme.surface,
-                          child: Container(
-                            height: 40,
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(group.groupName!),
+          Loading() => SliverPadding(
+            padding: const EdgeInsets.only(top: 8),
+            sliver: linearLoading,
+          ),
+          Success<List<MentionGroup>?>(:final response) =>
+            response != null && response.isNotEmpty
+                ? SliverMainAxisGroup(
+                    slivers: response.map((group) {
+                      if (group.items.isNullOrEmpty) {
+                        return const SliverToBoxAdapter();
+                      }
+                      return SliverMainAxisGroup(
+                        slivers: [
+                          SliverPersistentHeader(
+                            pinned: true,
+                            delegate: CustomSliverPersistentHeaderDelegate(
+                              extent: 40,
+                              needRebuild: true,
+                              bgColor: theme.colorScheme.surface,
+                              child: Container(
+                                height: 40,
+                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Text(group.groupName!),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      SliverList.builder(
-                        itemCount: group.items!.length,
-                        itemBuilder: (context, index) {
-                          final item = group.items![index];
-                          return DynMentionItem(
-                            item: item,
-                            onTap: () => Get.back(result: item),
-                            onCheck: (value) => controller.toggleMention(item, value),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                }).toList(),
-              )
-            : HttpError(onReload: controller.onRefresh),
-      Error(:final errMsg) => HttpError(
-        errMsg: errMsg,
-        onReload: controller.onRefresh,
-      ),
-    };
+                          SliverList.builder(
+                            itemCount: group.items!.length,
+                            itemBuilder: (context, index) {
+                              final item = group.items![index];
+                              return DynMentionItem(
+                                item: item,
+                                onTap: () => Get.back(result: item),
+                                onCheck: (value) =>
+                                    controller.toggleMention(item, value),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  )
+                : HttpError(onReload: controller.onRefresh),
+          Error(:final errMsg) => HttpError(
+            errMsg: errMsg,
+            onReload: controller.onRefresh,
+          ),
+        };
       },
     );
   }

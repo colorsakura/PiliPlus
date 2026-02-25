@@ -40,11 +40,11 @@ class StorageConfig {
   /// 创建 Hive 存储配置
   const StorageConfig.hive({
     required this.name,
-  })  : type = StorageType.hive,
-        cryptKey = null,
-        rootDir = null,
-        readOnly = false,
-        expectedCapacity = 0;
+  }) : type = StorageType.hive,
+       cryptKey = null,
+       rootDir = null,
+       readOnly = false,
+       expectedCapacity = 0;
 
   /// 创建 MMKV 存储配置
   const StorageConfig.mmkv({

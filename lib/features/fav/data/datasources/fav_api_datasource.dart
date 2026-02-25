@@ -132,7 +132,7 @@ class FavRemoteDataSource {
       final endpoint = type == 11
           ? FavApiConstants.unfavFolder
           : FavApiConstants.unfavSeason;
-      
+
       final response = await _httpClient.post(
         endpoint,
         data: type == 11
@@ -956,7 +956,7 @@ class FavRemoteDataSource {
       final endpoint = toView
           ? (isCopy ? FavApiConstants.copyToview : FavApiConstants.moveToview)
           : (isCopy ? FavApiConstants.copyFav : FavApiConstants.moveFav);
-      
+
       final response = await _httpClient.post(
         endpoint,
         data: {

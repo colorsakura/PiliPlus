@@ -87,7 +87,8 @@ abstract class FavApiConstants {
   static const String favArticle = '/x/polymer/web-dynamic/v1/opus/feed/fav';
 
   /// 社区互动
-  static const String communityAction = '/x/community/cosmo/interface/simple_action';
+  static const String communityAction =
+      '/x/community/cosmo/interface/simple_action';
 
   /// 删除收藏的文章
   static const String delFavArticle = '/x/article/favorites/del';

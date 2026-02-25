@@ -20,9 +20,9 @@ class ContactPage extends StatefulWidget {
 
   /// 导航到联系人页面
   static void toContactPage({bool isFromSelect = true}) => Get.toNamed(
-        '/contact',
-        parameters: {'isFromSelect': isFromSelect.toString()},
-      );
+    '/contact',
+    parameters: {'isFromSelect': isFromSelect.toString()},
+  );
 }
 
 class _ContactPageState extends State<ContactPage>

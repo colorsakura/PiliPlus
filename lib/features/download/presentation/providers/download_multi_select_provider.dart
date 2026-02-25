@@ -4,7 +4,7 @@ import 'package:PiliPlus/features/download/presentation/controllers/download_mul
 /// Provider for DownloadMultiSelectControllerV2
 final downloadMultiSelectControllerProvider =
     Provider<DownloadMultiSelectControllerV2>((ref) {
-  final controller = DownloadMultiSelectControllerV2();
-  ref.onDispose(controller.dispose);
-  return controller;
-});
+      final controller = DownloadMultiSelectControllerV2();
+      ref.onDispose(controller.dispose);
+      return controller;
+    });

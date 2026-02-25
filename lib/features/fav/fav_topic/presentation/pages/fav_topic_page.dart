@@ -7,7 +7,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_topic/topic_item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:flutter/material.dart' hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart'
+    hide SliverGridDelegateWithMaxCrossAxisExtent;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
@@ -125,11 +126,13 @@ class _FavTopicPageState extends ConsumerState<FavTopicPage>
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: ref.read(favTopicControllerProvider).onReload),
+            : HttpError(
+                onReload: ref.read(favTopicControllerProvider).onReload,
+              ),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: ref.read(favTopicControllerProvider).onReload,
-        ),
+        errMsg: errMsg,
+        onReload: ref.read(favTopicControllerProvider).onReload,
+      ),
     };
   }
 

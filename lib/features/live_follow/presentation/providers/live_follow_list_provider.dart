@@ -20,8 +20,9 @@ final fetchLiveFollowUseCaseProvider = Provider<FetchLiveFollowUseCase>((ref) {
   );
 });
 
-final liveFollowListControllerProvider =
-    Provider<LiveFollowListController>((ref) {
+final liveFollowListControllerProvider = Provider<LiveFollowListController>((
+  ref,
+) {
   return LiveFollowListController(
     fetchLiveFollow: ref.watch(fetchLiveFollowUseCaseProvider),
   );

@@ -14,10 +14,9 @@ class SubscriptionDetailRepositoryImpl implements SubscriptionDetailRepository {
     required int id,
     required int ps,
     required int pn,
-  }) =>
-      _datasource.getFavSeasonList(
-        id: id,
-        ps: ps,
-        pn: pn,
-      );
+  }) => _datasource.getFavSeasonList(
+    id: id,
+    ps: ps,
+    pn: pn,
+  );
 }

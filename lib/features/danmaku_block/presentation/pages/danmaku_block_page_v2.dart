@@ -57,7 +57,8 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
           tabs: DmBlockType.values
               .map(
                 (e) => Tab(
-                  text: '${e.label}(${_controller.getRulesForTab(e.index).length})',
+                  text:
+                      '${e.label}(${_controller.getRulesForTab(e.index).length})',
                 ),
               )
               .toList(),

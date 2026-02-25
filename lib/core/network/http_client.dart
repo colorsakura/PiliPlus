@@ -82,10 +82,10 @@ class HttpClientManager {
               onClientCreate: proxyConfig != null
                   ? (_, config) => _configureHttp2Proxy(config, proxyConfig)
                   : Pref.badCertificateCallback
-                      ? (_, config) {
-                          config.onBadCertificate = (_) => true;
-                        }
-                      : null,
+                  ? (_, config) {
+                      config.onBadCertificate = (_) => true;
+                    }
+                  : null,
             ),
             fallbackAdapter: http11Adapter,
           )
@@ -120,12 +120,12 @@ class HttpClientManager {
       ..idleTimeout = const Duration(seconds: 15)
       ..autoUncompress = false
       ..findProxy = (_) => 'PROXY ${config.host}:${config.port}';
-    client.badCertificateCallback = (
-      io.X509Certificate cert,
-      String host,
-      int port,
-    ) =>
-        true;
+    client.badCertificateCallback =
+        (
+          io.X509Certificate cert,
+          String host,
+          int port,
+        ) => true;
     return client;
   }
 

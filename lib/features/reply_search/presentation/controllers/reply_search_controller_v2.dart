@@ -9,7 +9,8 @@ import 'package:PiliPlus/core/controllers/common_list_controller_v2.dart';
 /// Reply search child controller V2 (Riverpod version)
 ///
 /// Handles search results for either video or article type
-class ReplySearchChildControllerV2 extends CommonListControllerV2<SearchItemReply, SearchItem> {
+class ReplySearchChildControllerV2
+    extends CommonListControllerV2<SearchItemReply, SearchItem> {
   ReplySearchChildControllerV2({
     required this.parentController,
     required this.searchType,

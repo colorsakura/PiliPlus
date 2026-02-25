@@ -62,8 +62,8 @@ class PopularSeriesController extends ChangeNotifier {
   PopularSeriesController({
     required GetPopularSeriesListUseCase getPopularSeriesListUseCase,
     required GetPopularSeriesOneUseCase getPopularSeriesOneUseCase,
-  })  : _getPopularSeriesListUseCase = getPopularSeriesListUseCase,
-        _getPopularSeriesOneUseCase = getPopularSeriesOneUseCase {
+  }) : _getPopularSeriesListUseCase = getPopularSeriesListUseCase,
+       _getPopularSeriesOneUseCase = getPopularSeriesOneUseCase {
     Future.microtask(() => getSeriesList());
   }
 
@@ -77,10 +77,12 @@ class PopularSeriesController extends ChangeNotifier {
     final result = await _getPopularSeriesListUseCase();
     if (result case Success(:final response)) {
       if (response != null && response.isNotEmpty) {
-        _updateState(_state.copyWith(
-          seriesListState: result,
-          currentNumber: response.first.number!,
-        ));
+        _updateState(
+          _state.copyWith(
+            seriesListState: result,
+            currentNumber: response.first.number!,
+          ),
+        );
         await queryVideoList();
       } else {
         _updateState(_state.copyWith(seriesListState: result));
@@ -92,13 +94,17 @@ class PopularSeriesController extends ChangeNotifier {
 
   /// Query video list for current series
   Future<void> queryVideoList() async {
-    final result = await _getPopularSeriesOneUseCase(number: _state.currentNumber);
+    final result = await _getPopularSeriesOneUseCase(
+      number: _state.currentNumber,
+    );
     if (result case Success(:final response)) {
-      _updateState(_state.copyWith(
-        videoListState: Success(response.list),
-        config: response.config,
-        reminder: response.reminder,
-      ));
+      _updateState(
+        _state.copyWith(
+          videoListState: Success(response.list),
+          config: response.config,
+          reminder: response.reminder,
+        ),
+      );
     } else if (result is Error) {
       _updateState(_state.copyWith(videoListState: result));
     }

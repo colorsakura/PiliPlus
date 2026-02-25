@@ -6,8 +6,9 @@ import 'package:PiliPlus/features/live_emote/domain/usecases/get_live_emoticons_
 import 'package:PiliPlus/features/live_emote/presentation/providers/live_emote_controller.dart';
 
 // Remote Datasource Provider
-final liveEmoteRemoteDatasourceProvider =
-    Provider<LiveEmoteRemoteDatasource>((ref) {
+final liveEmoteRemoteDatasourceProvider = Provider<LiveEmoteRemoteDatasource>((
+  ref,
+) {
   return const LiveEmoteRemoteDatasource();
 });
 
@@ -18,14 +19,18 @@ final liveEmoteRepositoryProvider = Provider<LiveEmoteRepository>((ref) {
 });
 
 // Use Case Provider
-final getLiveEmoticonsUseCaseProvider = Provider<GetLiveEmoticonsUseCase>((ref) {
+final getLiveEmoticonsUseCaseProvider = Provider<GetLiveEmoticonsUseCase>((
+  ref,
+) {
   final repository = ref.watch(liveEmoteRepositoryProvider);
   return GetLiveEmoticonsUseCase(repository);
 });
 
 // Controller Provider - uses family for different room IDs
-final liveEmoteControllerProvider =
-    Provider.family<LiveEmoteController, int>((ref, roomId) {
+final liveEmoteControllerProvider = Provider.family<LiveEmoteController, int>((
+  ref,
+  roomId,
+) {
   return LiveEmoteController(
     roomId: roomId,
     getLiveEmoticonsUseCase: ref.watch(getLiveEmoticonsUseCaseProvider),

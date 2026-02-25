@@ -26,9 +26,9 @@ class MemberParams {
 /// Member controller provider family (keyed by mid and fromViewAid)
 final memberControllerProvider =
     Provider.family<MemberController, MemberParams>((ref, params) {
-  return MemberController(
-    mid: params.mid,
-    ref: ref,
-    fromViewAid: params.fromViewAid,
-  );
-});
+      return MemberController(
+        mid: params.mid,
+        ref: ref,
+        fromViewAid: params.fromViewAid,
+      );
+    });

@@ -60,5 +60,5 @@ class FollowUpController extends AsyncNotifier<FollowUpEntity> {
 /// Follow-up controller provider.
 final followUpControllerProvider =
     AsyncNotifierProvider<FollowUpController, FollowUpEntity>(
-  FollowUpController.new,
-);
+      FollowUpController.new,
+    );

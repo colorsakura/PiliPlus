@@ -802,12 +802,11 @@ class UserRemoteDataSource {
           're_src': reSrc,
           'gaia_source': 'web_main',
           'spmid': '333.1387',
-          'extend_content':
-              jsonEncode({
-                "entity": "user",
-                "entity_id": mid,
-                'fp': 'pc',
-              }),
+          'extend_content': jsonEncode({
+            "entity": "user",
+            "entity_id": mid,
+            'fp': 'pc',
+          }),
           'csrf': Accounts.main.csrf,
         },
       );

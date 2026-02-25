@@ -89,14 +89,15 @@ class MemberComicListController extends ChangeNotifier {
         final currentLength = isRefresh
             ? dataList.length
             : (_state.listState is Success<List<MemberComicItemEntity>?>
-                ? (_state.listState as Success<List<MemberComicItemEntity>?>)
-                        .response
-                        ?.length ??
-                    0
-                : 0) + dataList.length;
+                      ? (_state.listState
+                                    as Success<List<MemberComicItemEntity>?>)
+                                .response
+                                ?.length ??
+                            0
+                      : 0) +
+                  dataList.length;
 
-        final shouldEnd =
-            totalCount != null && currentLength >= totalCount;
+        final shouldEnd = totalCount != null && currentLength >= totalCount;
 
         if (isRefresh) {
           _state = _state.copyWith(

@@ -21,8 +21,9 @@ class VideoRecommendationRepositoryImpl
     required bool useAppApi,
   }) async {
     if (useAppApi) {
-      final result =
-          await _remoteDataSource.fetchAppRecommendations(freshIdx: freshIdx);
+      final result = await _remoteDataSource.fetchAppRecommendations(
+        freshIdx: freshIdx,
+      );
       return _mapAppRecommendationResult(result);
     } else {
       final result = await _remoteDataSource.fetchWebRecommendations(
@@ -38,10 +39,12 @@ class VideoRecommendationRepositoryImpl
   ) {
     if (result case Success(:final response)) {
       final videos = response
-          .map<VideoRecommendation>((item) => VideoRecommendation(
-                video: item,
-                rcmdReason: item.rcmdReason,
-              ))
+          .map<VideoRecommendation>(
+            (item) => VideoRecommendation(
+              video: item,
+              rcmdReason: item.rcmdReason,
+            ),
+          )
           .toList();
 
       return RecommendationResult(
@@ -61,10 +64,12 @@ class VideoRecommendationRepositoryImpl
   ) {
     if (result case Success(:final response)) {
       final videos = response
-          .map<VideoRecommendation>((item) => VideoRecommendation(
-                video: item,
-                rcmdReason: item.rcmdReason,
-              ))
+          .map<VideoRecommendation>(
+            (item) => VideoRecommendation(
+              video: item,
+              rcmdReason: item.rcmdReason,
+            ),
+          )
           .toList();
 
       return RecommendationResult(

@@ -27,5 +27,5 @@ final getExpLogUseCaseProvider = Provider<GetExpLogUseCase>((ref) {
 /// 经验日志Controller Provider
 final expLogControllerProvider =
     NotifierProvider<ExpLogController, ExpLogState>(
-  ExpLogController.new,
-);
+      ExpLogController.new,
+    );

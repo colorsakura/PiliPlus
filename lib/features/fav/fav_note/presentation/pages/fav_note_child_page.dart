@@ -156,9 +156,9 @@ class _FavNoteChildPageState extends ConsumerState<FavNoteChildPage>
               )
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 }

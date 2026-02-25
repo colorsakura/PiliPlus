@@ -44,7 +44,9 @@ class FanPageV2 extends ConsumerStatefulWidget {
 
   // Alias for backward compatibility
   static void toFansPage({dynamic mid, String? name}) {
-    final midInt = mid is int ? mid : (mid != null ? int.tryParse(mid.toString()) : null);
+    final midInt = mid is int
+        ? mid
+        : (mid != null ? int.tryParse(mid.toString()) : null);
     toFanPage(mid: midInt, name: name);
   }
 }
@@ -57,12 +59,14 @@ class _FanPageV2State extends ConsumerState<FanPageV2> {
     super.initState();
     final mid = widget.mid ?? Get.arguments?['mid'] ?? Accounts.main.mid;
     final name = widget.name ?? Get.arguments?['name'];
-    _controller = ref.read(fanControllerProvider(
-      FanParams(
-        mid: mid,
-        name: name,
+    _controller = ref.read(
+      fanControllerProvider(
+        FanParams(
+          mid: mid,
+          name: name,
+        ),
       ),
-    ));
+    );
   }
 
   bool get _isOwner => widget.mid == null || widget.mid == Accounts.main.mid;
@@ -106,22 +110,23 @@ class _FanPageV2State extends ConsumerState<FanPageV2> {
   Widget _buildBody(LoadingState<List<FollowItemModel>?> loadingState) {
     return switch (loadingState) {
       Loading() => const SliverToBoxAdapter(
-          child: Center(child: CircularProgressIndicator()),
-        ),
-      Success(:final response) => response != null && response.isNotEmpty
-          ? SliverList.builder(
-              itemBuilder: (context, index) {
-                if (index == response.length - 1) {
-                  _controller.onLoadMore();
-                }
-                return _buildItem(index, response[index]);
-              },
-              itemCount: response.length,
-            )
-          : HttpError(
-              errMsg: '暂无粉丝',
-              onReload: _controller.onReload,
-            ),
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      Success(:final response) =>
+        response != null && response.isNotEmpty
+            ? SliverList.builder(
+                itemBuilder: (context, index) {
+                  if (index == response.length - 1) {
+                    _controller.onLoadMore();
+                  }
+                  return _buildItem(index, response[index]);
+                },
+                itemCount: response.length,
+              )
+            : HttpError(
+                errMsg: '暂无粉丝',
+                onReload: _controller.onReload,
+              ),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg ?? '加载失败',
         onReload: _controller.onReload,

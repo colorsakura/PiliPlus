@@ -15,10 +15,9 @@ class MemberPgcRepositoryImpl implements MemberPgcRepository {
     required ContributeType type,
     required int mid,
     required int pn,
-  }) =>
-      _datasource.getSpaceArchive(
-        type: type,
-        mid: mid,
-        pn: pn,
-      );
+  }) => _datasource.getSpaceArchive(
+    type: type,
+    mid: mid,
+    pn: pn,
+  );
 }

@@ -10,15 +10,13 @@ class MsgAtMeRemoteDatasource {
   Future<LoadingState<MsgAtData>> getMsgAtMeItems({
     int? cursor,
     int? cursorTime,
-  }) =>
-      MsgHttp.msgFeedAtMe(
-        cursor: cursor,
-        cursorTime: cursorTime,
-      );
+  }) => MsgHttp.msgFeedAtMe(
+    cursor: cursor,
+    cursorTime: cursorTime,
+  );
 
   /// Remove a notification item
   Future<LoadingState<void>> removeMsgItem({
     required Object id,
-  }) =>
-      MsgHttp.delMsgfeed(2, id);
+  }) => MsgHttp.delMsgfeed(2, id);
 }

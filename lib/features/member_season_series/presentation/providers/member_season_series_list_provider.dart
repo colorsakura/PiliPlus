@@ -11,21 +11,21 @@ final memberApiDataSourceProvider = Provider<MemberRemoteDataSource>((ref) {
 
 final memberSeasonSeriesRepositoryProvider =
     Provider<MemberSeasonSeriesRepositoryImpl>((
-  ref,
-) {
-  return MemberSeasonSeriesRepositoryImpl(
-    remoteDataSource: ref.watch(memberApiDataSourceProvider),
-  );
-});
+      ref,
+    ) {
+      return MemberSeasonSeriesRepositoryImpl(
+        remoteDataSource: ref.watch(memberApiDataSourceProvider),
+      );
+    });
 
 final fetchMemberSeasonSeriesUseCaseProvider =
     Provider<FetchMemberSeasonSeriesUseCase>(
-  (ref) {
-    return FetchMemberSeasonSeriesUseCase(
-      ref.watch(memberSeasonSeriesRepositoryProvider),
+      (ref) {
+        return FetchMemberSeasonSeriesUseCase(
+          ref.watch(memberSeasonSeriesRepositoryProvider),
+        );
+      },
     );
-  },
-);
 
 final memberSeasonSeriesListControllerProvider =
     Provider.family<MemberSeasonSeriesListController, int>((ref, mid) {

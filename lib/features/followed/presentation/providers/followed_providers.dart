@@ -29,8 +29,9 @@ class FollowedParams {
 }
 
 // Remote Datasource Provider
-final followedRemoteDatasourceProvider =
-    Provider<FollowedRemoteDatasource>((ref) {
+final followedRemoteDatasourceProvider = Provider<FollowedRemoteDatasource>((
+  ref,
+) {
   return const FollowedRemoteDatasource();
 });
 
@@ -54,12 +55,12 @@ final getUserNameUseCaseProvider = Provider<GetUserNameUseCase>((ref) {
 // Controller Provider - uses Provider.family for parameterization
 final followedControllerProvider =
     Provider.family<FollowedController, FollowedParams>((ref, params) {
-  final getListUseCase = ref.watch(getFollowedListUseCaseProvider);
-  final getUserNameUseCase = ref.watch(getUserNameUseCaseProvider);
-  return FollowedController(
-    getListUseCase: getListUseCase,
-    getUserNameUseCase: getUserNameUseCase,
-    mid: params.mid,
-    name: params.name,
-  );
-});
+      final getListUseCase = ref.watch(getFollowedListUseCaseProvider);
+      final getUserNameUseCase = ref.watch(getUserNameUseCaseProvider);
+      return FollowedController(
+        getListUseCase: getListUseCase,
+        getUserNameUseCase: getUserNameUseCase,
+        mid: params.mid,
+        name: params.name,
+      );
+    });

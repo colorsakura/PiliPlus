@@ -141,12 +141,14 @@ class DynamicsController extends GetxController
     final res = await Future.wait([
       DynamicsHttp.followUp(),
       if (_showAllUp)
-        _followDataSource.followings(
-          vmid: Accounts.main.mid,
-          pn: _upPage,
-          orderType: 'attention',
-          ps: 50,
-        ).then((result) => Success(FollowData.fromJson(result))),
+        _followDataSource
+            .followings(
+              vmid: Accounts.main.mid,
+              pn: _upPage,
+              orderType: 'attention',
+              ps: 50,
+            )
+            .then((result) => Success(FollowData.fromJson(result))),
     ]);
 
     final first = res.first;

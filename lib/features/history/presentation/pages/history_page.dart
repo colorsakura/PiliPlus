@@ -37,7 +37,9 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
       _hasInitialized = true;
       // Trigger initial data load
       Future.microtask(() {
-        ref.read(historyControllerNotifierProvider(widget.type)).initialize(type: widget.type);
+        ref
+            .read(historyControllerNotifierProvider(widget.type))
+            .initialize(type: widget.type);
       });
     }
   }
@@ -114,8 +116,9 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
 
     if (items.isEmpty) {
       return HttpError(
-        onReload: () =>
-            ref.read(historyControllerNotifierProvider(type)).onReload(type: type),
+        onReload: () => ref
+            .read(historyControllerNotifierProvider(type))
+            .onReload(type: type),
       );
     }
 

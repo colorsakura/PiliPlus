@@ -36,7 +36,10 @@ class CoinLogPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(LoadingState<List<CoinLogItemEntity>?> loadingState, WidgetRef ref) {
+  Widget _buildBody(
+    LoadingState<List<CoinLogItemEntity>?> loadingState,
+    WidgetRef ref,
+  ) {
     final controller = ref.read(coinLogControllerProvider.notifier);
     return switch (loadingState) {
       Loading() => linearLoading,

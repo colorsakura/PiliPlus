@@ -91,7 +91,9 @@ class RecommendationController extends Notifier<RecommendationState> {
         final showSavedRcmdTip = _settingsUseCase.showSavedRcmdTip;
 
         if (enableSaveLastData && result.videos.isNotEmpty) {
-          final lastRefreshAt = showSavedRcmdTip ? state.displayList.length : null;
+          final lastRefreshAt = showSavedRcmdTip
+              ? state.displayList.length
+              : null;
           final videos = result.videos.length > 200
               ? result.videos.take(50).toList()
               : result.videos;
@@ -149,11 +151,12 @@ class RecommendationController extends Notifier<RecommendationState> {
   void removeVideo(int index) {
     final currentVideos = state.result?.videos ?? [];
     if (index >= 0 && index < currentVideos.length) {
-      final newVideos = List<VideoRecommendation>.from(currentVideos)..removeAt(index);
+      final newVideos = List<VideoRecommendation>.from(currentVideos)
+        ..removeAt(index);
 
       final currentLastRefreshAt = state.lastRefreshAt;
-      final int? newLastRefreshAt = currentLastRefreshAt != null &&
-              index < currentLastRefreshAt
+      final int? newLastRefreshAt =
+          currentLastRefreshAt != null && index < currentLastRefreshAt
           ? currentLastRefreshAt - 1
           : currentLastRefreshAt;
 
@@ -168,5 +171,5 @@ class RecommendationController extends Notifier<RecommendationState> {
 /// 推荐Controller Provider
 final recommendationControllerProvider =
     NotifierProvider<RecommendationController, RecommendationState>(
-  RecommendationController.new,
-);
+      RecommendationController.new,
+    );

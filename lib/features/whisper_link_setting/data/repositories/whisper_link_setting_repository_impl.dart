@@ -2,13 +2,13 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/im_user_infos/datum.dart';
 import 'package:PiliPlus/models/msg/msg_dnd/uid_setting.dart';
 import 'package:PiliPlus/models/msg/session_ss/data.dart';
-import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart' show SessionId, SessionUpdateReply;
+import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
+    show SessionId, SessionUpdateReply;
 import 'package:PiliPlus/features/whisper_link_setting/domain/repositories/whisper_link_setting_repository.dart';
 import 'package:PiliPlus/features/whisper_link_setting/data/datasources/whisper_link_setting_remote_datasource.dart';
 
 /// Repository implementation for whisper link settings
-class WhisperLinkSettingRepositoryImpl
-    implements WhisperLinkSettingRepository {
+class WhisperLinkSettingRepositoryImpl implements WhisperLinkSettingRepository {
   const WhisperLinkSettingRepositoryImpl(this._remoteDatasource);
 
   final WhisperLinkSettingRemoteDatasource _remoteDatasource;
@@ -29,11 +29,10 @@ class WhisperLinkSettingRepositoryImpl
   Future<LoadingState<void>> setPushSs({
     required int setting,
     required int talkerUid,
-  }) =>
-      _remoteDatasource.setPushSs(
-        setting: setting,
-        talkerUid: talkerUid,
-      );
+  }) => _remoteDatasource.setPushSs(
+    setting: setting,
+    talkerUid: talkerUid,
+  );
 
   @override
   Future<LoadingState<SessionUpdateReply>> sessionUpdate(SessionId sessionId) =>
@@ -52,22 +51,20 @@ class WhisperLinkSettingRepositoryImpl
     required int uid,
     required int setting,
     required int dndUid,
-  }) =>
-      _remoteDatasource.setMsgDnd(
-        uid: uid,
-        setting: setting,
-        dndUid: dndUid,
-      );
+  }) => _remoteDatasource.setMsgDnd(
+    uid: uid,
+    setting: setting,
+    dndUid: dndUid,
+  );
 
   @override
   Future<LoadingState<void>> relationMod({
     required int mid,
     required int act,
     required int reSrc,
-  }) =>
-      _remoteDatasource.relationMod(
-        mid: mid,
-        act: act,
-        reSrc: reSrc,
-      );
+  }) => _remoteDatasource.relationMod(
+    mid: mid,
+    act: act,
+    reSrc: reSrc,
+  );
 }

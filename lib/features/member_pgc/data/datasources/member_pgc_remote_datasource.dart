@@ -12,10 +12,9 @@ class MemberPgcRemoteDatasource {
     required ContributeType type,
     required int mid,
     required int pn,
-  }) =>
-      MemberHttp.spaceArchive(
-        type: type,
-        mid: mid,
-        pn: pn,
-      );
+  }) => MemberHttp.spaceArchive(
+    type: type,
+    mid: mid,
+    pn: pn,
+  );
 }

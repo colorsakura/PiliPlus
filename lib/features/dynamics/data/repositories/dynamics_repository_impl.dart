@@ -33,13 +33,15 @@ class DynamicsRepositoryImpl implements DynamicsRepository {
         return DynamicItemEntity(model: item);
       }).toList();
 
-      return Success(DynamicsDataEntity(
-        items: items,
-        hasMore: response.hasMore,
-        offset: response.offset,
-        total: response.total,
-        loadNext: response.loadNext,
-      ));
+      return Success(
+        DynamicsDataEntity(
+          items: items,
+          hasMore: response.hasMore,
+          offset: response.offset,
+          total: response.total,
+          loadNext: response.loadNext,
+        ),
+      );
     } else if (result is Error) {
       return Error(result.errMsg);
     } else {
@@ -87,12 +89,14 @@ class DynamicsRepositoryImpl implements DynamicsRepository {
         );
       }
 
-      return Success(FollowUpEntity(
-        liveUsers: liveUsers,
-        upList: upList,
-        hasMore: response.hasMore,
-        offset: response.offset,
-      ));
+      return Success(
+        FollowUpEntity(
+          liveUsers: liveUsers,
+          upList: upList,
+          hasMore: response.hasMore,
+          offset: response.offset,
+        ),
+      );
     } else if (result is Error) {
       return Error(result.errMsg);
     } else {

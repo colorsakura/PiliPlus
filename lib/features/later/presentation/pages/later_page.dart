@@ -48,7 +48,9 @@ class _LaterPageState extends ConsumerState<LaterPage>
               controller: _tabController,
               tabs: LaterViewType.values.map((item) {
                 final count = ref.watch(
-                  laterControllerProvider(item).select((state) => state.totalCount),
+                  laterControllerProvider(
+                    item,
+                  ).select((state) => state.totalCount),
                 );
                 return Tab(
                   text: '${item.title}${count > 0 ? '($count)' : ''}',

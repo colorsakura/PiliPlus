@@ -42,18 +42,22 @@ class DynMentionController extends ChangeNotifier {
       selected.remove(item);
     }
 
-    _updateState(_state.copyWith(
-      selectedMentions: selected,
-      showConfirmButton: selected.isNotEmpty,
-    ));
+    _updateState(
+      _state.copyWith(
+        selectedMentions: selected,
+        showConfirmButton: selected.isNotEmpty,
+      ),
+    );
   }
 
   /// Clear selected mentions
   void clearSelection() {
-    _updateState(_state.copyWith(
-      selectedMentions: {},
-      showConfirmButton: false,
-    ));
+    _updateState(
+      _state.copyWith(
+        selectedMentions: {},
+        showConfirmButton: false,
+      ),
+    );
   }
 
   /// Refresh search with current keyword

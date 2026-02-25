@@ -28,9 +28,11 @@ class _ZonePageV2State extends ConsumerState<ZonePageV2>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(zoneControllerProvider(
-      (rid: widget.rid, seasonType: widget.seasonType),
-    ));
+    final controller = ref.watch(
+      zoneControllerProvider(
+        (rid: widget.rid, seasonType: widget.seasonType),
+      ),
+    );
 
     return refreshIndicator(
       onRefresh: controller.onRefresh,

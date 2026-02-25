@@ -111,9 +111,8 @@ class _SearchTrendingPageState extends ConsumerState<SearchTrendingPage> {
           child: SizedBox(
             width: width,
             child: refreshIndicator(
-              onRefresh: () => ref
-                  .read(searchTrendingControllerProvider.notifier)
-                  .reload(),
+              onRefresh: () =>
+                  ref.read(searchTrendingControllerProvider.notifier).reload(),
               child: CustomScrollView(
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -122,7 +121,9 @@ class _SearchTrendingPageState extends ConsumerState<SearchTrendingPage> {
                     child: Image.asset(
                       width: width,
                       height: height,
-                      cacheWidth: (width * MediaQuery.of(context).devicePixelRatio).toInt(),
+                      cacheWidth:
+                          (width * MediaQuery.of(context).devicePixelRatio)
+                              .toInt(),
                       'assets/images/trending_banner.png',
                       filterQuality: FilterQuality.low,
                     ),
@@ -153,82 +154,84 @@ class _SearchTrendingPageState extends ConsumerState<SearchTrendingPage> {
     return switch (state.items) {
       Loading() => linearLoading,
       Success(:final response) => () {
-          if (response == null || response.isEmpty) {
-            return HttpError(
-              onReload: () => ref
-                  .read(searchTrendingControllerProvider.notifier)
-                  .reload(),
-            );
-          }
+        if (response == null || response.isEmpty) {
+          return HttpError(
+            onReload: () =>
+                ref.read(searchTrendingControllerProvider.notifier).reload(),
+          );
+        }
 
-          return SliverList.separated(
-            itemCount: response.length,
-            itemBuilder: (context, index) {
-              final item = response[index];
-              return ListTile(
-                dense: true,
-                onTap: () => Navigator.of(context).pushNamed(
-                  '/searchResult',
-                  arguments: {'keyword': item.keyword},
-                ),
-                leading: index < state.topCount
-                    ? const Icon(
-                        size: 17,
-                        Icons.vertical_align_top_outlined,
-                        color: Color(0xFFd1403e),
-                      )
-                    : Text(
-                        '${index + 1 - state.topCount}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Utils.index2Color(
-                            index - state.topCount,
-                            theme.colorScheme.outline,
-                          ),
-                          fontSize: 17,
-                          fontStyle: FontStyle.italic,
+        return SliverList.separated(
+          itemCount: response.length,
+          itemBuilder: (context, index) {
+            final item = response[index];
+            return ListTile(
+              dense: true,
+              onTap: () => Navigator.of(context).pushNamed(
+                '/searchResult',
+                arguments: {'keyword': item.keyword},
+              ),
+              leading: index < state.topCount
+                  ? const Icon(
+                      size: 17,
+                      Icons.vertical_align_top_outlined,
+                      color: Color(0xFFd1403e),
+                    )
+                  : Text(
+                      '${index + 1 - state.topCount}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Utils.index2Color(
+                          index - state.topCount,
+                          theme.colorScheme.outline,
                         ),
-                      ),
-                title: Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        item.keyword ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        strutStyle: const StrutStyle(height: 1, leading: 0),
-                        style: const TextStyle(height: 1, fontSize: 15),
+                        fontSize: 17,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
-                    if (item.icon?.isNotEmpty == true) ...[
-                      const SizedBox(width: 4),
-                      CachedNetworkImage(
-                        height: 16,
-                        memCacheWidth: (16 * MediaQuery.of(context).devicePixelRatio).toInt(),
-                        imageUrl: ImageUtils.thumbnailUrl(item.icon!),
-                        placeholder: (_, _) => const SizedBox.shrink(),
-                      ),
-                    ] else if (item.showLiveIcon == true) ...[
-                      const SizedBox(width: 4),
-                      Image.asset(
-                        'assets/images/live/live.gif',
-                        width: 51,
-                        height: 16,
-                        cacheHeight: (16 * MediaQuery.of(context).devicePixelRatio).toInt(),
-                      ),
-                    ],
+              title: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      item.keyword ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      strutStyle: const StrutStyle(height: 1, leading: 0),
+                      style: const TextStyle(height: 1, fontSize: 15),
+                    ),
+                  ),
+                  if (item.icon?.isNotEmpty == true) ...[
+                    const SizedBox(width: 4),
+                    CachedNetworkImage(
+                      height: 16,
+                      memCacheWidth:
+                          (16 * MediaQuery.of(context).devicePixelRatio)
+                              .toInt(),
+                      imageUrl: ImageUtils.thumbnailUrl(item.icon!),
+                      placeholder: (_, _) => const SizedBox.shrink(),
+                    ),
+                  ] else if (item.showLiveIcon == true) ...[
+                    const SizedBox(width: 4),
+                    Image.asset(
+                      'assets/images/live/live.gif',
+                      width: 51,
+                      height: 16,
+                      cacheHeight:
+                          (16 * MediaQuery.of(context).devicePixelRatio)
+                              .toInt(),
+                    ),
                   ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => divider,
-          );
-        }(),
+                ],
+              ),
+            );
+          },
+          separatorBuilder: (context, index) => divider,
+        );
+      }(),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: () => ref
-            .read(searchTrendingControllerProvider.notifier)
-            .reload(),
+        onReload: () =>
+            ref.read(searchTrendingControllerProvider.notifier).reload(),
       ),
     };
   }

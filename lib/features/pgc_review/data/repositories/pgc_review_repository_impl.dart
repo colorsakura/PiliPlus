@@ -16,41 +16,37 @@ class PgcReviewRepositoryImpl implements PgcReviewRepository {
     required dynamic mediaId,
     String? next,
     required int sort,
-  }) =>
-      _datasource.getPgcReview(
-        type: type,
-        mediaId: mediaId,
-        next: next,
-        sort: sort,
-      );
+  }) => _datasource.getPgcReview(
+    type: type,
+    mediaId: mediaId,
+    next: next,
+    sort: sort,
+  );
 
   @override
   Future<LoadingState<void>> likeReview({
     required dynamic mediaId,
     required dynamic reviewId,
-  }) =>
-      _datasource.likeReview(
-        mediaId: mediaId,
-        reviewId: reviewId,
-      );
+  }) => _datasource.likeReview(
+    mediaId: mediaId,
+    reviewId: reviewId,
+  );
 
   @override
   Future<LoadingState<void>> dislikeReview({
     required dynamic mediaId,
     required dynamic reviewId,
-  }) =>
-      _datasource.dislikeReview(
-        mediaId: mediaId,
-        reviewId: reviewId,
-      );
+  }) => _datasource.dislikeReview(
+    mediaId: mediaId,
+    reviewId: reviewId,
+  );
 
   @override
   Future<LoadingState<void>> deleteReview({
     required dynamic mediaId,
     required dynamic reviewId,
-  }) =>
-      _datasource.deleteReview(
-        mediaId: mediaId,
-        reviewId: reviewId,
-      );
+  }) => _datasource.deleteReview(
+    mediaId: mediaId,
+    reviewId: reviewId,
+  );
 }

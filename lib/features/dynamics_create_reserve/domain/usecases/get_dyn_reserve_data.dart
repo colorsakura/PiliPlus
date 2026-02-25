@@ -22,12 +22,11 @@ class CreateReserveUseCase {
     required String title,
     required int subType,
     required int livePlanStartTime,
-  }) =>
-      _repository.createReserve(
-        title: title,
-        subType: subType,
-        livePlanStartTime: livePlanStartTime,
-      );
+  }) => _repository.createReserve(
+    title: title,
+    subType: subType,
+    livePlanStartTime: livePlanStartTime,
+  );
 }
 
 /// Update reserve use case
@@ -41,11 +40,10 @@ class UpdateReserveUseCase {
     required int subType,
     required String title,
     required int livePlanStartTime,
-  }) =>
-      _repository.updateReserve(
-        sid: sid,
-        subType: subType,
-        title: title,
-        livePlanStartTime: livePlanStartTime,
-      );
+  }) => _repository.updateReserve(
+    sid: sid,
+    subType: subType,
+    title: title,
+    livePlanStartTime: livePlanStartTime,
+  );
 }

@@ -73,7 +73,8 @@ class FavNoteController extends ChangeNotifier {
 
     if (result case Success(:final response)) {
       final currentList = _state.listState is Success
-          ? (_state.listState as Success<List<FavNoteItemModel>?>).response ?? []
+          ? (_state.listState as Success<List<FavNoteItemModel>?>).response ??
+                []
           : <FavNoteItemModel>[];
 
       // Preserve checked state for existing items
@@ -98,11 +99,13 @@ class FavNoteController extends ChangeNotifier {
       // Detect end by checking if response is empty
       final isEnd = response.isEmpty;
 
-      _updateState(_state.copyWith(
-        listState: Success(newList),
-        currentPage: page + 1,
-        isEnd: isEnd,
-      ));
+      _updateState(
+        _state.copyWith(
+          listState: Success(newList),
+          currentPage: page + 1,
+          isEnd: isEnd,
+        ),
+      );
     } else if (result case Error(:final errMsg)) {
       _updateState(_state.copyWith(listState: Error(errMsg)));
     }
@@ -120,11 +123,13 @@ class FavNoteController extends ChangeNotifier {
 
   /// Reload the list
   Future<void> onReload() async {
-    _updateState(FavNoteListState(
-      listState: LoadingState.loading(),
-      currentPage: _state.currentPage,
-      isEnd: _state.isEnd,
-    ));
+    _updateState(
+      FavNoteListState(
+        listState: LoadingState.loading(),
+        currentPage: _state.currentPage,
+        isEnd: _state.isEnd,
+      ),
+    );
     await queryData(isRefresh: true);
   }
 
@@ -140,7 +145,8 @@ class FavNoteController extends ChangeNotifier {
   /// Handle select all / deselect all
   void handleSelect({bool checked = false}) {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavNoteItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavNoteItemModel>?>).response;
       if (list != null) {
         for (final item in list) {
           item.checked = checked;
@@ -148,7 +154,9 @@ class FavNoteController extends ChangeNotifier {
       }
     }
     _allSelected = checked;
-    _checkedCount = checked ? (_state.listState as Success).response?.length ?? 0 : 0;
+    _checkedCount = checked
+        ? (_state.listState as Success).response?.length ?? 0
+        : 0;
     notifyListeners();
   }
 
@@ -162,7 +170,8 @@ class FavNoteController extends ChangeNotifier {
     }
 
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavNoteItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavNoteItemModel>?>).response;
       if (list != null && list.isNotEmpty) {
         _allSelected = _checkedCount == list.length;
       }
@@ -178,7 +187,8 @@ class FavNoteController extends ChangeNotifier {
   /// Get all checked items
   Set<FavNoteItemModel> get allChecked {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavNoteItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavNoteItemModel>?>).response;
       return list?.where((v) => v.checked).toSet() ?? {};
     }
     return {};
@@ -198,7 +208,8 @@ class FavNoteController extends ChangeNotifier {
   /// Handle post-delete cleanup
   void afterDelete(Set<FavNoteItemModel> removeList) {
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavNoteItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavNoteItemModel>?>).response;
       if (list != null) {
         if (removeList.length == list.length) {
           list.clear();
@@ -211,7 +222,8 @@ class FavNoteController extends ChangeNotifier {
     }
 
     if (_state.listState is Success) {
-      final list = (_state.listState as Success<List<FavNoteItemModel>?>).response;
+      final list =
+          (_state.listState as Success<List<FavNoteItemModel>?>).response;
       if (list != null && list.isNotEmpty || _state.isEnd) {
         _updateState(_state.copyWith(listState: Success(list)));
       } else {

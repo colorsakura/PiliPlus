@@ -434,10 +434,11 @@ class AuthorPanel extends StatelessWidget {
                   ListTile(
                     onTap: () async {
                       Get.back();
-                      final res = await ReplyRemoteDataSource().replyInteraction(
-                        oid: item.basic!.commentIdStr!,
-                        type: item.basic!.commentType!,
-                      );
+                      final res = await ReplyRemoteDataSource()
+                          .replyInteraction(
+                            oid: item.basic!.commentIdStr!,
+                            type: item.basic!.commentType!,
+                          );
                       if (res case Success(:final response)) {
                         if (context.mounted) {
                           showDialog(

@@ -10,8 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Remote datasource provider
 final danmakuBlockRemoteDatasourceProvider =
     Provider<DanmakuBlockRemoteDatasource>((ref) {
-  return DanmakuBlockRemoteDatasource();
-});
+      return DanmakuBlockRemoteDatasource();
+    });
 
 /// Repository provider
 final danmakuBlockRepositoryProvider = Provider<DanmakuBlockRepository>((ref) {
@@ -20,13 +20,16 @@ final danmakuBlockRepositoryProvider = Provider<DanmakuBlockRepository>((ref) {
 });
 
 /// Get danmaku filter rules use case provider
-final getDanmakuFilterRulesUseCaseProvider = Provider<GetDanmakuFilterRulesUseCase>((ref) {
-  final repository = ref.watch(danmakuBlockRepositoryProvider);
-  return GetDanmakuFilterRulesUseCase(repository);
-});
+final getDanmakuFilterRulesUseCaseProvider =
+    Provider<GetDanmakuFilterRulesUseCase>((ref) {
+      final repository = ref.watch(danmakuBlockRepositoryProvider);
+      return GetDanmakuFilterRulesUseCase(repository);
+    });
 
 /// Delete danmaku rule use case provider
-final deleteDanmakuRuleUseCaseProvider = Provider<DeleteDanmakuRuleUseCase>((ref) {
+final deleteDanmakuRuleUseCaseProvider = Provider<DeleteDanmakuRuleUseCase>((
+  ref,
+) {
   final repository = ref.watch(danmakuBlockRepositoryProvider);
   return DeleteDanmakuRuleUseCase(repository);
 });
@@ -38,10 +41,11 @@ final addDanmakuRuleUseCaseProvider = Provider<AddDanmakuRuleUseCase>((ref) {
 });
 
 /// Danmaku block controller provider
-final danmakuBlockControllerProvider =
-    Provider<DanmakuBlockController>((ref) {
+final danmakuBlockControllerProvider = Provider<DanmakuBlockController>((ref) {
   return DanmakuBlockController(
-    getDanmakuFilterRulesUseCase: ref.watch(getDanmakuFilterRulesUseCaseProvider),
+    getDanmakuFilterRulesUseCase: ref.watch(
+      getDanmakuFilterRulesUseCaseProvider,
+    ),
     deleteDanmakuRuleUseCase: ref.watch(deleteDanmakuRuleUseCaseProvider),
     addDanmakuRuleUseCase: ref.watch(addDanmakuRuleUseCaseProvider),
   );

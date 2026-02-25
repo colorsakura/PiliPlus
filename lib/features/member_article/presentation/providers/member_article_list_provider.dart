@@ -30,8 +30,8 @@ final fetchMemberArticlesUseCaseProvider = Provider<FetchMemberArticlesUseCase>(
 /// Controller provider (parameterized by member ID)
 final memberArticleListControllerProvider =
     Provider.family<MemberArticleListController, int>((ref, mid) {
-  return MemberArticleListController(
-    mid: mid,
-    fetchArticles: ref.watch(fetchMemberArticlesUseCaseProvider),
-  );
-});
+      return MemberArticleListController(
+        mid: mid,
+        fetchArticles: ref.watch(fetchMemberArticlesUseCaseProvider),
+      );
+    });

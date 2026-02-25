@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Article list remote data source provider
 final articleListRemoteDataSourceProvider =
     Provider<ArticleListRemoteDataSource>((ref) {
-  return ArticleListRemoteDataSource();
-});
+      return ArticleListRemoteDataSource();
+    });
 
 /// Article list repository provider
 final articleListRepositoryProvider = Provider<ArticleListRepository>((ref) {
@@ -28,5 +28,5 @@ final getArticleListUseCaseProvider = Provider<GetArticleListUseCase>((ref) {
 /// Article list controller provider
 final articleListControllerProvider =
     NotifierProvider<ArticleListController, ArticleListState>(
-  ArticleListController.new,
-);
+      ArticleListController.new,
+    );

@@ -134,7 +134,9 @@ class HistoryController extends Notifier<HistoryState> {
 
       if (success && state.result != null) {
         final keySet = keys.toSet();
-        final updatedItems = items.where((item) => !keySet.contains(item.deleteKey)).toList();
+        final updatedItems = items
+            .where((item) => !keySet.contains(item.deleteKey))
+            .toList();
         final updatedResult = HistoryResultEntity(
           items: updatedItems,
           tabs: state.result!.tabs,
@@ -152,7 +154,10 @@ class HistoryController extends Notifier<HistoryState> {
   }
 
   Future<bool> deleteViewedHistory() async {
-    final viewedKeys = items.where((item) => item.isViewed).map((item) => item.deleteKey).toList();
+    final viewedKeys = items
+        .where((item) => item.isViewed)
+        .map((item) => item.deleteKey)
+        .toList();
     if (viewedKeys.isEmpty) return false;
     return deleteHistory(viewedKeys);
   }
@@ -171,9 +176,12 @@ class _PaginationState {
 }
 
 /// Provider factory that creates a unique provider per type
-final _historyControllers = <String?, NotifierProvider<HistoryController, HistoryState>>{};
+final _historyControllers =
+    <String?, NotifierProvider<HistoryController, HistoryState>>{};
 
-NotifierProvider<HistoryController, HistoryState> _getHistoryControllerProvider(String? type) {
+NotifierProvider<HistoryController, HistoryState> _getHistoryControllerProvider(
+  String? type,
+) {
   return _historyControllers.putIfAbsent(
     type,
     () => NotifierProvider<HistoryController, HistoryState>(
@@ -184,8 +192,10 @@ NotifierProvider<HistoryController, HistoryState> _getHistoryControllerProvider(
 
 /// 历史记录控制器Provider - family pattern
 /// 使用此provider获取状态
-final historyControllerProvider =
-    Provider.family<HistoryState, String?>((ref, type) {
+final historyControllerProvider = Provider.family<HistoryState, String?>((
+  ref,
+  type,
+) {
   final provider = _getHistoryControllerProvider(type);
   return ref.watch(provider);
 });
@@ -194,6 +204,6 @@ final historyControllerProvider =
 /// 使用此provider获取控制器以调用方法
 final historyControllerNotifierProvider =
     Provider.family<HistoryController, String?>((ref, type) {
-  final provider = _getHistoryControllerProvider(type);
-  return ref.watch(provider.notifier);
-});
+      final provider = _getHistoryControllerProvider(type);
+      return ref.watch(provider.notifier);
+    });

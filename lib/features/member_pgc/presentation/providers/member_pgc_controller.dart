@@ -9,12 +9,13 @@ import 'package:PiliPlus/features/member_pgc/domain/repositories/member_pgc_repo
 /// Controller for member PGC (bangumi) page
 ///
 /// This demonstrates migration from GetX CommonListController to Riverpod CommonListControllerV2
-class MemberPgcController extends CommonListControllerV2<SpaceArchiveData, SpaceArchiveItem> {
+class MemberPgcController
+    extends CommonListControllerV2<SpaceArchiveData, SpaceArchiveItem> {
   MemberPgcController({
     required this.mid,
     required MemberPgcRepository repository,
     SpaceData? initialData,
-  })  : _repository = repository {
+  }) : _repository = repository {
     if (initialData != null) {
       _initializeFromCache(initialData);
     } else {

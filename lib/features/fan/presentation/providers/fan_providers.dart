@@ -27,8 +27,10 @@ class FanParams {
 }
 
 // Controller Provider - uses Provider.family for different mids
-final fanControllerProvider =
-    Provider.family<FanController, FanParams>((ref, params) {
+final fanControllerProvider = Provider.family<FanController, FanParams>((
+  ref,
+  params,
+) {
   return FanController(
     mid: params.mid,
     repository: ref.watch(fanRepositoryProvider),

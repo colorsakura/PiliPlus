@@ -37,9 +37,8 @@ class _WhisperBlockPageState extends ConsumerState<WhisperBlockPage> {
   Widget _buildBody(ThemeData theme, WhisperBlockState controllerState) {
     return switch (controllerState.data) {
       Loading() => loadingWidget,
-      Success(:final response) => response == null
-          ? _buildEmptyState()
-          : _buildContent(theme, response),
+      Success(:final response) =>
+        response == null ? _buildEmptyState() : _buildContent(theme, response),
       Error(:final errMsg) => scrollErrorWidget(
         errMsg: errMsg,
         onReload: () =>
@@ -124,8 +123,9 @@ class _WhisperBlockPageState extends ConsumerState<WhisperBlockPage> {
                           context: context,
                           title: '删除屏蔽词？',
                           content: '该屏蔽词将不再生效',
-                          onConfirm: () =>
-                              ref.read(whisperBlockControllerProvider.notifier).removeKeyword(e),
+                          onConfirm: () => ref
+                              .read(whisperBlockControllerProvider.notifier)
+                              .removeKeyword(e),
                         );
                       },
                     ),
@@ -170,11 +170,11 @@ class _WhisperBlockPageState extends ConsumerState<WhisperBlockPage> {
         return Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: 14, vertical: 12) +
-                  EdgeInsets.only(
-                    bottom:
-                        MediaQuery.paddingOf(context).bottom +
-                            MediaQuery.viewInsetsOf(context).bottom,
-                  ),
+              EdgeInsets.only(
+                bottom:
+                    MediaQuery.paddingOf(context).bottom +
+                    MediaQuery.viewInsetsOf(context).bottom,
+              ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,10 +230,10 @@ class _WhisperBlockPageState extends ConsumerState<WhisperBlockPage> {
                         .read(whisperBlockControllerProvider.notifier)
                         .addKeyword(keyword)
                         .then((success) {
-                      if (success) {
-                        Navigator.of(context).pop();
-                      }
-                    });
+                          if (success) {
+                            Navigator.of(context).pop();
+                          }
+                        });
                   }
                 },
                 child: const Row(

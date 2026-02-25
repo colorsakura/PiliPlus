@@ -95,7 +95,10 @@ class _FollowSearchPageV2State extends ConsumerState<FollowSearchPageV2> {
     );
   }
 
-  Widget _buildBody(FollowSearchState state, FollowSearchController controller) {
+  Widget _buildBody(
+    FollowSearchState state,
+    FollowSearchController controller,
+  ) {
     return switch (state.listState) {
       Loading() => const HttpError(),
       Success(:final response) =>
@@ -103,13 +106,16 @@ class _FollowSearchPageV2State extends ConsumerState<FollowSearchPageV2> {
             ? _buildList(response, controller)
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 
-  Widget _buildList(List<FollowItemModel> list, FollowSearchController controller) {
+  Widget _buildList(
+    List<FollowItemModel> list,
+    FollowSearchController controller,
+  ) {
     return SliverList.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {

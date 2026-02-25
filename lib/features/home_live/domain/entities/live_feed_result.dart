@@ -28,11 +28,11 @@ class LiveFeedResult {
 
   /// 创建空结果
   const LiveFeedResult.empty()
-      : streams = const [],
-        hasMore = true,
-        followingItems = null,
-        followingCount = null,
-        areaItems = null;
+    : streams = const [],
+      hasMore = true,
+      followingItems = null,
+      followingCount = null,
+      areaItems = null;
 
   /// 复制并更新
   LiveFeedResult copyWith({

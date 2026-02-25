@@ -3,7 +3,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 
 /// Repository interface for member season series data
 abstract class MemberSeasonSeriesRepository {
-  Future<LoadingState<List<MemberSeasonSeriesItemEntity>>> fetchMemberSeasonSeries({
+  Future<LoadingState<List<MemberSeasonSeriesItemEntity>>>
+  fetchMemberSeasonSeries({
     required int mid,
     required int page,
   });

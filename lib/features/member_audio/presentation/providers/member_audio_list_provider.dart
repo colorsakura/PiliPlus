@@ -30,8 +30,8 @@ final fetchMemberAudiosUseCaseProvider = Provider<FetchMemberAudiosUseCase>(
 /// Controller provider (parameterized by member ID)
 final memberAudioListControllerProvider =
     Provider.family<MemberAudioListController, int>((ref, mid) {
-  return MemberAudioListController(
-    mid: mid,
-    fetchAudios: ref.watch(fetchMemberAudiosUseCaseProvider),
-  );
-});
+      return MemberAudioListController(
+        mid: mid,
+        fetchAudios: ref.watch(fetchMemberAudiosUseCaseProvider),
+      );
+    });

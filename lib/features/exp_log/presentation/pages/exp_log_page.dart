@@ -36,7 +36,10 @@ class ExpLogPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildBody(LoadingState<List<ExpLogItemEntity>?> loadingState, WidgetRef ref) {
+  Widget _buildBody(
+    LoadingState<List<ExpLogItemEntity>?> loadingState,
+    WidgetRef ref,
+  ) {
     final controller = ref.read(expLogControllerProvider.notifier);
     return switch (loadingState) {
       Loading() => linearLoading,

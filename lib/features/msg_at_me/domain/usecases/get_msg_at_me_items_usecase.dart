@@ -12,9 +12,8 @@ class GetMsgAtMeItemsUseCase {
   Future<LoadingState<MsgAtData>> call({
     int? cursor,
     int? cursorTime,
-  }) =>
-      _repository.getMsgAtMeItems(
-        cursor: cursor,
-        cursorTime: cursorTime,
-      );
+  }) => _repository.getMsgAtMeItems(
+    cursor: cursor,
+    cursorTime: cursorTime,
+  );
 }

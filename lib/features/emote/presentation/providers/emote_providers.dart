@@ -19,13 +19,14 @@ final emoteRepositoryProvider = Provider<EmoteRepository>((ref) {
 });
 
 /// 获取表情包用例Provider
-final getEmotePackagesUseCaseProvider = Provider<GetEmotePackagesUseCase>((ref) {
+final getEmotePackagesUseCaseProvider = Provider<GetEmotePackagesUseCase>((
+  ref,
+) {
   final repository = ref.watch(emoteRepositoryProvider);
   return GetEmotePackagesUseCase(repository);
 });
 
 /// 表情Controller Provider
-final emoteControllerProvider =
-    NotifierProvider<EmoteController, EmoteState>(
+final emoteControllerProvider = NotifierProvider<EmoteController, EmoteState>(
   EmoteController.new,
 );

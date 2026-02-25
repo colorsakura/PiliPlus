@@ -12,20 +12,18 @@ class SubscriptionRemoteDatasource {
     required int pn,
     required int ps,
     required int mid,
-  }) =>
-      UserHttp.userSubFolder(
-        pn: pn,
-        ps: ps,
-        mid: mid,
-      );
+  }) => UserHttp.userSubFolder(
+    pn: pn,
+    ps: ps,
+    mid: mid,
+  );
 
   /// Cancel a subscription
   Future<LoadingState<void>> cancelSub({
     required int id,
     required int type,
-  }) =>
-      FavHttp.cancelSub(
-        id: id,
-        type: type,
-      );
+  }) => FavHttp.cancelSub(
+    id: id,
+    type: type,
+  );
 }

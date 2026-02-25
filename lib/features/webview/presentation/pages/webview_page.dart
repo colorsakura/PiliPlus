@@ -36,16 +36,15 @@ class WebviewPage extends StatefulWidget {
     int? oid,
     String? title,
     UaType? uaType,
-  }) =>
-      Get.toNamed(
-        '/webview',
-        parameters: {
-          'url': url ?? '',
-          'oid': oid?.toString() ?? '',
-          'title': title ?? '',
-          'uaType': uaType?.name ?? '',
-        },
-      );
+  }) => Get.toNamed(
+    '/webview',
+    parameters: {
+      'url': url ?? '',
+      'oid': oid?.toString() ?? '',
+      'title': title ?? '',
+      'uaType': uaType?.name ?? '',
+    },
+  );
 }
 
 class _WebviewPageState extends State<WebviewPage> {
@@ -178,7 +177,7 @@ class _WebviewPageState extends State<WebviewPage> {
                   ],
                 ),
               ],
-        ),
+            ),
       body: SafeArea(
         child: InAppWebView(
           webViewEnvironment: AppInitializer.webViewEnvironment,
@@ -256,8 +255,8 @@ class _WebviewPageState extends State<WebviewPage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      String suggestedFilename =
-                          request.suggestedFilename.toString();
+                      String suggestedFilename = request.suggestedFilename
+                          .toString();
                       String fileSize = CacheManager.formatSize(
                         request.contentLength.toDouble(),
                       );

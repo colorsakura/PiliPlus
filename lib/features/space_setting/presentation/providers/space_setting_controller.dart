@@ -47,14 +47,14 @@ class SpaceSettingController extends Notifier<SpaceSettingState> {
 
     state = switch (result) {
       Loading() => SpaceSettingState(
-          privacy: LoadingState.loading(),
-        ),
+        privacy: LoadingState.loading(),
+      ),
       Success(:final response) => SpaceSettingState(
-          privacy: Success(response.privacy),
-        ),
+        privacy: Success(response.privacy),
+      ),
       Error() => SpaceSettingState(
-          privacy: result,
-        ),
+        privacy: result,
+      ),
     };
   }
 
@@ -65,11 +65,11 @@ class SpaceSettingController extends Notifier<SpaceSettingState> {
 
     item.value = item.isReverse
         ? value
-            ? 0
-            : 1
+              ? 0
+              : 1
         : value
-            ? 1
-            : 0;
+        ? 1
+        : 0;
 
     // Trigger rebuild
     ref.invalidateSelf();
@@ -99,5 +99,5 @@ class SpaceSettingController extends Notifier<SpaceSettingState> {
 /// Space setting controller provider
 final spaceSettingControllerProvider =
     NotifierProvider<SpaceSettingController, SpaceSettingState>(
-  SpaceSettingController.new,
-);
+      SpaceSettingController.new,
+    );

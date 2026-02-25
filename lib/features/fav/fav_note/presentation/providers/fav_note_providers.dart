@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/fav/fav_note/domain/usecases/remove_notes_usec
 import 'package:PiliPlus/features/fav/fav_note/presentation/providers/fav_note_list_controller.dart';
 
 /// Provider for FavNoteRemoteDatasource
-final favNoteRemoteDatasourceProvider =
-    Provider<FavNoteRemoteDatasource>((ref) {
+final favNoteRemoteDatasourceProvider = Provider<FavNoteRemoteDatasource>((
+  ref,
+) {
   return FavNoteRemoteDatasource();
 });
 
@@ -31,8 +32,10 @@ final removeNotesUseCaseProvider = Provider<RemoveNotesUseCase>((ref) {
 });
 
 /// Provider family for FavNoteController (parametrized by isPublish)
-final favNoteControllerProvider =
-    Provider.family<FavNoteController, bool>((ref, isPublish) {
+final favNoteControllerProvider = Provider.family<FavNoteController, bool>((
+  ref,
+  isPublish,
+) {
   return FavNoteController(
     isPublish: isPublish,
     getFavNotesUseCase: ref.watch(getFavNotesUseCaseProvider),

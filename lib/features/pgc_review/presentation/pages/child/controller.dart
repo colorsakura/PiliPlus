@@ -53,12 +53,13 @@ class PgcReviewController
   }
 
   @override
-  Future<LoadingState<PgcReviewData>> customGetData() => _dataSource.getPgcReview(
-    type: type,
-    mediaId: mediaId,
-    next: next,
-    sort: sortType.value.sort,
-  );
+  Future<LoadingState<PgcReviewData>> customGetData() =>
+      _dataSource.getPgcReview(
+        type: type,
+        mediaId: mediaId,
+        next: next,
+        sort: sortType.value.sort,
+      );
 
   Future<void> onLike(PgcReviewItemModel item, bool isLike, reviewId) async {
     final res = await _dataSource.likeReview(

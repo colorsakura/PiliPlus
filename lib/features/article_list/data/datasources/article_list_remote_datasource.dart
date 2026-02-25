@@ -13,8 +13,8 @@ class ArticleListRemoteDataSource {
     return switch (result) {
       Loading() => result as LoadingState<ArticleListDataEntity>,
       Success(:final response) => Success(
-          ArticleListDataEntity.fromModel(response),
-        ),
+        ArticleListDataEntity.fromModel(response),
+      ),
       Error() => result as LoadingState<ArticleListDataEntity>,
     };
   }

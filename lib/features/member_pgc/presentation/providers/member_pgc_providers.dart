@@ -6,8 +6,9 @@ import 'package:PiliPlus/features/member_pgc/domain/repositories/member_pgc_repo
 import 'package:PiliPlus/features/member_pgc/presentation/providers/member_pgc_controller.dart';
 
 // Remote Datasource Provider
-final memberPgcRemoteDatasourceProvider =
-    Provider<MemberPgcRemoteDatasource>((ref) {
+final memberPgcRemoteDatasourceProvider = Provider<MemberPgcRemoteDatasource>((
+  ref,
+) {
   return const MemberPgcRemoteDatasource();
 });
 
@@ -31,9 +32,9 @@ class MemberPgcParams {
 // Controller Provider - uses Provider.family for different params
 final memberPgcControllerProvider =
     Provider.family<MemberPgcController, MemberPgcParams>((ref, params) {
-  return MemberPgcController(
-    mid: params.mid,
-    repository: ref.watch(memberPgcRepositoryProvider),
-    initialData: params.initialData,
-  );
-});
+      return MemberPgcController(
+        mid: params.mid,
+        repository: ref.watch(memberPgcRepositoryProvider),
+        initialData: params.initialData,
+      );
+    });

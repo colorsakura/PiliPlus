@@ -66,8 +66,10 @@ class _FavPgcPageState extends ConsumerState<FavPgcPage>
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
                 labelStyle:
-                    TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 14) ??
-                        const TextStyle(fontSize: 14),
+                    TabBarTheme.of(
+                      context,
+                    ).labelStyle?.copyWith(fontSize: 14) ??
+                    const TextStyle(fontSize: 14),
                 labelColor: theme.colorScheme.onSecondaryContainer,
                 unselectedLabelColor: theme.colorScheme.outline,
                 tabs: const [

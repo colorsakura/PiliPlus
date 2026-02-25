@@ -24,10 +24,10 @@ class LiveAreaResult {
 
   /// 创建空结果
   const LiveAreaResult.empty()
-      : streams = const [],
-        totalCount = null,
-        sortTags = null,
-        currentSortType = null;
+    : streams = const [],
+      totalCount = null,
+      sortTags = null,
+      currentSortType = null;
 
   /// 是否到达末尾
   bool get isEnd => totalCount != null && streams.length >= totalCount!;

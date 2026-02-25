@@ -31,7 +31,8 @@ class HttpLoggingInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    final startTime = _requestStartTimes[response.requestOptions.uri.toString()];
+    final startTime =
+        _requestStartTimes[response.requestOptions.uri.toString()];
     final duration = startTime != null
         ? DateTime.now().difference(startTime)
         : null;

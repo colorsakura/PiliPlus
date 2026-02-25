@@ -76,7 +76,10 @@ class LoginPageController extends GetxController
   Future<void> refreshQRCode() async {
     try {
       final data = await _dataSource.getHDCode();
-      final res = Success((authCode: data['auth_code'] as String, url: data['url'] as String));
+      final res = Success((
+        authCode: data['auth_code'] as String,
+        url: data['url'] as String,
+      ));
       codeInfo.value = res;
       if (res case Success(:final response)) {
         qrCodeTimer?.cancel();
@@ -92,25 +95,28 @@ class LoginPageController extends GetxController
           if (_isReq || tabController.index != 2) return;
 
           _isReq = true;
-          _dataSource.codePoll(response.authCode).then((value) async {
-            _isReq = false;
-            if (value['status']) {
-              t.cancel();
-              statusQRCode.value = '扫码成功';
-              await setAccount(
-                value['data'],
-                value['data']['cookie_info']['cookies'],
-              );
-              Get.back();
-            } else if (value['code'] == 86038) {
-              t.cancel();
-              qrCodeLeftTime.value = 0;
-            } else {
-              statusQRCode.value = value['msg'];
-            }
-          }).catchError((e) {
-            _isReq = false;
-          });
+          _dataSource
+              .codePoll(response.authCode)
+              .then((value) async {
+                _isReq = false;
+                if (value['status']) {
+                  t.cancel();
+                  statusQRCode.value = '扫码成功';
+                  await setAccount(
+                    value['data'],
+                    value['data']['cookie_info']['cookies'],
+                  );
+                  Get.back();
+                } else if (value['code'] == 86038) {
+                  t.cancel();
+                  qrCodeLeftTime.value = 0;
+                } else {
+                  statusQRCode.value = value['msg'];
+                }
+              })
+              .catchError((e) {
+                _isReq = false;
+              });
         });
       }
     } catch (e) {
@@ -423,8 +429,8 @@ class LoginPageController extends GetxController
                     geeGt,
                     geeChallenge,
                     () async {
-                      final safeCenterSendSmsCodeRes =
-                          await _dataSource.safeCenterSmsCode(
+                      final safeCenterSendSmsCodeRes = await _dataSource
+                          .safeCenterSmsCode(
                             tmpCode: currentUri.queryParameters['tmp_token']!,
                             geeChallenge: geeChallenge,
                             geeSeccode: captchaData.seccode,
@@ -460,8 +466,8 @@ class LoginPageController extends GetxController
                     SmartDialog.showToast("请输入短信验证码");
                     return;
                   }
-                  final safeCenterSmsVerifyRes =
-                      await _dataSource.safeCenterSmsVerify(
+                  final safeCenterSmsVerifyRes = await _dataSource
+                      .safeCenterSmsVerify(
                         code: code,
                         tmpCode: currentUri.queryParameters['tmp_token']!,
                         requestId: currentUri.queryParameters['request_id']!,
@@ -477,8 +483,8 @@ class LoginPageController extends GetxController
                     return;
                   }
                   SmartDialog.showToast("验证成功，正在登录");
-                  final oauth2AccessTokenRes =
-                      await _dataSource.oauth2AccessToken(
+                  final oauth2AccessTokenRes = await _dataSource
+                      .oauth2AccessToken(
                         code: safeCenterSmsVerifyRes['data']['code'],
                       );
                   if (!oauth2AccessTokenRes['status']) {

@@ -8,8 +8,7 @@ import 'package:PiliPlus/features/fav/fav_pgc/domain/usecases/update_pgc_follow_
 import 'package:PiliPlus/features/fav/fav_pgc/presentation/providers/fav_pgc_list_controller.dart';
 
 /// Provider for FavPgcRemoteDatasource
-final favPgcRemoteDatasourceProvider =
-    Provider<FavPgcRemoteDatasource>((ref) {
+final favPgcRemoteDatasourceProvider = Provider<FavPgcRemoteDatasource>((ref) {
   return FavPgcRemoteDatasource();
 });
 
@@ -32,19 +31,25 @@ final removePgcUseCaseProvider = Provider<RemovePgcUseCase>((ref) {
 });
 
 /// Provider for UpdatePgcFollowStatusUseCase
-final updatePgcFollowStatusUseCaseProvider = Provider<UpdatePgcFollowStatusUseCase>((ref) {
-  final repository = ref.watch(favPgcRepositoryProvider);
-  return UpdatePgcFollowStatusUseCase(repository);
-});
+final updatePgcFollowStatusUseCaseProvider =
+    Provider<UpdatePgcFollowStatusUseCase>((ref) {
+      final repository = ref.watch(favPgcRepositoryProvider);
+      return UpdatePgcFollowStatusUseCase(repository);
+    });
 
 /// Provider family for FavPgcController (parametrized by type and followStatus)
 final favPgcControllerProvider =
-    Provider.family<FavPgcController, ({int type, int followStatus})>((ref, params) {
-  return FavPgcController(
-    type: params.type,
-    followStatus: params.followStatus,
-    getFavPgcUseCase: ref.watch(getFavPgcUseCaseProvider),
-    removePgcUseCase: ref.watch(removePgcUseCaseProvider),
-    updatePgcFollowStatusUseCase: ref.watch(updatePgcFollowStatusUseCaseProvider),
-  );
-});
+    Provider.family<FavPgcController, ({int type, int followStatus})>((
+      ref,
+      params,
+    ) {
+      return FavPgcController(
+        type: params.type,
+        followStatus: params.followStatus,
+        getFavPgcUseCase: ref.watch(getFavPgcUseCaseProvider),
+        removePgcUseCase: ref.watch(removePgcUseCaseProvider),
+        updatePgcFollowStatusUseCase: ref.watch(
+          updatePgcFollowStatusUseCaseProvider,
+        ),
+      );
+    });

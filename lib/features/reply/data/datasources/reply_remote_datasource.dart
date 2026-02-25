@@ -39,7 +39,9 @@ class ReplyRemoteDataSource {
   }) async {
     try {
       final response = await _httpClient.get(
-        isLogin ? ReplyApiConstants.replyList : '${ReplyApiConstants.replyList}/main',
+        isLogin
+            ? ReplyApiConstants.replyList
+            : '${ReplyApiConstants.replyList}/main',
         queryParameters: isLogin
             ? {
                 'oid': oid,
@@ -92,7 +94,9 @@ class ReplyRemoteDataSource {
       );
 
       if (response.data['code'] == 0) {
-        ReplyReplyData replyData = ReplyReplyData.fromJson(response.data['data']);
+        ReplyReplyData replyData = ReplyReplyData.fromJson(
+          response.data['data'],
+        );
         return Success(replyData);
       } else {
         return Error(

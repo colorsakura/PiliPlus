@@ -5,8 +5,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_season_series/season.dart';
 
 /// Implementation of member season series repository
-class MemberSeasonSeriesRepositoryImpl
-    implements MemberSeasonSeriesRepository {
+class MemberSeasonSeriesRepositoryImpl implements MemberSeasonSeriesRepository {
   final MemberRemoteDataSource _remoteDataSource;
 
   MemberSeasonSeriesRepositoryImpl({
@@ -15,7 +14,7 @@ class MemberSeasonSeriesRepositoryImpl
 
   @override
   Future<LoadingState<List<MemberSeasonSeriesItemEntity>>>
-      fetchMemberSeasonSeries({
+  fetchMemberSeasonSeries({
     required int mid,
     required int page,
   }) async {
@@ -25,7 +24,8 @@ class MemberSeasonSeriesRepositoryImpl
         pn: page,
       );
       // Merge seasonsList and seriesList as in the original controller
-      final items = (data.seasonsList ?? <MemberSeasonSeriesItemEntity>[]) +
+      final items =
+          (data.seasonsList ?? <MemberSeasonSeriesItemEntity>[]) +
           (data.seriesList ?? <MemberSeasonSeriesItemEntity>[]);
       return Success(items);
     } catch (e) {

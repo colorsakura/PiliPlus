@@ -8,7 +8,8 @@ import 'package:PiliPlus/models/blacklist/data.dart';
 /// 负责与黑名单API进行通信
 /// 现在使用新的 Clean Architecture 实现
 class BlacklistRemoteDataSource {
-  final http.BlacklistHttpDataSource _dataSource = http.BlacklistHttpDataSource();
+  final http.BlacklistHttpDataSource _dataSource =
+      http.BlacklistHttpDataSource();
 
   /// 获取黑名单列表
   ///

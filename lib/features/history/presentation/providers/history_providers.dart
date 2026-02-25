@@ -7,8 +7,9 @@ import 'package:PiliPlus/features/history/domain/usecases/get_history_status.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 历史记录远程数据源Provider
-final historyRemoteDataSourceProvider =
-    Provider<HistoryRemoteDataSource>((ref) {
+final historyRemoteDataSourceProvider = Provider<HistoryRemoteDataSource>((
+  ref,
+) {
   return HistoryRemoteDataSource();
 });
 
@@ -33,7 +34,9 @@ final deleteHistoryUseCaseProvider = Provider<DeleteHistoryUseCase>((ref) {
 });
 
 /// 获取历史记录状态用例Provider
-final getHistoryStatusUseCaseProvider = Provider<GetHistoryStatusUseCase>((ref) {
+final getHistoryStatusUseCaseProvider = Provider<GetHistoryStatusUseCase>((
+  ref,
+) {
   final repository = ref.watch(historyRepositoryProvider);
   return GetHistoryStatusUseCase(repository);
 });

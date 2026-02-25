@@ -14,7 +14,8 @@ abstract class AppException implements Exception {
   int? get code => null;
 
   @override
-  String toString() => 'AppException: $message${code != null ? ' (code: $code)' : ''}';
+  String toString() =>
+      'AppException: $message${code != null ? ' (code: $code)' : ''}';
 }
 
 /// 服务器异常
@@ -30,7 +31,8 @@ class ServerException extends AppException {
   ServerException(this.message, {this.code});
 
   @override
-  String toString() => 'ServerException: $message${code != null ? ' (code: $code)' : ''}';
+  String toString() =>
+      'ServerException: $message${code != null ? ' (code: $code)' : ''}';
 }
 
 /// 网络异常
@@ -101,5 +103,6 @@ class BusinessLogicException extends AppException {
   BusinessLogicException(this.message, {this.code});
 
   @override
-  String toString() => 'BusinessLogicException: $message${code != null ? ' (code: $code)' : ''}';
+  String toString() =>
+      'BusinessLogicException: $message${code != null ? ' (code: $code)' : ''}';
 }

@@ -13,15 +13,13 @@ class MsgAtMeRepositoryImpl implements MsgAtMeRepository {
   Future<LoadingState<MsgAtData>> getMsgAtMeItems({
     int? cursor,
     int? cursorTime,
-  }) =>
-      _datasource.getMsgAtMeItems(
-        cursor: cursor,
-        cursorTime: cursorTime,
-      );
+  }) => _datasource.getMsgAtMeItems(
+    cursor: cursor,
+    cursorTime: cursorTime,
+  );
 
   @override
   Future<LoadingState<void>> removeMsgItem({
     required Object id,
-  }) =>
-      _datasource.removeMsgItem(id: id);
+  }) => _datasource.removeMsgItem(id: id);
 }

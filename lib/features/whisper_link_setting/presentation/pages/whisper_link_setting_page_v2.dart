@@ -22,7 +22,9 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(whisperLinkSettingControllerProvider(talkerUid));
+    final controller = ref.watch(
+      whisperLinkSettingControllerProvider(talkerUid),
+    );
     final state = controller.state;
 
     final theme = Theme.of(context);
@@ -114,8 +116,8 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
                                 item.vip?.status != null &&
                                     item.vip!.status > 0 &&
                                     item.vip?.type == 2
-                            ? theme.colorScheme.vipColor
-                            : null,
+                                ? theme.colorScheme.vipColor
+                                : null,
                           ),
                         ),
                         subtitle: Text(
@@ -154,54 +156,59 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
     return switch (loadingState) {
       Loading() => const SizedBox.shrink(),
       Success(:final response) => Builder(
-          builder: (context) {
-            final subTitleS = TextStyle(
-              fontSize: 13,
-              color: theme.colorScheme.outline,
-            );
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (response.showPushSetting == 1)
-                  ListTile(
-                    dense: true,
-                    onTap: () => _setPush(context, controller, response.pushSetting == 0),
-                    title: const Text('接收消息推送', style: TextStyle(fontSize: 14)),
-                    subtitle: Text(
-                      '若关闭此开关，你将不再收到该账号的图文消息与稿件推送，但通知类消息不受影响',
-                      style: subTitleS,
-                    ),
-                    trailing: Transform.scale(
-                      alignment: Alignment.centerRight,
-                      scale: 0.8,
-                      child: Switch(
-                        value: response.pushSetting == 0,
-                        onChanged: (value) => _setPush(context, controller, response.pushSetting == 0),
-                      ),
-                    ),
-                  ),
-                divider2,
+        builder: (context) {
+          final subTitleS = TextStyle(
+            fontSize: 13,
+            color: theme.colorScheme.outline,
+          );
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (response.showPushSetting == 1)
                 ListTile(
                   dense: true,
-                  onTap: controller.setPin,
-                  title: const Text('置顶聊天', style: TextStyle(fontSize: 14)),
+                  onTap: () =>
+                      _setPush(context, controller, response.pushSetting == 0),
+                  title: const Text('接收消息推送', style: TextStyle(fontSize: 14)),
+                  subtitle: Text(
+                    '若关闭此开关，你将不再收到该账号的图文消息与稿件推送，但通知类消息不受影响',
+                    style: subTitleS,
+                  ),
                   trailing: Transform.scale(
                     alignment: Alignment.centerRight,
                     scale: 0.8,
                     child: Switch(
-                      value: controller.state.isPinned,
-                      onChanged: (value) => controller.setPin(),
+                      value: response.pushSetting == 0,
+                      onChanged: (value) => _setPush(
+                        context,
+                        controller,
+                        response.pushSetting == 0,
+                      ),
                     ),
                   ),
                 ),
-                divider2,
-                _buildMuteItem(controller.state.msgDnd, controller, context),
-                divider,
-              ],
-            );
-          },
-        ),
+              divider2,
+              ListTile(
+                dense: true,
+                onTap: controller.setPin,
+                title: const Text('置顶聊天', style: TextStyle(fontSize: 14)),
+                trailing: Transform.scale(
+                  alignment: Alignment.centerRight,
+                  scale: 0.8,
+                  child: Switch(
+                    value: controller.state.isPinned,
+                    onChanged: (value) => controller.setPin(),
+                  ),
+                ),
+              ),
+              divider2,
+              _buildMuteItem(controller.state.msgDnd, controller, context),
+              divider,
+            ],
+          );
+        },
+      ),
       Error(:final errMsg) => _errWidget(errMsg, controller.getSessionSs),
     };
   }
@@ -224,7 +231,8 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
                   scale: 0.8,
                   child: Switch(
                     value: response.first.setting == 1,
-                    onChanged: (value) => controller.setMute(response.first.setting == 1),
+                    onChanged: (value) =>
+                        controller.setMute(response.first.setting == 1),
                   ),
                 ),
               )
@@ -233,7 +241,11 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
     };
   }
 
-  Widget _buildBlockItem(bool isBlocked, WhisperLinkSettingController controller, BuildContext context) {
+  Widget _buildBlockItem(
+    bool isBlocked,
+    WhisperLinkSettingController controller,
+    BuildContext context,
+  ) {
     return ListTile(
       dense: true,
       onTap: () => _setBlock(context, controller, isBlocked),
@@ -264,7 +276,11 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
     );
   }
 
-  void _setPush(BuildContext context, WhisperLinkSettingController controller, bool isPush) {
+  void _setPush(
+    BuildContext context,
+    WhisperLinkSettingController controller,
+    bool isPush,
+  ) {
     if (!isPush) {
       // Show confirmation dialog
       showConfirmDialog(
@@ -279,7 +295,11 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
     }
   }
 
-  void _setBlock(BuildContext context, WhisperLinkSettingController controller, bool isBlocked) {
+  void _setBlock(
+    BuildContext context,
+    WhisperLinkSettingController controller,
+    bool isBlocked,
+  ) {
     if (!isBlocked) {
       // Show confirmation dialog for blocking
       showConfirmDialog(

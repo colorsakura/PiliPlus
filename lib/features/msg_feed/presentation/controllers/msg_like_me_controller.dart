@@ -38,7 +38,8 @@ class MsgLikeMeController extends ChangeNotifier {
         final data = response;
 
         // Check if reached end
-        final isEnd = data.total?.cursor?.isEnd == true ||
+        final isEnd =
+            data.total?.cursor?.isEnd == true ||
             data.total?.items.isNullOrEmpty == true;
 
         cursor = data.total?.cursor?.id;
@@ -50,8 +51,13 @@ class MsgLikeMeController extends ChangeNotifier {
         List<MsgLikeItem> finalLatest;
         List<MsgLikeItem> finalTotal;
 
-        if (!isRefresh && _state.loadingState is Success<Pair<List<MsgLikeItem>, List<MsgLikeItem>>>) {
-          final response = (_state.loadingState as Success<Pair<List<MsgLikeItem>, List<MsgLikeItem>>>).response;
+        if (!isRefresh &&
+            _state.loadingState
+                is Success<Pair<List<MsgLikeItem>, List<MsgLikeItem>>>) {
+          final response =
+              (_state.loadingState
+                      as Success<Pair<List<MsgLikeItem>, List<MsgLikeItem>>>)
+                  .response;
           // Append for pagination
           finalLatest = [...response.first, ...latest];
           finalTotal = [...response.second, ...total];
@@ -60,25 +66,31 @@ class MsgLikeMeController extends ChangeNotifier {
           finalTotal = total;
         }
 
-        _updateState(_state.copyWith(
-          isLoading: false,
-          loadingState: Success(Pair(first: finalLatest, second: finalTotal)),
-          latestItems: finalLatest,
-          totalItems: finalTotal,
-          isEnd: isEnd,
-          error: null,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            loadingState: Success(Pair(first: finalLatest, second: finalTotal)),
+            latestItems: finalLatest,
+            totalItems: finalTotal,
+            isEnd: isEnd,
+            error: null,
+          ),
+        );
       } else if (result case Error(:final errMsg)) {
-        _updateState(_state.copyWith(
-          isLoading: false,
-          error: errMsg,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            error: errMsg,
+          ),
+        );
       }
     } catch (e) {
-      _updateState(_state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      ));
+      _updateState(
+        _state.copyWith(
+          isLoading: false,
+          error: e.toString(),
+        ),
+      );
     }
   }
 
@@ -161,8 +173,7 @@ class MsgLikeMeState {
   }
 }
 
-final msgLikeMeControllerProvider =
-    Provider<MsgLikeMeController>((ref) {
+final msgLikeMeControllerProvider = Provider<MsgLikeMeController>((ref) {
   final controller = MsgLikeMeController();
   ref.onDispose(controller.dispose);
   return controller;

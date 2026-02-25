@@ -62,18 +62,19 @@ class _FavCheesePageState extends ConsumerState<FavCheesePage>
                     onRemove: () => showConfirmDialog(
                       context: context,
                       title: '确定取消收藏该课堂？',
-                      onConfirm: () =>
-                          _onRemove(index, item.seasonId!),
+                      onConfirm: () => _onRemove(index, item.seasonId!),
                     ),
                   );
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: ref.read(favCheeseControllerProvider).onReload),
+            : HttpError(
+                onReload: ref.read(favCheeseControllerProvider).onReload,
+              ),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: ref.read(favCheeseControllerProvider).onReload,
-        ),
+        errMsg: errMsg,
+        onReload: ref.read(favCheeseControllerProvider).onReload,
+      ),
     };
   }
 

@@ -12,9 +12,8 @@ class GetSameFollowListUseCase {
   Future<LoadingState<FollowData>> call({
     required int mid,
     required int pn,
-  }) =>
-      _repository.getSameFollowList(
-        mid: mid,
-        pn: pn,
-      );
+  }) => _repository.getSameFollowList(
+    mid: mid,
+    pn: pn,
+  );
 }

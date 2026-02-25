@@ -32,9 +32,10 @@ class StorageFactory {
     JsonCodec<T>? codec,
   }) {
     return _typedRepositories.putIfAbsent(
-      config.name,
-      () => _createTypedRepository<T>(config, codec),
-    ) as TypedStorageRepository<T>;
+          config.name,
+          () => _createTypedRepository<T>(config, codec),
+        )
+        as TypedStorageRepository<T>;
   }
 
   /// 创建基础类型存储仓库

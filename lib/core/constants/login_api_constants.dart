@@ -67,8 +67,7 @@ abstract final class LoginApiConstants {
       '${HttpString.passBaseUrl}/x/passport-tv-login/qrcode/poll';
 
   // 退出登录
-  static const String logout =
-      '${HttpString.passBaseUrl}/login/exit/v2';
+  static const String logout = '${HttpString.passBaseUrl}/login/exit/v2';
 
   // 登录设备列表
   static const String loginDevices =

@@ -28,7 +28,9 @@ final webDavRemoteDataSourceProvider = Provider<WebDavRemoteDataSource>((ref) {
   return WebDavRemoteDataSourceImpl.instance;
 });
 
-final settingsLocalDataSourceProvider = Provider<SettingsLocalDataSource>((ref) {
+final settingsLocalDataSourceProvider = Provider<SettingsLocalDataSource>((
+  ref,
+) {
   return SettingsLocalDataSourceImpl();
 });
 
@@ -55,7 +57,9 @@ final backupConfigRepositoryProvider = Provider<BackupConfigRepository>((ref) {
 
 // ============ Use Case Providers ============
 
-final initializeWebDavUseCaseProvider = Provider<InitializeWebDavUseCase>((ref) {
+final initializeWebDavUseCaseProvider = Provider<InitializeWebDavUseCase>((
+  ref,
+) {
   return InitializeWebDavUseCase(ref.watch(webDavRepositoryProvider));
 });
 
@@ -77,6 +81,8 @@ final getWebDavConfigUseCaseProvider = Provider<GetWebDavConfigUseCase>((ref) {
   return GetWebDavConfigUseCase(ref.watch(backupConfigRepositoryProvider));
 });
 
-final saveWebDavConfigUseCaseProvider = Provider<SaveWebDavConfigUseCase>((ref) {
+final saveWebDavConfigUseCaseProvider = Provider<SaveWebDavConfigUseCase>((
+  ref,
+) {
   return SaveWebDavConfigUseCase(ref.watch(backupConfigRepositoryProvider));
 });

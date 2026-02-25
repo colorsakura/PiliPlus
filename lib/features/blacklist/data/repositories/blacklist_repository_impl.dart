@@ -16,8 +16,8 @@ class BlacklistRepositoryImpl implements BlacklistRepository {
   BlacklistRepositoryImpl({
     required BlacklistRemoteDataSource remoteDataSource,
     required UserRemoteDataSource userRemoteDataSource,
-  })  : _remoteDataSource = remoteDataSource,
-        _userRemoteDataSource = userRemoteDataSource;
+  }) : _remoteDataSource = remoteDataSource,
+       _userRemoteDataSource = userRemoteDataSource;
 
   @override
   Future<BlacklistResultEntity> getBlacklist({
@@ -52,10 +52,8 @@ class BlacklistRepositoryImpl implements BlacklistRepository {
     int ps,
   ) {
     if (result case Success(:final response)) {
-      final items = response.list
-              ?.map(BlacklistItemEntity.fromModel)
-              .toList() ??
-          [];
+      final items =
+          response.list?.map(BlacklistItemEntity.fromModel).toList() ?? [];
 
       final total = response.total ?? 0;
       final hasMore = items.length >= ps && items.length < total;

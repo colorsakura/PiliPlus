@@ -7,12 +7,15 @@ library;
 abstract class VideoApiConstants {
   // ==================== 推荐 ====================
   /// 首页推荐视频
-  static const String recommendListApp = 'https://app.bilibili.com/x/v2/feed/index';
-  static const String recommendListWeb = '/x/web-interface/wbi/index/top/feed/rcmd';
+  static const String recommendListApp =
+      'https://app.bilibili.com/x/v2/feed/index';
+  static const String recommendListWeb =
+      '/x/web-interface/wbi/index/top/feed/rcmd';
 
   /// APP端不感兴趣、取消不感兴趣
   static const String feedDislike = 'https://app.bilibili.com/x/feed/dislike';
-  static const String feedDislikeCancel = 'https://app.bilibili.com/x/feed/dislike/cancel';
+  static const String feedDislikeCancel =
+      'https://app.bilibili.com/x/feed/dislike/cancel';
 
   /// 热门视频
   static const String hotList = '/x/web-interface/popular';
@@ -48,7 +51,8 @@ abstract class VideoApiConstants {
   static const String likeVideo = 'https://app.bilibili.com/x/v2/view/like';
 
   /// 点踩视频（APP端）
-  static const String dislikeVideo = 'https://app.bilibili.com/x/v2/view/dislike';
+  static const String dislikeVideo =
+      'https://app.bilibili.com/x/v2/view/dislike';
 
   /// 投币视频（APP端）
   static const String coinVideo = 'https://app.bilibili.com/x/v2/view/coin/add';
@@ -164,7 +168,8 @@ abstract class VideoApiConstants {
   static const String popularSeriesList = '/x/web-interface/wbi/series/general';
 
   /// 热门合集详情
-  static const String popularSeriesOne = '/x/web-interface/wbi/series/seriesOne';
+  static const String popularSeriesOne =
+      '/x/web-interface/wbi/series/seriesOne';
 
   /// 热门视频
   static const String popularPrecious = '/x/web-interface/popular/precious';

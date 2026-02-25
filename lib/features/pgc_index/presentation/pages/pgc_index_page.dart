@@ -154,11 +154,17 @@ class _PgcIndexPageState extends ConsumerState<PgcIndexPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...List.generate(
-          count > 5 ? state.isExpand ? count : count ~/ 2 : count,
+          count > 5
+              ? state.isExpand
+                    ? count
+                    : count ~/ 2
+              : count,
           (index) {
             final isFirst = index == 0;
             List? item = data.order?.isNotEmpty == true
-                ? isFirst ? data.order : data.filter![index - 1].values
+                ? isFirst
+                      ? data.order
+                      : data.filter![index - 1].values
                 : data.filter![index].values;
             if (item != null && item.isNotEmpty) {
               return SelfSizedHorizontalList(
@@ -221,11 +227,17 @@ class _PgcIndexPageState extends ConsumerState<PgcIndexPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...List.generate(
-          count > 5 ? state.isExpand ? count : count ~/ 2 : count,
+          count > 5
+              ? state.isExpand
+                    ? count
+                    : count ~/ 2
+              : count,
           (index) {
             final isFirst = index == 0;
             List? item = data.order?.isNotEmpty == true
-                ? isFirst ? data.order : data.filter![index - 1].values
+                ? isFirst
+                      ? data.order
+                      : data.filter![index - 1].values
                 : data.filter![index].values;
             if (item != null && item.isNotEmpty) {
               return SelfSizedHorizontalList(

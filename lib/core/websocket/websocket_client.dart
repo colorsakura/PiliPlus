@@ -9,10 +9,13 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 enum WebSocketState {
   /// 连接中
   connecting,
+
   /// 已连接
   connected,
+
   /// 已断开
   disconnected,
+
   /// 错误
   error,
 }

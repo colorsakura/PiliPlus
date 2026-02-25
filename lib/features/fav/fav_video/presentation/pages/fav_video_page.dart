@@ -72,18 +72,22 @@ class _FavVideoPageState extends ConsumerState<FavVideoPage>
                         },
                       );
                       if (res == true) {
-                        ref.read(favVideoControllerProvider).removeFolder(index);
+                        ref
+                            .read(favVideoControllerProvider)
+                            .removeFolder(index);
                       }
                     },
                   );
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: ref.read(favVideoControllerProvider).onReload),
+            : HttpError(
+                onReload: ref.read(favVideoControllerProvider).onReload,
+              ),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: ref.read(favVideoControllerProvider).onReload,
-        ),
+        errMsg: errMsg,
+        onReload: ref.read(favVideoControllerProvider).onReload,
+      ),
     };
   }
 }

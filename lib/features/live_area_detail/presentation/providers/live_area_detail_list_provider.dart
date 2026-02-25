@@ -8,26 +8,30 @@ final liveRemoteDataSourceProvider = Provider<LiveRemoteDataSource>((ref) {
   return LiveRemoteDataSource();
 });
 
-final liveAreaDetailRepositoryProvider =
-    Provider<LiveAreaDetailRepositoryImpl>((ref) {
-  return LiveAreaDetailRepositoryImpl(
-    remoteDataSource: ref.watch(liveRemoteDataSourceProvider),
-  );
-});
+final liveAreaDetailRepositoryProvider = Provider<LiveAreaDetailRepositoryImpl>(
+  (ref) {
+    return LiveAreaDetailRepositoryImpl(
+      remoteDataSource: ref.watch(liveRemoteDataSourceProvider),
+    );
+  },
+);
 
-final fetchLiveAreaDetailUseCaseProvider =
-    Provider<FetchLiveAreaDetailUseCase>((ref) {
-  return FetchLiveAreaDetailUseCase(
-    ref.watch(liveAreaDetailRepositoryProvider),
-  );
-});
+final fetchLiveAreaDetailUseCaseProvider = Provider<FetchLiveAreaDetailUseCase>(
+  (ref) {
+    return FetchLiveAreaDetailUseCase(
+      ref.watch(liveAreaDetailRepositoryProvider),
+    );
+  },
+);
 
-final liveAreaDetailListControllerProvider = Provider.family<
-    LiveAreaDetailListController,
-    ({dynamic areaId, dynamic parentAreaId})>((ref, params) {
-  return LiveAreaDetailListController(
-    areaId: params.areaId,
-    parentAreaId: params.parentAreaId,
-    fetchLiveAreaDetail: ref.watch(fetchLiveAreaDetailUseCaseProvider),
-  );
-});
+final liveAreaDetailListControllerProvider =
+    Provider.family<
+      LiveAreaDetailListController,
+      ({dynamic areaId, dynamic parentAreaId})
+    >((ref, params) {
+      return LiveAreaDetailListController(
+        areaId: params.areaId,
+        parentAreaId: params.parentAreaId,
+        fetchLiveAreaDetail: ref.watch(fetchLiveAreaDetailUseCaseProvider),
+      );
+    });

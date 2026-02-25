@@ -8,16 +8,17 @@ import 'package:PiliPlus/models/follow/list.dart';
 /// Controller for "same followed" page (Clean Architecture with Riverpod)
 ///
 /// Shows users that both users follow (共同关注)
-class FollowSameController extends CommonListControllerV2<FollowData, FollowItemModel> {
+class FollowSameController
+    extends CommonListControllerV2<FollowData, FollowItemModel> {
   FollowSameController({
     required GetSameFollowListUseCase getListUseCase,
     required GetSameUserNameUseCase getUserNameUseCase,
     required int mid,
     String? name,
-  })  : _getListUseCase = getListUseCase,
-        _getUserNameUseCase = getUserNameUseCase,
-        _mid = mid,
-        _name = name {
+  }) : _getListUseCase = getListUseCase,
+       _getUserNameUseCase = getUserNameUseCase,
+       _mid = mid,
+       _name = name {
     if (_name == null) {
       _fetchUserName();
     }
@@ -60,9 +61,8 @@ class FollowSameController extends CommonListControllerV2<FollowData, FollowItem
   }
 
   @override
-  Future<LoadingState<FollowData>> customGetData() =>
-      _getListUseCase(
-        mid: _mid,
-        pn: page,
-      );
+  Future<LoadingState<FollowData>> customGetData() => _getListUseCase(
+    mid: _mid,
+    pn: page,
+  );
 }

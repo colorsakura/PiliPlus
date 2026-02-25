@@ -8,12 +8,13 @@ import 'package:PiliPlus/features/popular_series/presentation/providers/popular_
 /// Popular series remote data source provider
 final popularSeriesRemoteDataSourceProvider =
     Provider<PopularSeriesRemoteDataSource>((ref) {
-  return PopularSeriesRemoteDataSource();
-});
+      return PopularSeriesRemoteDataSource();
+    });
 
 /// Popular series repository provider
-final popularSeriesRepositoryProvider =
-    Provider<PopularSeriesRepository>((ref) {
+final popularSeriesRepositoryProvider = Provider<PopularSeriesRepository>((
+  ref,
+) {
   final remoteDataSource = ref.watch(popularSeriesRemoteDataSourceProvider);
   return PopularSeriesRepositoryImpl(remoteDataSource);
 });
@@ -21,20 +22,22 @@ final popularSeriesRepositoryProvider =
 /// Get popular series list use case provider
 final getPopularSeriesListUseCaseProvider =
     Provider<GetPopularSeriesListUseCase>((ref) {
-  final repository = ref.watch(popularSeriesRepositoryProvider);
-  return GetPopularSeriesListUseCase(repository);
-});
+      final repository = ref.watch(popularSeriesRepositoryProvider);
+      return GetPopularSeriesListUseCase(repository);
+    });
 
 /// Get popular series one use case provider
-final getPopularSeriesOneUseCaseProvider =
-    Provider<GetPopularSeriesOneUseCase>((ref) {
-  final repository = ref.watch(popularSeriesRepositoryProvider);
-  return GetPopularSeriesOneUseCase(repository);
-});
+final getPopularSeriesOneUseCaseProvider = Provider<GetPopularSeriesOneUseCase>(
+  (ref) {
+    final repository = ref.watch(popularSeriesRepositoryProvider);
+    return GetPopularSeriesOneUseCase(repository);
+  },
+);
 
 /// Popular series controller provider
-final popularSeriesControllerProvider =
-    Provider<PopularSeriesController>((ref) {
+final popularSeriesControllerProvider = Provider<PopularSeriesController>((
+  ref,
+) {
   return PopularSeriesController(
     getPopularSeriesListUseCase: ref.read(getPopularSeriesListUseCaseProvider),
     getPopularSeriesOneUseCase: ref.read(getPopularSeriesOneUseCaseProvider),

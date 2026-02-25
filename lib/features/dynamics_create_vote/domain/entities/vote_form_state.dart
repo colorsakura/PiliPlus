@@ -22,11 +22,12 @@ class VoteFormState {
     required this.endTime,
     this.canCreate = false,
     this.formKey = '',
-  }) : options = options ??
-      [
-        Option(optDesc: '', imgUrl: ''),
-        Option(optDesc: '', imgUrl: ''),
-      ];
+  }) : options =
+           options ??
+           [
+             Option(optDesc: '', imgUrl: ''),
+             Option(optDesc: '', imgUrl: ''),
+           ];
 
   VoteFormState copyWith({
     String? title,

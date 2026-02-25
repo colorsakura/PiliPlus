@@ -8,8 +8,8 @@ import 'package:PiliPlus/features/subscription/presentation/providers/subscripti
 // Remote Datasource Provider
 final subscriptionRemoteDatasourceProvider =
     Provider<SubscriptionRemoteDatasource>((ref) {
-  return const SubscriptionRemoteDatasource();
-});
+      return const SubscriptionRemoteDatasource();
+    });
 
 // Repository Provider
 final subscriptionRepositoryProvider = Provider<SubscriptionRepository>((ref) {

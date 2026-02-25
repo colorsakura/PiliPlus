@@ -26,8 +26,8 @@ class PeriodicCheckScheduler {
   PeriodicCheckScheduler({
     required CheckUnreadMessagesUseCase checkMessages,
     required CheckUnreadDynamicsUseCase checkDynamics,
-  })  : _checkMessages = checkMessages,
-        _checkDynamics = checkDynamics;
+  }) : _checkMessages = checkMessages,
+       _checkDynamics = checkDynamics;
 
   /// 配置动态检查参数
   void configureDynamicCheck({
@@ -61,15 +61,17 @@ class PeriodicCheckScheduler {
           _lastMessageCheckTime = DateTime.now().millisecondsSinceEpoch;
         }
       }),
-      _checkDynamics.checkUnread(
-        checkDynamic: _checkDynamic,
-        dynamicPeriod: _dynamicPeriod,
-        lastCheckTime: _lastDynamicCheckTime,
-      ).then((result) {
-        if (result != null) {
-          _lastDynamicCheckTime = DateTime.now().millisecondsSinceEpoch;
-        }
-      }),
+      _checkDynamics
+          .checkUnread(
+            checkDynamic: _checkDynamic,
+            dynamicPeriod: _dynamicPeriod,
+            lastCheckTime: _lastDynamicCheckTime,
+          )
+          .then((result) {
+            if (result != null) {
+              _lastDynamicCheckTime = DateTime.now().millisecondsSinceEpoch;
+            }
+          }),
     ]);
   }
 

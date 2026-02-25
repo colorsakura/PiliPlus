@@ -68,11 +68,11 @@ class _ArticleListPageState extends ConsumerState<ArticleListPage>
 
   @override
   Widget get gridSkeleton => SliverPadding(
-        padding: EdgeInsets.only(
-          top: padding.top + kToolbarHeight + 120,
-        ),
-        sliver: super.gridSkeleton,
-      );
+    padding: EdgeInsets.only(
+      top: padding.top + kToolbarHeight + 120,
+    ),
+    sliver: super.gridSkeleton,
+  );
 
   Widget _buildBody(ThemeData theme) {
     final state = ref.watch(articleListControllerProvider);
@@ -89,12 +89,13 @@ class _ArticleListPageState extends ConsumerState<ArticleListPage>
               )
             : HttpError(
                 onReload: () =>
-                    ref.read(articleListControllerProvider.notifier).onReload()),
+                    ref.read(articleListControllerProvider.notifier).onReload(),
+              ),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: () =>
-              ref.read(articleListControllerProvider.notifier).onReload()),
+        errMsg: errMsg,
+        onReload: () =>
+            ref.read(articleListControllerProvider.notifier).onReload(),
+      ),
     };
   }
 }
-

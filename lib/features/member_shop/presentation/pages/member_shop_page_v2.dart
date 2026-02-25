@@ -70,20 +70,20 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
   ) {
     return switch (listState) {
       Loading() => SliverWaterfallFlow(
-          gridDelegate: gridDelegate,
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => const SpaceOpusSkeleton(),
-            childCount: 10,
-          ),
+        gridDelegate: gridDelegate,
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => const SpaceOpusSkeleton(),
+          childCount: 10,
         ),
+      ),
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? _buildContent(response, controller)
             : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
-          errMsg: errMsg,
-          onReload: controller.onReload,
-        ),
+        errMsg: errMsg,
+        onReload: controller.onReload,
+      ),
     };
   }
 

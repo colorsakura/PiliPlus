@@ -54,20 +54,20 @@ class _AboutPageState extends ConsumerState<AboutPage> {
   }
 
   void _showDialog() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          constraints: StyleString.dialogFixedConstraints,
-          content: TextField(
-            autofocus: true,
-            onSubmitted: (value) {
-              Get.back();
-              if (value.isNotEmpty) {
-                PageUtils.handleWebview(value, inApp: true);
-              }
-            },
-          ),
-        ),
-      );
+    context: context,
+    builder: (context) => AlertDialog(
+      constraints: StyleString.dialogFixedConstraints,
+      content: TextField(
+        autofocus: true,
+        onSubmitted: (value) {
+          Get.back();
+          if (value.isNotEmpty) {
+            PageUtils.handleWebview(value, inApp: true);
+          }
+        },
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -137,8 +137,8 @@ class _AboutPageState extends ConsumerState<AboutPage> {
             onSecondaryTap: PlatformUtils.isMobile
                 ? null
                 : () => Utils.copyText(
-                      '${BuildConfig.versionName}+${BuildConfig.versionCode}',
-                    ),
+                    '${BuildConfig.versionName}+${BuildConfig.versionCode}',
+                  ),
             title: const Text('当前版本'),
             leading: const Icon(Icons.commit_outlined),
             trailing: Text(

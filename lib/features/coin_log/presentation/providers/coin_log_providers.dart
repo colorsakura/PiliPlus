@@ -6,7 +6,9 @@ import 'package:PiliPlus/features/coin_log/presentation/providers/coin_log_contr
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 硬币日志远程数据源Provider
-final coinLogRemoteDataSourceProvider = Provider<CoinLogRemoteDataSource>((ref) {
+final coinLogRemoteDataSourceProvider = Provider<CoinLogRemoteDataSource>((
+  ref,
+) {
   return CoinLogRemoteDataSource();
 });
 
@@ -27,5 +29,5 @@ final getCoinLogUseCaseProvider = Provider<GetCoinLogUseCase>((ref) {
 /// 硬币日志Controller Provider
 final coinLogControllerProvider =
     NotifierProvider<CoinLogController, CoinLogState>(
-  CoinLogController.new,
-);
+      CoinLogController.new,
+    );

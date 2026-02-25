@@ -33,9 +33,11 @@ class _MemberDynamicsPageV2State extends ConsumerState<MemberDynamicsPageV2>
   void initState() {
     super.initState();
     mid = widget.mid ?? int.parse(Get.parameters['mid']!);
-    _controller = ref.read(memberDynamicsControllerProvider(
-      MemberDynamicsParams(mid: mid),
-    ));
+    _controller = ref.read(
+      memberDynamicsControllerProvider(
+        MemberDynamicsParams(mid: mid),
+      ),
+    );
   }
 
   @override
@@ -83,10 +85,25 @@ class _MemberDynamicsPageV2State extends ConsumerState<MemberDynamicsPageV2>
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? GlobalData().dynamicsWaterfallFlow
-                ? SliverWaterfallFlow(
-                    gridDelegate: dynGridDelegate,
-                    delegate: SliverChildBuilderDelegate(
-                      (_, index) {
+                  ? SliverWaterfallFlow(
+                      gridDelegate: dynGridDelegate,
+                      delegate: SliverChildBuilderDelegate(
+                        (_, index) {
+                          if (index == response.length - 1) {
+                            _controller.onLoadMore();
+                          }
+                          return DynamicPanel(
+                            item: response[index],
+                            onRemove: _controller.removeDynamic,
+                            onSetTop: _controller.setDynamicTop,
+                            maxWidth: maxWidth,
+                          );
+                        },
+                        childCount: response.length,
+                      ),
+                    )
+                  : SliverList.builder(
+                      itemBuilder: (context, index) {
                         if (index == response.length - 1) {
                           _controller.onLoadMore();
                         }
@@ -97,23 +114,8 @@ class _MemberDynamicsPageV2State extends ConsumerState<MemberDynamicsPageV2>
                           maxWidth: maxWidth,
                         );
                       },
-                      childCount: response.length,
-                    ),
-                  )
-                : SliverList.builder(
-                    itemBuilder: (context, index) {
-                      if (index == response.length - 1) {
-                        _controller.onLoadMore();
-                      }
-                      return DynamicPanel(
-                        item: response[index],
-                        onRemove: _controller.removeDynamic,
-                        onSetTop: _controller.setDynamicTop,
-                        maxWidth: maxWidth,
-                      );
-                    },
-                    itemCount: response.length,
-                  )
+                      itemCount: response.length,
+                    )
             : HttpError(onReload: _controller.onReload),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,

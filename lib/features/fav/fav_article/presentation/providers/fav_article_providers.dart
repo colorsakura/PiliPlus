@@ -7,10 +7,11 @@ import 'package:PiliPlus/features/fav/fav_article/domain/usecases/remove_article
 import 'package:PiliPlus/features/fav/fav_article/presentation/providers/fav_article_list_controller.dart';
 
 /// Provider for FavArticleRemoteDatasource
-final favArticleRemoteDatasourceProvider =
-    Provider<FavArticleRemoteDatasource>((ref) {
-  return FavArticleRemoteDatasource();
-});
+final favArticleRemoteDatasourceProvider = Provider<FavArticleRemoteDatasource>(
+  (ref) {
+    return FavArticleRemoteDatasource();
+  },
+);
 
 /// Provider for FavArticleRepository
 final favArticleRepositoryProvider = Provider<FavArticleRepository>((ref) {
@@ -31,8 +32,7 @@ final removeArticleUseCaseProvider = Provider<RemoveArticleUseCase>((ref) {
 });
 
 /// Provider for FavArticleController
-final favArticleControllerProvider =
-    Provider<FavArticleController>((ref) {
+final favArticleControllerProvider = Provider<FavArticleController>((ref) {
   return FavArticleController(
     getFavArticlesUseCase: ref.watch(getFavArticlesUseCaseProvider),
     removeArticleUseCase: ref.watch(removeArticleUseCaseProvider),

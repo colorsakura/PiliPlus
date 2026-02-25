@@ -23,8 +23,7 @@ class LiveAreaDetailPage extends ConsumerStatefulWidget {
   final String parentName;
 
   @override
-  ConsumerState<LiveAreaDetailPage> createState() =>
-      _LiveAreaDetailPageState();
+  ConsumerState<LiveAreaDetailPage> createState() => _LiveAreaDetailPageState();
 }
 
 class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
@@ -73,7 +72,8 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? DefaultTabController(
-                initialIndex: ref
+                initialIndex:
+                    ref
                         .watch(
                           liveAreaDetailListControllerProvider(
                             (
@@ -213,11 +213,11 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
                     itemCount: list.length,
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 100,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      mainAxisExtent: 80,
-                    ),
+                          maxCrossAxisExtent: 100,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          mainAxisExtent: 80,
+                        ),
                     itemBuilder: (_, index) {
                       return _tagItem(
                         theme: theme,

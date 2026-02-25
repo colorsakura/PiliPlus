@@ -58,25 +58,31 @@ class LikeDetailController extends ChangeNotifier {
         _page++;
         _isEnd = isEnd;
 
-        _updateState(_state.copyWith(
-          isLoading: false,
-          loadingState: Success(allItems),
-          items: allItems,
-          card: card,
-          isEnd: isEnd,
-          error: null,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            loadingState: Success(allItems),
+            items: allItems,
+            card: card,
+            isEnd: isEnd,
+            error: null,
+          ),
+        );
       } else if (result case Error(:final errMsg)) {
-        _updateState(_state.copyWith(
-          isLoading: false,
-          error: errMsg,
-        ));
+        _updateState(
+          _state.copyWith(
+            isLoading: false,
+            error: errMsg,
+          ),
+        );
       }
     } catch (e) {
-      _updateState(_state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      ));
+      _updateState(
+        _state.copyWith(
+          isLoading: false,
+          error: e.toString(),
+        ),
+      );
     }
   }
 
@@ -133,12 +139,15 @@ class LikeDetailState {
 
 /// Provider for LikeDetailController
 final likeDetailControllerProvider =
-    Provider.family<LikeDetailController, ({String cardId, String? uri, int counts})>((ref, args) {
-  final controller = LikeDetailController(
-    cardId: args.cardId,
-    uri: args.uri,
-    counts: args.counts,
-  );
-  ref.onDispose(controller.dispose);
-  return controller;
-});
+    Provider.family<
+      LikeDetailController,
+      ({String cardId, String? uri, int counts})
+    >((ref, args) {
+      final controller = LikeDetailController(
+        cardId: args.cardId,
+        uri: args.uri,
+        counts: args.counts,
+      );
+      ref.onDispose(controller.dispose);
+      return controller;
+    });

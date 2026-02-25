@@ -15,8 +15,8 @@ class LiveDmBlockController extends ChangeNotifier {
   LiveDmBlockController({
     required this.roomId,
     required LiveDmBlockRepository repository,
-  })  : _repository = repository,
-        _state = const LiveDmBlockState() {
+  }) : _repository = repository,
+       _state = const LiveDmBlockState() {
     queryData();
   }
 
@@ -34,14 +34,16 @@ class LiveDmBlockController extends ChangeNotifier {
   /// Query live DM block settings
   Future<void> queryData() async {
     final data = await _repository.getLiveDmBlockSettings(roomId);
-    _updateState(LiveDmBlockState(
-      level: data.level,
-      rank: data.rank,
-      verify: data.verify,
-      isEnable: data.level != 0 || data.rank != 0 || data.verify != 0,
-      keywordList: data.keywordList,
-      shieldUserList: data.shieldUserList,
-    ));
+    _updateState(
+      LiveDmBlockState(
+        level: data.level,
+        rank: data.rank,
+        verify: data.verify,
+        isEnable: data.level != 0 || data.rank != 0 || data.verify != 0,
+        keywordList: data.keywordList,
+        shieldUserList: data.shieldUserList,
+      ),
+    );
   }
 
   /// Set silent level for a specific type
@@ -74,15 +76,25 @@ class LiveDmBlockController extends ChangeNotifier {
     if (enable) {
       // Enable rank and verify shields
       final results = await Future.wait([
-        _repository.setSilent(type: LiveDmSilentType.rank.name, level: 1, roomId: roomId),
-        _repository.setSilent(type: LiveDmSilentType.verify.name, level: 1, roomId: roomId),
+        _repository.setSilent(
+          type: LiveDmSilentType.rank.name,
+          level: 1,
+          roomId: roomId,
+        ),
+        _repository.setSilent(
+          type: LiveDmSilentType.verify.name,
+          level: 1,
+          roomId: roomId,
+        ),
       ]);
       if (results.any((r) => r)) {
-        _updateState(_state.copyWith(
-          rank: 1,
-          verify: 1,
-          isEnable: true,
-        ));
+        _updateState(
+          _state.copyWith(
+            rank: 1,
+            verify: 1,
+            isEnable: true,
+          ),
+        );
       }
     } else {
       // Disable all shields
@@ -91,12 +103,14 @@ class LiveDmBlockController extends ChangeNotifier {
           _repository.setSilent(type: type.name, level: 0, roomId: roomId),
       ]);
       if (results.every((r) => r)) {
-        _updateState(_state.copyWith(
-          level: 0,
-          rank: 0,
-          verify: 0,
-          isEnable: false,
-        ));
+        _updateState(
+          _state.copyWith(
+            level: 0,
+            rank: 0,
+            verify: 0,
+            isEnable: false,
+          ),
+        );
       }
     }
   }
@@ -145,8 +159,10 @@ class LiveDmBlockController extends ChangeNotifier {
   }
 
   void _updateIsEnabled() {
-    _updateState(_state.copyWith(
-      isEnable: _state.level != 0 || _state.rank != 0 || _state.verify != 0,
-    ));
+    _updateState(
+      _state.copyWith(
+        isEnable: _state.level != 0 || _state.rank != 0 || _state.verify != 0,
+      ),
+    );
   }
 }

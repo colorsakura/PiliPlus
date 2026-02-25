@@ -57,7 +57,8 @@ class MemberState {
       spaceSetting: spaceSetting ?? this.spaceSetting,
       tab2: tab2 ?? this.tab2,
       tabs: tabs ?? this.tabs,
-      contributeInitialIndex: contributeInitialIndex ?? this.contributeInitialIndex,
+      contributeInitialIndex:
+          contributeInitialIndex ?? this.contributeInitialIndex,
       hasSeasonOrSeries: hasSeasonOrSeries ?? this.hasSeasonOrSeries,
       live: live ?? this.live,
       silence: silence ?? this.silence,

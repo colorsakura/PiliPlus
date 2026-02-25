@@ -48,7 +48,11 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
               sliver: Consumer(
                 builder: (context, ref, child) {
                   final controller = ref.watch(msgLikeMeControllerProvider);
-                  return _buildBody(theme, controller.state.loadingState, controller);
+                  return _buildBody(
+                    theme,
+                    controller.state.loadingState,
+                    controller,
+                  );
                 },
               ),
             ),
@@ -82,7 +86,8 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
                 itemCount: response.first.length + response.second.length,
                 itemBuilder: (context, int index) {
                   // Determine if we should load more
-                  if (index == response.first.length + response.second.length - 1 &&
+                  if (index ==
+                          response.first.length + response.second.length - 1 &&
                       !controller.state.isEnd) {
                     controller.queryData(isRefresh: false);
                   }
@@ -96,8 +101,11 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
                   void onLongPress() => showConfirmDialog(
                     context: context,
                     title: '确定删除该通知?',
-                    onConfirm: () =>
-                        controller.onRemove(item.id!, isLatest ? index : index - response.first.length, isLatest),
+                    onConfirm: () => controller.onRemove(
+                      item.id!,
+                      isLatest ? index : index - response.first.length,
+                      isLatest,
+                    ),
                   );
 
                   final hasNotice = item.noticeState != null;
@@ -113,7 +121,9 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
                     title: Text(
                       item.users?.first.nickname ?? '',
                       style: TextStyle(
-                        fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+                        fontSize: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.fontSize,
                       ),
                     ),
                     subtitle: Column(
@@ -133,19 +143,26 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.7),
                             fontSize: 13,
                           ),
                         ),
                       ],
                     ),
-                    trailing: _buildTrailing(item, theme, hasNotice, controller),
+                    trailing: _buildTrailing(
+                      item,
+                      theme,
+                      hasNotice,
+                      controller,
+                    ),
                     onTap: () => _handleItemClick(context, item),
                   );
                 },
                 separatorBuilder: (context, index) {
                   // Add divider between latest and total sections
-                  if (index == response.first.length - 1 && response.second.isNotEmpty) {
+                  if (index == response.first.length - 1 &&
+                      response.second.isNotEmpty) {
                     return const Divider(height: 20);
                   }
                   return divider;
@@ -181,11 +198,14 @@ class _MsgLikeMePageV2State extends ConsumerState<MsgLikeMePageV2> {
         if (hasNotice)
           IconButton(
             icon: Icon(
-              item.noticeState == 1 ? Icons.notifications : Icons.notifications_none,
+              item.noticeState == 1
+                  ? Icons.notifications
+                  : Icons.notifications_none,
               size: 18,
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
-            onPressed: () => controller.onSetNotice(item, item.noticeState == 0),
+            onPressed: () =>
+                controller.onSetNotice(item, item.noticeState == 0),
           ),
       ],
     );

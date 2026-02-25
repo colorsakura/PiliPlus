@@ -11,9 +11,9 @@ final downloadServiceProvider = Provider<DownloadService>((ref) {
 /// Provider for DownloadPageDataControllerV2
 final downloadPageDataControllerProvider =
     Provider<DownloadPageDataControllerV2>((ref) {
-  final downloadService = ref.watch(downloadServiceProvider);
-  final controller = DownloadPageDataControllerV2(downloadService);
-  controller.init();
-  ref.onDispose(controller.dispose);
-  return controller;
-});
+      final downloadService = ref.watch(downloadServiceProvider);
+      final controller = DownloadPageDataControllerV2(downloadService);
+      controller.init();
+      ref.onDispose(controller.dispose);
+      return controller;
+    });

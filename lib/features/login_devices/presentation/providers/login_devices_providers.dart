@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Remote datasource provider
 final loginDevicesRemoteDatasourceProvider =
     Provider<LoginDevicesRemoteDatasource>((ref) {
-  return LoginDevicesRemoteDatasource();
-});
+      return LoginDevicesRemoteDatasource();
+    });
 
 /// Repository provider
 final loginDevicesRepositoryProvider = Provider<LoginDevicesRepository>((ref) {
@@ -24,8 +24,7 @@ final getLoginDevicesUseCaseProvider = Provider<GetLoginDevicesUseCase>((ref) {
 });
 
 /// Login devices controller provider
-final loginDevicesControllerProvider =
-    Provider<LoginDevicesController>((ref) {
+final loginDevicesControllerProvider = Provider<LoginDevicesController>((ref) {
   return LoginDevicesController(
     getLoginDevicesUseCase: ref.watch(getLoginDevicesUseCaseProvider),
   );

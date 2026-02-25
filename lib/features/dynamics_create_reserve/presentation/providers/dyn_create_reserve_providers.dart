@@ -6,10 +6,11 @@ import 'package:PiliPlus/features/dynamics_create_reserve/domain/usecases/get_dy
 import 'package:PiliPlus/features/dynamics_create_reserve/presentation/providers/dyn_create_reserve_controller.dart';
 
 /// Dynamics reserve remote data source provider
-final dynReserveRemoteDataSourceProvider =
-    Provider<DynReserveRemoteDataSource>((ref) {
-  return DynReserveRemoteDataSource();
-});
+final dynReserveRemoteDataSourceProvider = Provider<DynReserveRemoteDataSource>(
+  (ref) {
+    return DynReserveRemoteDataSource();
+  },
+);
 
 /// Dynamics reserve repository provider
 final dynReserveRepositoryProvider = Provider<DynReserveRepository>((ref) {
@@ -38,13 +39,13 @@ final updateReserveUseCaseProvider = Provider<UpdateReserveUseCase>((ref) {
 /// Dynamics create reserve controller provider family
 final dynCreateReserveControllerProvider =
     Provider.family<DynCreateReserveController, int?>((
-  ref,
-  sid,
-) {
-  return DynCreateReserveController(
-    getReserveInfoUseCase: ref.read(getReserveInfoUseCaseProvider),
-    createReserveUseCase: ref.read(createReserveUseCaseProvider),
-    updateReserveUseCase: ref.read(updateReserveUseCaseProvider),
-    sid: sid,
-  );
-});
+      ref,
+      sid,
+    ) {
+      return DynCreateReserveController(
+        getReserveInfoUseCase: ref.read(getReserveInfoUseCaseProvider),
+        createReserveUseCase: ref.read(createReserveUseCaseProvider),
+        updateReserveUseCase: ref.read(updateReserveUseCaseProvider),
+        sid: sid,
+      );
+    });

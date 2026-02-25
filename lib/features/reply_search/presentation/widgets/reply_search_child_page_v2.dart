@@ -21,8 +21,7 @@ class ReplySearchChildPageV2 extends StatefulWidget {
   final ReplySearchType searchType;
 
   @override
-  State<ReplySearchChildPageV2> createState() =>
-      _ReplySearchChildPageV2State();
+  State<ReplySearchChildPageV2> createState() => _ReplySearchChildPageV2State();
 }
 
 class _ReplySearchChildPageV2State extends State<ReplySearchChildPageV2>

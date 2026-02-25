@@ -35,8 +35,7 @@ class MemberContributePageV2 extends ConsumerStatefulWidget {
       _MemberContributePageV2State();
 }
 
-class _MemberContributePageV2State
-    extends ConsumerState<MemberContributePageV2>
+class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   MemberContributeController? _controller;
 
@@ -112,7 +111,8 @@ class _MemberContributePageV2State
             borderRadius: const BorderRadius.all(Radius.circular(20)),
           ),
           indicatorSize: TabBarIndicatorSize.tab,
-          labelStyle: TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 14) ??
+          labelStyle:
+              TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 14) ??
               const TextStyle(fontSize: 14),
           labelColor: theme.colorScheme.onSecondaryContainer,
           unselectedLabelColor: theme.colorScheme.outline,
@@ -132,10 +132,12 @@ class _MemberContributePageV2State
     // Handle both SpaceTab2Item and Map types
     final param = item is SpaceTab2Item ? item.param : item['param'] as String?;
     final title = item is SpaceTab2Item ? item.title : item['title'] as String?;
-    final seasonId =
-        item is SpaceTab2Item ? item.seasonId : item['seasonId'] as int?;
-    final seriesId =
-        item is SpaceTab2Item ? item.seriesId : item['seriesId'] as String?;
+    final seasonId = item is SpaceTab2Item
+        ? item.seasonId
+        : item['seasonId'] as int?;
+    final seriesId = item is SpaceTab2Item
+        ? item.seriesId
+        : item['seriesId'] as String?;
 
     return switch (param) {
       'video' => MemberVideo(
@@ -169,14 +171,18 @@ class _MemberContributePageV2State
         type: ContributeType.season,
         heroTag: widget.heroTag,
         mid: widget.mid,
-        seasonId: seasonId is int ? seasonId : int.tryParse(seasonId?.toString() ?? ''),
+        seasonId: seasonId is int
+            ? seasonId
+            : int.tryParse(seasonId?.toString() ?? ''),
         title: title,
       ),
       'series' => MemberVideo(
         type: ContributeType.series,
         heroTag: widget.heroTag,
         mid: widget.mid,
-        seriesId: seriesId is int ? seriesId : int.tryParse(seriesId?.toString() ?? ''),
+        seriesId: seriesId is int
+            ? seriesId
+            : int.tryParse(seriesId?.toString() ?? ''),
         title: title,
       ),
       'ugcSeason' => MemberSeasonSeriesPage(

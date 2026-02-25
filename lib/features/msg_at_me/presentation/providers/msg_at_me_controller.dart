@@ -13,8 +13,8 @@ class MsgAtMeController extends CommonListControllerV2<MsgAtData, MsgAtItem> {
   MsgAtMeController({
     required GetMsgAtMeItemsUseCase getItemsUseCase,
     required RemoveMsgItemUseCase removeItemUseCase,
-  })  : _getItemsUseCase = getItemsUseCase,
-        _removeItemUseCase = removeItemUseCase {
+  }) : _getItemsUseCase = getItemsUseCase,
+       _removeItemUseCase = removeItemUseCase {
     queryData();
   }
 
@@ -42,11 +42,10 @@ class MsgAtMeController extends CommonListControllerV2<MsgAtData, MsgAtItem> {
   }
 
   @override
-  Future<LoadingState<MsgAtData>> customGetData() =>
-      _getItemsUseCase(
-        cursor: _cursor,
-        cursorTime: _cursorTime,
-      );
+  Future<LoadingState<MsgAtData>> customGetData() => _getItemsUseCase(
+    cursor: _cursor,
+    cursorTime: _cursorTime,
+  );
 
   /// Remove a notification item
   @pragma('vm:notify-debugger-on-exception')

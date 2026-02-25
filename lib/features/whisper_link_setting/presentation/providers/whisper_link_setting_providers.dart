@@ -7,21 +7,21 @@ import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/wh
 // Remote Datasource Provider
 final whisperLinkSettingRemoteDatasourceProvider =
     Provider<WhisperLinkSettingRemoteDatasource>((ref) {
-  return const WhisperLinkSettingRemoteDatasource();
-});
+      return const WhisperLinkSettingRemoteDatasource();
+    });
 
 // Repository Provider
 final whisperLinkSettingRepositoryProvider =
     Provider<WhisperLinkSettingRepository>((ref) {
-  final datasource = ref.watch(whisperLinkSettingRemoteDatasourceProvider);
-  return WhisperLinkSettingRepositoryImpl(datasource);
-});
+      final datasource = ref.watch(whisperLinkSettingRemoteDatasourceProvider);
+      return WhisperLinkSettingRepositoryImpl(datasource);
+    });
 
 // Controller Provider - uses Provider.family for different talker UIDs
 final whisperLinkSettingControllerProvider =
     Provider.family<WhisperLinkSettingController, int>((ref, talkerUid) {
-  return WhisperLinkSettingController(
-    talkerUid: talkerUid,
-    repository: ref.watch(whisperLinkSettingRepositoryProvider),
-  )..initialize();
-});
+      return WhisperLinkSettingController(
+        talkerUid: talkerUid,
+        repository: ref.watch(whisperLinkSettingRepositoryProvider),
+      )..initialize();
+    });

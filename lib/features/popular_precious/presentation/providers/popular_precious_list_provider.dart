@@ -10,21 +10,21 @@ final videoRemoteDataSourceProvider = Provider<VideoRemoteDataSource>((ref) {
 
 final popularPreciousRepositoryProvider =
     Provider<PopularPreciousRepositoryImpl>((ref) {
-  return PopularPreciousRepositoryImpl(
-    remoteDataSource: ref.watch(videoRemoteDataSourceProvider),
-  );
-});
+      return PopularPreciousRepositoryImpl(
+        remoteDataSource: ref.watch(videoRemoteDataSourceProvider),
+      );
+    });
 
 final fetchPopularPreciousUseCaseProvider =
     Provider<FetchPopularPreciousUseCase>((ref) {
-  return FetchPopularPreciousUseCase(
-    ref.watch(popularPreciousRepositoryProvider),
-  );
-});
+      return FetchPopularPreciousUseCase(
+        ref.watch(popularPreciousRepositoryProvider),
+      );
+    });
 
 final popularPreciousListControllerProvider =
     Provider<PopularPreciousListController>((ref) {
-  return PopularPreciousListController(
-    fetchPopularPrecious: ref.watch(fetchPopularPreciousUseCaseProvider),
-  );
-});
+      return PopularPreciousListController(
+        fetchPopularPrecious: ref.watch(fetchPopularPreciousUseCaseProvider),
+      );
+    });
