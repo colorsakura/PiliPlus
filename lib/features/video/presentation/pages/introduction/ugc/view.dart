@@ -7,7 +7,7 @@ import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/common/widgets/stat/stat.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/http/sponsor_block.dart';
+import 'package:PiliPlus/features/sponsor_block/data/datasources/sponsor_block_remote_datasource.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/video/video_ai_conclusion/model_result.dart';
@@ -661,12 +661,11 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                               final cid = videoDetailCtr.cid.value;
 
                               SmartDialog.showLoading();
-                              final hasPortVideo =
-                                  (await SponsorBlock.getPortVideo(
-                                    bvid: bvid,
-                                    cid: cid,
-                                  )).dataOrNull ==
-                                  ytbId;
+                              final dataSource = SponsorBlockRemoteDataSource();
+                              final hasPortVideo = (await dataSource.getPortVideo(
+                                bvid: bvid,
+                                cid: cid,
+                              )) == ytbId;
                               SmartDialog.dismiss();
 
                               if (!mounted) return;
@@ -677,15 +676,18 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                                     '${hasPortVideo ? "" : "是否将"}该视频${hasPortVideo ? "已" : ""}绑定到此YouTube视频($ytbId)',
                               );
                               if (!hasPortVideo && confirmed) {
-                                final res = await SponsorBlock.postPortVideo(
-                                  bvid: bvid,
-                                  cid: cid,
-                                  ytbId: ytbId,
-                                  videoDuration: (duration / 1000).round(),
-                                );
-                                SmartDialog.showToast(
-                                  '提交搬运视频${res.isSuccess ? "成功" : "失败: $res"}',
-                                );
+                                final dataSource = SponsorBlockRemoteDataSource();
+                                try {
+                                  await dataSource.postPortVideo(
+                                    bvid: bvid,
+                                    cid: cid,
+                                    ytbId: ytbId,
+                                    videoDuration: (duration / 1000).round(),
+                                  );
+                                  SmartDialog.showToast('提交搬运视频成功');
+                                } catch (e) {
+                                  SmartDialog.showToast('提交搬运视频失败: $e');
+                                }
                                 return;
                               }
                             }

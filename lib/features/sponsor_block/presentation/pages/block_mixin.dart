@@ -2,12 +2,11 @@ import 'dart:async' show StreamSubscription, Timer;
 import 'dart:math' as math;
 
 import 'package:PiliPlus/common/widgets/progress_bar/segment_progress_bar.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/sponsor_block.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';
 import 'package:PiliPlus/models/sponsor_block/segment_item.dart';
+import 'package:PiliPlus/features/sponsor_block/data/datasources/sponsor_block_remote_datasource.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:easy_debounce/easy_throttle.dart';
@@ -41,6 +40,7 @@ mixin BlockMixin on GetxController {
   StreamSubscription<Duration>? get blockListener => _blockListener;
   late final List<SegmentModel> _segmentList = <SegmentModel>[];
   late final RxList<Segment> segmentProgressList = <Segment>[].obs;
+  final _dataSource = SponsorBlockRemoteDataSource();
 
   Timer? _skipTimer;
   late final listKey = GlobalKey<AnimatedListState>();
@@ -63,15 +63,13 @@ mixin BlockMixin on GetxController {
   }) async {
     resetBlock();
 
-    final result = await SponsorBlock.getSkipSegments(bvid: bvid, cid: cid);
-    switch (result) {
-      case Success<List<SegmentItemModel>>(:final response):
-        handleSBData(response);
-      case Error(:final code) when code != 404:
-        if (kDebugMode) {
-          result.toast();
-        }
-      default:
+    try {
+      final result = await _dataSource.getSkipSegments(bvid: bvid, cid: cid);
+      handleSBData(result);
+    } catch (e) {
+      if (kDebugMode) {
+        SmartDialog.showToast(e.toString());
+      }
     }
   }
 
@@ -246,7 +244,7 @@ mixin BlockMixin on GetxController {
       _showBlockToast('已跳过${item.segmentType.shortTitle}片段');
     }
     if (isBlock && Pref.blockTrack) {
-      SponsorBlock.viewedVideoSponsorTime(item.uuid);
+      _dataSource.viewedVideoSponsorTime(item.uuid).catchError((_) {});
     }
   }
 
@@ -323,10 +321,13 @@ mixin BlockMixin on GetxController {
     );
   }
 
-  void _doVote(String uuid, int type) => SponsorBlock.voteOnSponsorTime(
-    uuid: uuid,
-    type: type,
-  ).then((i) => SmartDialog.showToast(i.isSuccess ? '投票成功' : '投票失败: $i'));
+  void _doVote(String uuid, int type) {
+    _dataSource.voteOnSponsorTime(uuid: uuid, type: type).then((_) {
+      SmartDialog.showToast('投票成功');
+    }).catchError((e) {
+      SmartDialog.showToast('投票失败: $e');
+    });
+  }
 
   void _showCategoryDialog(SegmentModel segment) {
     showDialog(
@@ -343,13 +344,13 @@ mixin BlockMixin on GetxController {
                     dense: true,
                     onTap: () {
                       Get.back();
-                      SponsorBlock.voteOnSponsorTime(
+                      _dataSource.voteOnSponsorTime(
                         uuid: segment.uuid,
                         category: item,
-                      ).then((i) {
-                        SmartDialog.showToast(
-                          '类别更改${i.isSuccess ? '成功' : '失败: $i'}',
-                        );
+                      ).then((_) {
+                        SmartDialog.showToast('类别更改成功');
+                      }).catchError((e) {
+                        SmartDialog.showToast('类别更改失败: $e');
                       });
                     },
                     title: Text.rich(

@@ -46,7 +46,7 @@ class SponsorBlockRemoteDataSource {
       );
 
   /// 获取错误消息
-  Error _getErrMsg(Response res) {
+  Exception _getErrMsg(Response res) {
     String statusMessage = switch (res.statusCode) {
       200 => '意料之外的响应',
       400 => '参数错误',
@@ -65,7 +65,7 @@ class SponsorBlockRemoteDataSource {
         statusMessage = '$statusMessage：$data';
       }
     }
-    return Error(statusMessage, code: res.statusCode);
+    return ServerException(statusMessage, code: res.statusCode);
   }
 
   /// 获取视频跳过片段

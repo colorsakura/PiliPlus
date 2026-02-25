@@ -10,24 +10,16 @@ import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/sponsor_block/segment_item.dart';
 import 'package:PiliPlus/models/sponsor_block/user_info.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/sponsor_block/data/datasources/sponsor_block_remote_datasource.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
 /// https://github.com/hanydd/BilibiliSponsorBlock/wiki/API
+/// Adapter class that delegates to SponsorBlockRemoteDataSource
 abstract final class SponsorBlock {
+  static final _dataSource = SponsorBlockRemoteDataSource();
   static String get blockServer => Pref.blockServer;
-  static final options = Options(
-    followRedirects: true,
-    // https://github.com/hanydd/BilibiliSponsorBlock/wiki/API#1-%E5%85%AC%E7%94%A8%E5%8F%82%E6%95%B0
-    headers: kDebugMode
-        ? null
-        : {
-            'origin': Constants.appName,
-            'x-ext-version': BuildConfig.versionName,
-          },
-    validateStatus: (status) => true,
-  );
 
   static Error getErrMsg(Response res) {
     String statusMessage = switch (res.statusCode) {
@@ -51,27 +43,16 @@ abstract final class SponsorBlock {
     return Error(statusMessage, code: res.statusCode);
   }
 
-  static String _api(String url) => '$blockServer/api/$url';
-
   static Future<LoadingState<List<SegmentItemModel>>> getSkipSegments({
     required String bvid,
     required int cid,
   }) async {
-    final res = await Request().get(
-      _api(SponsorBlockApi.skipSegments),
-      queryParameters: {
-        'videoID': bvid,
-        'cid': cid,
-      },
-      options: options,
-    );
-
-    if (res.statusCode == 200) {
-      if (res.data case final List list) {
-        return Success(list.map((i) => SegmentItemModel.fromJson(i)).toList());
-      }
+    try {
+      final result = await _dataSource.getSkipSegments(bvid: bvid, cid: cid);
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 
   static Future<LoadingState<Null>> voteOnSponsorTime({
@@ -79,58 +60,46 @@ abstract final class SponsorBlock {
     int? type,
     SegmentType? category,
   }) async {
-    assert((type == null) == (category == null));
-    final res = await Request().post(
-      _api(SponsorBlockApi.voteOnSponsorTime),
-      queryParameters: {
-        'UUID': uuid,
-        'type': ?type,
-        'category': ?category?.name,
-        'userID': Pref.blockUserID,
-      },
-      options: options,
-    );
-    return res.statusCode == 200 ? const Success(null) : getErrMsg(res);
+    try {
+      await _dataSource.voteOnSponsorTime(
+        uuid: uuid,
+        type: type,
+        category: category,
+      );
+      return const Success(null);
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 
   static Future<LoadingState<Null>> viewedVideoSponsorTime(String uuid) async {
-    final res = await Request().post(
-      _api(SponsorBlockApi.viewedVideoSponsorTime),
-      data: {'UUID': uuid},
-      options: options,
-    );
-    return res.statusCode == 200 ? const Success(null) : getErrMsg(res);
+    try {
+      await _dataSource.viewedVideoSponsorTime(uuid);
+      return const Success(null);
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 
   static Future<LoadingState<Null>> uptimeStatus() async {
-    final res = await Request().get(
-      _api(SponsorBlockApi.uptimeStatus),
-      options: options,
-    );
-    if (res.statusCode == 200 &&
-        res.data is String &&
-        Utils.isStringNumeric(res.data)) {
+    try {
+      await _dataSource.uptimeStatus();
       return const Success(null);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 
   static Future<LoadingState<UserInfo>> userInfo(
     List<String> query, {
     String? userId,
   }) async {
-    final res = await Request().get(
-      _api(SponsorBlockApi.userInfo),
-      queryParameters: {
-        'userID': userId ?? Pref.blockUserID,
-        'values': jsonEncode(query),
-      },
-      options: options,
-    );
-    if (res.statusCode == 200) {
-      return Success(UserInfo.fromJson(res.data));
+    try {
+      final result = await _dataSource.userInfo(query, userId: userId);
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 
   static Future<LoadingState<List<SegmentItemModel>>> postSkipSegments({
@@ -139,35 +108,17 @@ abstract final class SponsorBlock {
     required double videoDuration,
     required List<PostSegmentModel> segments,
   }) async {
-    final res = await Request().post(
-      _api(SponsorBlockApi.skipSegments),
-      data: {
-        'videoID': bvid,
-        'cid': cid.toString(),
-        'userID': Pref.blockUserID,
-        'userAgent': kDebugMode
-            ? Constants.userAgent
-            : '${Constants.appName}/${BuildConfig.versionName}',
-        'videoDuration': videoDuration,
-        'segments': segments
-            .map(
-              (item) => {
-                'segment': [item.segment.first, item.segment.second],
-                'category': item.category.name,
-                'actionType': item.actionType.name,
-              },
-            )
-            .toList(),
-      },
-      options: options,
-    );
-
-    if (res.statusCode == 200) {
-      if (res.data case final List list) {
-        return Success(list.map((i) => SegmentItemModel.fromJson(i)).toList());
-      }
+    try {
+      final result = await _dataSource.postSkipSegments(
+        bvid: bvid,
+        cid: cid,
+        videoDuration: videoDuration,
+        segments: segments,
+      );
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 
   /// {
@@ -183,23 +134,12 @@ abstract final class SponsorBlock {
     required String bvid,
     required int cid,
   }) async {
-    final res = await Request().get(
-      _api(SponsorBlockApi.portVideo),
-      queryParameters: {
-        'videoID': bvid,
-        'cid': cid.toString(),
-      },
-      options: options,
-    );
-
-    if (res.statusCode == 200) {
-      if (res.data case final Map<String, dynamic> data) {
-        if (data['ytbID'] case String ytbId) {
-          return Success(ytbId);
-        }
-      }
+    try {
+      final result = await _dataSource.getPortVideo(bvid: bvid, cid: cid);
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 
   static Future<LoadingState<String>> postPortVideo({
@@ -208,25 +148,16 @@ abstract final class SponsorBlock {
     required String ytbId,
     required int videoDuration,
   }) async {
-    final res = await Request().post(
-      _api(SponsorBlockApi.portVideo),
-      data: {
-        'bvID': bvid,
-        'cid': cid.toString(),
-        'ytbID': ytbId,
-        'userID': Pref.blockUserID,
-        'biliDuration': videoDuration,
-      },
-      options: options,
-    );
-
-    if (res.statusCode == 200) {
-      if (res.data case final Map<String, dynamic> data) {
-        if (data['UUID'] case String uuid) {
-          return Success(uuid);
-        }
-      }
+    try {
+      final result = await _dataSource.postPortVideo(
+        bvid: bvid,
+        cid: cid,
+        ytbId: ytbId,
+        videoDuration: videoDuration,
+      );
+      return Success(result);
+    } catch (e) {
+      return Error(e.toString());
     }
-    return getErrMsg(res);
   }
 }

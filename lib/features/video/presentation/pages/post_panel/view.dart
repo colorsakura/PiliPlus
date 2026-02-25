@@ -4,12 +4,11 @@ import 'dart:math';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/common/widgets/pair.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/sponsor_block.dart';
 import 'package:PiliPlus/models/common/sponsor_block/action_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/post_segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
+import 'package:PiliPlus/features/sponsor_block/data/datasources/sponsor_block_remote_datasource.dart';
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/video/presentation/pages/post_panel/popup_menu_text.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
@@ -304,14 +303,14 @@ class _PostPanelState extends State<PostPanel>
 
   Future<void> _onPost() async {
     Get.back();
-    final res = await SponsorBlock.postSkipSegments(
-      bvid: videoDetailController.bvid,
-      cid: videoDetailController.cid.value,
-      videoDuration: videoDuration,
-      segments: list,
-    );
-
-    if (res case Success(:final response)) {
+    final dataSource = SponsorBlockRemoteDataSource();
+    try {
+      final response = await dataSource.postSkipSegments(
+        bvid: videoDetailController.bvid,
+        cid: videoDetailController.cid.value,
+        videoDuration: videoDuration,
+        segments: list,
+      );
       Get.back();
       SmartDialog.showToast('提交成功');
       list.clear();
@@ -319,8 +318,8 @@ class _PostPanelState extends State<PostPanel>
       if (videoDetailController.blockListener == null) {
         videoDetailController.initSkip();
       }
-    } else {
-      SmartDialog.showToast('提交失败: $res');
+    } catch (e) {
+      SmartDialog.showToast('提交失败: $e');
     }
   }
 

@@ -2,11 +2,11 @@ import 'package:PiliPlus/common/widgets/pair.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/sponsor_block.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';
 import 'package:PiliPlus/models/sponsor_block/user_info.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/slide_color_picker.dart';
+import 'package:PiliPlus/features/sponsor_block/data/datasources/sponsor_block_remote_datasource.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -39,6 +39,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
   bool _blockTrack = Pref.blockTrack;
   final _serverStatus = Rxn<bool>();
   final _userInfo = LoadingState<UserInfo>.loading().obs;
+  final _dataSource = SponsorBlockRemoteDataSource();
 
   Box setting = GStorage.setting;
 
@@ -56,15 +57,28 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
   }
 
   Future<void> _checkServerStatus() async {
-    _serverStatus.value = (await SponsorBlock.uptimeStatus()).isSuccess;
+    try {
+      await _dataSource.uptimeStatus();
+      _serverStatus.value = true;
+    } catch (_) {
+      _serverStatus.value = false;
+    }
   }
 
   Future<void> _getUserInfo() async {
-    _userInfo.value = await SponsorBlock.userInfo(const [
-      'viewCount',
-      'minutesSaved',
-      'segmentCount',
-    ], userId: _userId);
+    try {
+      final result = await _dataSource.userInfo(
+        const [
+          'viewCount',
+          'minutesSaved',
+          'segmentCount',
+        ],
+        userId: _userId,
+      );
+      _userInfo.value = Success(result);
+    } catch (e) {
+      _userInfo.value = Error(e.toString());
+    }
   }
 
   Widget _blockLimitItem(
