@@ -24,9 +24,9 @@ import 'package:PiliPlus/features/fav_create/fav_create.dart';
 import 'package:PiliPlus/features/fav_detail/fav_detail.dart';
 import 'package:PiliPlus/features/fav_search/fav_search.dart';
 import 'package:PiliPlus/features/follow/follow.dart';
+import 'package:PiliPlus/features/followed/followed.dart';
+import 'package:PiliPlus/features/follow_same/follow_same.dart';
 import 'package:PiliPlus/features/follow_search/follow_search.dart';
-import 'package:PiliPlus/pages/follow_type/follow_same/view.dart';
-import 'package:PiliPlus/pages/follow_type/followed/view.dart';
 import 'package:PiliPlus/features/history_search/history_search.dart';
 import 'package:PiliPlus/features/live_dm_block/live_dm_block.dart';
 import 'package:PiliPlus/features/live_room/live_room.dart';
@@ -157,7 +157,7 @@ class Routes {
     // 登录页面
     GetPage(name: '/loginPage', page: () => const LoginPage()),
     // 用户动态
-    GetPage(name: '/memberDynamics', page: () => const MemberDynamicsPage()),
+    GetPage(name: '/memberDynamics', page: () => const MemberDynamicsPageV2()),
     // 订阅
     GetPage(name: '/subscription', page: () => const SubPage()),
     // 订阅详情

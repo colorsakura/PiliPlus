@@ -63,7 +63,7 @@ class MemberSearchChildControllerV2 extends CommonListControllerV2<dynamic, dyna
   }
 
   @override
-  Future<LoadingState> customGetData() {
+  Future<LoadingState<dynamic>> customGetData() {
     final keyword = parentController.editingController.text;
     return switch (searchType) {
       MemberSearchType.archive => MemberHttp.searchArchive(

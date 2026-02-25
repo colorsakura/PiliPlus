@@ -59,11 +59,12 @@ class FollowChildController
       try {
         if (controller!.isOwner &&
             tagid == null &&
-            isRefresh &&
-            controller!.followState.value.isSuccess) {
-          controller!.tabs
-            ..[0].count = response.response.total
-            ..refresh();
+            isRefresh) {
+          final tabs = controller!.tabs;
+          if (tabs != null && tabs.isNotEmpty) {
+            tabs[0].count = response.response.total;
+            controller!.notifyListeners();
+          }
         }
       } catch (_) {}
     }

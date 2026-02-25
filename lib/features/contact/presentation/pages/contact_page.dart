@@ -64,7 +64,7 @@ class _ContactPageState extends State<ContactPage>
             onPressed: () async {
               final UserModel? userModel = await Navigator.of(context).push(
                 GetPageRoute(
-                  page: () => FollowSearchPage(
+                  page: () => FollowSearchPageV2(
                     mid: mid,
                     isFromSelect: widget.isFromSelect,
                   ),
@@ -86,7 +86,7 @@ class _ContactPageState extends State<ContactPage>
             mid: mid,
             onSelect: widget.isFromSelect ? onSelect : null,
           ),
-          FansPage(
+          FanPageV2(
             showName: false,
             onSelect: widget.isFromSelect ? onSelect : null,
           ),

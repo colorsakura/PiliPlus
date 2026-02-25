@@ -168,7 +168,7 @@ class _FollowChildPageState extends State<FollowChildPage>
                           moreTextButton(
                             onTap: () => FollowSamePage.toFollowSamePage(
                               mid: _followController.mid,
-                              name: widget.controller?.name.value,
+                              name: widget.controller?.userName,
                             ),
                             color: colorScheme.outline,
                           ),
@@ -205,5 +205,5 @@ class _FollowChildPageState extends State<FollowChildPage>
 
   @override
   bool get wantKeepAlive =>
-      widget.onSelect != null || widget.controller?.tabController != null;
+      widget.onSelect != null || widget.controller != null;
 }

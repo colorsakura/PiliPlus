@@ -4,6 +4,7 @@ import 'package:PiliPlus/common/widgets/keep_alive_wrapper.dart';
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/common/widgets/stat/stat.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
+import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
 import 'package:PiliPlus/pages/common/slide/common_slide_page.dart';
@@ -102,6 +103,7 @@ class _IntroDetailState extends State<PgcIntroPanel>
       children: [
         KeepAliveWrapper(builder: (context) => _buildInfo(theme)),
         PgcReviewPageV2(
+          type: PgcReviewType.short,
           name: widget.item.title!,
           mediaId: widget.item.mediaId,
         ),

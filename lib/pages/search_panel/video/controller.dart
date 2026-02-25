@@ -43,8 +43,11 @@ class SearchVideoController
 
   @override
   bool customHandleResponse(bool isRefresh, Success<SearchVideoData> response) {
-    searchResultController?.count[searchType.index] =
-        response.response.numResults ?? 0;
+    // Using compatibility method
+    searchResultController?.setCountAtIndex(
+      searchType.index,
+      response.response.numResults ?? 0,
+    );
     if (searchType == SearchType.video && !hasJump2Video && isRefresh) {
       hasJump2Video = true;
       onPushDetail(response.response.list);

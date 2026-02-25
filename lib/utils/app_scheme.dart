@@ -500,10 +500,10 @@ abstract final class PiliScheme {
             FollowPageV2.toFollowPage(mid: mid);
             break;
           case 'fans':
-            FanPageV2.toFanPage(mid: mid);
+            FanPageV2.toFansPage(mid: mid);
             break;
           case 'followed':
-            FollowedPage.toFollowedPage(mid: mid);
+            FollowedPageV2.toFollowedPage(mid: mid);
             break;
           default:
             PageUtils.toDupNamed('/member?mid=$mid', off: off);

@@ -337,11 +337,13 @@ class _MemberPageState extends ConsumerState<MemberPage>
       children: state.tab2!.map<Widget>((item) {
         return switch (item.param!) {
           'home' => MemberHome(heroTag: _heroTag),
-          'dynamic' => MemberDynamicsPage(mid: _mid),
-          'contribute' => MemberContribute(
+          'dynamic' => MemberDynamicsPageV2(mid: _mid),
+          'contribute' => MemberContributePageV2(
             heroTag: _heroTag,
             initialIndex: state.contributeInitialIndex,
             mid: _mid,
+            contributeTab: null,
+            hasSeasonOrSeries: false,
           ),
           'bangumi' => MemberPgcPageV2(
             mid: _mid,
@@ -350,12 +352,10 @@ class _MemberPageState extends ConsumerState<MemberPage>
             heroTag: _heroTag,
             mid: _mid,
           ),
-          'cheese' => MemberCheese(
-            heroTag: _heroTag,
+          'cheese' => MemberCheesePage(
             mid: _mid,
           ),
-          'shop' => MemberShop(
-            heroTag: _heroTag,
+          'shop' => MemberShopPage(
             mid: _mid,
           ),
           _ => Center(child: Text(item.title ?? '')),

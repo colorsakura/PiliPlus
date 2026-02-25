@@ -54,7 +54,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
     final theme = Theme.of(context);
 
     // Listen to state changes
-    final state = ref.watch(liveDmBlockControllerProvider(_roomId));
+    final state = _controller.state;
 
     Widget tabBar = TabBar(
       controller: _tabController,
@@ -68,10 +68,10 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
       controller: _tabController,
       children: [
         KeepAliveWrapper(
-          builder: (context) => _buildKeyword(state.keywordList, state),
+          builder: (context) => _buildKeyword(state.keywordList, _controller),
         ),
         KeepAliveWrapper(
-          builder: (context) => _buildKeyword(state.shieldUserList, state),
+          builder: (context) => _buildKeyword(state.shieldUserList, _controller),
         ),
       ],
     );
@@ -97,7 +97,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
             '全局屏蔽',
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
-          ..._buildHeader(theme, state),
+          ..._buildHeader(theme, _controller),
           if (isPortrait) title,
         ],
       ),
@@ -182,7 +182,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
     );
   }
 
-  Widget _buildKeyword(List list, dynamic state) {
+  Widget _buildKeyword(List list, LiveDmBlockController controller) {
     if (list.isEmpty) {
       return scrollErrorWidget();
     }
@@ -204,7 +204,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
               onTap: (value) => showConfirmDialog(
                 context: context,
                 title: '确定删除该规则？',
-                onConfirm: () => _controller.removeShieldItem(e.$1, item),
+                onConfirm: () => controller.removeShieldItem(e.$1, item),
               ),
             );
           },
@@ -213,7 +213,8 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
     );
   }
 
-  List<Widget> _buildHeader(ThemeData theme, dynamic state) {
+  List<Widget> _buildHeader(ThemeData theme, LiveDmBlockController controller) {
+    final state = controller.state;
     return [
       const SizedBox(height: 6),
       Row(
@@ -224,7 +225,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
             scale: .8,
             child: Switch(
               value: state.isEnable,
-              onChanged: _controller.setEnable,
+              onChanged: controller.setEnable,
             ),
           ),
         ],
@@ -249,7 +250,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
             onChangeEnd: (value) {
               final newLevel = value.round().clamp(0, 60);
               if (oldLevel != newLevel) {
-                _controller.setSilent(LiveDmSilentType.level, newLevel);
+                controller.setSilent(LiveDmSilentType.level, newLevel);
               }
             },
           ),
@@ -265,7 +266,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
             state.rank == 1,
             Icons.live_tv,
             '非正式会员',
-            () => _controller.setSilent(
+            () => controller.setSilent(
               LiveDmSilentType.rank,
               state.rank == 1 ? 0 : 1,
             ),
@@ -275,7 +276,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
             state.verify == 1,
             Icons.smartphone,
             '未绑定手机用户',
-            () => _controller.setSilent(
+            () => controller.setSilent(
               LiveDmSilentType.verify,
               state.verify == 1 ? 0 : 1,
             ),

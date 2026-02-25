@@ -64,4 +64,18 @@ class SearchResultController extends Notifier<SearchResultState> {
   void setToTopIndex(int index) {
     state = state.copyWith(toTopIndex: index);
   }
+
+  // Compatibility layer for GetX code that expects these properties
+  // TODO: Remove after search_panel is migrated to Riverpod
+
+  /// Get counts list (for compatibility)
+  List<int> get count => state.counts;
+
+  /// Get current toTopIndex value (for compatibility)
+  int get toTopIndex => state.toTopIndex;
+
+  /// Set count at index (for compatibility)
+  void setCountAtIndex(int index, int value) {
+    updateCount(index, value);
+  }
 }

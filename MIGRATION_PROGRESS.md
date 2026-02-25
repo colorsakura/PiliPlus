@@ -3,8 +3,8 @@
 **每次迁移都需要保证能够编译成功，每次迁移完成都在最后面输出【冰狗】**
 
 **检查编译成功标准**：
-`flutter analyze` 无错误
-`timeout 30 flutter run -d linux` 无错误
+运行 `flutter analyze` 无错误
+运行 `timeout 30 flutter run -d linux` 无错误
 
 ## 📊 总体进度
 

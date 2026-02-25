@@ -52,7 +52,7 @@ class LiveSearchChildControllerV2 extends CommonListControllerV2<LiveSearchData,
   }
 
   @override
-  Future<LoadingState> customGetData() {
+  Future<LoadingState<LiveSearchData>> customGetData() {
     return LiveHttp.liveSearch(
       page: page,
       keyword: parentController.editingController.text,
