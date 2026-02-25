@@ -8,11 +8,11 @@
 
 ## 📊 总体进度
 
-- **已完成:** 87+ 功能模块完全迁移
+- **已完成:** 88+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
 - **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **5 个**
+- **本次会话提交:** **6 个**
 
 ## 🎯 核心迁移模式
 
@@ -135,7 +135,34 @@ lib/features/{feature_name}/
 
 ---
 
-## 🔄 上次会话迁移 (2025-02-25 续7)
+## 🔄 本次会话迁移 (2025-02-25 续9)
+
+### 本次迁移功能 (1个)
+
+**已完成迁移:**
+1. ✅ history - 创建 HistoryPageV2 和 HistoryMultiSelectControllerV2
+
+**迁移详情:**
+- 创建 `HistoryMultiSelectControllerV2` 继承 `ChangeNotifier`
+- 创建 `historyMultiSelectControllerProvider`
+- 创建 `HistoryItemV2` 使用新的多选控制器
+- 创建 `HistoryPageV2` 使用 Riverpod providers
+- 移除对 GetX `MultiSelectBase` 接口的依赖
+
+**新增文件:**
+- `lib/features/history/presentation/controllers/history_multi_select_controller.dart`
+- `lib/features/history/presentation/providers/history_multi_select_provider.dart`
+- `lib/features/history/presentation/widgets/item_v2.dart`
+- `lib/features/history/presentation/pages/history_page_v2.dart`
+
+**保留旧文件:**
+- 原 HistoryMultiSelectController 保留，等待路由切换
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+## 🔄 上次会话迁移 (2025-02-25 续8)
 
 ### 本次迁移功能 (1个)
 
@@ -404,5 +431,5 @@ search_panel 控制器仍在使用 GetX，待 search_panel 完全迁移后可删
 
 ---
 
-*最后更新: 2025-02-25 (续8)*
+*最后更新: 2025-02-25 (续9)*
 *维护者: Claude Sonnet 4.6*
