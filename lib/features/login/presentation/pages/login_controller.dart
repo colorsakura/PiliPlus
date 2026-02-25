@@ -9,7 +9,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/login.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/login/model.dart';
-import 'package:PiliPlus/pages/login/geetest/geetest_webview_dialog.dart';
+import 'package:PiliPlus/features/login/presentation/pages/geetest/geetest_webview_dialog.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';

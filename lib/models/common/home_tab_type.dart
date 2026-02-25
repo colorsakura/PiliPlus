@@ -4,7 +4,7 @@ import 'package:PiliPlus/features/home_rcmd/presentation/pages/rcmd_page.dart';
 import 'package:PiliPlus/features/home_zone/controller.dart';
 import 'package:PiliPlus/features/home_zone/view_v2.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
-import 'package:PiliPlus/pages/common/common_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_controller.dart';
 import 'package:PiliPlus/features/pgc/presentation/pages/pgc_controller.dart';
 import 'package:PiliPlus/features/pgc/pgc.dart';
 import 'package:flutter/material.dart';

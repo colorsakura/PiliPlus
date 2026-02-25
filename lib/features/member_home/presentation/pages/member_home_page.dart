@@ -7,7 +7,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/models/space/space/tab2.dart';
 import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
-import 'package:PiliPlus/pages/member_article/widget/item.dart';
+import 'package:PiliPlus/features/member_article/presentation/pages/widget/item.dart';
 import 'package:PiliPlus/features/member_audio/presentation/widgets/item.dart';
 import 'package:PiliPlus/features/member_coin_arc/member_coin_arc.dart';
 import 'package:PiliPlus/features/member_comic/presentation/widgets/item.dart';

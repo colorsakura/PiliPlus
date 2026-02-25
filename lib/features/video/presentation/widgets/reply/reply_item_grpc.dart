@@ -16,7 +16,7 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/vote.dart';
 import 'package:PiliPlus/features/save_panel/save_panel.dart';
-import 'package:PiliPlus/pages/video/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/reply/zan_grpc.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';

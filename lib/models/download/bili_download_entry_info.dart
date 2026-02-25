@@ -1,5 +1,5 @@
 import 'package:PiliPlus/models/common/video/video_type.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart'
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart'
     show MultiSelectData;
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';

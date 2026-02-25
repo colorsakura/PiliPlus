@@ -12,7 +12,7 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/music/bgm_detail.dart';
-import 'package:PiliPlus/pages/common/dyn/common_dyn_page.dart';
+import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_page.dart';
 import 'package:PiliPlus/features/music/presentation/pages/music_controller.dart';
 import 'package:PiliPlus/features/music/presentation/pages/music_recommend_page.dart';
 import 'package:PiliPlus/utils/accounts.dart';

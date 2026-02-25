@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
-import 'package:PiliPlus/pages/common/common_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;

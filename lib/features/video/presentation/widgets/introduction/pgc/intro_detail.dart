@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
-import 'package:PiliPlus/pages/common/slide/common_slide_page.dart';
+import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
 import 'package:PiliPlus/features/pgc_review/pgc_review.dart' show PgcReviewPageV2;
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';

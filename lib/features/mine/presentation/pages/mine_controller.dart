@@ -6,7 +6,7 @@ import 'package:PiliPlus/models/common/theme/theme_type.dart';
 import 'package:PiliPlus/models/user/info.dart';
 import 'package:PiliPlus/models/user/stat.dart';
 import 'package:PiliPlus/models/fav/fav_folder/data.dart';
-import 'package:PiliPlus/pages/common/common_data_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_data_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';

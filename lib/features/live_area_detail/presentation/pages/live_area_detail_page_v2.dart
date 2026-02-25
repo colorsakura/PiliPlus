@@ -6,7 +6,7 @@ import 'package:PiliPlus/features/live_search/live_search.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
-import 'package:PiliPlus/pages/live_area_detail/child/view.dart';
+import 'package:PiliPlus/features/live_area_detail/presentation/pages/child/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

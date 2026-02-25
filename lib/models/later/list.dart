@@ -4,7 +4,7 @@ import 'package:PiliPlus/models/later/page.dart';
 import 'package:PiliPlus/models/later/rights.dart';
 import 'package:PiliPlus/models/later/stat.dart';
 import 'package:PiliPlus/models/video/video_detail/dimension.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 
 class LaterItemModel with MultiSelectData {
   int? aid;

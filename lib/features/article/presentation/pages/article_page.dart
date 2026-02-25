@@ -14,7 +14,7 @@ import 'package:PiliPlus/features/article/article.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/article_ops.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/html_render.dart';
 import 'package:PiliPlus/features/article/presentation/widgets/opus_content.dart';
-import 'package:PiliPlus/pages/common/dyn/common_dyn_page.dart';
+import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_page.dart';
 import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';

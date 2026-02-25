@@ -10,7 +10,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
-import 'package:PiliPlus/pages/pgc_review/post/view.dart';
+import 'package:PiliPlus/features/pgc_review/presentation/pages/post/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';

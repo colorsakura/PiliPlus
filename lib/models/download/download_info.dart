@@ -1,5 +1,5 @@
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart'
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart'
     show MultiSelectData;
 
 class DownloadPageInfo with MultiSelectData {

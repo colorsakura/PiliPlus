@@ -3,7 +3,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/search/search_type.dart';
 import 'package:PiliPlus/models/search/result.dart';
-import 'package:PiliPlus/pages/search_panel/controller.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

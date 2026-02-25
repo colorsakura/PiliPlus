@@ -3,7 +3,7 @@ import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
 import 'package:PiliPlus/grpc/im.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/msgfeed_unread.dart';
-import 'package:PiliPlus/pages/common/common_whisper_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_whisper_controller.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

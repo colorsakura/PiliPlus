@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:PiliPlus/features/history/domain/entities/history_item.dart';
 import 'package:PiliPlus/models/history/list.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 
 /// 简单的多选控制器适配器
 /// 用于在Clean Architecture中使用需要GetX MultiSelectBase的现有组件

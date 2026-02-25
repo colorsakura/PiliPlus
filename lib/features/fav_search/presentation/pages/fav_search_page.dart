@@ -1,8 +1,8 @@
 import 'package:PiliPlus/models/common/fav_order_type.dart';
 import 'package:PiliPlus/models/fav/fav_detail/data.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
-import 'package:PiliPlus/pages/common/search/common_search_page.dart';
-import 'package:PiliPlus/pages/fav_detail/widget/fav_video_card.dart';
+import 'package:PiliPlus/features/common/presentation/pages/search/common_search_page.dart';
+import 'package:PiliPlus/features/fav_detail/presentation/pages/widget/fav_video_card.dart';
 import 'package:PiliPlus/features/fav_search/presentation/pages/fav_search_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/grid.dart';

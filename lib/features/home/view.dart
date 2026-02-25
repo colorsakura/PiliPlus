@@ -17,7 +17,7 @@ import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
-import 'package:PiliPlus/pages/common/common_page.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_page.dart';
 import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';

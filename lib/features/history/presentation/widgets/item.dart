@@ -7,7 +7,7 @@ import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/history/list.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/id_utils.dart';

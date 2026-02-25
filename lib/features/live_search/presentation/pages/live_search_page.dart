@@ -1,8 +1,8 @@
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/models/common/live/live_search_type.dart';
-import 'package:PiliPlus/pages/live_search/child/view.dart';
-import 'package:PiliPlus/pages/live_search/controller.dart';
+import 'package:PiliPlus/features/live_search/presentation/pages/child/view.dart';
+import 'package:PiliPlus/features/live_search/presentation/pages/controller.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

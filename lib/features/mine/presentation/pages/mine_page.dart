@@ -9,7 +9,7 @@ import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
-import 'package:PiliPlus/pages/common/common_page.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_page.dart';
 import 'package:PiliPlus/features/login/presentation/pages/login_controller.dart';
 import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/mine/presentation/widgets/item.dart';

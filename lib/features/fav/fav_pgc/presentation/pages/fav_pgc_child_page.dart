@@ -7,8 +7,8 @@ import 'package:PiliPlus/features/fav/fav_pgc/presentation/providers/fav_pgc_lis
 import 'package:PiliPlus/features/fav/fav_pgc/presentation/providers/fav_pgc_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart';
-import 'package:PiliPlus/pages/fav/pgc/widget/item.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/pgc/widget/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

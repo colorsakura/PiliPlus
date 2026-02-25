@@ -13,7 +13,7 @@ import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/features/follow/follow.dart';
 import 'package:PiliPlus/features/followed/followed.dart';
 import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
-import 'package:PiliPlus/pages/video/reply_reply/view.dart';
+import 'package:PiliPlus/features/video/presentation/pages/reply_reply/view.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';

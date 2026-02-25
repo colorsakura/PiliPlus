@@ -4,7 +4,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_article/item.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_article_controller.dart';
-import 'package:PiliPlus/pages/fav/article/widget/item.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/article/widget/item.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

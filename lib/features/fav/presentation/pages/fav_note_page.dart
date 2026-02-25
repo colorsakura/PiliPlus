@@ -1,4 +1,4 @@
-import 'package:PiliPlus/pages/fav/note/child_view.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/note/child_view.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_note_controller.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';

@@ -11,7 +11,7 @@ import 'package:PiliPlus/models/fav/fav_pgc/rights.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/section.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/series.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/stat.dart';
-import 'package:PiliPlus/pages/common/multi_select/base.dart';
+import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 
 class FavPgcItemModel with MultiSelectData {

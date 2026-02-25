@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/models/space/space/live.dart';
 import 'package:PiliPlus/models/space/space/setting.dart';
 import 'package:PiliPlus/models/space/space/tab2.dart';
-import 'package:PiliPlus/pages/common/common_data_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_data_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';

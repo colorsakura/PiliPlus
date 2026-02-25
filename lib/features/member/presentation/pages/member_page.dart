@@ -11,7 +11,7 @@ import 'package:PiliPlus/features/login_devices/login_devices.dart';
 import 'package:PiliPlus/features/login_log/login_log.dart';
 import 'package:PiliPlus/features/member/presentation/providers/member_controller.dart';
 import 'package:PiliPlus/features/member/presentation/providers/member_provider.dart';
-import 'package:PiliPlus/pages/member/widget/user_info_card.dart';
+import 'package:PiliPlus/features/member/presentation/pages/widget/user_info_card.dart';
 import 'package:PiliPlus/features/member_cheese/member_cheese.dart';
 import 'package:PiliPlus/features/member_contribute/member_contribute.dart';
 import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';

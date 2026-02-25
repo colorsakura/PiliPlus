@@ -1,11 +1,11 @@
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/models/common/search/search_type.dart';
-import 'package:PiliPlus/pages/search_panel/article/view.dart';
-import 'package:PiliPlus/pages/search_panel/live/view.dart';
-import 'package:PiliPlus/pages/search_panel/pgc/view.dart';
-import 'package:PiliPlus/pages/search_panel/user/view.dart';
-import 'package:PiliPlus/pages/search_panel/video/view.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/article/view.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/live/view.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/pgc/view.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/user/view.dart';
+import 'package:PiliPlus/features/search_panel/presentation/pages/video/view.dart';
 import 'package:flutter/material.dart';
 
 /// Search result page (Clean Architecture with Riverpod)
