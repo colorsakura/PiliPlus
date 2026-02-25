@@ -10,6 +10,7 @@ import 'package:PiliPlus/core/constants/video_api_constants.dart';
 import 'package:PiliPlus/core/errors/error_handler.dart';
 import 'package:PiliPlus/core/errors/exceptions.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
+import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/models/model_rec_video_item.dart';
@@ -126,7 +127,7 @@ class VideoRemoteDataSource {
         ...params,
         if (bvid != null) 'bvid': bvid,
         if (aid != null) 'aid': aid,
-      });
+      }) as Map<String, dynamic>;
 
       final response = await _httpClient.get(
         VideoApiConstants.ugcUrl,
@@ -157,7 +158,7 @@ class VideoRemoteDataSource {
         data: {
           'bvid': bvid,
           'like': like ? 1 : 2,
-        },
+        } as Map<String, dynamic>,
       );
 
       if (response.data['code'] != 0) {
@@ -342,8 +343,8 @@ class VideoRemoteDataSource {
       final params = await WbiSign.makSign({
         'bvid': bvid,
         'cid': cid,
-        'up_mid': upMid,
-      });
+        'up_mid': upMid?.toString(),
+      }) as Map<String, dynamic>;
 
       final response = await _httpClient.get(
         VideoApiConstants.aiConclusion,

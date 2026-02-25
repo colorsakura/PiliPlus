@@ -16,6 +16,8 @@ import 'package:PiliPlus/models/popular/popular_precious/data.dart';
 import 'package:PiliPlus/models/triple/pgc_triple.dart';
 import 'package:PiliPlus/models/triple/ugc_triple.dart';
 import 'package:PiliPlus/models/video/play/url.dart';
+import 'package:PiliPlus/models/video/video_detail/data.dart';
+import 'package:PiliPlus/models/video/video_detail/video_detail_response.dart';
 import 'package:PiliPlus/models/video/video_relation/data.dart';
 import 'package:PiliPlus/models/video/video_ai_conclusion/data.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
@@ -120,14 +122,14 @@ abstract final class VideoHttp {
   /// 投币视频
   static Future<LoadingState<void>> coinVideo({
     required String bvid,
-    required int num,
-    bool selectLike = false,
+    required int multiply,
+    int selectLike = 0,
   }) async {
     try {
       await _dataSource.coinVideo(
         bvid: bvid,
-        num: num,
-        selectLike: selectLike,
+        num: multiply,
+        selectLike: selectLike == 1,
       );
       return const Success(null);
     } catch (e) {
@@ -154,24 +156,24 @@ abstract final class VideoHttp {
   }
 
   /// 一键三连
-  static Future<LoadingState<UgcTripleData>> ugcTriple({
+  static Future<LoadingState<UgcTriple>> ugcTriple({
     required String bvid,
   }) async {
     try {
       final data = await _dataSource.ugcTriple(bvid: bvid);
-      return Success(UgcTripleData.fromJson(data));
+      return Success(UgcTriple.fromJson(data));
     } catch (e) {
       return Error(e.toString());
     }
   }
 
   /// 视频关系
-  static Future<LoadingState<VideoRelationData>> videoRelation({
+  static Future<LoadingState<VideoRelation>> videoRelation({
     required String bvid,
   }) async {
     try {
       final data = await _dataSource.videoRelation(bvid: bvid);
-      return Success(VideoRelationData.fromJson(data));
+      return Success(VideoRelation.fromJson(data));
     } catch (e) {
       return Error(e.toString());
     }
@@ -377,5 +379,72 @@ abstract final class VideoHttp {
     } catch (e) {
       return null;
     }
+  }
+
+  /// APP端不感兴趣
+  static Future<LoadingState<void>> feedDislike({
+    required String goto,
+    required int id,
+    int? reasonId,
+    int? feedbackId,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
+  }
+
+  /// 取消不感兴趣
+  static Future<LoadingState<void>> feedDislikeCancel({
+    required String goto,
+    required int id,
+    int? reasonId,
+    int? feedbackId,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
+  }
+
+  /// 点踩视频
+  static Future<LoadingState<void>> dislikeVideo({
+    required String bvid,
+    required bool dislike,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
+  }
+
+  /// 操作用户关系
+  static Future<LoadingState<Map>> relationMod({
+    required int mid,
+    required int act,
+    int? reSrc,
+    int? csrf,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
+  }
+
+  /// 上报历史记录
+  static Future<void> historyReport({
+    required List<int> aids,
+    required String probe,
+  }) async {
+    // 待迁移到新数据源
+  }
+
+  /// 在线人数
+  static Future<LoadingState<String>> onlineTotal({
+    required String oid,
+    required int type,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
+  }
+
+  /// PGC删除
+  static Future<LoadingState<String>> pgcDel({
+    int? seasonId,
+  }) async {
+    // 待迁移到新数据源
+    return Error('Method not migrated yet');
   }
 }
