@@ -6,7 +6,7 @@ import 'package:PiliPlus/features/fan/presentation/providers/fan_controller.dart
 
 // Remote Datasource Provider
 final fanRemoteDatasourceProvider = Provider<FanRemoteDatasource>((ref) {
-  return const FanRemoteDatasource();
+  return FanRemoteDatasource();
 });
 
 // Repository Provider

@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/reply.dart';
+import 'package:PiliPlus/features/reply/data/datasources/reply_remote_datasource.dart';
 import 'package:PiliPlus/models/common/reply/reply_sort_type.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
@@ -17,6 +17,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 abstract final class ReplyUtils {
+  static final ReplyRemoteDataSource _replyDataSource = ReplyRemoteDataSource();
   static void onCheckReply({
     required ReplyInfo replyInfo,
     required bool biliSendCommAntifraud,
@@ -146,7 +147,7 @@ abstract final class ReplyUtils {
     // root reply
     if (root == 0) {
       // no cookie check
-      final res = await ReplyHttp.replyList(
+      final res = await _replyDataSource.replyList(
         isLogin: false,
         oid: oid,
         nextOffset: '',
@@ -168,7 +169,7 @@ abstract final class ReplyUtils {
           // not found
 
           // cookie check
-          final res1 = await ReplyHttp.replyReplyList(
+          final res1 = await _replyDataSource.replyReplyList(
             isLogin: true,
             oid: oid,
             root: id,
@@ -183,7 +184,7 @@ abstract final class ReplyUtils {
             // found
 
             // no cookie check
-            final res2 = await ReplyHttp.replyReplyList(
+            final res2 = await _replyDataSource.replyReplyList(
               isLogin: false,
               oid: oid,
               root: id,
@@ -218,7 +219,7 @@ https://api.bilibili.com/x/v2/reply/reply?oid=$oid&pn=1&ps=20&root=$id&type=$typ
       }
     } else {
       for (int i = 1; ; i++) {
-        final res3 = await ReplyHttp.replyReplyList(
+        final res3 = await _replyDataSource.replyReplyList(
           isLogin: false,
           oid: oid,
           root: root,
@@ -245,7 +246,7 @@ https://api.bilibili.com/x/v2/reply/reply?oid=$oid&pn=1&ps=20&root=$id&type=$typ
       }
 
       for (int i = 1; ; i++) {
-        final res4 = await ReplyHttp.replyReplyList(
+        final res4 = await _replyDataSource.replyReplyList(
           isLogin: true,
           oid: oid,
           root: root,

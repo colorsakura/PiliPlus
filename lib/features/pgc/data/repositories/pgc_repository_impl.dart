@@ -8,10 +8,10 @@ import 'package:PiliPlus/models/pgc/pgc_timeline/result.dart';
 
 /// PGC repository implementation
 class PgcRepositoryImpl implements PgcRepository {
-  final PgcRemoteDataSource _remoteDataSource;
+  final PgcApiDataSource _remoteDataSource;
 
   PgcRepositoryImpl({
-    required PgcRemoteDataSource remoteDataSource,
+    required PgcApiDataSource remoteDataSource,
   }) : _remoteDataSource = remoteDataSource;
 
   @override

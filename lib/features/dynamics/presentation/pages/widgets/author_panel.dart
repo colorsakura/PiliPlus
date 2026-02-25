@@ -6,7 +6,7 @@ import 'package:PiliPlus/common/widgets/flutter/dyn/ink_well.dart';
 import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/reply.dart';
+import 'package:PiliPlus/features/reply/data/datasources/reply_remote_datasource.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
@@ -434,7 +434,7 @@ class AuthorPanel extends StatelessWidget {
                   ListTile(
                     onTap: () async {
                       Get.back();
-                      final res = await ReplyHttp.replyInteraction(
+                      final res = await ReplyRemoteDataSource().replyInteraction(
                         oid: item.basic!.commentIdStr!,
                         type: item.basic!.commentType!,
                       );

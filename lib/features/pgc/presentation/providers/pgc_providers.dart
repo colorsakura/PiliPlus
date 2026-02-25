@@ -7,8 +7,8 @@ import 'package:PiliPlus/features/pgc/presentation/providers/pgc_controller.dart
 import 'package:PiliPlus/models/common/home_tab_type.dart';
 
 /// PGC remote data source provider
-final pgcRemoteDataSourceProvider = Provider<PgcRemoteDataSource>((ref) {
-  return PgcRemoteDataSource();
+final pgcRemoteDataSourceProvider = Provider<PgcApiDataSource>((ref) {
+  return PgcApiDataSource();
 });
 
 /// PGC repository provider

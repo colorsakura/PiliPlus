@@ -4,7 +4,7 @@ import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show MainListReply, ReplyInfo, SubjectControl, Mode;
 import 'package:PiliPlus/grpc/bilibili/pagination.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/reply.dart';
+import 'package:PiliPlus/features/reply/data/datasources/reply_remote_datasource.dart';
 import 'package:PiliPlus/models/common/reply/reply_sort_type.dart';
 import 'package:PiliPlus/features/common/presentation/pages/publish/publish_route.dart';
 import 'package:PiliPlus/features/video/presentation/pages/reply_new/view.dart';
@@ -28,6 +28,7 @@ import 'package:get/get.dart';
 ///
 /// Generic type R: The raw API response type (typically MainListReply)
 abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
+  final ReplyRemoteDataSource _replyDataSource = ReplyRemoteDataSource();
   final RxInt count = (-1).obs;
 
   late final Rx<ReplySortType> sortType;
@@ -246,7 +247,7 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
     int type,
   ) async {
     bool isUpTop = item.replyControl.isUpTop;
-    final res = await ReplyHttp.replyTop(
+    final res = await _replyDataSource.replyTop(
       oid: oid,
       type: type,
       rpid: item.id,

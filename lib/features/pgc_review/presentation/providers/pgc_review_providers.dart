@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_c
 // Remote Datasource Provider
 final pgcReviewRemoteDatasourceProvider =
     Provider<PgcReviewRemoteDatasource>((ref) {
-  return const PgcReviewRemoteDatasource();
+  return PgcReviewRemoteDatasource();
 });
 
 // Repository Provider

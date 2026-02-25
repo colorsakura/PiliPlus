@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Remote datasource provider
 final loginDevicesRemoteDatasourceProvider =
     Provider<LoginDevicesRemoteDatasource>((ref) {
-  return const LoginDevicesRemoteDatasource();
+  return LoginDevicesRemoteDatasource();
 });
 
 /// Repository provider

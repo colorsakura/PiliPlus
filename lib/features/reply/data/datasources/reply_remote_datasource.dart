@@ -3,28 +3,33 @@
 /// 负责所有评论相关的网络请求
 library;
 
-// 忽略类型推断警告
-// ignore_for_file: prefer_collection_literals, map_value_type_not_assignable
-
 import 'package:PiliPlus/core/network/http_client.dart';
 import 'package:PiliPlus/core/constants/reply_api_constants.dart';
+import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/errors/error_handler.dart';
 import 'package:PiliPlus/core/errors/exceptions.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/reply/data.dart';
+import 'package:PiliPlus/models/reply2reply/data.dart';
+import 'package:PiliPlus/models/emote/data.dart';
+import 'package:PiliPlus/models/emote/package.dart';
+import 'package:PiliPlus/models/reply_interaction/data.dart';
+import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 /// 评论远程数据源
 class ReplyRemoteDataSource {
   final Dio _httpClient = HttpClientManager.instance;
 
+  static final Options _options = Options(
+    headers: {...Constants.baseHeaders, 'cookie': ''},
+    extra: {'account': const NoAccount()},
+  );
+
   /// 评论列表
-  ///
-  /// [isLogin] 是否登录
-  /// [oid] 对象ID
-  /// [nextOffset] 下一页偏移量（未登录时使用）
-  /// [type] 评论类型
-  /// [page] 页码（登录时使用）
-  /// [sort] 排序方式: 1-按时间, 2-按热度
-  Future<Map<String, dynamic>> replyList({
+  Future<LoadingState<ReplyData>> replyList({
     required bool isLogin,
     required int oid,
     required String nextOffset,
@@ -48,17 +53,15 @@ class ReplyRemoteDataSource {
                 'type': type,
                 'pagination_str':
                     '{"offset":"${nextOffset.replaceAll('"', '\\"')}"}',
-                'mode': sort + 2, // 2:按时间排序；3：按热度排序
+                'mode': sort + 2, //2:按时间排序；3：按热度排序
               },
+        options: !isLogin ? _options : null,
       );
 
       if (response.data['code'] == 0) {
-        return response.data['data'];
+        return Success(ReplyData.fromJson(response.data['data']));
       } else {
-        throw ServerException(
-          response.data['message'] ?? '获取评论列表失败',
-          code: response.data['code'],
-        );
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -66,14 +69,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 楼中楼评论列表
-  ///
-  /// [isLogin] 是否登录
-  /// [oid] 对象ID
-  /// [root] 根评论ID
-  /// [pageNum] 页码
-  /// [type] 评论类型
-  /// [isCheck] 是否仅检查
-  Future<Map<String, dynamic>> replyReplyList({
+  Future<LoadingState<ReplyReplyData>> replyReplyList({
     required bool isLogin,
     required int oid,
     required int root,
@@ -82,28 +78,27 @@ class ReplyRemoteDataSource {
     bool isCheck = false,
   }) async {
     try {
-      final queryParams = {
-        'oid': oid,
-        'root': root,
-        'pn': pageNum,
-        'type': type,
-        'sort': 1,
-        if (isLogin) 'csrf': '', // 需要从外部传入
-      };
-
       final response = await _httpClient.get(
         ReplyApiConstants.replyReplyList,
-        queryParameters: queryParams,
+        queryParameters: {
+          'oid': oid,
+          'root': root,
+          'pn': pageNum,
+          'type': type,
+          'sort': 1,
+          if (isLogin) 'csrf': Accounts.main.csrf,
+        },
+        options: !isLogin ? _options : null,
       );
 
       if (response.data['code'] == 0) {
-        return response.data['data'];
+        ReplyReplyData replyData = ReplyReplyData.fromJson(response.data['data']);
+        return Success(replyData);
       } else {
-        throw ServerException(
+        return Error(
           isCheck
               ? '${response.data['code']}${response.data['message']}'
-              : response.data['message'] ?? '获取楼中楼评论失败',
-          code: response.data['code'],
+              : response.data['message'],
         );
       }
     } on DioException catch (e) {
@@ -112,12 +107,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 评论踩/取消踩
-  ///
-  /// [type] 评论类型
-  /// [action] 操作: 1-踩, 2-取消踩
-  /// [oid] 对象ID
-  /// [rpid] 评论ID
-  Future<void> hateReply({
+  Future<LoadingState<Null>> hateReply({
     required int type,
     required int action,
     required int oid,
@@ -131,16 +121,15 @@ class ReplyRemoteDataSource {
           'oid': oid,
           'rpid': rpid,
           'action': action,
-          'csrf': '', // 需要从外部传入
+          'csrf': Accounts.main.csrf,
         },
         options: Options(contentType: Headers.formUrlEncodedContentType),
       );
 
-      if (response.data['code'] != 0) {
-        throw ServerException(
-          response.data['message'] ?? '操作失败',
-          code: response.data['code'],
-        );
+      if (response.data['code'] == 0) {
+        return const Success(null);
+      } else {
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -148,12 +137,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 评论点赞
-  ///
-  /// [type] 评论类型
-  /// [oid] 对象ID
-  /// [rpid] 评论ID
-  /// [action] 操作: 1-点赞, 2-取消点赞
-  Future<void> likeReply({
+  Future<LoadingState<Null>> likeReply({
     required int type,
     required int oid,
     required int rpid,
@@ -167,16 +151,15 @@ class ReplyRemoteDataSource {
           'oid': oid,
           'rpid': rpid,
           'action': action,
-          'csrf': '', // 需要从外部传入
+          'csrf': Accounts.main.csrf,
         },
         options: Options(contentType: Headers.formUrlEncodedContentType),
       );
 
-      if (response.data['code'] != 0) {
-        throw ServerException(
-          response.data['message'] ?? '点赞失败',
-          code: response.data['code'],
-        );
+      if (response.data['code'] == 0) {
+        return const Success(null);
+      } else {
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -184,9 +167,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 获取表情列表
-  ///
-  /// [business] 业务场景，默认为 'reply'
-  Future<Map<String, dynamic>> getEmoteList({
+  Future<LoadingState<List<Package>?>> getEmoteList({
     String? business,
   }) async {
     try {
@@ -199,12 +180,9 @@ class ReplyRemoteDataSource {
       );
 
       if (response.data['code'] == 0) {
-        return response.data['data'];
+        return Success(EmoteModelData.fromJson(response.data['data']).packages);
       } else {
-        throw ServerException(
-          response.data['message'] ?? '获取表情列表失败',
-          code: response.data['code'],
-        );
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -212,12 +190,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 设置评论置顶/取消置顶
-  ///
-  /// [oid] 对象ID
-  /// [type] 评论类型
-  /// [rpid] 评论ID
-  /// [isUpTop] 是否置顶
-  Future<void> replyTop({
+  Future<LoadingState<Null>> replyTop({
     required Object oid,
     required Object type,
     required Object rpid,
@@ -231,16 +204,15 @@ class ReplyRemoteDataSource {
           'type': type,
           'rpid': rpid,
           'action': isUpTop ? 0 : 1,
-          'csrf': '', // 需要从外部传入
+          'csrf': Accounts.main.csrf,
         },
         options: Options(contentType: Headers.formUrlEncodedContentType),
       );
 
-      if (response.data['code'] != 0) {
-        throw ServerException(
-          response.data['message'] ?? '设置置顶失败',
-          code: response.data['code'],
-        );
+      if (response.data['code'] == 0) {
+        return const Success(null);
+      } else {
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -248,13 +220,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 举报评论
-  ///
-  /// [rpid] 评论ID
-  /// [oid] 对象ID
-  /// [reasonType] 举报原因类型
-  /// [banUid] 是否拉黑用户
-  /// [reasonDesc] 举报原因描述（当 reasonType 为 0 时必填）
-  Future<void> report({
+  Future<LoadingState<Null>> report({
     required Object rpid,
     required Object oid,
     required int reasonType,
@@ -266,7 +232,7 @@ class ReplyRemoteDataSource {
         '/x/v2/reply/report',
         data: {
           'add_blacklist': banUid,
-          'csrf': '', // 需要从外部传入
+          'csrf': Accounts.main.csrf,
           'gaia_source': 'main_h5',
           'oid': oid,
           'platform': 'android',
@@ -279,11 +245,10 @@ class ReplyRemoteDataSource {
         options: Options(contentType: Headers.formUrlEncodedContentType),
       );
 
-      if (response.data['code'] != 0) {
-        throw ServerException(
-          response.data['message'] ?? '举报失败',
-          code: response.data['code'],
-        );
+      if (response.data['code'] == 0) {
+        return const Success(null);
+      } else {
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -291,10 +256,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 评论区互动信息
-  ///
-  /// [oid] 对象ID
-  /// [type] 评论类型
-  Future<Map<String, dynamic>> replyInteraction({
+  Future<LoadingState<ReplyInteractData>> replyInteraction({
     required Object oid,
     required Object type,
   }) async {
@@ -309,12 +271,13 @@ class ReplyRemoteDataSource {
       );
 
       if (response.data['code'] == 0) {
-        return response.data['data'];
+        try {
+          return Success(ReplyInteractData.fromJson(response.data['data']));
+        } catch (e) {
+          return Error(e.toString());
+        }
       } else {
-        throw ServerException(
-          response.data['message'] ?? '获取互动信息失败',
-          code: response.data['code'],
-        );
+        return Error(response.data['message']);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
@@ -322,11 +285,7 @@ class ReplyRemoteDataSource {
   }
 
   /// 修改评论主体信息（关闭/开启评论）
-  ///
-  /// [oid] 对象ID
-  /// [type] 评论类型
-  /// [action] 操作: 1-关闭评论, 2-开启评论
-  Future<Map<String, dynamic>?> replySubjectModify({
+  Future<LoadingState<Null>> replySubjectModify({
     required int oid,
     required int type,
     required int action,
@@ -338,18 +297,19 @@ class ReplyRemoteDataSource {
           'oid': oid,
           'type': type,
           'action': action,
-          'csrf': '', // 需要从外部传入
+          'csrf': Accounts.main.csrf,
         },
         options: Options(contentType: Headers.formUrlEncodedContentType),
       );
 
       if (response.data['code'] == 0) {
-        return response.data['data'];
+        if (response.data['data']?['action_toast'] case final String toast) {
+          SmartDialog.showToast(toast);
+        }
+        return const Success(null);
       } else {
-        throw ServerException(
-          response.data['message'] ?? '修改失败',
-          code: response.data['code'],
-        );
+        SmartDialog.showToast(response.data['message'].toString());
+        return const Error(null);
       }
     } on DioException catch (e) {
       throw ErrorHandler.handleDioError(e);
