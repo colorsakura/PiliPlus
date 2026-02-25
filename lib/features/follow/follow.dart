@@ -1,12 +1,12 @@
-// Riverpod implementation (new - v2)
+// Riverpod implementation
 export 'package:PiliPlus/features/follow/presentation/pages/follow_page_v2.dart'
     show FollowPageV2;
 
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/features/follow/presentation/pages/follow_page.dart'
-    show FollowPage;
+// Backward compatibility alias
+export 'package:PiliPlus/features/follow/presentation/pages/follow_page_v2.dart'
+    show FollowPageV2 as FollowPage;
 
-// Providers (new)
+// Providers
 export 'package:PiliPlus/features/follow/presentation/providers/follow_providers.dart'
     show
         followRemoteDatasourceProvider,

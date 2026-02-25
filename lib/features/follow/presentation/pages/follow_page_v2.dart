@@ -13,6 +13,7 @@ import 'package:PiliPlus/features/follow/presentation/providers/follow_providers
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 /// Follow page (Clean Architecture with Riverpod)
 ///
@@ -40,8 +41,16 @@ class FollowPageV2 extends ConsumerStatefulWidget {
     String? name,
     bool isOwner = false,
   }) {
-    // Note: This still uses GetX navigation for compatibility
-    // TODO: Migrate to full Riverpod navigation
+    final midInt = mid is int ? mid : (mid != null ? int.tryParse(mid.toString()) : null);
+    if (midInt == null) return;
+    Get.toNamed(
+      '/follow',
+      arguments: {
+        'mid': midInt,
+        'name': name,
+        'isOwner': isOwner,
+      },
+    );
   }
 }
 

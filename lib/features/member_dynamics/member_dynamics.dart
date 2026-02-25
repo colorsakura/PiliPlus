@@ -1,7 +1,4 @@
-// Riverpod implementation (new - v2)
+// Riverpod implementation
 export 'package:PiliPlus/features/member_dynamics/presentation/providers/member_dynamics_providers.dart';
 export 'package:PiliPlus/features/member_dynamics/presentation/providers/member_dynamics_controller.dart';
 export 'package:PiliPlus/features/member_dynamics/presentation/pages/member_dynamics_page_v2.dart';
-
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/features/member_dynamics/presentation/pages/member_dynamics_page.dart' show MemberDynamicsPage;

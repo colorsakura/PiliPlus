@@ -1,12 +1,8 @@
-// Riverpod implementation (new - v2)
+// Riverpod implementation
 export 'package:PiliPlus/features/member_shop/presentation/pages/member_shop_page_v2.dart'
     show MemberShopPage;
 
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/features/member_shop/presentation/pages/member_shop_page.dart'
-    show MemberShop;
-
-// Providers (new)
+// Providers
 export 'package:PiliPlus/features/member_shop/presentation/providers/member_shop_list_provider.dart'
     show
         memberShopRepositoryProvider,

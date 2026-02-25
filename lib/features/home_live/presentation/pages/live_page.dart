@@ -304,7 +304,7 @@ class _LivePageState extends ConsumerState<LivePage>
               context: context,
               tooltip: '全部标签',
               icon: const Icon(Icons.widgets),
-              onPressed: () => Get.to(const LiveAreaPage()),
+              onPressed: () => Get.to(const LiveAreaPageV2()),
             ),
           ],
         ),

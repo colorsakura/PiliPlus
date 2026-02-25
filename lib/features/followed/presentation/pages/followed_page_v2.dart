@@ -11,6 +11,7 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 /// "Also followed" page - V2 with Riverpod
 ///
@@ -27,6 +28,18 @@ class FollowedPageV2 extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<FollowedPageV2> createState() => _FollowedPageV2State();
+
+  static void toFollowedPage({dynamic mid, String? name}) {
+    final midInt = mid is int ? mid : (mid != null ? int.tryParse(mid.toString()) : null);
+    if (midInt == null) return;
+    Get.toNamed(
+      '/followed',
+      arguments: {
+        'mid': midInt,
+        'name': name,
+      },
+    );
+  }
 }
 
 class _FollowedPageV2State extends ConsumerState<FollowedPageV2> {

@@ -105,9 +105,9 @@ class Routes {
     // 动态详情
     GetPage(name: '/dynamicDetail', page: () => const DynamicDetailPage()),
     // 关注
-    GetPage(name: '/follow', page: () => const FollowPage()),
+    GetPage(name: '/follow', page: () => const FollowPageV2()),
     // 粉丝
-    GetPage(name: '/fan', page: () => const FansPage()),
+    GetPage(name: '/fan', page: () => const FanPageV2()),
     // 直播详情
     GetPage(name: '/liveRoom', page: () => const LiveRoomPage()),
     // 用户中心
@@ -185,8 +185,8 @@ class Routes {
     GetPage(name: '/popularPrecious', page: () => const PopularPreciousPage()),
     GetPage(name: '/audio', page: () => const AudioPage()),
     GetPage(name: '/mainReply', page: () => const MainReplyPage()),
-    GetPage(name: '/followed', page: () => const FollowedPage()),
-    GetPage(name: '/sameFollowing', page: () => const FollowSamePage()),
+    GetPage(name: '/followed', page: () => const FollowedPageV2()),
+    GetPage(name: '/sameFollowing', page: () => const FollowSamePageV2()),
     GetPage(name: '/download', page: () => const DownloadPage()),
     GetPage(name: '/dlna', page: () => const DlnaPage()),
   ];

@@ -1,12 +1,8 @@
-// Riverpod implementation (new - v2)
+// Riverpod implementation
 export 'package:PiliPlus/features/member_season_series/presentation/pages/member_season_series_page_v2.dart'
     show MemberSeasonSeriesPage;
 
-// GetX implementation (deprecated, for backward compatibility)
-export 'package:PiliPlus/features/member_season_series/presentation/pages/member_season_series_page.dart'
-    show SeasonSeriesPage;
-
-// Providers (new)
+// Providers
 export 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_list_provider.dart'
     show
         memberSeasonSeriesRepositoryProvider,
