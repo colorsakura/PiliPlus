@@ -67,6 +67,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   mmkv: ">=2.3.0"
+  sqlite3: ^3.1.6
 
   # 设备信息
   device_info_plus: ^12.1.0
