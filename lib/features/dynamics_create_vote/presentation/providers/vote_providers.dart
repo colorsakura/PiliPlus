@@ -3,7 +3,6 @@ import 'package:PiliPlus/features/dynamics_create_vote/data/repositories/vote_re
 import 'package:PiliPlus/features/dynamics_create_vote/domain/repositories/vote_repository.dart';
 import 'package:PiliPlus/features/dynamics_create_vote/domain/usecases/vote_use_cases.dart';
 import 'package:PiliPlus/features/dynamics_create_vote/presentation/providers/vote_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provider for the vote remote data source

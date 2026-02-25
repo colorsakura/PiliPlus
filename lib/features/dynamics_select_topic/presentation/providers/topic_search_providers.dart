@@ -3,7 +3,6 @@ import 'package:PiliPlus/features/dynamics_select_topic/data/repositories/topic_
 import 'package:PiliPlus/features/dynamics_select_topic/domain/repositories/topic_search_repository.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/domain/usecases/search_topics.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/presentation/providers/topic_search_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provider for the topic search remote data source
