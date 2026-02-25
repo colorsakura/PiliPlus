@@ -6,6 +6,8 @@ library;
 // 忽略类型推断警告
 // ignore_for_file: prefer_collection_literals, map_value_type_not_assignable
 
+import 'dart:convert';
+
 import 'package:PiliPlus/core/network/http_client.dart';
 import 'package:PiliPlus/core/constants/user_api_constants.dart';
 import 'package:PiliPlus/core/errors/error_handler.dart';
@@ -768,6 +770,50 @@ class UserRemoteDataSource {
       } else {
         throw ServerException(
           response.data['message'] ?? '获取共同关注失败',
+          code: response.data['code'],
+        );
+      }
+    } on DioException catch (e) {
+      throw ErrorHandler.handleDioError(e);
+    }
+  }
+
+  /// 修改用户关系（关注/取关/拉黑/移除黑名单等）
+  ///
+  /// [mid] 用户ID
+  /// [act] 操作类型：2-关注，3-取关，5-拉黑，6-移除黑名单
+  /// [reSrc] 操作来源：通常为11
+  Future<void> relationMod({
+    required int mid,
+    required int act,
+    required int reSrc,
+  }) async {
+    try {
+      final response = await _httpClient.post(
+        UserApiConstants.relationMod,
+        queryParameters: {
+          'statistics': '{"appId":100,"platform":5}',
+          'x-bili-device-req-json':
+              '{"platform":"web","device":"pc","spmid":"333.1387"}',
+        },
+        data: {
+          'fid': mid,
+          'act': act,
+          're_src': reSrc,
+          'gaia_source': 'web_main',
+          'spmid': '333.1387',
+          'extend_content':
+              jsonEncode({
+                "entity": "user",
+                "entity_id": mid,
+                'fp': 'pc',
+              }),
+          'csrf': Accounts.main.csrf,
+        },
+      );
+      if (response.data['code'] != 0) {
+        throw ServerException(
+          response.data['message'] ?? '操作失败',
           code: response.data['code'],
         );
       }

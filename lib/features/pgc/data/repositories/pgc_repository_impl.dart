@@ -19,7 +19,13 @@ class PgcRepositoryImpl implements PgcRepository {
     int page,
     HomeTabType tabType,
   ) {
-    return _remoteDataSource.getPgcIndex(page, tabType);
+    // Map HomeTabType to indexType values
+    final indexType = switch (tabType) {
+      HomeTabType.bangumi => 1,
+      HomeTabType.cinema => 2,
+      _ => 1,
+    };
+    return _remoteDataSource.getPgcIndex(page: page, indexType: indexType);
   }
 
   @override
@@ -27,11 +33,14 @@ class PgcRepositoryImpl implements PgcRepository {
     int page,
     HomeTabType tabType,
   ) {
-    return _remoteDataSource.getPgcFollow(page, tabType);
+    // TODO: Implement getPgcFollow - needs corresponding data source method
+    throw UnimplementedError('getPgcFollow is not yet implemented in PgcApiDataSource');
   }
 
   @override
   Future<LoadingState<List<TimelineResult>?>> getPgcTimeline() {
-    return _remoteDataSource.getPgcTimeline();
+    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final oneDayAgo = now - 86400;
+    return _remoteDataSource.getPgcTimeline(before: now, after: oneDayAgo);
   }
 }

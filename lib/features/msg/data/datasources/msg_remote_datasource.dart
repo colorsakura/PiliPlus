@@ -344,7 +344,7 @@ class MsgRemoteDataSource {
             'content': content,
             'content_type': contentType,
             'msg_type': msgType,
-            'msg_key': msgKey ?? uuidV4(),
+            'msg_key': msgKey ?? const UuidV4().generate(),
             'timestamp': DateTime.now().millisecondsSinceEpoch ~/ 1000,
           },
           'csrf': Accounts.main.csrf,

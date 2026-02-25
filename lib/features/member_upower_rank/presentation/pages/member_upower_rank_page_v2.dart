@@ -32,12 +32,7 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   Widget build(BuildContext context) {
     super.build(context);
     final controller = ref.watch(
-      memberUpowerRankListControllerProvider(
-        (
-          upMid: widget.upMid,
-          privilegeType: widget.privilegeType,
-        ),
-      ),
+      memberUpowerRankListControllerProvider(widget.upMid),
     );
     final listState = controller.state.listState;
     final theme = Theme.of(context);

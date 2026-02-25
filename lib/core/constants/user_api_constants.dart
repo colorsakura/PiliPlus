@@ -44,6 +44,9 @@ abstract class UserApiConstants {
   /// 关系API
   static const String relation = '/x/relation';
 
+  /// 修改关系（关注/取关/拉黑/移除黑名单等）
+  static const String relationMod = '/x/relation/modify';
+
   /// 用户收藏夹列表
   static const String userSubFolder = '/x/v3/fav/folder/collected/list';
 

@@ -221,7 +221,7 @@ class LoginRemoteDataSource {
     String? recaptchaToken,
   }) async {
     try {
-      final publicKey = RSAKeyParser().parse(key) as RSAPublicKey;
+      final dynamic publicKey = RSAKeyParser().parse(key);
       final passwordEncrypted = Encrypter(RSA(publicKey: publicKey))
           .encrypt(salt + password)
           .base64;
@@ -238,7 +238,7 @@ class LoginRemoteDataSource {
         'device_platform': 'Android14vivo',
         'disable_rcmd': '0',
         'dt': Uri.encodeComponent(
-          Encrypter(RSA(publicKey: publicKey as RSAPublicKey))
+          Encrypter(RSA(publicKey: publicKey))
               .encrypt(Utils.generateRandomString(16))
               .base64,
         ),
@@ -302,7 +302,7 @@ class LoginRemoteDataSource {
     required String key,
   }) async {
     try {
-      final publicKey = RSAKeyParser().parse(key);
+      final dynamic publicKey = RSAKeyParser().parse(key);
       final data = {
         'bili_local_id': deviceId,
         'build': '2001100',
@@ -318,7 +318,7 @@ class LoginRemoteDataSource {
         'device_platform': 'Android14vivo',
         'disable_rcmd': '0',
         'dt': Uri.encodeComponent(
-          Encrypter(RSA(publicKey: publicKey as RSAPublicKey))
+          Encrypter(RSA(publicKey: publicKey))
               .encrypt(Utils.generateRandomString(16))
               .base64,
         ),

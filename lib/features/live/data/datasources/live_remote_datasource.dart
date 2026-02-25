@@ -294,6 +294,48 @@ class LiveRemoteDataSource {
     }
   }
 
+  /// 直播间分区列表
+  Future<List<dynamic>> liveRoomAreaList({
+    required Object parentid,
+  }) async {
+    try {
+      final params = {
+        'access_key': _recommend.accessKey,
+        'actionKey': 'appkey',
+        'build': 8430300,
+        'channel': 'master',
+        'version': '8.43.0',
+        'c_locale': 'zh_CN',
+        'device': 'android',
+        'disable_rcmd': 0,
+        'need_entrance': 1,
+        'parent_id': parentid,
+        'source_id': 2,
+        'mobi_app': 'android',
+        'platform': 'android',
+        's_locale': 'zh_CN',
+        'statistics': _getStatisticsApp(),
+      } as Map<String, dynamic>;
+      AppSign.appSign(params);
+
+      final response = await _httpClient.get(
+        LiveApiConstants.liveRoomAreaList,
+        queryParameters: params,
+      );
+
+      if (response.data['code'] == 0) {
+        return response.data['data'] as List<dynamic>? ?? [];
+      } else {
+        throw ServerException(
+          response.data['message'] ?? '获取分区列表失败',
+          code: response.data['code'],
+        );
+      }
+    } on DioException catch (e) {
+      throw ErrorHandler.handleDioError(e);
+    }
+  }
+
   /// 直播分区列表
   Future<Map<String, dynamic>?> liveAreaList() async {
     try {

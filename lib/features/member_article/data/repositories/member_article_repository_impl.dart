@@ -1,30 +1,29 @@
 import 'package:PiliPlus/features/member_article/domain/entities/member_article_item_entity.dart';
 import 'package:PiliPlus/features/member_article/domain/repositories/member_article_repository.dart';
+import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/space/space_article/data.dart';
 
 /// Implementation of member article repository
 class MemberArticleRepositoryImpl implements MemberArticleRepository {
-  const MemberArticleRepositoryImpl();
+  final MemberRemoteDataSource _remoteDataSource;
+
+  MemberArticleRepositoryImpl({
+    required MemberRemoteDataSource remoteDataSource,
+  }) : _remoteDataSource = remoteDataSource;
 
   @override
   Future<LoadingState<List<MemberArticleItemEntity>>> fetchMemberArticles({
     required int mid,
     required int page,
   }) async {
-    // Call the existing API
-    final result = await MemberHttp.spaceArticle(mid: mid, page: page);
-
-    // Transform LoadingState<SpaceArticleData> to LoadingState<List<MemberArticleItemEntity>>
-    return result.when(
-      loading: LoadingState.loading,
-      success: (data) {
-        final items = data.item ?? [];
-        return Success(items);
-      },
-      error: (errMsg, {code}) => Error(errMsg, code: code),
-    );
+    try {
+      final data = await _remoteDataSource.spaceArticle(mid: mid, page: page);
+      final items = data.item ?? [];
+      return Success(items);
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 }
 

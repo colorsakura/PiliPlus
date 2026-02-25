@@ -438,14 +438,16 @@ class MemberRemoteDataSource {
     int? ps,
   }) async {
     try {
+      final params = <String, Object?>{
+        'mid': mid,
+        'keyword': keyword,
+      };
+      if (pn != null) params['pn'] = pn;
+      if (ps != null) params['ps'] = ps;
+
       final response = await _httpClient.get(
         MemberApiConstants.searchArchive,
-        queryParameters: await WbiSign.makSign({
-          'mid': mid,
-          'keyword': keyword,
-          'pn': pn,
-          'ps': ps,
-        }),
+        queryParameters: await WbiSign.makSign(params.cast<String, Object>()),
       );
       if (response.data['code'] == 0) {
         return SearchArchiveData.fromJson(response.data['data']);
@@ -815,15 +817,25 @@ class MemberRemoteDataSource {
 
   /// UP主影响力排行
   ///
-  /// [mid] 成员ID
+  /// [upMid] UP主ID
+  /// [page] 页码
+  /// [privilegeType] 特权类型
   Future<UpowerRankData> upowerRank({
-    required int mid,
+    required String upMid,
+    required int page,
+    int? privilegeType,
   }) async {
     try {
       final response = await _httpClient.get(
         MemberApiConstants.upowerRank,
         queryParameters: {
-          'mid': mid,
+          'up_mid': upMid,
+          'pn': page,
+          'ps': 100,
+          'privilege_type': privilegeType,
+          'mobi_app': 'web',
+          'web_location': 333.1196,
+          if (Accounts.main.isLogin) 'csrf': Accounts.main.csrf,
         },
       );
       if (response.data['code'] == 0) {
