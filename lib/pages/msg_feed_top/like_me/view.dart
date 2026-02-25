@@ -11,7 +11,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_like/item.dart';
 import 'package:PiliPlus/pages/msg_feed_top/like_me/controller.dart';
-import 'package:PiliPlus/pages/whisper_settings/view.dart';
+import 'package:PiliPlus/features/whisper_settings/whisper_settings.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';

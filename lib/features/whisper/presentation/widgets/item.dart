@@ -7,7 +7,7 @@ import 'package:PiliPlus/common/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show Session, SessionId, SessionPageType, SessionType, UnreadStyle;
 import 'package:PiliPlus/models/common/badge_type.dart';
-import 'package:PiliPlus/pages/whisper_secondary/view.dart';
+import 'package:PiliPlus/features/whisper_secondary/whisper_secondary.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
