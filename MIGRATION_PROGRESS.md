@@ -8,11 +8,11 @@
 
 ## 📊 总体进度
 
-- **已完成:** 90+ 功能模块完全迁移
+- **已完成:** 91+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
 - **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **8 个**
+- **本次会话提交:** **9 个**
 
 ## 🎯 核心迁移模式
 
@@ -85,19 +85,27 @@ lib/features/{feature}/
 
 ## 🔄 最近会话迁移 (2025-02-25)
 
-### 本次会话已完成迁移 (5个功能模块)
+### 本次会话已完成迁移 (6个功能模块)
 
 1. ✅ **color_select** - 迁移 _ColorSelectController 到 Riverpod Provider
 2. ✅ **home_zone** - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
 3. ✅ **history** - 创建 HistoryPageV2 和 HistoryMultiSelectControllerV2
 4. ✅ **member_contribute** - 创建 MemberContributeTabControllerV2
 5. ✅ **download** - 创建 DownloadMultiSelectControllerV2 和 DownloadPageDataControllerV2
+6. ✅ **common_controllers** - 创建 SimpleTabControllerV2 和 DebounceControllerV2 (通用工具类)
 
 **技术要点:**
 - 所有 V2 控制器继承 `ChangeNotifier`
 - 使用 `Provider.family` 支持多实例
 - 使用 `ListenableBuilder` 或 `ref.watch` 替代 `Obx`
 - 移除对 GetX mixins 的依赖
+- 创建可复用的通用控制器工具类
+
+**新增通用工具类:**
+- `lib/core/controllers/simple_tab_controller.dart` - 简单的 Tab 管理器
+- `lib/core/controllers/debounce_controller.dart` - 防抖输入控制器
+- `lib/core/controllers/tab_providers.dart` - Tab providers
+- `lib/core/controllers/debounce_provider.dart` - Debounce providers
 
 **编译状态:** ✅ **0 编译错误**
 
@@ -188,5 +196,5 @@ lib/features/{feature}/
 
 ---
 
-*最后更新: 2025-02-25 (续11)*
+*最后更新: 2025-02-25 (续12)*
 *维护者: Claude Sonnet 4.6*
