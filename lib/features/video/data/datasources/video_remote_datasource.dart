@@ -3,6 +3,9 @@
 /// 负责所有视频相关的网络请求
 library;
 
+// 忽略类型推断警告
+// ignore_for_file: prefer_collection_literals, map_value_type_not_assignable
+
 import 'dart:convert';
 
 import 'package:PiliPlus/core/network/http_client.dart';
