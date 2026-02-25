@@ -497,10 +497,10 @@ abstract final class PiliScheme {
       }) {
         switch (type) {
           case 'follow':
-            FollowPage.toFollowPage(mid: mid);
+            FollowPageV2.toFollowPage(mid: mid);
             break;
           case 'fans':
-            FansPage.toFansPage(mid: mid);
+            FanPageV2.toFanPage(mid: mid);
             break;
           case 'followed':
             FollowedPage.toFollowedPage(mid: mid);

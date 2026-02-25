@@ -363,13 +363,13 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
         num = userStat['follower'] != null
             ? NumUtils.numFormat(userStat['follower'])
             : '';
-        onTap = () => FansPage.toFansPage(
+        onTap = () => FanPageV2.toFanPage(
           mid: widget.mid,
           name: memberInfoModel.name,
         );
       case UserInfoType.follow:
         num = userStat['following'] ?? '';
-        onTap = () => FollowPage.toFollowPage(
+        onTap = () => FollowPageV2.toFollowPage(
           mid: widget.mid,
           name: memberInfoModel.name,
         );

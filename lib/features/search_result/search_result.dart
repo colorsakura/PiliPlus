@@ -2,10 +2,6 @@
 export 'package:PiliPlus/features/search_result/presentation/pages/search_result_page_v2.dart'
     show SearchResultPageV2;
 
-// Backward compatibility alias
-export 'package:PiliPlus/features/search_result/presentation/pages/search_result_page_v2.dart'
-    show SearchResultPageV2 as SearchResultPage;
-
 // Providers
 export 'package:PiliPlus/features/search_result/presentation/providers/search_result_providers.dart'
     show searchResultControllerProvider;

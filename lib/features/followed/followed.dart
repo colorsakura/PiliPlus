@@ -3,7 +3,3 @@ export 'package:PiliPlus/features/followed/presentation/providers/followed_provi
 export 'package:PiliPlus/features/followed/presentation/providers/followed_controller.dart';
 export 'package:PiliPlus/features/followed/presentation/pages/followed_page_v2.dart'
     show FollowedPageV2;
-
-// Backward compatibility aliases
-export 'package:PiliPlus/features/followed/presentation/pages/followed_page_v2.dart'
-    show FollowedPageV2 as FollowedPage;

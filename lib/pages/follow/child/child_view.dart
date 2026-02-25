@@ -8,7 +8,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/follow_order_type.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/pages/follow/child/child_controller.dart';
-import 'package:PiliPlus/features/follow/presentation/pages/follow_controller.dart';
+import 'package:PiliPlus/features/follow/presentation/providers/follow_controller.dart';
 import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/pages/follow_type/follow_same/view.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;

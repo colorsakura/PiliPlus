@@ -182,7 +182,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
     );
   }
 
-  Widget _buildKeyword(List list, LiveDmBlockState state) {
+  Widget _buildKeyword(List list, dynamic state) {
     if (list.isEmpty) {
       return scrollErrorWidget();
     }
@@ -213,7 +213,7 @@ class _LiveDmBlockPageV2State extends ConsumerState<LiveDmBlockPageV2>
     );
   }
 
-  List<Widget> _buildHeader(ThemeData theme, LiveDmBlockState state) {
+  List<Widget> _buildHeader(ThemeData theme, dynamic state) {
     return [
       const SizedBox(height: 6),
       Row(

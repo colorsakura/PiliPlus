@@ -98,14 +98,14 @@ class Routes {
     ),
     // 搜索页面
     GetPage(name: '/search', page: () => const SearchPage()),
-    // 搜索结果
-    GetPage(name: '/searchResult', page: () => const SearchResultPageV2()),
+    // 搜索结果 - requires keyword parameter
+    GetPage(name: '/searchResult', page: () => SearchResultPageV2(keyword: Get.parameters['keyword'] ?? '')),
     // 动态
     GetPage(name: '/dynamics', page: () => const dynamics.DynamicsPage()),
     // 动态详情
     GetPage(name: '/dynamicDetail', page: () => const DynamicDetailPage()),
-    // 关注
-    GetPage(name: '/follow', page: () => const FollowPageV2()),
+    // 关注 - requires mid parameter
+    GetPage(name: '/follow', page: () => FollowPageV2(mid: int.tryParse(Get.parameters['mid'] ?? '') ?? 0)),
     // 粉丝
     GetPage(name: '/fan', page: () => const FanPageV2()),
     // 直播详情
@@ -185,8 +185,8 @@ class Routes {
     GetPage(name: '/popularPrecious', page: () => const PopularPreciousPage()),
     GetPage(name: '/audio', page: () => const AudioPage()),
     GetPage(name: '/mainReply', page: () => const MainReplyPage()),
-    GetPage(name: '/followed', page: () => const FollowedPageV2()),
-    GetPage(name: '/sameFollowing', page: () => const FollowSamePageV2()),
+    GetPage(name: '/followed', page: () => FollowedPageV2(mid: int.tryParse(Get.parameters['mid'] ?? '') ?? 0)),
+    GetPage(name: '/sameFollowing', page: () => FollowSamePageV2(mid: int.tryParse(Get.parameters['mid'] ?? '') ?? 0)),
     GetPage(name: '/download', page: () => const DownloadPage()),
     GetPage(name: '/dlna', page: () => const DlnaPage()),
   ];

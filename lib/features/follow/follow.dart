@@ -2,10 +2,6 @@
 export 'package:PiliPlus/features/follow/presentation/pages/follow_page_v2.dart'
     show FollowPageV2;
 
-// Backward compatibility alias
-export 'package:PiliPlus/features/follow/presentation/pages/follow_page_v2.dart'
-    show FollowPageV2 as FollowPage;
-
 // Providers
 export 'package:PiliPlus/features/follow/presentation/providers/follow_providers.dart'
     show

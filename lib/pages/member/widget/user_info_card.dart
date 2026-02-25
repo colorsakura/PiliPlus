@@ -69,13 +69,13 @@ class UserInfoCard extends StatelessWidget {
     switch (type) {
       case UserInfoType.fan:
         count = card.fans;
-        onTap = () => FansPage.toFansPage(
+        onTap = () => FanPageV2.toFanPage(
           mid: card.mid,
           name: card.name,
         );
       case UserInfoType.follow:
         count = card.attention;
-        onTap = () => FollowPage.toFollowPage(
+        onTap = () => FollowPageV2.toFollowPage(
           mid: card.mid,
           name: card.name,
         );
