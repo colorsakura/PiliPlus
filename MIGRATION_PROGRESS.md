@@ -8,11 +8,11 @@
 
 ## 📊 总体进度
 
-- **已完成:** 86+ 功能模块完全迁移
+- **已完成:** 87+ 功能模块完全迁移
 - **编译状态:** ✅ **0 编译错误** (项目完全可编译！)
 - **剩余 GetxControllers:** 17 个 (10 个在 lib/features，7 个在 lib/pages)
 - **兼容层:** 1 个 (search_result - GetX wrapper for Riverpod)
-- **本次会话提交:** **4 个**
+- **本次会话提交:** **5 个**
 
 ## 🎯 核心迁移模式
 
@@ -107,7 +107,35 @@ lib/features/{feature_name}/
 └── {feature}.dart       # 导出文件
 ```
 
-## 🔄 本次会话迁移 (2025-02-25 续7)
+## 🔄 本次会话迁移 (2025-02-25 续8)
+
+### 本次迁移功能 (1个)
+
+**已完成迁移:**
+1. ✅ home_zone - 创建 RankPageV2 和 ZonePageV2 (Riverpod版本)
+
+**迁移详情:**
+- 创建 `ZoneControllerV2` 继承 `CommonControllerV2`
+- 创建 `zoneControllerProvider` 使用 Provider.family
+- 创建 `RankPageV2` 替换 `RankPage`
+- 创建 `ZonePageV2` 替换 `ZonePage`
+- 使用 `ListenableBuilder` 替换 `Obx`
+- 使用 `SingleTickerProviderStateMixin` 管理 TabController
+
+**新增文件:**
+- `lib/features/home_zone/zone/controller_v2.dart` - ZoneControllerV2
+- `lib/features/home_zone/zone/providers.dart` - Riverpod providers
+- `lib/features/home_zone/zone/view_v2.dart` - ZonePageV2
+- `lib/features/home_zone/view_v2.dart` - RankPageV2
+
+**保留旧文件:**
+- 原 RankController 和 ZoneController 保留，等待路由切换
+
+**编译状态:** ✅ **0 编译错误**
+
+---
+
+## 🔄 上次会话迁移 (2025-02-25 续7)
 
 ### 本次迁移功能 (1个)
 
@@ -376,5 +404,5 @@ search_panel 控制器仍在使用 GetX，待 search_panel 完全迁移后可删
 
 ---
 
-*最后更新: 2025-02-25 (续7)*
+*最后更新: 2025-02-25 (续8)*
 *维护者: Claude Sonnet 4.6*
