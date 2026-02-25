@@ -22,7 +22,7 @@ import 'package:PiliPlus/models/common/video/video_quality.dart';
 import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_play_info/subtitle.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart';
-import 'package:PiliPlus/pages/danmaku/danmaku_model.dart';
+import 'package:PiliPlus/models/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/popup_item.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
 import 'package:PiliPlus/pages/video/controller.dart';

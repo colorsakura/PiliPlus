@@ -17,7 +17,7 @@ import 'package:PiliPlus/models/live/live_room_info_h5/data.dart';
 import 'package:PiliPlus/models/live/live_room_play_info/codec.dart';
 import 'package:PiliPlus/models/live/live_superchat/item.dart';
 import 'package:PiliPlus/pages/common/publish/publish_route.dart';
-import 'package:PiliPlus/pages/danmaku/danmaku_model.dart';
+import 'package:PiliPlus/models/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/pages/live_room/contribution_rank/view.dart';
 import 'package:PiliPlus/pages/live_room/send_danmaku/view.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';

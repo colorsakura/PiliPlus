@@ -18,7 +18,7 @@ import 'package:PiliPlus/models/video/video_detail/page.dart';
 import 'package:PiliPlus/models/video/video_detail/ugc_season.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
 import 'package:PiliPlus/pages/common/common_intro_controller.dart';
-import 'package:PiliPlus/pages/danmaku/view.dart';
+import 'package:PiliPlus/features/danmaku/danmaku.dart';
 import 'package:PiliPlus/features/episode_panel/episode_panel.dart';
 import 'package:PiliPlus/pages/video/ai_conclusion/view.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
