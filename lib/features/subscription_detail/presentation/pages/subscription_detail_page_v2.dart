@@ -1,17 +1,17 @@
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_controller.dart';
+import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_providers.dart';
+import 'package:PiliPlus/features/subscription_detail/presentation/widgets/sub_video_card.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/models/sub/sub_detail/media.dart';
-import 'package:PiliPlus/pages/subscription_detail/widget/sub_video_card.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_providers.dart';
-import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_controller.dart';
 
 /// Subscription Detail page - V2 with Riverpod
 class SubscriptionDetailPageV2 extends ConsumerStatefulWidget {
@@ -27,7 +27,8 @@ class SubscriptionDetailPageV2 extends ConsumerStatefulWidget {
   final SubItemModel? subInfo;
 
   @override
-  ConsumerState<SubscriptionDetailPageV2> createState() => _SubscriptionDetailPageV2State();
+  ConsumerState<SubscriptionDetailPageV2> createState() =>
+      _SubscriptionDetailPageV2State();
 
   static void toSubDetailPage(
     int id, {
@@ -45,19 +46,22 @@ class SubscriptionDetailPageV2 extends ConsumerStatefulWidget {
   }
 }
 
-class _SubscriptionDetailPageV2State extends ConsumerState<SubscriptionDetailPageV2>
+class _SubscriptionDetailPageV2State
+    extends ConsumerState<SubscriptionDetailPageV2>
     with GridMixin {
   late final SubscriptionDetailController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(subscriptionDetailControllerProvider(
-      SubscriptionDetailParams(
-        id: widget.id,
-        initialSubInfo: widget.subInfo,
+    _controller = ref.read(
+      subscriptionDetailControllerProvider(
+        SubscriptionDetailParams(
+          id: widget.id,
+          initialSubInfo: widget.subInfo,
+        ),
       ),
-    ));
+    );
   }
 
   @override
@@ -125,10 +129,10 @@ class _SubscriptionDetailPageV2State extends ConsumerState<SubscriptionDetailPag
     return switch (_controller.loadingState) {
       Loading() || Error() => const SliverAppBar(),
       Success() => _buildAppBar(
-          theme,
-          padding,
-          _controller.subInfo!,
-        ),
+        theme,
+        padding,
+        _controller.subInfo!,
+      ),
     };
   }
 

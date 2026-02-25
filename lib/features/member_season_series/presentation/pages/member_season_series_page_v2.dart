@@ -1,12 +1,12 @@
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_list_provider.dart';
+import 'package:PiliPlus/features/member_season_series/presentation/widgets/season_series_card.dart';
+import 'package:PiliPlus/features/member_video/member_video.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/space/space_season_series/season.dart'
     show SpaceSsModel;
-import 'package:PiliPlus/pages/member_season_series/widget/season_series_card.dart';
-import 'package:PiliPlus/features/member_video/member_video.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,8 +34,9 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller =
-        ref.watch(memberSeasonSeriesListControllerProvider(widget.mid));
+    final controller = ref.watch(
+      memberSeasonSeriesListControllerProvider(widget.mid),
+    );
     final listState = controller.state.listState;
 
     return CustomScrollView(
