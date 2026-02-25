@@ -5,7 +5,7 @@ import 'package:PiliPlus/shared/widgets/color_palette.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/home/view.dart';
+import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/models/common/theme/theme_color_type.dart';
 import 'package:PiliPlus/models/common/theme/theme_type.dart';

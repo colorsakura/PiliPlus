@@ -39,13 +39,19 @@ final getPgcTimelineUseCaseProvider = Provider<GetPgcTimelineUseCase>((ref) {
 
 /// PGC controller provider family (keyed by tab type)
 ///
-/// Uses Provider.family to create a unique ChangeNotifier for each tab type
+/// Uses Provider.family to create a unique controller for each tab type
+/// Note: Not using autoDispose because the page uses AutomaticKeepAliveClientMixin
 final pgcControllerProvider =
     Provider.family<PgcController, HomeTabType>((ref, tabType) {
-  return PgcController(
+  final controller = PgcController(
     tabType: tabType,
     getPgcIndexUseCase: ref.read(getPgcIndexUseCaseProvider),
     getPgcFollowUseCase: ref.read(getPgcFollowUseCaseProvider),
     getPgcTimelineUseCase: ref.read(getPgcTimelineUseCaseProvider),
   );
+
+  // Don't dispose here - let it be managed by the framework
+  // The controller will be disposed when the app shuts down
+
+  return controller;
 });

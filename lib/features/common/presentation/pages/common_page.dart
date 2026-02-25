@@ -1,5 +1,4 @@
 import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
-import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/material.dart';
@@ -16,9 +15,8 @@ abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
     super.initState();
     _barOffset = _mainController.barOffset;
     _showBottomBar = _mainController.showBottomBar;
-    try {
-      _showTopBar = Get.find<HomeController>().showTopBar;
-    } catch (_) {}
+    // HomeController has been removed, showTopBar is now handled by Riverpod providers
+    // _showTopBar = _mainController.showTopBar;
   }
 
   Widget onBuild(Widget child) {

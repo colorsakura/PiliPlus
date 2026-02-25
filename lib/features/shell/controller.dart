@@ -22,7 +22,7 @@ import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/home/controller.dart';
+// import 'package:PiliPlus/features/home/controller.dart'; // Deprecated: HomeController has been removed
 import 'package:PiliPlus/grpc/dyn.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
@@ -66,7 +66,7 @@ class MainController extends GetxController
   late final dynamicController = Get.putOrFind(DynamicsController.new);
 
   late bool hasHome = false;
-  late final homeController = Get.putOrFind(HomeController.new);
+  // late final homeController = Get.putOrFind(HomeController.new); // Deprecated: HomeController has been removed
 
   late DynamicBadgeMode msgBadgeMode = Pref.msgBadgeMode;
   late Set<MsgUnReadType> msgUnReadTypes = Pref.msgUnReadTypeV2;
@@ -244,17 +244,18 @@ class MainController extends GetxController
   }
 
   Future<void> checkDefaultSearch([bool shouldCheck = false]) async {
-    if (hasHome && homeController.enableSearchWord) {
-      if (shouldCheck &&
-          navigationBars[selectedIndex.value] != NavigationBarType.home) {
-        return;
-      }
-      int now = DateTime.now().millisecondsSinceEpoch;
-      if (now - homeController.lateCheckSearchAt >= _period) {
-        homeController.lateCheckSearchAt = now;
-        await homeController.querySearchDefault();
-      }
-    }
+    // Deprecated: HomeController has been removed, search functionality is now handled by Riverpod providers
+    // if (hasHome && homeController.enableSearchWord) {
+    //   if (shouldCheck &&
+    //       navigationBars[selectedIndex.value] != NavigationBarType.home) {
+    //     return;
+    //   }
+    //   int now = DateTime.now().millisecondsSinceEpoch;
+    //   if (now - homeController.lateCheckSearchAt >= _period) {
+    //     homeController.lateCheckSearchAt = now;
+    //     await homeController.querySearchDefault();
+    //   }
+    // }
   }
 
   Future<void> checkUnread([bool shouldCheck = false]) async {
@@ -311,7 +312,8 @@ class MainController extends GetxController
           const Duration(milliseconds: 500),
           () {
             if (currentNav == NavigationBarType.home) {
-              homeController.onRefresh();
+              // Deprecated: HomeController has been removed
+              // homeController.onRefresh();
             } else if (currentNav == NavigationBarType.dynamics) {
               dynamicController.onRefresh();
             }
@@ -319,7 +321,8 @@ class MainController extends GetxController
         );
       } else {
         if (currentNav == NavigationBarType.home) {
-          homeController.toTopOrRefresh();
+          // Deprecated: HomeController has been removed
+          // homeController.toTopOrRefresh();
         } else if (currentNav == NavigationBarType.dynamics) {
           dynamicController.toTopOrRefresh();
         }
@@ -329,9 +332,10 @@ class MainController extends GetxController
   }
 
   void setSearchBar() {
-    if (hasHome) {
-      homeController.showTopBar?.value = true;
-    }
+    // Deprecated: HomeController has been removed
+    // if (hasHome) {
+    //   homeController.showTopBar?.value = true;
+    // }
   }
 
   @override

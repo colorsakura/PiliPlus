@@ -11,7 +11,7 @@ import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/home/controller.dart';
+import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/fav.dart';
@@ -493,16 +493,7 @@ List<SettingsModel> get extraSettings => [
     leading: const Icon(Icons.whatshot_outlined),
     setKey: SettingBoxKey.enableSearchWord,
     defaultVal: false,
-    onChanged: (val) {
-      try {
-        final controller = Get.find<HomeController>()..enableSearchWord = val;
-        if (val) {
-          controller.querySearchDefault();
-        } else {
-          controller.defaultSearch.value = '';
-        }
-      } catch (_) {}
-    },
+    // 搜索默认词的启用状态变更会由 Riverpod provider 自动处理
   ),
   const SwitchModel(
     title: '快速收藏',

@@ -12,7 +12,11 @@ final zoneControllerProvider = Provider.family<ZoneControllerV2, ({int? rid, int
     );
 
     // Initialize data on first creation
+    controller.onReload();
+
+    // Dispose controller when provider is disposed
     ref.onDispose(controller.dispose);
+
     return controller;
   },
 );

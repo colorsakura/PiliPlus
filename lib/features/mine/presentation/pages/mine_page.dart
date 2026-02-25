@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/message_badge.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/home/view.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
@@ -19,6 +19,7 @@ import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart' hide ListTile;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -159,7 +160,7 @@ class _MediaPageState extends CommonPageState<MinePage>
             onPressed: () => Get.toNamed('/search'),
             icon: const Icon(Icons.search),
           ),
-          msgBadge(_mainController),
+          const MessageBadge(),
         ],
         Obx(
           () {

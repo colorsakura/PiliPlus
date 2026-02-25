@@ -33,8 +33,13 @@ class PgcRepositoryImpl implements PgcRepository {
     int page,
     HomeTabType tabType,
   ) {
-    // TODO: Implement getPgcFollow - needs corresponding data source method
-    throw UnimplementedError('getPgcFollow is not yet implemented in PgcApiDataSource');
+    // Map HomeTabType to type values for fav API
+    final type = switch (tabType) {
+      HomeTabType.bangumi => 1,
+      HomeTabType.cinema => 2,
+      _ => 1,
+    };
+    return _remoteDataSource.getPgcFollowList(page: page, type: type);
   }
 
   @override

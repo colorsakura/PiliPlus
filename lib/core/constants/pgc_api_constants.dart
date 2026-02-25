@@ -35,4 +35,8 @@ abstract class PgcApiConstants {
   // ==================== 季度状态 ====================
   /// 季度用户状态
   static const String seasonStatus = '/pgc/view/web/season/user/status';
+
+  // ==================== PGC 收藏 ====================
+  /// PGC 收藏列表
+  static const String favPgc = '/x/space/bangumi/follow/list';
 }

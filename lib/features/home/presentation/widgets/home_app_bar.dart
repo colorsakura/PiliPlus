@@ -1,10 +1,13 @@
 import 'package:PiliPlus/shared/widgets/custom_height_widget.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/features/account/domain/entities/account_state.dart';
+import 'package:PiliPlus/features/account/presentation/providers/account_provider.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
@@ -101,82 +104,98 @@ class UserAvatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final mainController = Get.find<MainController>();
+    final accountState = ref.watch(accountControllerProvider);
 
     return Semantics(
       label: "我的",
       child: GestureDetector(
-        onTap: mainController.toMinePage,
-        child: Obx(
-          () {
-            final accountService = Get.find<AccountService>();
-            if (accountService.isLogin.value) {
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  NetworkImgLayer(
-                    type: ImageType.avatar,
-                    width: 34,
-                    height: 34,
-                    src: accountService.face.value,
-                  ),
-                  Positioned.fill(
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: InkWell(
-                        onTap: mainController.toMinePage,
-                        splashColor: theme.colorScheme.primaryContainer
-                            .withValues(alpha: 0.3),
-                        customBorder: const CircleBorder(),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: -4,
-                    bottom: -4,
-                    child: Obx(
-                      () => MineController.anonymity?.value ?? false
-                          ? IgnorePointer(
-                              child: Container(
-                                padding: const EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: theme.colorScheme.secondaryContainer,
-                                ),
-                                child: Icon(
-                                  size: 14,
-                                  MdiIcons.incognito,
-                                  color: theme.colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                  ),
-                ],
-              );
-            }
-            return SizedBox(
-              width: 38,
-              height: 38,
-              child: IconButton(
-                tooltip: '点击登录',
-                style: IconButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: theme.colorScheme.onInverseSurface,
+        onTap: () => _handleTap(context, ref),
+        child: accountState.isLogin
+            ? _buildLoggedInAvatar(context, ref, theme, accountState)
+            : _buildLoggedOutAvatar(context, ref, theme),
+      ),
+    );
+  }
+
+  /// 构建已登录头像
+  Widget _buildLoggedInAvatar(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+    AccountState accountState,
+  ) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        NetworkImgLayer(
+          type: ImageType.avatar,
+          width: 34,
+          height: 34,
+          src: accountState.face,
+        ),
+        Positioned.fill(
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: () => _handleTap(context, ref),
+              splashColor:
+                  theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+              customBorder: const CircleBorder(),
+            ),
+          ),
+        ),
+        if (accountState.isAnonymous)
+          Positioned(
+            right: -4,
+            bottom: -4,
+            child: IgnorePointer(
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.colorScheme.secondaryContainer,
                 ),
-                onPressed: mainController.toMinePage,
-                icon: Icon(
-                  Icons.person_rounded,
-                  size: 22,
-                  color: theme.colorScheme.primary,
+                child: Icon(
+                  size: 14,
+                  MdiIcons.incognito,
+                  color: theme.colorScheme.onSecondaryContainer,
                 ),
               ),
-            );
-          },
+            ),
+          ),
+      ],
+    );
+  }
+
+  /// 构建未登录头像
+  Widget _buildLoggedOutAvatar(
+    BuildContext context,
+    WidgetRef ref,
+    ThemeData theme,
+  ) {
+    return SizedBox(
+      width: 38,
+      height: 38,
+      child: IconButton(
+        tooltip: '点击登录',
+        style: IconButton.styleFrom(
+          padding: EdgeInsets.zero,
+          backgroundColor: theme.colorScheme.onInverseSurface,
+        ),
+        onPressed: () => _handleTap(context, ref),
+        icon: Icon(
+          Icons.person_rounded,
+          size: 22,
+          color: theme.colorScheme.primary,
         ),
       ),
     );
+  }
+
+  /// 处理点击事件
+  void _handleTap(BuildContext context, WidgetRef ref) {
+    final mainController = Get.find<MainController>();
+    mainController.toMinePage();
   }
 }
 
@@ -245,37 +264,34 @@ class MsgBadge extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainController = Get.find<MainController>();
-    final accountService = Get.find<AccountService>();
+    final accountState = ref.watch(accountControllerProvider);
     final msgBadgeMode = ref.read(msgBadgeModeProvider);
 
-    return Obx(
-      () {
-        if (!accountService.isLogin.value) {
-          return const SizedBox.shrink();
-        }
+    if (!accountState.isLogin) {
+      return const SizedBox.shrink();
+    }
 
-        final count = mainController.msgUnReadCount.value;
-        final isNumBadge = msgBadgeMode == DynamicBadgeMode.number;
+    final unreadMessage = ref.watch(unreadMessageControllerProvider);
+    final isNumBadge = msgBadgeMode == DynamicBadgeMode.number;
 
-        return IconButton(
-          tooltip: '消息',
-          onPressed: () {
-            mainController.msgUnReadCount.value = '';
-            mainController.lastCheckUnreadAt =
-                DateTime.now().millisecondsSinceEpoch;
-            Get.toNamed('/whisper');
-          },
-          icon: Badge(
-            isLabelVisible:
-                msgBadgeMode != DynamicBadgeMode.hidden && count.isNotEmpty,
-            alignment: isNumBadge
-                ? const Alignment(0.0, -0.85)
-                : const Alignment(1.0, -0.85),
-            label: isNumBadge && count.isNotEmpty ? Text(count) : null,
-            child: const Icon(Icons.notifications_none),
-          ),
-        );
+    return IconButton(
+      tooltip: '消息',
+      onPressed: () {
+        ref.read(unreadMessageControllerProvider.notifier).clear();
+        ref.read(unreadMessageControllerProvider.notifier).resetCheckTime();
+        Get.toNamed('/whisper');
       },
+      icon: Badge(
+        isLabelVisible:
+            msgBadgeMode != DynamicBadgeMode.hidden && unreadMessage.hasUnread,
+        alignment: isNumBadge
+            ? const Alignment(0.0, -0.85)
+            : const Alignment(1.0, -0.85),
+        label: isNumBadge && unreadMessage.hasUnread
+            ? Text(unreadMessage.displayText)
+            : null,
+        child: const Icon(Icons.notifications_none),
+      ),
     );
   }
 }

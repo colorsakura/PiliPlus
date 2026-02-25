@@ -51,13 +51,13 @@ class PgcApiDataSource {
         final result = response.data['data'];
         return Success(PgcIndexResult.fromJson(result).list);
       } else {
-        throw ServerException(
-          response.data['message'] ?? '获取PGC索引失败',
-          code: response.data['code'],
-        );
+        // Return Error state instead of throwing exception
+        return Error(response.data['message'] ?? '获取PGC索引失败');
       }
     } on DioException catch (e) {
       return Error(ErrorHandler.handleDioError(e).toString());
+    } on ServerException catch (e) {
+      return Error(e.toString());
     }
   }
 
@@ -80,13 +80,13 @@ class PgcApiDataSource {
       if (response.data['code'] == 0) {
         return Success(PgcTimeline.fromJson(response.data).result);
       } else {
-        throw ServerException(
-          response.data['message'] ?? '获取PGC时间线失败',
-          code: response.data['code'],
-        );
+        // Return Error state instead of throwing exception
+        return Error(response.data['message'] ?? '获取PGC时间线失败');
       }
     } on DioException catch (e) {
       return Error(ErrorHandler.handleDioError(e).toString());
+    } on ServerException catch (e) {
+      return Error(e.toString());
     }
   }
 
@@ -173,6 +173,41 @@ class PgcApiDataSource {
       }
     } on DioException catch (e) {
       return Error(ErrorHandler.handleDioError(e).toString());
+    }
+  }
+
+  /// Get PGC follow list (favorite anime/cinema)
+  Future<LoadingState<List<FavPgcItemModel>?>> getPgcFollowList({
+    required int page,
+    required int type,
+  }) async {
+    try {
+      final response = await _httpClient.get(
+        PgcApiConstants.favPgc,
+        queryParameters: {
+          'vmid': Accounts.main.mid,
+          'type': type,
+          'pn': page,
+        },
+      );
+
+      if (response.data['code'] == 0) {
+        final data = response.data['data'];
+        if (data != null && data['list'] != null) {
+          final list = (data['list'] as List)
+              .map((e) => FavPgcItemModel.fromJson(e))
+              .toList();
+          return Success(list);
+        }
+        return Success(const []);
+      } else {
+        // Return Error state instead of throwing exception
+        return Error(response.data['message'] ?? '获取PGC关注列表失败');
+      }
+    } on DioException catch (e) {
+      return Error(ErrorHandler.handleDioError(e).toString());
+    } on ServerException catch (e) {
+      return Error(e.toString());
     }
   }
 }

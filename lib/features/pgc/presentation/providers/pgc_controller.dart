@@ -93,6 +93,9 @@ class PgcController extends ChangeNotifier {
   }
 
   void _updateState(PgcState newState) {
+    // Check if controller is still alive before notifying
+    if (!hasListeners) return;
+
     _state = newState;
     notifyListeners();
   }

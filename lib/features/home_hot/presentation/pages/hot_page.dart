@@ -4,9 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/home/controller.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
-import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/features/home_zone/view_v2.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
@@ -84,23 +82,13 @@ class _HotPageState extends ConsumerState<HotPage>
                           'https://i0.hdslb.com/bfs/archive/a3f11218aaf4521b4967db2ae164ecd3052586b9.png',
                       title: '排行榜',
                       onTap: () {
-                        try {
-                          final homeController = Get.find<HomeController>();
-                          final index = homeController.tabs.indexOf(
-                            HomeTabType.rank,
-                          );
-                          if (index != -1) {
-                            homeController.tabController.animateTo(index);
-                          } else {
-                            Get.to(
-                              Scaffold(
-                                resizeToAvoidBottomInset: false,
-                                appBar: AppBar(title: const Text('排行榜')),
-                                body: const ViewSafeArea(child: RankPageV2()),
-                              ),
-                            );
-                          }
-                        } catch (_) {}
+                        Get.to(
+                          Scaffold(
+                            resizeToAvoidBottomInset: false,
+                            appBar: AppBar(title: const Text('排行榜')),
+                            body: const ViewSafeArea(child: RankPageV2()),
+                          ),
+                        );
                       },
                     ),
                     _buildEntranceItem(
