@@ -9,6 +9,11 @@ class HistoryMultiSelectControllerV2 extends ChangeNotifier {
   bool get enableMultiSelect => _enableMultiSelect;
   int get checkedCount => _checkedCount;
 
+  void enableMultiSelectMode() {
+    _enableMultiSelect = true;
+    notifyListeners();
+  }
+
   void onSelect(HistoryItemModel item) {
     item.checked = !item.checked;
     if (item.checked) {

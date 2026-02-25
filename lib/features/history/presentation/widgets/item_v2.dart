@@ -42,7 +42,7 @@ class HistoryItemV2 extends StatelessWidget {
     final onLongPress = enableMultiSelect
         ? null
         : () {
-            ctr._enableMultiSelect = true;
+            ctr.enableMultiSelectMode();
             ctr.onSelect(item);
           };
 

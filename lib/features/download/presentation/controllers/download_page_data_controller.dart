@@ -7,9 +7,12 @@ import 'package:PiliPlus/services/download/download_service.dart';
 ///
 /// Manages the list of downloaded items
 class DownloadPageDataControllerV2 extends ChangeNotifier {
-  DownloadPageDataControllerV2(this._downloadService);
+  DownloadPageDataControllerV2(this._downloadService) {
+    _loadListCallback = _loadList;
+  }
 
   final DownloadService _downloadService;
+  late final VoidCallback _loadListCallback;
   List<DownloadPageInfo> _pages = [];
   int _flag = 0;
 
@@ -18,13 +21,13 @@ class DownloadPageDataControllerV2 extends ChangeNotifier {
 
   @override
   void dispose() {
-    _downloadService.flagNotifier.removeListener(_loadList);
+    _downloadService.flagNotifier.remove(_loadListCallback);
     super.dispose();
   }
 
   void init() {
     _loadList();
-    _downloadService.flagNotifier.addListener(_loadList);
+    _downloadService.flagNotifier.add(_loadListCallback);
   }
 
   Future<void> _loadList() async {
@@ -40,7 +43,10 @@ class DownloadPageDataControllerV2 extends ChangeNotifier {
     final list = <DownloadPageInfo>[];
     for (final entry in _downloadService.downloadList) {
       final pageId = entry.pageId;
-      final page = list.firstWhereOrNull((e) => e.pageId == pageId);
+      final page = list.cast<DownloadPageInfo?>().firstWhere(
+        (e) => e?.pageId == pageId,
+        orElse: () => null,
+      );
       if (page != null) {
         final aSortKey = entry.sortKey;
         final bSortKey = page.sortKey;

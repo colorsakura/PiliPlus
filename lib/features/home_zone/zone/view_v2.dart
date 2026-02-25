@@ -43,7 +43,7 @@ class _ZonePageV2State extends ConsumerState<ZonePageV2>
             sliver: ListenableBuilder(
               listenable: controller,
               builder: (context, child) {
-                return _buildBody(controller.loadingState);
+                return _buildBody(controller);
               },
             ),
           ),
@@ -52,8 +52,8 @@ class _ZonePageV2State extends ConsumerState<ZonePageV2>
     );
   }
 
-  Widget _buildBody(LoadingState<List<dynamic>?> loadingState) {
-    return switch (loadingState) {
+  Widget _buildBody(ZoneControllerV2 controller) {
+    return switch (controller.loadingState) {
       Loading() => gridSkeleton,
       Success(:final response) =>
         response != null && response.isNotEmpty
@@ -65,9 +65,9 @@ class _ZonePageV2State extends ConsumerState<ZonePageV2>
                     return VideoCardH(
                       videoItem: item,
                       onRemove: () {
-                        controller.loadingState = LoadingState<List<dynamic>?>.success(
-                          List.from(response)..removeAt(index),
-                        );
+                        final newList = List<dynamic>.from(response);
+                        newList.removeAt(index);
+                        controller.loadingState = Success(newList);
                       },
                     );
                   }

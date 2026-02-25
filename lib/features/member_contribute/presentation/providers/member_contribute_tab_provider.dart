@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/features/member_contribute/presentation/controllers/member_contribute_tab_controller.dart';
+import 'package:PiliPlus/models/space/space/tab2.dart';
 
 /// Provider family for MemberContributeTabControllerV2
 final memberContributeTabControllerProvider =
@@ -29,7 +30,7 @@ class _ContributeTabConfig {
     this.initialIndex = 0,
   });
 
-  final List items;
+  final List<SpaceTab2Item> items;
   final bool hasSeasonOrSeries;
   final TickerProvider vsync;
   final int initialIndex;

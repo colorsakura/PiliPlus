@@ -3,6 +3,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/history/domain/entities/history_item.dart';
 import 'package:PiliPlus/features/history/presentation/providers/history_controller.dart';
 import 'package:PiliPlus/features/history/presentation/providers/history_multi_select_provider.dart';
+import 'package:PiliPlus/features/history/presentation/widgets/history_item_adapter.dart';
 import 'package:PiliPlus/features/history/presentation/widgets/item_v2.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';

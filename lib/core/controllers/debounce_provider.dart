@@ -13,7 +13,7 @@ final debounceControllerProvider =
 
 /// Default debounce controller with 300ms duration
 final defaultDebounceControllerProvider = Provider<DebounceControllerV2>((ref) {
-  final controller = const DebounceControllerV2();
+  final controller = DebounceControllerV2();
   ref.onDispose(controller.dispose);
   return controller;
 });
