@@ -5,7 +5,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/common/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/pages/login/controller.dart';
+import 'package:PiliPlus/features/login/presentation/pages/login_controller.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';

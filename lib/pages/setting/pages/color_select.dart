@@ -9,7 +9,7 @@ import 'package:PiliPlus/features/home/view.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/models/common/theme/theme_color_type.dart';
 import 'package:PiliPlus/models/common/theme/theme_type.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/popup_item.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';

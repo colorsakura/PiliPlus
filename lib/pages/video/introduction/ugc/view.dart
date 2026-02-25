@@ -14,7 +14,7 @@ import 'package:PiliPlus/models/video/video_ai_conclusion/model_result.dart';
 import 'package:PiliPlus/models/video/video_detail/data.dart';
 import 'package:PiliPlus/models/video/video_detail/staff.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
-import 'package:PiliPlus/pages/mine/controller.dart';
+import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';

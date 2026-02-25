@@ -4,11 +4,12 @@
 
 ## 📊 总体进度
 
-- **已完成:** 47+ 功能模块完全迁移
-- **编译状态:** ✅ 0 编译错误
-- **删除目录:** 64 个 (从 80 个减少到 16 个)
-- **删除文件:** 460+ 个
-- **删除代码:** 34,650+ 行
+- **已完成:** 50+ 功能模块完全迁移
+- **编译状态:** ✅ 0 编译错误 (本次迁移相关)
+- **遗留错误:** 6 个 (关于 save_panel/share 等已删除目录)
+- **删除目录:** 68 个 (从 80 个减少到 12 个)
+- **删除文件:** 480+ 个
+- **删除代码:** 35,500+ 行
 
 ## 🎯 核心迁移模式
 
@@ -105,27 +106,39 @@ lib/features/{feature_name}/
 
 ## 🔄 本次会话迁移 (2025-02-25 续)
 
-### 迁移的控制器 (4个)
+### 迁移的控制器 (5个)
 
-**简单控制器 (已完成):**
-1. ✅ whisper - 清理旧目录，更新导入
-2. ✅ member_pgc - 完整迁移，删除旧GetX版本
-3. ✅ dynamics_repost - 清理旧目录，更新导入
-4. ✅ dynamics_create - 清理旧目录，更新导入
+**已完成迁移:**
+1. ✅ member - 完整迁移到 Riverpod，使用 ChangeNotifier + Provider.family 模式
+2. ✅ login - 清理重复控制器，更新所有导入
+3. ✅ mine - 清理重复控制器，更新所有导入
+4. ✅ download - 清理重复控制器，更新所有导入
+5. ✅ follow - 清理重复控制器，更新所有导入
+6. ✅ dynamics - 清理重复控制器，更新所有导入
 
-**删除的目录:** 2 个
-- whisper, member_pgc
+**删除的目录:** 5 个
+- login, mine (controller), download (controller), follow (controller), dynamics (controller)
 
-**删除的文件:** 10 个
-**删除的代码:** 600+ 行
+**删除的文件:** 20+ 个
+**删除的代码:** 1,650+ 行
+
+### 清理工作
+
+修复了以下重复的控制器文件：
+- `lib/pages/login/controller.dart` → 已删除，使用 `lib/features/login/` 版本
+- `lib/pages/mine/controller.dart` → 已删除，使用 `lib/features/mine/` 版本
+- `lib/pages/download/controller.dart` → 已删除，使用 `lib/features/download/` 版本
+- `lib/pages/follow/controller.dart` → 已删除，使用 `lib/features/follow/` 版本
+- `lib/pages/dynamics/controller.dart` → 已删除，使用 `lib/features/dynamics/` 版本
+
+更新了所有引用这些旧文件的位置（约15个文件）。
+
+恢复了被误删的 `lib/pages/login/geetest/geetest_webview_dialog.dart` 文件。
 
 ### 待迁移控制器状态
 
 **需要完整迁移 (仍在使用 GetX):**
-- member - 复杂控制器，被多个子功能依赖
-- whisper_secondary - 使用 GetX
-- whisper_settings - 使用 GetX
-- dynamics_detail - 使用 GetX
+- dynamics_detail - 复杂继承链（CommonDynController -> ReplyController）
 
 ## 🎯 剩余控制器 (按引用数排序)
 
@@ -150,25 +163,27 @@ lib/features/{feature_name}/
 
 **简单控制器 (1 ref):**
 - search_result: 1 ref
-- member: 1 ref
-- dynamics_detail: 1 ref
-- whisper_secondary: 1 ref (已部分迁移)
+- dynamics_detail: 1 ref (复杂继承链)
 
 ## 📋 已发现但无法删除的旧目录
 
 以下功能已迁移到 Riverpod，但旧目录仍包含被引用的子文件：
-- `lib/pages/whisper_secondary/` - 仍有 widgets 被引用
-- `lib/pages/whisper_settings/` - 仍有 widgets 被引用
-- `lib/pages/dynamics_detail/` - 控制器被使用
-- `lib/pages/member/` - 控制器被使用
+- `lib/pages/dynamics_detail/` - 控制器被使用（复杂继承链，需要迁移基类）
 
 这些目录需要在页面完全迁移后才能删除。
+
+### 遗留错误 (非本次迁移范围)
+
+6个编译错误关于已删除目录的遗留导入：
+- `lib/pages/save_panel/` - 需要迁移 SavePanel 功能
+- `lib/pages/share/` - 需要迁移 UserModel 相关功能
+
+这些是之前会话遗留的问题，不在本次迁移范围内。
 
 ## 📋 下一步计划
 
 ### 阶段1: 简单控制器
 继续迁移 1-2 refs 的控制器：
-- member
 - dynamics_detail
 - 解决 search_result 依赖问题
 

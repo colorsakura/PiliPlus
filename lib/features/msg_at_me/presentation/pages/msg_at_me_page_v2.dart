@@ -11,7 +11,7 @@ import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/msg/msg_at/item.dart';
 import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_providers.dart';
 import 'package:PiliPlus/features/msg_at_me/presentation/providers/msg_at_me_controller.dart';
-import 'package:PiliPlus/pages/whisper_settings/view.dart';
+import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_page.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
