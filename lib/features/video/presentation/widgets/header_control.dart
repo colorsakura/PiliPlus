@@ -9,7 +9,6 @@ import 'package:PiliPlus/common/widgets/dialog/report.dart';
 import 'package:PiliPlus/common/widgets/marquee.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/danmaku.dart';
-import 'package:PiliPlus/http/danmaku_block.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/live.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -32,6 +31,7 @@ import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/cont
 import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/action_item.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_mixin.dart';
+import 'package:PiliPlus/features/danmaku_block/data/datasources/danmaku_filter_api_datasource.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
@@ -247,7 +247,7 @@ class HeaderControl extends StatefulWidget {
       return autoWrapReportDialog(
         context,
         ReportOptions.danmakuReport,
-        (reasonType, reasonDesc, banUid) {
+        (reasonType, reasonDesc, banUid) async {
           if (banUid) {
             final filter = ctr.filters;
             if (filter.dmUid.add(extra.mid)) {
@@ -257,10 +257,13 @@ class HeaderControl extends StatefulWidget {
                 filter,
               );
             }
-            DanmakuFilterHttp.danmakuFilterAdd(
-              filter: extra.mid,
-              type: 2,
-            );
+            try {
+              final dataSource = DanmakuFilterRemoteDataSource();
+              await dataSource.danmakuFilterAdd(
+                filter: extra.mid,
+                type: 2,
+              );
+            } catch (_) {}
           }
           return DanmakuHttp.danmakuReport(
             reason: reasonType == 0 ? 11 : reasonType,
