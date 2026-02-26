@@ -22,6 +22,7 @@ class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late final TabController _tabController;
   bool _controllerInitialized = false;
+  int _lastTabLength = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -38,6 +39,12 @@ class _HomePageState extends ConsumerState<HomePage>
     final tabConfigState = ref.read(homeTabConfigControllerProvider);
     final config = tabConfigState.config ?? HomeTabConfig.defaultConfig();
 
+    _createController(config);
+    _controllerInitialized = true;
+    _lastTabLength = config.tabs.length;
+  }
+
+  void _createController(HomeTabConfig config) {
     // 如果配置已加载，初始化 TabController
     if (config.hasMultipleTabs) {
       final initialIndex = max(0, config.rcmdIndex);
@@ -54,7 +61,11 @@ class _HomePageState extends ConsumerState<HomePage>
         vsync: this,
       );
     }
-    _controllerInitialized = true;
+  }
+
+  void _updateController(HomeTabConfig config) {
+    _tabController.dispose();
+    _createController(config);
   }
 
   @override
@@ -76,6 +87,12 @@ class _HomePageState extends ConsumerState<HomePage>
 
     // 如果配置尚未加载或为空，返回默认配置
     final safeConfig = config ?? HomeTabConfig.defaultConfig();
+
+    // 如果 tabs 长度发生变化，重新创建 TabController
+    if (_controllerInitialized && _lastTabLength != safeConfig.tabs.length) {
+      _updateController(safeConfig);
+    }
+    _lastTabLength = safeConfig.tabs.length;
 
     // 构建 TabBar
     Widget tabBar;

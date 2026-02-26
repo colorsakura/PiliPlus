@@ -8,6 +8,8 @@
     <h1>PiliPlus</h1>
 <div align="center">
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/colorsakura/PiliPlus)
+
 </div>
     <p>使用Flutter开发的BiliBili第三方客户端</p>
     
