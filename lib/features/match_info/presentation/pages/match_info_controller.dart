@@ -1,11 +1,16 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/features/match/data/datasources/match_remote_datasource.dart';
+import 'package:PiliPlus/features/match/match.dart';
 import 'package:PiliPlus/models/match/match_info/contest.dart';
 import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
 import 'package:get/get.dart';
 
 class MatchInfoController extends CommonDynController {
-  final MatchRemoteDataSource _dataSource = MatchRemoteDataSource();
+  // Use Clean Architecture components
+  final GetMatchInfo _getMatchInfo = GetMatchInfo(
+    MatchRepositoryImpl(
+      remoteDataSource: MatchRemoteDataSource(),
+    ),
+  );
 
   @override
   final int oid = int.parse(Get.parameters['cid']!);
@@ -25,12 +30,48 @@ class MatchInfoController extends CommonDynController {
   }
 
   Future<void> getMatchInfo() async {
-    try {
-      final result = await _dataSource.matchInfo(oid);
-      infoState.value = Success(result);
+    final result = await _getMatchInfo(cid: oid);
+
+    // Handle LoadingState result
+    if (result is Success<MatchContestEntity>) {
+      // Convert entity back to model for compatibility with existing UI
+      final entity = result.response;
+      final contest = MatchContest(
+        id: entity.id,
+        gameStage: entity.gameStage,
+        stime: entity.startTime,
+        etime: entity.endTime,
+        homeId: entity.homeId,
+        awayId: entity.awayId,
+        homeScore: entity.homeScore,
+        awayScore: entity.awayScore,
+        liveRoom: entity.liveRoom,
+        aid: entity.aid,
+        collection: entity.collection,
+        collectionBvid: entity.collectionBvid,
+        gameState: entity.gameState,
+        dic: entity.dic,
+        ctime: entity.createTime,
+        mtime: entity.modifyTime,
+        status: entity.status,
+        sid: entity.seasonId,
+        mid: entity.matchId,
+        season: entity.season,
+        homeTeam: entity.homeTeam,
+        awayTeam: entity.awayTeam,
+        special: entity.special,
+        successTeam: entity.successTeam,
+        successTeaminfo: entity.successTeaminfo,
+        specialName: entity.specialName,
+        specialTips: entity.specialTips,
+        specialImage: entity.specialImage,
+        playback: entity.playback,
+        collectionUrl: entity.collectionUrl,
+      );
+      infoState.value = Success(contest);
       queryData();
-    } catch (e) {
-      infoState.value = Error(e.toString());
+    } else if (result is Error) {
+      infoState.value = Error(result.errMsg ?? '获取赛事信息失败');
     }
   }
 }
