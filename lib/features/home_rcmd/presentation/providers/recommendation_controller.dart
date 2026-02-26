@@ -158,7 +158,7 @@ class RecommendationController extends Notifier<RecommendationState> {
   }
 
   /// 初始化 - 离线优先策略
-  /// 加载持久化数据，不自动刷新
+  /// 只加载持久化数据，不自动触发网络请求
   Future<void> initialize() async {
     if (_initialized) {
       AppLog.fine('Already initialized, skipping', name: 'Recommendation');
@@ -192,16 +192,18 @@ class RecommendationController extends Notifier<RecommendationState> {
           AppLog.info('Loaded ${persistedResult.videos.length} items from cache', name: 'Recommendation');
         } catch (e) {
           AppLog.warning('Failed to load persisted data: $e', name: 'Recommendation');
+          // 设置为空状态，让用户看到错误并可以手动刷新
+          state = state.copyWith(isLoading: false);
         }
       } else {
         AppLog.info('No valid persisted data found (data: ${persistedData?.data})', name: 'Recommendation');
-        // No cached data, fetch from network
-        await fetchRecommendations(isRefresh: true);
+        // 设置为空状态，不自动触发网络请求
+        state = state.copyWith(isLoading: false);
       }
     } catch (e) {
       AppLog.warning('Failed to check persisted data: $e', name: 'Recommendation');
-      // On error, try to fetch from network
-      await fetchRecommendations(isRefresh: true);
+      // 设置为空状态，不自动触发网络请求
+      state = state.copyWith(isLoading: false);
     }
   }
 
