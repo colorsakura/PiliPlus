@@ -8,8 +8,12 @@ class HotVideo {
   /// 视频数据模型
   final HotVideoItemModel video;
 
+  /// 原始 JSON 数据（用于持久化）
+  final Map<String, dynamic>? rawJson;
+
   const HotVideo({
     required this.video,
+    this.rawJson,
   });
 
   /// 视频ID (aid)
@@ -43,28 +47,76 @@ class HotVideo {
   factory HotVideo.fromJson(Map<String, dynamic> json) {
     return HotVideo(
       video: HotVideoItemModel.fromJson(json),
+      rawJson: json,
     );
   }
 
-  /// 转换为 JSON
-  /// 由于 HotVideoItemModel 没有 toJson 方法，我们需要手动构建
-  Map<String, dynamic> toJson() {
+  /// 从模型创建
+  factory HotVideo.fromModel(HotVideoItemModel model) {
+    return HotVideo(
+      video: model,
+      rawJson: _modelToJson(model),
+    );
+  }
+
+  /// 转换为 JSON（返回原始 JSON 数据，如果没有则生成）
+  Map<String, dynamic> toJson() => rawJson ?? _modelToJson(video);
+
+  /// 将 HotVideoItemModel 转换为 JSON（模拟 API 响应格式）
+  static Map<String, dynamic> _modelToJson(HotVideoItemModel model) {
+    final stat = model.stat is HotStat ? model.stat as HotStat : null;
+
     return {
-      'aid': video.aid,
-      'bvid': video.bvid,
-      'title': video.title,
-      'cover': video.cover,
-      'duration': video.duration,
+      'aid': model.aid,
+      'bvid': model.bvid,
+      'cid': model.cid,
+      'videos': model.videos,
+      'tid': model.tid,
+      'tname': model.tname,
+      'copyright': model.copyright,
+      'pic': model.cover,
+      'title': model.title,
+      'pubdate': model.pubdate,
+      'ctime': model.ctime,
+      'desc': model.desc,
+      'state': model.state,
+      'duration': model.duration,
       'owner': {
-        'mid': video.owner.mid,
-        'name': video.owner.name,
+        'mid': model.owner.mid,
+        'name': model.owner.name,
       },
       'stat': {
-        'view': video.stat.view,
-        'danmu': video.stat.danmu,
+        'view': model.stat.view,
+        'danmaku': model.stat.danmu,
+        'like': model.stat.like,
+        if (stat != null) ...{
+          'reply': stat.reply,
+          'favorite': stat.favorite,
+          'coin': stat.coin,
+          'share': stat.share,
+          'now_rank': stat.nowRank,
+          'his_rank': stat.hisRank,
+          'dislike': stat.dislike,
+          'vt': stat.vt,
+          'vv': stat.vv,
+        },
       },
-      'tname': video.tname,
-      'videos': video.videos,
+      if (model.dimension != null)
+        'dimension': {
+          'width': model.dimension!.width,
+          'height': model.dimension!.height,
+        },
+      'first_frame': model.firstFrame,
+      'pub_location': model.pubLocation,
+      'rcmd_reason': model.rcmdReason,
+      'pgc_label': model.pgcLabel,
+      'redirect_url': model.redirectUrl,
+      'progress': model.progress,
+      'rights': {
+        'is_cooperation': model.isCooperation,
+      },
+      if (model.isCharging == true)
+        'charging_pay': {'level': 1},
     };
   }
 }

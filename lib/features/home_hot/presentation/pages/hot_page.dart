@@ -142,7 +142,7 @@ class _HotPageState extends ConsumerState<HotPage>
           Future.microtask(() => notifier.onLoadMore());
         }
         return VideoCardH(
-          videoItem: videos[index],
+          videoItem: videos[index].video,
           onRemove: () => notifier.removeVideo(index),
         );
       },
