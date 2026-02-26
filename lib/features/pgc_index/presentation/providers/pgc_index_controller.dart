@@ -113,9 +113,10 @@ class PgcIndexController extends Notifier<PgcIndexState> {
     );
 
     if (res case Success(:final response)) {
-      final currentList = state.loadingState is Success
-          ? state.loadingState.response ?? []
-          : <PgcIndexItemEntity>[];
+      final currentList = switch (state.loadingState) {
+        Success(:final response) => response ?? [],
+        _ => <PgcIndexItemEntity>[],
+      };
 
       final newList = isRefresh
           ? (response ?? [])
