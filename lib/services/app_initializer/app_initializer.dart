@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/core/image_cache/persistent_cache_manager.dart';
-import 'package:PiliPlus/shared/widgets/scale_app.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/database/database_manager.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -255,7 +254,7 @@ class AppInitializer {
   // ============ 私有辅助方法 ============
 
   static Future<void> _initFlutterBindings() async {
-    ScaledWidgetsFlutterBinding.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
     MediaKit.ensureInitialized();
   }
 
@@ -266,8 +265,6 @@ class AppInitializer {
   static Future<void> _initCriticalStorage() async {
     try {
       await GStorage.initCritical();
-      // 设置 UI 缩放
-      ScaledWidgetsFlutterBinding.instance.scaleFactor = Pref.uiScale;
     } catch (e) {
       await Utils.copyText(e.toString());
       AppLog.severe('GStorage initCritical error: $e', name: 'AppInitializer');

@@ -302,20 +302,6 @@ List<SettingsModel> get styleSettings => [
     onTap: _showSpringDialog,
   ),
   NormalModel(
-    onTap: (context, setState) async {
-      final res = await Get.toNamed('/fontSizeSetting');
-      if (res != null) {
-        setState();
-      }
-    },
-    title: '字体大小',
-    leading: const Icon(Icons.format_size_outlined),
-    getSubtitle: () {
-      final scale = Pref.defaultTextScale;
-      return scale == 1.0 ? '默认' : scale.toString();
-    },
-  ),
-  NormalModel(
     onTap: (context, setState) => Get.toNamed(
       '/barSetting',
       arguments: {

@@ -49,7 +49,6 @@ import 'package:PiliPlus/features/setting/presentation/pages/extra_setting.dart'
 import 'package:PiliPlus/features/setting/presentation/pages/pages/bar_set.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/color_select.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/display_mode.dart';
-import 'package:PiliPlus/features/setting/presentation/pages/pages/font_size_select.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/play_speed_set.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/play_setting.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/privacy_setting.dart';
@@ -131,7 +130,6 @@ class Routes {
     //
     GetPage(name: '/blackListPage', page: () => const BlacklistPage()),
     GetPage(name: '/colorSetting', page: () => const ColorSelectPage()),
-    GetPage(name: '/fontSizeSetting', page: () => const FontSizeSelectPage()),
     // 屏幕帧率
     GetPage(name: '/displayModeSetting', page: () => const SetDisplayMode()),
     // 关于
