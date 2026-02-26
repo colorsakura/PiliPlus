@@ -28,7 +28,7 @@ import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/num_utils.dart';

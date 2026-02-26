@@ -32,7 +32,7 @@ import 'package:PiliPlus/plugin/pl_player/view.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';

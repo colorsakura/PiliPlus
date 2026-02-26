@@ -16,7 +16,7 @@ import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';
 import 'package:PiliPlus/models/common/super_chat_type.dart';
 import 'package:PiliPlus/models/common/super_resolution_type.dart';
-import 'package:PiliPlus/models/common/theme/theme_type.dart';
+import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/models/common/video/audio_quality.dart';
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
 import 'package:PiliPlus/models/common/video/live_quality.dart';

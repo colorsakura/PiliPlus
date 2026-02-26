@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/mine/domain/usecases/get_user_info.dart';
 import 'package:PiliPlus/features/mine/domain/usecases/get_user_stat.dart';
 import 'package:PiliPlus/features/mine/presentation/providers/mine_providers.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
-import 'package:PiliPlus/models/common/theme/theme_type.dart';
+import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/utils/accounts.dart';

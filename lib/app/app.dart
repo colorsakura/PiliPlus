@@ -3,15 +3,15 @@ import 'package:PiliPlus/shared/widgets/back_detector.dart';
 import 'package:PiliPlus/shared/widgets/custom_toast.dart';
 import 'package:PiliPlus/shared/widgets/scroll_behavior.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/models/common/theme/theme_color_type.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/entities/theme_colors.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
+import 'package:PiliPlus/app/theme/services/theme_service.dart';
 import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/utils/theme_utils.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,13 +54,13 @@ class MyApp extends StatelessWidget {
     late final variant = Pref.schemeVariant;
     return GetMaterialApp(
       title: Constants.appName,
-      theme: ThemeUtils.getThemeData(
+      theme: ThemeService.getThemeData(
         colorScheme: dynamicColor
             ? _light!
             : brandColor.asColorSchemeSeed(variant, .light),
         isDynamic: dynamicColor,
       ),
-      darkTheme: ThemeUtils.getThemeData(
+      darkTheme: ThemeService.getThemeData(
         isDark: true,
         colorScheme: dynamicColor
             ? _dark!

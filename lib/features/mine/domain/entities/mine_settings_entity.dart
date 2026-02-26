@@ -1,4 +1,4 @@
-import 'package:PiliPlus/models/common/theme/theme_type.dart';
+import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 
 /// 我的页面设置实体
 ///

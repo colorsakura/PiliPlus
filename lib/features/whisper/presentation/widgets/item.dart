@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/features/whisper_secondary/whisper_secondary.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:fixnum/fixnum.dart';

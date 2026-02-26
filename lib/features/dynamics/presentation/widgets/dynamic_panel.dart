@@ -7,7 +7,7 @@ import 'package:PiliPlus/features/dynamics/presentation/widgets/action_panel.dar
 import 'package:PiliPlus/features/dynamics/presentation/widgets/author_panel.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/dyn_content.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/interaction.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart' hide InkWell;

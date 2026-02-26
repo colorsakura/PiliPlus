@@ -1,11 +1,11 @@
 import 'package:PiliPlus/app/app.dart';
+import 'package:PiliPlus/app/theme/extensions/color_extensions.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-abstract final class ThemeUtils {
+abstract final class ThemeService {
   static ThemeData getThemeData({
     required ColorScheme colorScheme,
     required bool isDynamic,

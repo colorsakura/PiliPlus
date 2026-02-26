@@ -3,7 +3,7 @@ import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/view.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';

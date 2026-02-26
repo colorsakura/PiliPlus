@@ -9,7 +9,7 @@ import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/superchat/superchat_card.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';

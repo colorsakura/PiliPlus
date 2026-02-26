@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
-import 'package:PiliPlus/models/common/theme/theme_type.dart';
+import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/models/user/info.dart';
 import 'package:PiliPlus/models/user/stat.dart';
 import 'package:PiliPlus/models/fav/fav_folder/data.dart';

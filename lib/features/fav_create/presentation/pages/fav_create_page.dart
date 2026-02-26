@@ -6,7 +6,7 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:easy_debounce/easy_throttle.dart';

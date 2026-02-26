@@ -5,7 +5,7 @@ import 'package:PiliPlus/features/whisper/presentation/widgets/item.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/shared/skeleton/whisper_item.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/extension/three_dot_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';

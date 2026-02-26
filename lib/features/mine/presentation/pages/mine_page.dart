@@ -15,7 +15,7 @@ import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/mine/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart' hide ListTile;

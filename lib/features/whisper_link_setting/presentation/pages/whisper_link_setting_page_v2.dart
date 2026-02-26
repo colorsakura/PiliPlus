@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/msg/msg_dnd/uid_setting.dart';
 import 'package:PiliPlus/models/msg/session_ss/data.dart';
 import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_providers.dart';
 import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_controller.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

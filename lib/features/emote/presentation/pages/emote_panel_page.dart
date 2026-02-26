@@ -8,7 +8,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/emote/emote.dart';
 import 'package:PiliPlus/models/emote/package.dart';
-import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
