@@ -4,6 +4,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io' }
     }
 }
 

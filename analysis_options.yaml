@@ -18,6 +18,9 @@ analyzer:
 formatter:
   trailing_commas: preserve
 
+plugins:
+  riverpod_lint: ^3.1.3
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
