@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:PiliPlus/utils/log.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:PiliPlus/core/image_cache/custom_file_service.dart';
 
 /// 持久化图片缓存管理器
 ///
@@ -50,7 +51,7 @@ class PersistentCacheManager {
           stalePeriod: const Duration(days: 30),
           maxNrOfCacheObjects: 1000,
           repo: JsonCacheInfoRepository(databaseName: key),
-          fileService: HttpFileService(),
+          fileService: CustomFileService(),
           fileSystem: IOFileSystem(_cacheDir!.path),
         ),
       );
