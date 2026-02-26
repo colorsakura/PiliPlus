@@ -195,11 +195,13 @@ class RecommendationController extends Notifier<RecommendationState> {
         }
       } else {
         AppLog.info('No valid persisted data found (data: ${persistedData?.data})', name: 'Recommendation');
-        state = state.copyWith(isLoading: false);
+        // No cached data, fetch from network
+        await fetchRecommendations(isRefresh: true);
       }
     } catch (e) {
       AppLog.warning('Failed to check persisted data: $e', name: 'Recommendation');
-      state = state.copyWith(isLoading: false);
+      // On error, try to fetch from network
+      await fetchRecommendations(isRefresh: true);
     }
   }
 
