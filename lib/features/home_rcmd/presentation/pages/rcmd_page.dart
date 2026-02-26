@@ -99,6 +99,7 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
           child: HttpError(
+            isSliver: false,
             errMsg: state.errorMessage,
             onReload: () =>
                 ref.read(recommendationControllerProvider.notifier).onReload(),
@@ -113,6 +114,7 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.6,
           child: HttpError(
+            isSliver: false,
             onReload: () =>
                 ref.read(recommendationControllerProvider.notifier).onReload(),
           ),
