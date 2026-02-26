@@ -44,7 +44,7 @@ class NavigationConfigController extends Notifier<NavigationConfigState> {
         navigationBars: [],
         selectedIndex: 0,
         hideBottomBar: false,
-        barHideType: BarHideType.instant,
+        barHideType: BarHideType.sync,
         useBottomNav: false,
         defaultHomePageIndex: 0,
       ),

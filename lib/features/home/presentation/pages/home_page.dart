@@ -11,22 +11,6 @@ import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// 首页 - 主页面
-///
-/// ## 架构
-///
-/// 本页面采用**干净架构（Clean Architecture）** + **Riverpod** 状态管理：
-///
-/// - **Presentation Layer**: 本页面作为 UI 入口，使用 `ConsumerStatefulWidget` 监听状态变化
-/// - **Domain Layer**: 通过 Use Cases 执行业务逻辑
-/// - **Data Layer**: 通过 Repositories 获取数据
-///
-/// ## 使用的 Providers
-///
-/// - `homeTabConfigControllerProvider`: 首页标签配置状态
-/// - `searchSuggestionControllerProvider`: 搜索建议状态
-/// - `navigationConfigControllerProvider`: 导航配置（用于顶部栏隐藏）
-/// - `navigationStateControllerProvider`: 导航状态（滚动偏移等）
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 

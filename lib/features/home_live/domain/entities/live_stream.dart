@@ -62,4 +62,36 @@ class LiveStream {
       online: null, // CardLiveItem 没有 online 字段
     );
   }
+
+  /// 转换为 JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'roomId': roomId,
+      'uid': uid,
+      'uname': uname,
+      'face': face,
+      'title': title,
+      'areaId': areaId,
+      'parentAreaId': parentAreaId,
+      'areaName': areaName,
+      'cover': cover,
+      'online': online,
+    };
+  }
+
+  /// 从 JSON 创建
+  factory LiveStream.fromJson(Map<String, dynamic> json) {
+    return LiveStream(
+      roomId: json['roomId'] as int,
+      uid: json['uid'] as int,
+      uname: json['uname'] as String,
+      face: json['face'] as String?,
+      title: json['title'] as String?,
+      areaId: json['areaId'] as int?,
+      parentAreaId: json['parentAreaId'] as int?,
+      areaName: json['areaName'] as String?,
+      cover: json['cover'] as String?,
+      online: json['online'] as int?,
+    );
+  }
 }

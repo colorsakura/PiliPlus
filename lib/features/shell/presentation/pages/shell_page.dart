@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -17,6 +16,7 @@ import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/services/account_service.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -768,7 +768,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
           Icons.message_outlined,
           semanticLabel: '消息',
         ),
-        onPressed: () => Get.toNamed('/msg'),
+        onPressed: () => Get.toNamed('/whisper'),
       ),
     );
   }

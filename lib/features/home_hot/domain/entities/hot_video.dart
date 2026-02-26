@@ -38,4 +38,33 @@ class HotVideo {
 
   /// 视频数量（合集用）
   int? get videos => video.videos;
+
+  /// 从 JSON 创建
+  factory HotVideo.fromJson(Map<String, dynamic> json) {
+    return HotVideo(
+      video: HotVideoItemModel.fromJson(json),
+    );
+  }
+
+  /// 转换为 JSON
+  /// 由于 HotVideoItemModel 没有 toJson 方法，我们需要手动构建
+  Map<String, dynamic> toJson() {
+    return {
+      'aid': video.aid,
+      'bvid': video.bvid,
+      'title': video.title,
+      'cover': video.cover,
+      'duration': video.duration,
+      'owner': {
+        'mid': video.owner.mid,
+        'name': video.owner.name,
+      },
+      'stat': {
+        'view': video.stat.view,
+        'danmu': video.stat.danmu,
+      },
+      'tname': video.tname,
+      'videos': video.videos,
+    };
+  }
 }
