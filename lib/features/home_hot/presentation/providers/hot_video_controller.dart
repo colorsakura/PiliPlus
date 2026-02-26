@@ -1,8 +1,10 @@
+import 'package:PiliPlus/core/storage/database/sqlite3_storage_provider.dart';
 import 'package:PiliPlus/features/home_hot/domain/entities/hot_video.dart';
 import 'package:PiliPlus/features/home_hot/domain/entities/hot_video_result.dart';
 import 'package:PiliPlus/features/home_hot/domain/usecases/fetch_hot_videos.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_providers.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
+import 'package:flutter_riverpod/experimental/persist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 热门视频状态
@@ -55,11 +57,80 @@ class HotVideoController extends Notifier<HotVideoState> {
   HotVideoState build() {
     _fetchUseCase = ref.read(fetchHotVideosUseCaseProvider);
 
+    // 启用离线持久化
+    persist(
+      ref.watch(sqlite3StorageProvider.future),
+      key: 'home_hot',
+      decode: (data) {
+        if (data == null || data is! Map) {
+          throw Exception('No persisted data found');
+        }
+        final json = data as Map<String, dynamic>;
+        final resultJson = json['result'] as Map<String, dynamic>?;
+        if (resultJson == null) {
+          throw Exception('No result in persisted data');
+        }
+        final videos = (resultJson['videos'] as List?)
+                ?.map((e) => HotVideo.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            [];
+        return HotVideoState(
+          result: HotVideoResult(
+            videos: videos,
+            hasMore: resultJson['hasMore'] as bool? ?? true,
+            currentPage: resultJson['currentPage'] as int? ?? 1,
+          ),
+          isLoading: false,
+        );
+      },
+      encode: (state) {
+        if (state.result == null) return null;
+        return {
+          'result': {
+            'videos': state.result!.videos.map((v) => v.toJson()).toList(),
+            'hasMore': state.result!.hasMore,
+          },
+        };
+      },
+      options: const StorageOptions(
+        cacheTime: StorageCacheTime(Duration(hours: 2)),
+      ),
+    );
+
     return const HotVideoState(isLoading: true);
   }
 
   /// 初始化并加载数据
-  Future<void> initialize() => fetchHotVideos(isRefresh: true);
+  Future<void> initialize() async {
+    // 尝试从缓存加载数据
+    try {
+      final storage = await ref.read(sqlite3StorageProvider.future);
+      final persistedData = await storage.read('home_hot');
+      if (persistedData != null && persistedData.data is Map) {
+        final json = persistedData.data as Map<String, dynamic>;
+        final resultJson = json['result'] as Map<String, dynamic>?;
+        if (resultJson != null) {
+          final videos = (resultJson['videos'] as List?)
+                  ?.map((e) => HotVideo.fromJson(e as Map<String, dynamic>))
+                  .toList() ??
+              [];
+          state = HotVideoState(
+            result: HotVideoResult(
+              videos: videos,
+              hasMore: resultJson['hasMore'] as bool? ?? true,
+              currentPage: resultJson['currentPage'] as int? ?? 1,
+            ),
+            isLoading: false,
+          );
+        }
+      }
+    } catch (e) {
+      // 忽略错误，继续加载网络数据
+    }
+
+    // 发起网络请求更新数据
+    fetchHotVideos(isRefresh: true);
+  }
 
   /// 获取热门视频
   Future<void> fetchHotVideos({bool isRefresh = true}) async {
@@ -82,6 +153,9 @@ class HotVideoController extends Notifier<HotVideoState> {
           result: result,
           isLoading: false,
         );
+
+        // 手动保存到缓存
+        _saveToCache();
       } else {
         if (result.videos.isEmpty) {
           _isEnd = true;
@@ -120,6 +194,28 @@ class HotVideoController extends Notifier<HotVideoState> {
   Future<void> onReload() async {
     state = const HotVideoState(isLoading: true);
     await onRefresh();
+  }
+
+  /// 手动保存到缓存
+  Future<void> _saveToCache() async {
+    try {
+      final storage = await ref.read(sqlite3StorageProvider.future);
+      if (state.result != null) {
+        await storage.write(
+          'home_hot',
+          {
+            'result': {
+              'videos': state.result!.videos.map((v) => v.toJson()).toList(),
+              'hasMore': state.result!.hasMore,
+              'currentPage': state.result!.currentPage,
+            },
+          },
+          const StorageOptions(),
+        );
+      }
+    } catch (e) {
+      // 忽略保存错误
+    }
   }
 
   /// 移除视频

@@ -1,4 +1,5 @@
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/core/image_cache/persistent_cache_manager.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
@@ -86,6 +87,7 @@ class NetworkImgLayer extends StatelessWidget {
       filterQuality: FilterQuality.low,
       maxWidthDiskCache: isEmote ? 400 : (width * 1.5).toInt(),
       maxHeightDiskCache: isEmote ? 300 : (height * 1.5).toInt(),
+      cacheManager: persistentCacheManager, // 使用持久化缓存管理器
       placeholder: (_, _) =>
           getPlaceHolder?.call() ??
           _placeholder(context, isEmote: isEmote, isAvatar: isAvatar),

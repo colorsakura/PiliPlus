@@ -29,7 +29,7 @@ class RecVideoItemAppModel extends BaseRecVideoItemModel {
       (stat as RcmdStat).like = NumUtils.parseNum(rcmdReason!);
     }
     // 由于app端api并不会直接返回与owner的关注状态
-    // 所以借用推荐原因是否为“已关注”、“新关注”判别关注状态，从而与web端接口等效
+    // 所以借用推荐原因是否为”已关注”、”新关注”判别关注状态，从而与web端接口等效
     isFollowed = const {'已关注', '新关注'}.contains(rcmdReason);
     // 如果是，就无需再显示推荐原因，交由view统一处理即可
     if (isFollowed) rcmdReason = null;
@@ -48,6 +48,31 @@ class RecVideoItemAppModel extends BaseRecVideoItemModel {
         ? ThreePoint.fromJson(json['three_point_v2'])
         : null;
     desc = json['desc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'player_args': {
+        'aid': aid,
+        'cid': cid,
+        'duration': duration,
+      },
+      'param': param.toString(),
+      'cover': cover,
+      'title': title,
+      'args': {
+        'up_name': owner?.name,
+        'up_id': owner?.mid,
+      },
+      'cover_left_text_1': stat?.view.toString(),
+      'cover_left_text_2': stat?.danmu.toString(),
+      'goto': goto,
+      'uri': uri,
+      'desc': desc,
+      'card_type': cardType,
+      'cover_right_text': pgcBadge,
+      if (rcmdReason != null) 'rcmd_reason': rcmdReason,
+    };
   }
 }
 

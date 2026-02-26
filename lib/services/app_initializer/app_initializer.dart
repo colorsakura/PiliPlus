@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:PiliPlus/core/image_cache/persistent_cache_manager.dart';
 import 'package:PiliPlus/shared/widgets/scale_app.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/core/storage/database/database_manager.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
@@ -115,6 +117,7 @@ class AppInitializer {
   ///
   /// 初始化应用核心功能:
   /// - 下载路径初始化
+  /// - 数据库初始化
   /// - HTTP 客户端
   /// - 平台设置 (屏幕方向、系统 UI)
   static Future<void> corePhase() async {
@@ -132,6 +135,9 @@ class AppInitializer {
     try {
       await _initDownloadPaths();
       AppLog.fine('Download paths initialized', name: 'AppInitializer');
+
+      await _initDatabase();
+      AppLog.fine('Database initialized', name: 'AppInitializer');
 
       await _setupPlatform();
       AppLog.fine('Platform settings configured', name: 'AppInitializer');
@@ -282,6 +288,23 @@ class AppInitializer {
       _initDownPath(),
       _initTmpPath(),
     ]);
+  }
+
+  static Future<void> _initDatabase() async {
+    try {
+      await DatabaseManager.init();
+      AppLog.info('DatabaseManager initialized', name: 'AppInitializer');
+
+      // 初始化图片缓存
+      await PersistentCacheManager.init();
+      AppLog.info('Image cache initialized', name: 'AppInitializer');
+    } catch (e) {
+      AppLog.severe(
+        'Database initialization failed: $e',
+        name: 'AppInitializer',
+      );
+      // 数据库初始化失败不应阻止应用运行
+    }
   }
 
   /// 初始化下载路径 - 从 main.dart 迁移
