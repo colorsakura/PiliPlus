@@ -13,7 +13,6 @@ import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
-import 'package:PiliPlus/utils/calc_window_position.dart' as utils;
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
@@ -29,7 +28,6 @@ import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:window_manager/window_manager.dart' hide calcWindowPosition;
 
 /// 应用初始化管理器
 ///
@@ -51,7 +49,6 @@ class AppInitializer {
   // 辅助服务初始化标志
   static bool _audioServiceInitialized = false;
   static bool _webViewInitialized = false;
-  static bool _windowManagerInitialized = false;
 
   // WebView 环境实例 (桌面端)
   static WebViewEnvironment? webViewEnvironment;
@@ -230,27 +227,6 @@ class AppInitializer {
     }
   }
 
-  /// 辅助阶段: 初始化窗口管理器 (仅桌面)
-  static Future<void> initWindowManager() async {
-    if (!PlatformUtils.isDesktop || _windowManagerInitialized) {
-      return;
-    }
-
-    await ensureCoreReady();
-    AppLog.info('Initializing window manager', name: 'AppInitializer');
-
-    try {
-      await _initWindowManagerInternal();
-      _windowManagerInitialized = true;
-      AppLog.info('Window manager initialized', name: 'AppInitializer');
-    } catch (e) {
-      AppLog.severe(
-        'Window manager initialization failed: $e',
-        name: 'AppInitializer',
-      );
-    }
-  }
-
   // ============ 私有辅助方法 ============
 
   static Future<void> _initFlutterBindings() async {
@@ -401,30 +377,6 @@ class AppInitializer {
         FlutterDisplayMode.setPreferredMode(displayMode ?? DisplayMode.auto);
       });
     }
-  }
-
-  /// 初始化窗口管理器 (桌面端)
-  static Future<void> _initWindowManagerInternal() async {
-    await windowManager.ensureInitialized();
-
-    final windowOptions = WindowOptions(
-      minimumSize: const Size(400, 720),
-      skipTaskbar: false,
-      titleBarStyle: Pref.showWindowTitleBar
-          ? TitleBarStyle.normal
-          : TitleBarStyle.hidden,
-      title: Constants.appName,
-    );
-
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      final windowSize = Pref.windowSize;
-      await windowManager.setBounds(
-        await utils.calcWindowPosition(windowSize) & windowSize,
-      );
-      if (Pref.isWindowMaximized) await windowManager.maximize();
-      await windowManager.show();
-      await windowManager.focus();
-    });
   }
 
   static Future<Directory> _getApplicationSupportDirectory() {

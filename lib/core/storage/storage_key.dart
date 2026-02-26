@@ -173,13 +173,7 @@ abstract final class SettingBoxKey {
       touchSlopH = 'touchSlopH';
 
   // Desktop settings
-  static const String minimizeOnExit = 'minimizeOnExit',
-      windowSize = 'windowSize',
-      windowPosition = 'windowPosition',
-      isWindowMaximized = 'isWindowMaximized',
-      showWindowTitleBar = 'showWindowTitleBar',
-      desktopVolume = 'desktopVolume',
-      showTrayIcon = 'showTrayIcon',
+  static const String desktopVolume = 'desktopVolume',
       uiScale = 'uiScale',
       useSSD = 'useSSD';
 

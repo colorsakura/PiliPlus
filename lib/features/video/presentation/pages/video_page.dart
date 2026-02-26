@@ -1348,7 +1348,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     key: videoDetailController.videoPlayerKey,
     canPop:
         !isFullScreen &&
-        !videoDetailController.plPlayerController.isDesktopPip &&
         (videoDetailController.horizontalScreen || isPortrait),
     onPopInvokedWithResult: _onPopInvokedWithResult,
     child: Obx(

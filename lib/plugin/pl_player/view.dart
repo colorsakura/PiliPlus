@@ -78,7 +78,6 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
-import 'package:window_manager/window_manager.dart';
 
 class PLVideoPlayer extends StatefulWidget {
   const PLVideoPlayer({
@@ -860,7 +859,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     ];
 
     final flag =
-        isFullScreen || plPlayerController.isDesktopPip || maxWidth >= 500;
+        isFullScreen || false || maxWidth >= 500;
     List<BottomControlType> userSpecifyItemRight = [
       if (isNotFileSource && plPlayerController.showDmChart)
         BottomControlType.dmChart,
@@ -873,7 +872,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       BottomControlType.subtitle,
       BottomControlType.speed,
       if (isNotFileSource && flag) BottomControlType.qa,
-      if (!plPlayerController.isDesktopPip) BottomControlType.fullscreen,
+      if (!false) BottomControlType.fullscreen,
     ];
     return PlayerBar(
       children: [
@@ -1597,13 +1596,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     isTop: true,
                     controller: animationController,
                     isFullScreen: isFullScreen,
-                    child: plPlayerController.isDesktopPip
-                        ? GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onPanStart: (_) => windowManager.startDragging(),
-                            child: widget.headerControl,
-                          )
-                        : widget.headerControl,
+                    child: widget.headerControl,
                   ),
                   AppBarAni(
                     isTop: false,
@@ -1780,7 +1773,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             () => mounted,
           ),
 
-        if (isFullScreen || plPlayerController.isDesktopPip) ...[
+        if (isFullScreen || false) ...[
           // 锁
           if (plPlayerController.showFsLockBtn)
             ViewSafeArea(

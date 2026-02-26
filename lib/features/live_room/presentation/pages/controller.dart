@@ -299,9 +299,6 @@ class LiveRoomController extends GetxController {
           ),
           TextButton(
             onPressed: () {
-              if (plPlayerController.isDesktopPip) {
-                plPlayerController.exitDesktopPip();
-              }
               Get
                 ..back()
                 ..back();
@@ -535,7 +532,7 @@ class LiveRoomController extends GetxController {
         case 'SUPER_CHAT_MESSAGE' when showSuperChat:
           final item = SuperChatItem.fromJson(obj['data']);
           superChatMsg.insert(0, item);
-          if (isFullScreen || plPlayerController.isDesktopPip) {
+          if (isFullScreen || false) {
             fsSC.value = item.copyWith(
               endTime: DateTime.now().millisecondsSinceEpoch ~/ 1000 + 10,
             );

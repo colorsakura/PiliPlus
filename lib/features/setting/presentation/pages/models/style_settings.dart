@@ -40,22 +40,6 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 List<SettingsModel> get styleSettings => [
-  if (PlatformUtils.isDesktop) ...[
-    const SwitchModel(
-      title: '显示窗口标题栏',
-      leading: Icon(Icons.window),
-      setKey: SettingBoxKey.showWindowTitleBar,
-      defaultVal: true,
-      needReboot: true,
-    ),
-    const SwitchModel(
-      title: '显示托盘图标',
-      leading: Icon(Icons.donut_large_rounded),
-      setKey: SettingBoxKey.showTrayIcon,
-      defaultVal: true,
-      needReboot: true,
-    ),
-  ],
   if (Platform.isLinux)
     const SwitchModel(
       title: '使用SSD（Server-Side Decoration）',

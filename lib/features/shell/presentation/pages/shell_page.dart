@@ -30,8 +30,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:tray_manager/tray_manager.dart';
-import 'package:window_manager/window_manager.dart';
 
 /// Shell 页面 - 应用主框架
 ///
@@ -85,7 +83,7 @@ class ShellPage extends ConsumerStatefulWidget {
 }
 
 class _ShellPageState extends ConsumerState<ShellPage>
-    with RouteAware, WidgetsBindingObserver, WindowListener, TrayListener {
+    with RouteAware, WidgetsBindingObserver {
   // PageController 用于 PageView
   late final PageController _pageController;
 
@@ -93,12 +91,8 @@ class _ShellPageState extends ConsumerState<ShellPage>
   late final _setting = GStorage.setting;
   late EdgeInsets _padding;
 
-  // 桌面端配置
-  late final bool showTrayIcon = Pref.showTrayIcon;
-  late final bool minimizeOnExit = Pref.minimizeOnExit;
-  late final bool pauseOnMinimize = Pref.pauseOnMinimize;
+  // 配置
   late final bool directExitOnBack = Pref.directExitOnBack;
-  bool _isPlaying = false;
 
   @override
   void initState() {
@@ -127,24 +121,12 @@ class _ShellPageState extends ConsumerState<ShellPage>
   ///
   /// - 注册生命周期观察者
   /// - 检查应用更新
-  /// - 配置桌面端窗口和托盘
   void _initializeApp() {
     WidgetsBinding.instance.addObserver(this);
 
     // 自动更新检查
     if (Pref.autoUpdate) {
       Update.checkUpdate();
-    }
-
-    // 桌面端设置
-    if (PlatformUtils.isDesktop) {
-      windowManager
-        ..addListener(this)
-        ..setPreventClose(true);
-      if (showTrayIcon) {
-        trayManager.addListener(this);
-        _handleTray();
-      }
     }
   }
 
@@ -167,9 +149,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
     final brightness = Theme.brightnessOf(context);
     NetworkImgLayer.reduce =
         NetworkImgLayer.reduceLuxColor != null && brightness.isDark;
-    if (PlatformUtils.isDesktop) {
-      windowManager.setBrightness(brightness);
-    }
     PageUtils.routeObserver.subscribe(
       this,
       ModalRoute.of(context) as PageRoute,
@@ -202,12 +181,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
     // TODO: 在迁移完 HomePage 和 DynamicsPage 后删除
     Get.delete<MainController>();
 
-    // 清理桌面端监听器
-    if (PlatformUtils.isDesktop) {
-      trayManager.removeListener(this);
-      windowManager.removeListener(this);
-    }
-
     // 清理路由和生命周期监听器
     PageUtils.routeObserver.unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
@@ -217,135 +190,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
     _pageController.dispose();
 
     super.dispose();
-  }
-
-  // ========== 桌面端窗口管理 ==========
-
-  @override
-  void onWindowMaximize() {
-    _setting.put(SettingBoxKey.isWindowMaximized, true);
-  }
-
-  @override
-  void onWindowUnmaximize() {
-    _setting.put(SettingBoxKey.isWindowMaximized, false);
-  }
-
-  @override
-  Future<void> onWindowMoved() async {
-    if (PlPlayerController.instance?.isDesktopPip ?? false) {
-      return;
-    }
-    final Offset offset = await windowManager.getPosition();
-    _setting.put(SettingBoxKey.windowPosition, [offset.dx, offset.dy]);
-  }
-
-  @override
-  Future<void> onWindowResized() async {
-    if (PlPlayerController.instance?.isDesktopPip ?? false) {
-      return;
-    }
-    final Rect bounds = await windowManager.getBounds();
-    _setting.putAll({
-      SettingBoxKey.windowSize: [bounds.width, bounds.height],
-      SettingBoxKey.windowPosition: [bounds.left, bounds.top],
-    });
-  }
-
-  @override
-  void onWindowClose() {
-    if (showTrayIcon && minimizeOnExit) {
-      windowManager.hide();
-      _onHideWindow();
-    } else {
-      _onClose();
-    }
-  }
-
-  Future<void> _onClose() async {
-    await GStorage.compact();
-    await GStorage.close();
-    await trayManager.destroy();
-    if (Platform.isWindows) {
-      const MethodChannel('window_control').invokeMethod('closeWindow');
-    } else {
-      exit(0);
-    }
-  }
-
-  @override
-  void onWindowMinimize() {
-    _onHideWindow();
-  }
-
-  @override
-  void onWindowRestore() {
-    _onShowWindow();
-  }
-
-  void _onHideWindow() {
-    if (pauseOnMinimize) {
-      if (PlPlayerController.instance case final player?) {
-        if (_isPlaying = player.playerStatus.isPlaying) {
-          player.pause();
-        }
-      } else {
-        _isPlaying = false;
-      }
-    }
-  }
-
-  void _onShowWindow() {
-    if (pauseOnMinimize && _isPlaying) {
-      PlPlayerController.instance?.play();
-    }
-  }
-
-  @override
-  Future<void> onTrayIconMouseDown() async {
-    if (await windowManager.isVisible()) {
-      _onHideWindow();
-      windowManager.hide();
-    } else {
-      _onShowWindow();
-      windowManager.show();
-    }
-  }
-
-  @override
-  Future<void> onTrayIconRightMouseDown() async {
-    // ignore: deprecated_member_use
-    trayManager.popUpContextMenu(bringAppToFront: true);
-  }
-
-  @override
-  void onTrayMenuItemClick(MenuItem menuItem) {
-    switch (menuItem.key) {
-      case 'show':
-        windowManager.show();
-      case 'exit':
-        _onClose();
-    }
-  }
-
-  Future<void> _handleTray() async {
-    if (Platform.isWindows) {
-      await trayManager.setIcon('assets/images/logo/ico/app_icon.ico');
-    } else {
-      await trayManager.setIcon('assets/images/logo/desktop/logo_large.png');
-    }
-    if (!Platform.isLinux) {
-      await trayManager.setToolTip(Constants.appName);
-    }
-
-    Menu trayMenu = Menu(
-      items: [
-        MenuItem(key: 'show', label: '显示窗口'),
-        MenuItem.separator(),
-        MenuItem(key: 'exit', label: '退出 ${Constants.appName}'),
-      ],
-    );
-    await trayManager.setContextMenu(trayMenu);
   }
 
   // ========== 导航处理 ==========

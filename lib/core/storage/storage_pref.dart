@@ -881,29 +881,8 @@ abstract final class Pref {
         defaultValue: SuperChatType.valid.index,
       )];
 
-  static bool get minimizeOnExit =>
-      _setting.get(SettingBoxKey.minimizeOnExit, defaultValue: true);
-
-  static Size get windowSize {
-    final List<double>? size = (_setting.get(SettingBoxKey.windowSize) as List?)
-        ?.fromCast<double>();
-    return size == null ? const Size(1180.0, 720.0) : Size(size[0], size[1]);
-  }
-
-  static List<double>? get windowPosition =>
-      (_setting.get(SettingBoxKey.windowPosition) as List?)?.fromCast<double>();
-
-  static bool get isWindowMaximized =>
-      _setting.get(SettingBoxKey.isWindowMaximized, defaultValue: false);
-
   static bool get keyboardControl =>
       _setting.get(SettingBoxKey.keyboardControl, defaultValue: true);
-
-  static bool get pauseOnMinimize =>
-      _setting.get(SettingBoxKey.pauseOnMinimize, defaultValue: false);
-
-  static bool get showWindowTitleBar =>
-      _setting.get(SettingBoxKey.showWindowTitleBar, defaultValue: true);
 
   static bool get useSSD =>
       _setting.get(SettingBoxKey.useSSD, defaultValue: false);
@@ -924,9 +903,6 @@ abstract final class Pref {
 
   static bool get enableTapDm =>
       _setting.get(SettingBoxKey.enableTapDm, defaultValue: true);
-
-  static bool get showTrayIcon =>
-      _setting.get(SettingBoxKey.showTrayIcon, defaultValue: true);
 
   static bool get setSystemBrightness =>
       _setting.get(SettingBoxKey.setSystemBrightness, defaultValue: false);

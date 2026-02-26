@@ -50,25 +50,13 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 List<SettingsModel> get extraSettings => [
-  if (PlatformUtils.isDesktop) ...[
-    SwitchModel(
-      title: '退出时最小化',
-      leading: const Icon(Icons.exit_to_app),
-      setKey: SettingBoxKey.minimizeOnExit,
-      defaultVal: true,
-      onChanged: (value) {
-        try {
-          Get.find<MainController>().minimizeOnExit = value;
-        } catch (_) {}
-      },
-    ),
+  if (PlatformUtils.isDesktop)
     NormalModel(
       title: '缓存路径',
       getSubtitle: () => downloadPath,
       leading: const Icon(Icons.storage),
       onTap: _showDownPathDialog,
     ),
-  ],
   SwitchModel(
     title: '空降助手',
     subtitle: '点击配置',

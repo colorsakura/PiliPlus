@@ -61,7 +61,6 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:path/path.dart' as path;
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:window_manager/window_manager.dart';
 
 class PlPlayerController with BlockConfigMixin {
   Player? _videoPlayerController;
@@ -220,67 +219,7 @@ class PlPlayerController with BlockConfigMixin {
       isLive ? _enableShowLiveDanmaku : _enableShowDanmaku;
 
   late final bool autoPiP = Pref.autoPiP;
-  bool get isPipMode =>
-      (Platform.isAndroid && Floating().isPipMode) ||
-      (PlatformUtils.isDesktop && isDesktopPip);
-  late bool isDesktopPip = false;
-  late Rect _lastWindowBounds;
-
-  late final showWindowTitleBar = Pref.showWindowTitleBar;
-  late final RxBool isAlwaysOnTop = false.obs;
-  Future<void> setAlwaysOnTop(bool value) {
-    isAlwaysOnTop.value = value;
-    return windowManager.setAlwaysOnTop(value);
-  }
-
-  Future<void> exitDesktopPip() {
-    isDesktopPip = false;
-    return Future.wait([
-      if (showWindowTitleBar)
-        windowManager.setTitleBarStyle(TitleBarStyle.normal),
-      windowManager.setMinimumSize(const Size(400, 700)),
-      windowManager.setBounds(_lastWindowBounds),
-      setAlwaysOnTop(false),
-      windowManager.setAspectRatio(0),
-    ]);
-  }
-
-  Future<void> enterDesktopPip() async {
-    if (isFullScreen.value) return;
-
-    isDesktopPip = true;
-
-    _lastWindowBounds = await windowManager.getBounds();
-
-    if (showWindowTitleBar) {
-      windowManager.setTitleBarStyle(TitleBarStyle.hidden);
-    }
-
-    late final Size size;
-    final state = videoController!.player.state;
-    final width = state.width ?? this.width ?? 16;
-    final height = state.height ?? this.height ?? 9;
-    if (height > width) {
-      size = Size(280.0, 280.0 * height / width);
-    } else {
-      size = Size(280.0 * width / height, 280.0);
-    }
-
-    await windowManager.setMinimumSize(size);
-    setAlwaysOnTop(true);
-    windowManager
-      ..setSize(size)
-      ..setAspectRatio(width / height);
-  }
-
-  void toggleDesktopPip() {
-    if (isDesktopPip) {
-      exitDesktopPip();
-    } else {
-      enterDesktopPip();
-    }
-  }
-
+  bool get isPipMode => Platform.isAndroid && Floating().isPipMode;
   late bool _shouldSetPip = false;
 
   bool get _isCurrVideoPage {
@@ -1503,7 +1442,6 @@ class PlPlayerController with BlockConfigMixin {
     bool isManualFS = true,
     FullScreenMode? mode,
   }) async {
-    if (isDesktopPip) return;
     if (isFullScreen.value == status) return;
 
     if (fsProcessing) {
@@ -1700,10 +1638,6 @@ class PlPlayerController with BlockConfigMixin {
     // playerStatus.close();
     // dataStatus.close();
 
-    if (PlatformUtils.isDesktop && isAlwaysOnTop.value) {
-      windowManager.setAlwaysOnTop(false);
-    }
-
     await removeListeners();
     subscriptions.clear();
     _positionListeners.clear();
@@ -1857,10 +1791,6 @@ class PlPlayerController with BlockConfigMixin {
     }
     if (controlsLock.value) {
       onLockControl(false);
-      return true;
-    }
-    if (isDesktopPip) {
-      exitDesktopPip();
       return true;
     }
     if (isFullScreen.value) {

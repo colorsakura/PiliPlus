@@ -234,7 +234,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
     if (!plPlayerController.isLive) {
       return const SizedBox.shrink();
     }
-    if (!isFullScreen && !plPlayerController.isDesktopPip) {
+    if (!isFullScreen && !false) {
       _liveRoomController.fsSC.value = null;
     }
     _liveRoomController.isFullScreen = isFullScreen;
@@ -270,7 +270,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                     liveRoomController: _liveRoomController,
                     plPlayerController: plPlayerController,
                     isFullScreen: isFullScreen,
-                    isPipMode: plPlayerController.isDesktopPip || isPipMode,
+                    isPipMode: false || isPipMode,
                     size: Size(width, height),
                   ),
           );
@@ -279,7 +279,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       },
     );
     if (_liveRoomController.showSuperChat &&
-        (isFullScreen || plPlayerController.isDesktopPip)) {
+        (isFullScreen || false)) {
       player = Stack(
         clipBehavior: Clip.none,
         children: [
@@ -355,7 +355,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       );
     }
     return PopScope(
-      canPop: !isFullScreen && !plPlayerController.isDesktopPip,
+      canPop: !isFullScreen && !false,
       onPopInvokedWithResult: plPlayerController.onPopInvokedWithResult,
       child: player,
     );
@@ -363,7 +363,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
 
   Widget get childWhenDisabled {
     return Obx(() {
-      final isFullScreen = this.isFullScreen || plPlayerController.isDesktopPip;
+      final isFullScreen = this.isFullScreen || false;
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -496,7 +496,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       backgroundColor: Colors.transparent,
       foregroundColor: Colors.white,
       titleTextStyle: const TextStyle(color: Colors.white),
-      title: isFullScreen || plPlayerController.isDesktopPip
+      title: isFullScreen || false
           ? null
           : Obx(
               () {

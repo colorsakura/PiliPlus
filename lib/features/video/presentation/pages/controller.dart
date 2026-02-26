@@ -480,7 +480,7 @@ class VideoDetailController extends GetxController
   bool get horizontalScreen => plPlayerController.horizontalScreen;
 
   bool get showVideoSheet =>
-      (!horizontalScreen && !isPortrait) || plPlayerController.isDesktopPip;
+      (!horizontalScreen && !isPortrait) || false;
 
   @override
   late final RxString videoLabel = ''.obs;

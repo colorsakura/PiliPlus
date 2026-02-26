@@ -123,18 +123,6 @@ List<SettingsModel> get playSettings => [
     getSubtitle: () => '当前选择偏好：${Pref.subtitlePreferenceV2.desc}',
     onTap: _showSubtitleDialog,
   ),
-  if (PlatformUtils.isDesktop)
-    SwitchModel(
-      title: '最小化时暂停/还原时播放',
-      leading: const Icon(Icons.pause_circle_outline),
-      setKey: SettingBoxKey.pauseOnMinimize,
-      defaultVal: false,
-      onChanged: (value) {
-        try {
-          Get.find<MainController>().pauseOnMinimize = value;
-        } catch (_) {}
-      },
-    ),
   const SwitchModel(
     title: '启用键盘控制',
     leading: Icon(Icons.keyboard_alt_outlined),

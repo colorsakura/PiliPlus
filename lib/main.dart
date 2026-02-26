@@ -28,9 +28,6 @@ void main() async {
 
   // 辅助阶段 - 按需初始化
   if (PlatformUtils.isDesktop) {
-    await Future.wait([
-      AppInitializer.initWebView(),
-      AppInitializer.initWindowManager(),
-    ]);
+    await AppInitializer.initWebView();
   }
 }

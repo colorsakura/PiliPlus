@@ -190,7 +190,7 @@ class _BottomControlState extends State<BottomControl> with HeaderMixin {
               ),
             ),
           ),
-          if (!plPlayerController.isDesktopPip)
+          if (!false)
             ComBtn(
               height: 30,
               tooltip: isFullScreen ? '退出全屏' : '全屏',

@@ -1717,14 +1717,14 @@ class HeaderControlState extends State<HeaderControl>
   @override
   Widget build(BuildContext context) {
     final isFullScreen = this.isFullScreen;
-    final isFSOrPip = isFullScreen || plPlayerController.isDesktopPip;
+    final isFSOrPip = isFullScreen || false;
     final showFSActionItem =
         !isFileSource && plPlayerController.showFSActionItem && isFSOrPip;
     showCurrTimeIfNeeded(isFullScreen);
     Widget title;
     if (introController.videoDetail.value.title != null &&
         (isFullScreen ||
-            ((!horizontalScreen || plPlayerController.isDesktopPip) &&
+            ((!horizontalScreen || false) &&
                 !isPortrait))) {
       title = Padding(
         key: titleKey,
@@ -1828,7 +1828,7 @@ class HeaderControlState extends State<HeaderControl>
                   },
                 ),
               ),
-              if (!plPlayerController.isDesktopPip &&
+              if (!false &&
                   (!isFullScreen || !isPortrait))
                 SizedBox(
                   width: btnWidth,
@@ -1852,31 +1852,6 @@ class HeaderControlState extends State<HeaderControl>
               title,
               // show current datetime
               ...?timeBatteryWidgets,
-              if (PlatformUtils.isDesktop && !plPlayerController.isDesktopPip)
-                Obx(() {
-                  final isAlwaysOnTop = plPlayerController.isAlwaysOnTop.value;
-                  return SizedBox(
-                    width: btnWidth,
-                    height: btnHeight,
-                    child: IconButton(
-                      style: btnStyle,
-                      tooltip: '${isAlwaysOnTop ? '取消' : ''}置顶',
-                      onPressed: () =>
-                          plPlayerController.setAlwaysOnTop(!isAlwaysOnTop),
-                      icon: isAlwaysOnTop
-                          ? const Icon(
-                              size: 19,
-                              Icons.push_pin,
-                              color: Colors.white,
-                            )
-                          : const Icon(
-                              size: 19,
-                              Icons.push_pin_outlined,
-                              color: Colors.white,
-                            ),
-                    ),
-                  );
-                }),
               if (!isFileSource) ...[
                 if (!isFSOrPip) ...[
                   if (videoDetailCtr.isUgc)
@@ -2019,8 +1994,7 @@ class HeaderControlState extends State<HeaderControl>
                   ),
                 ),
               ),
-              if (Platform.isAndroid ||
-                  (PlatformUtils.isDesktop && !isFullScreen))
+              if (Platform.isAndroid)
                 SizedBox(
                   width: btnWidth,
                   height: btnHeight,
@@ -2028,10 +2002,6 @@ class HeaderControlState extends State<HeaderControl>
                     tooltip: '画中画',
                     style: btnStyle,
                     onPressed: () async {
-                      if (PlatformUtils.isDesktop) {
-                        plPlayerController.toggleDesktopPip();
-                        return;
-                      }
                       if (await Floating().isPipAvailable) {
                         if (context.mounted &&
                             !videoPlayerServiceHandler!.enableBackgroundPlay) {

@@ -106,42 +106,18 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
       titleSpacing: 14,
       title: Row(
         children: [
-          if (isFullScreen || plPlayerController.isDesktopPip)
+          if (isFullScreen || false)
             ComBtn(
               height: 30,
               tooltip: '返回',
               icon: const Icon(FontAwesomeIcons.arrowLeft, size: 15),
               onTap: () {
-                if (plPlayerController.isDesktopPip) {
-                  plPlayerController.exitDesktopPip();
-                } else {
-                  plPlayerController.triggerFullScreen(status: false);
-                }
+                plPlayerController.triggerFullScreen(status: false);
               },
             ),
           child,
           ...?timeBatteryWidgets,
           const SizedBox(width: 10),
-          if (PlatformUtils.isDesktop && !plPlayerController.isDesktopPip)
-            Obx(() {
-              final isAlwaysOnTop = plPlayerController.isAlwaysOnTop.value;
-              return ComBtn(
-                height: 30,
-                tooltip: '${isAlwaysOnTop ? '取消' : ''}置顶',
-                icon: isAlwaysOnTop
-                    ? const Icon(
-                        size: 18,
-                        Icons.push_pin,
-                        color: Colors.white,
-                      )
-                    : const Icon(
-                        size: 18,
-                        Icons.push_pin_outlined,
-                        color: Colors.white,
-                      ),
-                onTap: () => plPlayerController.setAlwaysOnTop(!isAlwaysOnTop),
-              );
-            }),
           if (isFullScreen || PlatformUtils.isDesktop)
             ComBtn(
               height: 30,
@@ -153,7 +129,7 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
               ),
               onTap: widget.onSendDanmaku,
             ),
-          if (Platform.isAndroid || (PlatformUtils.isDesktop && !isFullScreen))
+          if (Platform.isAndroid)
             ComBtn(
               height: 30,
               tooltip: '画中画',

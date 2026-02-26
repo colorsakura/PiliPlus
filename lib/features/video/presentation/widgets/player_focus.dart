@@ -194,15 +194,6 @@ class PlayerFocus extends StatelessWidget {
           }
           return true;
 
-        case LogicalKeyboardKey.keyP:
-          if (PlatformUtils.isDesktop && hasPlayer && !isFullScreen) {
-            plPlayerController
-              ..toggleDesktopPip()
-              ..controlsLock.value = false
-              ..showControls.value = false;
-          }
-          return true;
-
         case LogicalKeyboardKey.keyM:
           if (hasPlayer) {
             final isMuted = !plPlayerController.isMuted;
@@ -221,7 +212,7 @@ class PlayerFocus extends StatelessWidget {
           return true;
 
         case LogicalKeyboardKey.keyL:
-          if (isFullScreen || plPlayerController.isDesktopPip) {
+          if (isFullScreen || false) {
             plPlayerController.onLockControl(
               !plPlayerController.controlsLock.value,
             );
