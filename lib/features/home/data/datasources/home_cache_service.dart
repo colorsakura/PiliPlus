@@ -18,7 +18,7 @@ class HomeCacheService {
   static const int defaultCacheDuration = 60 * 60 * 1000;
 
   /// 最大缓存数量
-  static const int maxCacheSize = 200;
+  static const int maxCacheSize = 20;
 
   /// 获取 DAO 实例
   HomeCacheDao get dao {

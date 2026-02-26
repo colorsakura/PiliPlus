@@ -48,19 +48,19 @@
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                  Presentation Layer                      │
+│                  Presentation Layer                     │
 │  (UI Components, Controllers, Pages)                    │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
-│                    Domain Layer                          │
+│                    Domain Layer                         │
 │  (Entities, Repositories Interfaces, Use Cases)         │
 └────────────────────┬────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────┐
-│                     Data Layer                           │
+│                     Data Layer                          │
 │  (Remote Data Sources, Repository Implementations)      │
 └─────────────────────────────────────────────────────────┘
 ```

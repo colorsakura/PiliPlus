@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/controller.dart' show MainController;
@@ -16,7 +17,6 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -605,7 +605,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
       child: IconButton(
         tooltip: '消息',
         icon: const Icon(
-          Icons.message_outlined,
+          Icons.notifications_none,
           semanticLabel: '消息',
         ),
         onPressed: () => Get.toNamed('/whisper'),
