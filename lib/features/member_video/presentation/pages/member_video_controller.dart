@@ -7,7 +7,7 @@ import 'package:PiliPlus/models/common/video/source_type.dart';
 import 'package:PiliPlus/models/space/space_archive/data.dart';
 import 'package:PiliPlus/models/space/space_archive/episodic_button.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';

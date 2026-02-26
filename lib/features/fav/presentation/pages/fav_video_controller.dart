@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_folder/data.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 
 class FavController extends CommonListController<FavFolderData, FavFolderInfo> {

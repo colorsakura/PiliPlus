@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:PiliPlus/features/home_zone/zone/controller.dart';
 import 'package:PiliPlus/models/common/rank_type.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_controller.dart';
+import 'package:PiliPlus/core/controllers/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

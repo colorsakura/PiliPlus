@@ -5,7 +5,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/space/space_audio/data.dart';
 import 'package:PiliPlus/models/space/space_audio/item.dart';
 import 'package:PiliPlus/features/audio/audio.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class MemberAudioController
     extends CommonListController<SpaceAudioData, SpaceAudioItem> {

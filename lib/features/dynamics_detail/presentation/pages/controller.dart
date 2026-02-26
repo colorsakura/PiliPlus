@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/reply.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
+import 'package:PiliPlus/core/controllers/common_dyn_controller.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';

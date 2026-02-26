@@ -4,7 +4,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';

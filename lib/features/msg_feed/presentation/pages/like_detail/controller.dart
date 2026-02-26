@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/card.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/data.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:get/get.dart';
 
 class LikeDetailController

@@ -1,4 +1,4 @@
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 
 abstract class MultiSelectController<

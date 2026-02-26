@@ -11,7 +11,7 @@ import 'package:PiliPlus/models/member/info.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/models/video/video_detail/episode.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
-import 'package:PiliPlus/features/follow/presentation/pages/view.dart';
+import 'package:PiliPlus/features/follow/follow.dart';
 import 'package:PiliPlus/features/member_video/presentation/widgets/video_card_h_member_video.dart';
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/controller.dart';

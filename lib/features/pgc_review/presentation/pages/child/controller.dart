@@ -3,7 +3,7 @@ import 'package:PiliPlus/features/pgc_review/data/datasources/pgc_review_remote_
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/data.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 

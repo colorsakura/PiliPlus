@@ -1,6 +1,6 @@
 import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/user/controller.dart';
-import 'package:PiliPlus/features/search_panel/presentation/pages/view.dart';
+import 'package:PiliPlus/features/search_panel/search_panel.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';

@@ -5,7 +5,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
-import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
+import 'package:PiliPlus/core/controllers/common_dyn_controller.dart';
 import 'package:PiliPlus/features/video/presentation/pages/reply/widgets/reply_item_grpc.dart';
 import 'package:PiliPlus/features/video/presentation/pages/reply_reply/view.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'

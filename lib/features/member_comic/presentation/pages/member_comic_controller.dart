@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/space/space_archive/data.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class MemberComicController
     extends CommonListController<SpaceArchiveData, SpaceArchiveItem> {

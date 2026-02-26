@@ -500,7 +500,7 @@ abstract final class PiliScheme {
             FollowPageV2.toFollowPage(mid: mid);
             break;
           case 'fans':
-            FanPageV2.toFansPage(mid: mid);
+            FanPageV2.toFanPage(mid: int.tryParse(mid));
             break;
           case 'followed':
             FollowedPageV2.toFollowedPage(mid: mid);
@@ -529,7 +529,7 @@ abstract final class PiliScheme {
           queryParameters['sid'] ??
           RegExp(r'lists/(\d+)').firstMatch(path)?.group(1);
       if (sid != null) {
-        SubDetailPage.toSubDetailPage(int.parse(sid));
+        SubscriptionDetailPageV2.toSubDetailPage(int.parse(sid));
         return true;
       }
 

@@ -5,7 +5,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/live/live_feed_index/card_data_list_item.dart';
 import 'package:PiliPlus/models/live/live_second_list/data.dart';
 import 'package:PiliPlus/models/live/live_second_list/tag.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:get/get.dart';
 
 class LiveAreaChildController

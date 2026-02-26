@@ -160,9 +160,15 @@ class Routes {
     // 用户动态
     GetPage(name: '/memberDynamics', page: () => const MemberDynamicsPageV2()),
     // 订阅
-    GetPage(name: '/subscription', page: () => const SubPage()),
+    GetPage(name: '/subscription', page: () => const SubscriptionPageV2()),
     // 订阅详情
-    GetPage(name: '/subDetail', page: () => const SubDetailPage()),
+    GetPage(
+      name: '/subDetail',
+      page: () => SubscriptionDetailPageV2(
+        id: int.tryParse(Get.parameters['id'] ?? '') ?? 0,
+        heroTag: Get.parameters['heroTag'],
+      ),
+    ),
     // 弹幕屏蔽管理 (Riverpod)
     GetPage(name: '/danmakuBlock', page: () => const DanmakuBlockPageV2()),
     GetPage(name: '/sponsorBlock', page: () => const SponsorBlockPage()),
@@ -174,7 +180,12 @@ class Routes {
     GetPage(name: '/dynTopic', page: () => const DynTopicPage()),
     GetPage(name: '/articleList', page: () => const ArticleListPage()),
     GetPage(name: '/barSetting', page: () => const BarSetPage()),
-    GetPage(name: '/upowerRank', page: () => const UpowerRankPage()),
+    GetPage(
+      name: '/upowerRank',
+      page: () => MemberUpowerRankPage(
+        upMid: Get.parameters['upMid'] ?? '',
+      ),
+    ),
     GetPage(name: '/spaceSetting', page: () => const SpaceSettingPage()),
     GetPage(name: '/dynTopicRcmd', page: () => const DynTopicRcmdPage()),
     GetPage(name: '/matchInfo', page: () => const MatchInfoPage()),

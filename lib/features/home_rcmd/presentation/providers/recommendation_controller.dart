@@ -83,8 +83,9 @@ class RecommendationController extends Notifier<RecommendationState> {
       decode: (data) {
         AppLog.info('Decoding persisted data', name: 'Recommendation');
         if (data == null || data is! Map) {
-          AppLog.warning('No valid persisted data found (data: $data)', name: 'Recommendation');
-          throw Exception('No valid persisted data found');
+          AppLog.fine('No persisted data found, using initial state', name: 'Recommendation');
+          // Return an empty state instead of throwing exception
+          return const RecommendationState();
         }
         try {
           final json = data as Map<String, dynamic>;
@@ -103,8 +104,9 @@ class RecommendationController extends Notifier<RecommendationState> {
             isOffline: true,
           );
         } catch (e) {
-          AppLog.severe('Failed to decode persisted data: $e', name: 'Recommendation');
-          rethrow;
+          AppLog.warning('Failed to decode persisted data: $e, using initial state', name: 'Recommendation');
+          // Return an empty state instead of throwing
+          return const RecommendationState();
         }
       },
       encode: (state) {

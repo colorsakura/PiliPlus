@@ -4,7 +4,7 @@ import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/http/live.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';
-import 'package:PiliPlus/features/common/presentation/pages/publish/common_rich_text_pub_page.dart';
+import 'package:PiliPlus/shared/widgets/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/features/live_emote/live_emote.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:flutter/material.dart' hide TextField;
@@ -41,9 +41,6 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
 
   @override
   void dispose() {
-    Get.delete<LiveEmotePanelController>(
-      tag: liveRoomController.roomId.toString(),
-    );
     super.dispose();
   }
 
@@ -72,7 +69,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
   }
 
   @override
-  Widget? get customPanel => LiveEmotePanel(
+  Widget? get customPanel => LiveEmotePanelV2(
     onChoose: onChooseEmote,
     roomId: liveRoomController.roomId,
     onSendEmoticonUnique: (emote) {

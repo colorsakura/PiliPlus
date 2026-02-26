@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_pub_search/data.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 

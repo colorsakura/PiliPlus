@@ -4,7 +4,7 @@ import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/follow_order_type.dart';
 import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/models/follow/list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/follow/presentation/providers/follow_controller.dart';
 import 'package:PiliPlus/features/follow/data/datasources/follow_api_datasource.dart';
 import 'package:PiliPlus/core/storage/storage.dart';

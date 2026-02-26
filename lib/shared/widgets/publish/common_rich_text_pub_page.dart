@@ -12,7 +12,7 @@ import 'package:PiliPlus/models/dynamics/result.dart'
 import 'package:PiliPlus/models/dynamic/dyn_mention/item.dart';
 import 'package:PiliPlus/models/emote/emote.dart' as e;
 import 'package:PiliPlus/models/live/live_emote/emoticon.dart';
-import 'package:PiliPlus/features/common/presentation/pages/publish/common_publish_page.dart';
+import 'package:PiliPlus/shared/widgets/publish/common_publish_page.dart';
 import 'package:PiliPlus/features/dynamics_mention/dynamics_mention.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';

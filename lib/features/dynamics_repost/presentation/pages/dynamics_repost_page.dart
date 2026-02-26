@@ -6,7 +6,7 @@ import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/publish_panel_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
-import 'package:PiliPlus/features/common/presentation/pages/publish/common_rich_text_pub_page.dart';
+import 'package:PiliPlus/shared/widgets/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/features/dynamics_mention/presentation/pages/dynamics_mention_controller.dart';
 import 'package:PiliPlus/features/emote/presentation/pages/emote_controller.dart';
 import 'package:PiliPlus/features/emote/emote.dart';

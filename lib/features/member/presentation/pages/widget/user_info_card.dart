@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/space/space/images.dart';
 import 'package:PiliPlus/models/space/space/live.dart';
 import 'package:PiliPlus/models/space/space/pr_info.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
-import 'package:PiliPlus/features/follow/presentation/pages/view.dart';
+import 'package:PiliPlus/features/follow/follow.dart';
 import 'package:PiliPlus/features/follow_type/presentation/pages/followed/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
@@ -69,8 +69,8 @@ class UserInfoCard extends StatelessWidget {
     switch (type) {
       case UserInfoType.fan:
         count = card.fans;
-        onTap = () => FanPageV2.toFansPage(
-          mid: card.mid,
+        onTap = () => FanPageV2.toFanPage(
+          mid: card.mid != null ? int.tryParse(card.mid!) : null,
           name: card.name,
         );
       case UserInfoType.follow:

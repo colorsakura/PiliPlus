@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/member/coin_like_arc/data.dart';
 import 'package:PiliPlus/models/member/coin_like_arc/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class MemberLikeArcController
     extends CommonListController<CoinLikeArcData, CoinLikeArcItem> {

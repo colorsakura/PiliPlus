@@ -5,7 +5,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/up.dart';
 import 'package:PiliPlus/models/follow/data.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_controller.dart';
+import 'package:PiliPlus/core/controllers/common_controller.dart';
 import 'package:PiliPlus/features/dynamics_tab/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/follow/data/datasources/follow_api_datasource.dart';
 import 'package:PiliPlus/services/account_service.dart';

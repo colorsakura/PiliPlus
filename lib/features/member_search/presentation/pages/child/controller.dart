@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/common/member/search_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/member/search_archive/data.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/member_search/presentation/pages/controller.dart';
 
 class MemberSearchChildController extends CommonListController {

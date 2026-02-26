@@ -43,7 +43,7 @@ class MemberFavItem extends StatelessWidget {
             );
             onDelete?.call(isDeleted);
           } else {
-            SubDetailPage.toSubDetailPage(
+            SubscriptionDetailPageV2.toSubDetailPage(
               item.id!,
               subInfo: item,
             );

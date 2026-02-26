@@ -18,7 +18,7 @@ import 'package:PiliPlus/models/dynamic/dyn_reserve_info/data.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
 import 'package:PiliPlus/models/dynamics/result.dart' show PicModel;
 import 'package:PiliPlus/models/dynamics/vote_model.dart';
-import 'package:PiliPlus/features/common/presentation/pages/publish/common_rich_text_pub_page.dart';
+import 'package:PiliPlus/shared/widgets/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/features/dynamics_create_reserve/dynamics_create_reserve.dart';
 import 'package:PiliPlus/features/dynamics_create_vote/dynamics_create_vote.dart';
 import 'package:PiliPlus/features/dynamics_mention/presentation/pages/dynamics_mention_controller.dart';

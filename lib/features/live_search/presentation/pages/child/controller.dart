@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/live.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/live/live_search_type.dart';
 import 'package:PiliPlus/models/live/live_search/data.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/live_search/presentation/pages/controller.dart';
 
 class LiveSearchChildController

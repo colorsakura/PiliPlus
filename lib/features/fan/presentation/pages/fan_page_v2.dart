@@ -41,14 +41,6 @@ class FanPageV2 extends ConsumerStatefulWidget {
       },
     );
   }
-
-  // Alias for backward compatibility
-  static void toFansPage({dynamic mid, String? name}) {
-    final midInt = mid is int
-        ? mid
-        : (mid != null ? int.tryParse(mid.toString()) : null);
-    toFanPage(mid: midInt, name: name);
-  }
 }
 
 class _FanPageV2State extends ConsumerState<FanPageV2> {

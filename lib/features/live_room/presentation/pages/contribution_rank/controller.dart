@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/live/live_contribution_rank_type.dart';
 import 'package:PiliPlus/models/live/live_contribution_rank/data.dart';
 import 'package:PiliPlus/models/live/live_contribution_rank/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class ContributionRankController
     extends

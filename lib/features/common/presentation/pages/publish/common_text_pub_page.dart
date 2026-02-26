@@ -1,4 +1,4 @@
-import 'package:PiliPlus/features/common/presentation/pages/publish/common_publish_page.dart';
+import 'package:PiliPlus/shared/widgets/publish/common_publish_page.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,6 @@
-import 'package:PiliPlus/features/fav/presentation/pages/pgc/child_view.dart';
-import 'package:PiliPlus/features/fav/presentation/pages/fav_pgc_controller.dart';
+import 'package:PiliPlus/features/fav/fav_pgc/fav_pgc.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/fav_pgc_controller.dart'
+    as fav_pgc_ctrl;
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -79,7 +80,7 @@ class _FavPgcPageState extends State<FavPgcPage>
                 onTap: (index) {
                   try {
                     if (!_tabController.indexIsChanging) {
-                      Get.find<FavPgcController>(
+                      Get.find<fav_pgc_ctrl.FavPgcController>(
                         tag: '${widget.type}${index + 1}',
                       ).scrollController.animToTop();
                     }

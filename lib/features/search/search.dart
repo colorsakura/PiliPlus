@@ -46,6 +46,3 @@ export 'domain/usecases/get_search_trending.dart' show GetSearchTrendingUseCase;
 export 'domain/usecases/get_search_recommend.dart' show GetSearchRecommendUseCase;
 export 'domain/usecases/manage_search_history.dart' show ManageSearchHistoryUseCase;
 
-// 保留旧GetX导出（向后兼容）
-export 'presentation/pages/search_controller.dart'
-    show BaseSearchController, SSearchController;

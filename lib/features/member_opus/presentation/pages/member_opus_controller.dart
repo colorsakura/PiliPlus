@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/space/space/tab2.dart';
 import 'package:PiliPlus/models/space/space_opus/data.dart';
 import 'package:PiliPlus/models/space/space_opus/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:get/get.dart';

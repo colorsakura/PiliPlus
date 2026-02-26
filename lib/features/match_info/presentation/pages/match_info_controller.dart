@@ -1,7 +1,7 @@
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/match/match.dart';
 import 'package:PiliPlus/models/match/match_info/contest.dart';
-import 'package:PiliPlus/features/common/presentation/pages/dyn/common_dyn_controller.dart';
+import 'package:PiliPlus/core/controllers/common_dyn_controller.dart';
 import 'package:get/get.dart';
 
 class MatchInfoController extends CommonDynController {

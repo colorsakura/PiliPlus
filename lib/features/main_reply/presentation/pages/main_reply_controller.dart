@@ -2,7 +2,7 @@ import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show MainListReply, ReplyInfo;
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/features/common/presentation/pages/reply_controller.dart';
+import 'package:PiliPlus/core/controllers/reply_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

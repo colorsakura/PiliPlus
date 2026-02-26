@@ -1,7 +1,7 @@
 import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/models/follow/list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:get/get.dart';
 

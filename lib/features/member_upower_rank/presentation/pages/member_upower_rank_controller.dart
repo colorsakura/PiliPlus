@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/upower_rank/data.dart';
 import 'package:PiliPlus/models/upower_rank/level_info.dart';
 import 'package:PiliPlus/models/upower_rank/rank_info.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:get/get.dart';
 
 class UpowerRankController

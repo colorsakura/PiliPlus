@@ -4,7 +4,7 @@ import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/member/info.dart';
 import 'package:PiliPlus/models/space/space_archive/data.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:get/get.dart';

@@ -2,7 +2,7 @@ import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/article/controller.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/article/item.dart';
-import 'package:PiliPlus/features/search_panel/presentation/pages/view.dart';
+import 'package:PiliPlus/features/search_panel/search_panel.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,7 +1,7 @@
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/music/bgm_detail.dart';
 import 'package:PiliPlus/models/music/bgm_recommend_list.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/music/data/datasources/music_api_datasource.dart';
 import 'package:get/get.dart';
 

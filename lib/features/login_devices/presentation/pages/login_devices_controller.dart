@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/login_devices/data/datasources/login_devices_remote_datasource.dart';
 import 'package:PiliPlus/models/login_devices/data.dart';
 import 'package:PiliPlus/models/login_devices/device.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class LoginDevicesController
     extends CommonListController<LoginDevicesData, LoginDevice> {

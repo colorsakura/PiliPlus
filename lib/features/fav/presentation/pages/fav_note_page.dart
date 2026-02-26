@@ -1,5 +1,6 @@
-import 'package:PiliPlus/features/fav/presentation/pages/note/child_view.dart';
-import 'package:PiliPlus/features/fav/presentation/pages/fav_note_controller.dart';
+import 'package:PiliPlus/features/fav/fav_note/fav_note.dart';
+import 'package:PiliPlus/features/fav/presentation/pages/fav_note_controller.dart'
+    as fav_note_ctrl;
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,7 +76,7 @@ class _FavNotePageState extends State<FavNotePage>
                 onTap: (index) {
                   try {
                     if (!_tabController.indexIsChanging) {
-                      Get.find<FavNoteController>(
+                      Get.find<fav_note_ctrl.FavNoteController>(
                         tag: index == 0 ? 'false' : 'true',
                       ).scrollController.animToTop();
                     }

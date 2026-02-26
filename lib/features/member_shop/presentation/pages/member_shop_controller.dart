@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/space/space_shop/data.dart';
 import 'package:PiliPlus/models/space/space_shop/item.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_list_controller.dart';
+import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 
 class MemberShopController
     extends CommonListController<SpaceShopData, SpaceShopItem> {

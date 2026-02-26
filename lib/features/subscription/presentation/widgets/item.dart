@@ -48,7 +48,7 @@ class SubItem extends StatelessWidget {
               },
             );
           } else {
-            SubDetailPage.toSubDetailPage(
+            SubscriptionDetailPageV2.toSubDetailPage(
               item.id!,
               heroTag: heroTag,
               subInfo: item,

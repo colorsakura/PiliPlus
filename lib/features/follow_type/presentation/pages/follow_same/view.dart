@@ -1,5 +1,5 @@
 import 'package:PiliPlus/features/follow_type/presentation/pages/follow_same/controller.dart';
-import 'package:PiliPlus/features/follow_type/presentation/pages/view.dart';
+import 'package:PiliPlus/features/follow_type/follow_type.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
