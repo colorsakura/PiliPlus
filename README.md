@@ -37,6 +37,71 @@
 
 当前版本使用 Claude Code[GLM5] 进行了架构上的完全重构，避免模块之间依赖混乱。
 
+<details>
+<summary>🏗️ Clean Architecture 架构说明</summary>
+
+### 架构概览
+
+本项目采用 **Clean Architecture**（整洁架构）模式重构，实现 **106/122 个功能模块（86.8%）** 的架构规范化。
+
+### 三层架构
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  Presentation Layer                      │
+│  (UI Components, Controllers, Pages)                    │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                    Domain Layer                          │
+│  (Entities, Repositories Interfaces, Use Cases)         │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                     Data Layer                           │
+│  (Remote Data Sources, Repository Implementations)      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 架构优势
+
+- **关注点分离**: 业务逻辑与 UI 完全解耦
+- **可测试性**: 每层可独立测试
+- **可维护性**: 清晰的依赖关系，易于修改和扩展
+- **代码复用**: Use Cases 和 Repositories 可在不同场景复用
+
+### 模块结构
+
+每个功能模块遵循以下结构：
+
+```
+lib/features/feature_name/
+├── domain/              # 领域层
+│   ├── entities/        # 实体（参数、模型）
+│   ├── repositories/    # 仓储接口
+│   └── usecases/        # 用例（业务逻辑）
+├── data/                # 数据层
+│   ├── datasources/     # 数据源接口和实现
+│   └── repositories/    # 仓储实现
+├── presentation/        # 表现层
+│   ├── pages/           # 页面
+│   ├── controllers/     # 控制器
+│   └── widgets/         # 组件
+├── README.md            # 模块文档
+└── feature_name.dart    # 统一导出
+```
+
+### 技术栈
+
+- **状态管理**: GetX / Riverpod
+- **网络请求**: Dio (封装为 Remote Data Sources)
+- **类型安全**: 完整的 Dart 类型注解
+- **错误处理**: 统一的 LoadingState 封装
+
+</details>
+
 <br/>
 
 ## 下载
