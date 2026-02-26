@@ -2,13 +2,11 @@ import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/member_coin_arc/domain/entities/member_coin_arc_item_entity.dart';
 import 'package:PiliPlus/features/member_coin_arc/presentation/providers/member_coin_arc_list_provider.dart';
 import 'package:PiliPlus/features/member_coin_arc/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/grid.dart';
-import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

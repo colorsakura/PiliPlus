@@ -4,7 +4,6 @@ library;
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:PiliPlus/core/websocket/exceptions.dart';
-import 'package:PiliPlus/core/websocket/models/package_protocol.dart';
 import 'package:PiliPlus/features/live_room/domain/datasources/live_websocket_datasource.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 

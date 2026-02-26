@@ -31,11 +31,6 @@ class StorageMigrator {
     }
   }
 
-  /// 内部标记迁移完成（保持向后兼容）
-  static void _markMigrated(String boxName) {
-    markMigrated(boxName);
-  }
-
   /// 迁移基础类型数据（Hive -> MMKV）
   ///
   /// 将 Hive Box 中的所有数据迁移到 MMKV

@@ -12,7 +12,7 @@ class LoginDevicesRemoteDatasource {
     try {
       final account = Accounts.main;
       final result = await _loginDataSource.loginDevicesWithData(
-        csrf: account.csrf ?? '',
+        csrf: account.csrf,
         accessKey: account.accessKey ?? '',
         buvid: LoginRemoteDataSource.buvid,
       );

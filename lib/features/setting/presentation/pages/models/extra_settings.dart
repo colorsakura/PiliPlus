@@ -11,7 +11,6 @@ import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/fav.dart';

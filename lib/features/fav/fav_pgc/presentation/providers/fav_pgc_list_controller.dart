@@ -226,7 +226,7 @@ class FavPgcController extends ChangeNotifier {
       if (_state.listState is Success) {
         final list =
             (_state.listState as Success<List<FavPgcItemModel>?>).response;
-        final item = list?.removeAt(index);
+        list?.removeAt(index);
         _updateState(_state.copyWith(listState: Success(list)));
 
         // Note: In the original implementation, the item is moved to a different controller

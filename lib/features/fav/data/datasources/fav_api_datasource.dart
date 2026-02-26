@@ -22,7 +22,6 @@ import 'package:PiliPlus/models/space/space_cheese/data.dart';
 import 'package:PiliPlus/models/space/space_fav/data.dart';
 import 'package:PiliPlus/models/sub/sub_detail/data.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/app_sign.dart';
 import 'package:dio/dio.dart';
 
 /// 收藏远程数据源

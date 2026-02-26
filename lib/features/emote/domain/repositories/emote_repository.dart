@@ -1,4 +1,3 @@
-import 'package:PiliPlus/features/emote/domain/entities/emote_package.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/emote/package.dart';
 

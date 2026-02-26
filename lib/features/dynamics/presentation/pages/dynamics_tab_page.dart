@@ -122,7 +122,6 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
                 _controller.onLoadMore();
               }
               final item = dynamicsList[index];
-              if (item == null) return const SizedBox.shrink();
               return DynamicPanelWidget(
                 item: DynamicItemEntity(model: item),
                 maxWidth: 800,
@@ -139,7 +138,6 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
             _controller.onLoadMore();
           }
           final item = dynamicsList[index];
-          if (item == null) return const SizedBox.shrink();
           return DynamicPanelWidget(
             item: DynamicItemEntity(model: item),
             maxWidth: 800,

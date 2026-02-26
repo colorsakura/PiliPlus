@@ -1,5 +1,4 @@
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/space_setting/data.dart';
 import 'package:PiliPlus/models/space_setting/privacy.dart';
 import 'package:PiliPlus/features/space_setting/domain/entities/space_setting_state.dart';
 import 'package:PiliPlus/features/space_setting/domain/usecases/get_space_setting.dart';

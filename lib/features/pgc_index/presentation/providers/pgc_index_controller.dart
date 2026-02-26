@@ -1,5 +1,4 @@
 import 'package:PiliPlus/features/pgc_index/domain/entities/pgc_index_item.dart';
-import 'package:PiliPlus/features/pgc_index/domain/usecases/get_pgc_index.dart';
 import 'package:PiliPlus/features/pgc_index/presentation/providers/pgc_index_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_condition/data.dart';
@@ -88,7 +87,7 @@ class PgcIndexController extends Notifier<PgcIndexState> {
       }
 
       state = state.copyWith(
-        conditionState: res as LoadingState<PgcIndexConditionData>,
+        conditionState: res,
         indexParams: params,
       );
 
@@ -96,7 +95,7 @@ class PgcIndexController extends Notifier<PgcIndexState> {
       fetchResult();
     } else {
       state = state.copyWith(
-        conditionState: res as LoadingState<PgcIndexConditionData>,
+        conditionState: res,
       );
     }
   }
@@ -115,9 +114,7 @@ class PgcIndexController extends Notifier<PgcIndexState> {
 
     if (res case Success(:final response)) {
       final currentList = state.loadingState is Success
-          ? (state.loadingState as Success<List<PgcIndexItemEntity>?>)
-                    .response ??
-                []
+          ? state.loadingState.response ?? []
           : <PgcIndexItemEntity>[];
 
       final newList = isRefresh
@@ -132,7 +129,7 @@ class PgcIndexController extends Notifier<PgcIndexState> {
       );
     } else {
       state = state.copyWith(
-        loadingState: res as LoadingState<List<PgcIndexItemEntity>?>,
+        loadingState: res,
       );
     }
   }

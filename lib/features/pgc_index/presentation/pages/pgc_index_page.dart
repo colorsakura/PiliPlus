@@ -36,7 +36,7 @@ class _PgcIndexPageState extends ConsumerState<PgcIndexPage>
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
-    final controller = ref.watch(pgcIndexControllerProvider(widget.indexType));
+    ref.watch(pgcIndexControllerProvider(widget.indexType));
     final state = ref.watch(pgcIndexStateProvider(widget.indexType));
 
     return widget.indexType == null
@@ -57,7 +57,6 @@ class _PgcIndexPageState extends ConsumerState<PgcIndexPage>
       Loading() => loadingWidget,
       Success(:final response) => Builder(
         builder: (context) {
-          final state = ref.watch(pgcIndexStateProvider(widget.indexType));
           int count =
               (response.order?.isNotEmpty == true ? 1 : 0) +
               (response.filter?.length ?? 0);

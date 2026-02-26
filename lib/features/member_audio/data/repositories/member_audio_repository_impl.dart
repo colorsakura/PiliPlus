@@ -2,7 +2,6 @@ import 'package:PiliPlus/features/member_audio/domain/entities/member_audio_item
 import 'package:PiliPlus/features/member_audio/domain/repositories/member_audio_repository.dart';
 import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/space/space_audio/data.dart';
 
 /// Implementation of member audio repository
 class MemberAudioRepositoryImpl implements MemberAudioRepository {

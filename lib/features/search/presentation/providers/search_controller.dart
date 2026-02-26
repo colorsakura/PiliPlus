@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/search/domain/entities/search_result_entity.dart';
-import 'package:PiliPlus/features/search/domain/entities/search_suggest_entity.dart';
-import 'package:PiliPlus/features/search/domain/entities/search_trending_entity.dart';
 import 'package:PiliPlus/features/search/domain/repositories/search_repository.dart';
 import 'package:PiliPlus/features/search/presentation/providers/search_providers.dart'
     show searchRepositoryProvider;

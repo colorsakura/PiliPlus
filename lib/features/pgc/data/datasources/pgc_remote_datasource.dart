@@ -3,7 +3,6 @@ import 'package:PiliPlus/core/constants/pgc_api_constants.dart';
 import 'package:PiliPlus/core/errors/error_handler.dart';
 import 'package:PiliPlus/core/errors/exceptions.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_result/data.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_result/list.dart';

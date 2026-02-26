@@ -2,7 +2,6 @@ import 'package:PiliPlus/features/member_article/domain/entities/member_article_
 import 'package:PiliPlus/features/member_article/domain/repositories/member_article_repository.dart';
 import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/space/space_article/data.dart';
 
 /// Implementation of member article repository
 class MemberArticleRepositoryImpl implements MemberArticleRepository {

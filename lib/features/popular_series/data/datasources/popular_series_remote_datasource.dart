@@ -1,8 +1,6 @@
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/video.dart';
-import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/models/popular/popular_series_list/list.dart';
-import 'package:PiliPlus/models/popular/popular_series_one/config.dart';
 import 'package:PiliPlus/models/popular/popular_series_one/data.dart';
 
 /// Popular series remote data source

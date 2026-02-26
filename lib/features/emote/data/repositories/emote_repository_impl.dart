@@ -1,5 +1,4 @@
 import 'package:PiliPlus/features/emote/data/datasources/emote_remote_datasource.dart';
-import 'package:PiliPlus/features/emote/domain/entities/emote_package.dart';
 import 'package:PiliPlus/features/emote/domain/repositories/emote_repository.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/emote/package.dart';

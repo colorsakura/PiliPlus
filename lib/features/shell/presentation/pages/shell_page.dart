@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/controller.dart' show MainController;
 import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
@@ -13,8 +11,6 @@ import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.d
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
-import 'package:PiliPlus/plugin/pl_player/controller.dart';
-import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';

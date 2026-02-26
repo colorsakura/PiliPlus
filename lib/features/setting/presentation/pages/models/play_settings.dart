@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/models/common/super_chat_type.dart';
 import 'package:PiliPlus/models/common/video/subtitle_pref_type.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';

@@ -1,7 +1,4 @@
-import 'dart:math' show min;
-
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/features/search_trending/domain/entities/search_trending_item.dart';
 import 'package:PiliPlus/features/search_trending/domain/entities/search_trending_state.dart';
 import 'package:PiliPlus/features/search_trending/domain/usecases/get_search_trending.dart';
 import 'package:PiliPlus/features/search_trending/data/datasources/search_trending_remote_datasource.dart';

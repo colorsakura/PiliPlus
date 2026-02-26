@@ -8,7 +8,6 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/models/common/member/tab_type.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/models/space/space/tab2.dart' as space_models show SpaceTab2;
-import 'package:PiliPlus/models/space/space/live.dart';
 
 /// 成员仓库实现
 class MemberRepositoryImpl implements MemberRepository {

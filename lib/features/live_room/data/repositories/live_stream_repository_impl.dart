@@ -149,11 +149,11 @@ class LiveStreamRepositoryImpl implements LiveStreamRepository {
           break;
       }
 
-      if (decompressedData is Uint8List) {
-        _processingData(decompressedData as Uint8List);
-      } else {
-        _processingData(Uint8List.fromList(decompressedData));
-      }
+      _processingData(
+        decompressedData is Uint8List
+            ? decompressedData
+            : Uint8List.fromList(decompressedData),
+      );
     } catch (e) {
       if (kDebugMode) logger.e('$_logTag 处理数据失败: $e');
     }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:PiliPlus/features/dynamics/domain/entities/follow_up.dart';
-import 'package:PiliPlus/features/dynamics/presentation/providers/dynamics_providers.dart';
 import 'package:PiliPlus/features/dynamics/presentation/providers/dynamics_tab_controller.dart';
 import 'package:PiliPlus/features/dynamics/presentation/providers/follow_up_controller.dart';
 import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart' as dyn;

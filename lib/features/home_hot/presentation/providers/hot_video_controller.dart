@@ -276,11 +276,10 @@ class HotVideoController extends Notifier<HotVideoState> {
   /// 后台预加载图片
   void _preloadImagesInBackground(List<HotVideo> videos) {
     // 提取所有封面URL
-    final coverUrls = videos
-        .map((v) => v.cover)
-        .where((cover) => cover != null && cover!.isNotEmpty)
-        .cast<String>()
-        .toList();
+    final coverUrls = <String>[
+      for (final v in videos)
+        if (v.cover case final cover? when cover.isNotEmpty) cover,
+    ];
 
     if (coverUrls.isEmpty) return;
 

@@ -2,7 +2,6 @@ import 'package:PiliPlus/features/member_coin_arc/domain/entities/member_coin_ar
 import 'package:PiliPlus/features/member_coin_arc/domain/repositories/member_coin_arc_repository.dart';
 import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/member/coin_like_arc/data.dart';
 
 /// Implementation of member coin arc repository
 class MemberCoinArcRepositoryImpl implements MemberCoinArcRepository {

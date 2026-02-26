@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:PiliPlus/features/dynamics_topic/domain/usecases/get_dyn_topic_data.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_feed/item.dart';
-import 'package:PiliPlus/models/dynamic/dyn_topic_feed/topic_card_list.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/top_details.dart';
 
 /// Dynamics topic state

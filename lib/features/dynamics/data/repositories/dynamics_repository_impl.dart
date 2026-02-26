@@ -2,7 +2,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamics_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/dynamics/up.dart';
-import 'package:PiliPlus/models/follow/data.dart';
 import 'package:PiliPlus/features/dynamics/data/datasources/dynamics_remote_datasource.dart';
 import 'package:PiliPlus/features/dynamics/domain/entities/dynamics_data.dart';
 import 'package:PiliPlus/features/dynamics/domain/entities/follow_up.dart';
@@ -114,8 +113,8 @@ class DynamicsRepositoryImpl implements DynamicsRepository {
       page: page,
     );
 
-    if (result.isSuccess && result.data is FollowData) {
-      final response = result.data as FollowData;
+    if (result.isSuccess && result.data != null) {
+      final response = result.data!;
       final list = response.list.map((item) {
         return UpItemEntity(
           mid: item.mid,

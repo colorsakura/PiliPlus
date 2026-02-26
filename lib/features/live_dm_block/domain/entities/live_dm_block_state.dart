@@ -1,4 +1,3 @@
-import 'package:PiliPlus/models/common/live/live_dm_silent_type.dart';
 import 'package:PiliPlus/models/live/live_dm_block/shield_user_list.dart';
 
 /// Live DM block state

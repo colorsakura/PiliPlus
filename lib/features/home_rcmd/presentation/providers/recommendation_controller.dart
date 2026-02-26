@@ -291,16 +291,6 @@ class RecommendationController extends Notifier<RecommendationState> {
     }
   }
 
-  /// 后台保存到缓存（不阻塞 UI）
-  /// 注意：由于使用了 persist，数据会自动持久化
-  /// 这个方法保留为空，以便将来可能需要额外的缓存逻辑
-  Future<void> _saveToCacheInBackground(
-    List<VideoRecommendation> videos,
-  ) async {
-    // 数据通过 persist 自动持久化，无需手动保存
-    AppLog.fine('Data auto-persisted via Riverpod', name: 'Recommendation');
-  }
-
   /// 手动保存到缓存
   Future<void> _manualSaveToCache(List<VideoRecommendation> videos) async {
     try {

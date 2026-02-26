@@ -1,6 +1,5 @@
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/live.dart';
-import 'package:PiliPlus/models/common/live/live_dm_silent_type.dart';
 import 'package:PiliPlus/models/live/live_dm_block/shield_user_list.dart';
 import 'package:PiliPlus/features/live_dm_block/domain/repositories/live_dm_block_repository.dart';
 

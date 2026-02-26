@@ -1,6 +1,7 @@
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/features/coin_log/domain/entities/coin_log_item.dart';
+import 'package:PiliPlus/features/coin_log/presentation/providers/coin_log_controller.dart';
 import 'package:PiliPlus/features/coin_log/presentation/providers/coin_log_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
@@ -17,6 +18,7 @@ class CoinLogPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final padding = MediaQuery.viewPaddingOf(context);
     final state = ref.watch(coinLogControllerProvider);
+    final controller = ref.read(coinLogControllerProvider.notifier);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -29,7 +31,7 @@ class CoinLogPage extends ConsumerWidget {
               right: 10 + padding.right,
               bottom: padding.bottom + 100,
             ),
-            sliver: _buildBody(state.loadingState, ref),
+            sliver: _buildBody(state.loadingState, state, controller, ref),
           ),
         ],
       ).constraintWidth(constraints: const BoxConstraints(maxWidth: 680)),
@@ -38,9 +40,10 @@ class CoinLogPage extends ConsumerWidget {
 
   Widget _buildBody(
     LoadingState<List<CoinLogItemEntity>?> loadingState,
+    CoinLogState state,
+    CoinLogController controller,
     WidgetRef ref,
   ) {
-    final controller = ref.read(coinLogControllerProvider.notifier);
     return switch (loadingState) {
       Loading() => linearLoading,
       Success(:final response) =>
@@ -69,9 +72,9 @@ class CoinLogPage extends ConsumerWidget {
                         child: ColoredBox(
                           color: them.colorScheme.onInverseSurface,
                           child: _item(
-                            controller.state.header,
+                            state.header,
                             dividerV,
-                            controller.state.getFlexAndText,
+                            state.getFlexAndText,
                             isHeader: true,
                           ),
                         ),
@@ -83,7 +86,7 @@ class CoinLogPage extends ConsumerWidget {
                           return _item(
                             response[index],
                             dividerV,
-                            controller.state.getFlexAndText,
+                            state.getFlexAndText,
                           );
                         },
                         separatorBuilder: (context, index) => divider,

@@ -33,7 +33,7 @@ class FollowMemberUseCase {
       throw ServerFailure(e.message, code: e.code);
     } on NetworkException catch (e) {
       throw NetworkFailure(e.message);
-    } on UnauthorizedException catch (e) {
+    } on UnauthorizedException {
       throw UnauthorizedFailure();
     } catch (e) {
       throw UnknownFailure(e.toString());

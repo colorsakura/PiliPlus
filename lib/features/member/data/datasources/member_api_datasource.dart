@@ -14,7 +14,6 @@ import 'package:PiliPlus/core/errors/exceptions.dart';
 import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/follow/data.dart';
-import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/models/member/coin_like_arc/data.dart';
 import 'package:PiliPlus/models/member/info.dart';
 import 'package:PiliPlus/models/member/search_archive/data.dart';

@@ -6,7 +6,6 @@ import 'package:PiliPlus/features/dynamics_topic/presentation/providers/dyn_topi
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_feed/item.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/top_details.dart';
-import 'package:PiliPlus/features/dynamics/presentation/widgets/dyn_content.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/dynamic_panel.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/global_data.dart';

@@ -130,7 +130,7 @@ class MineController extends Notifier<MineState> {
 
       // 获取用户统计信息
       await fetchUserStat();
-    } on UnauthorizedFailure catch (e) {
+    } on UnauthorizedFailure {
       state = state.copyWith(
         isLoading: false,
         userInfo: UserInfoEntity.empty(),
@@ -149,7 +149,7 @@ class MineController extends Notifier<MineState> {
     try {
       final userStat = await _getUserStatUseCase();
       state = state.copyWith(userStat: userStat);
-    } on Failure catch (e) {
+    } on Failure {
       // 统计信息获取失败不影响主流程
       // 可以记录错误
     }

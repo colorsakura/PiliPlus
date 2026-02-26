@@ -1,4 +1,3 @@
-import 'package:PiliPlus/models/common/search/search_type.dart';
 import 'package:PiliPlus/features/search_result/presentation/providers/search_result_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

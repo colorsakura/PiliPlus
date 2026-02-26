@@ -5,7 +5,6 @@ import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_result/list.dart';
 import 'package:PiliPlus/models/pgc/pgc_timeline/result.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// PGC page state
 class PgcState {

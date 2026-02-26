@@ -2,7 +2,6 @@ import 'package:PiliPlus/features/member_season_series/domain/entities/member_se
 import 'package:PiliPlus/features/member_season_series/domain/repositories/member_season_series_repository.dart';
 import 'package:PiliPlus/features/member/data/datasources/member_api_datasource.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/space/space_season_series/season.dart';
 
 /// Implementation of member season series repository
 class MemberSeasonSeriesRepositoryImpl implements MemberSeasonSeriesRepository {

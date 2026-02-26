@@ -27,9 +27,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:PiliPlus/features/coin_log/coin_log.dart'
-    hide CoinLogController;
-import 'package:PiliPlus/features/exp_log/exp_log.dart' hide ExpLogController;
 
 class MemberPage extends ConsumerStatefulWidget {
   const MemberPage({super.key});

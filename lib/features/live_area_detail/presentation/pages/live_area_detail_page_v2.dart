@@ -83,8 +83,7 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
                           ),
                         )
                         .state
-                        .initialIndex ??
-                    0,
+                        .initialIndex,
                 length: response.length,
                 child: Builder(
                   builder: (context) {

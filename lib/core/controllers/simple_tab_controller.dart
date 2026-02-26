@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 /// Simple Tab Controller V2 - Riverpod compatible
 ///
@@ -10,10 +8,9 @@ class SimpleTabControllerV2 extends ChangeNotifier {
     required int length,
     TickerProvider? vsync,
     int initialIndex = 0,
-  }) : assert(length > 0),
-       assert(initialIndex >= 0 && initialIndex < length),
-       _length = length,
-       _initialIndex = initialIndex {
+  })  : assert(length > 0),
+        assert(initialIndex >= 0 && initialIndex < length),
+        _length = length {
     if (vsync != null) {
       _tabController = TabController(
         vsync: vsync,
@@ -25,7 +22,6 @@ class SimpleTabControllerV2 extends ChangeNotifier {
   }
 
   final int _length;
-  final int _initialIndex;
   TabController? _tabController;
   int _currentIndex = 0;
 

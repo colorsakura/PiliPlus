@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // Providers for color selection state
 final dynamicColorProvider = Provider<bool>((ref) => Pref.dynamicColor);
