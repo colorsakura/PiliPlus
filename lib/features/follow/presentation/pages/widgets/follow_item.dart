@@ -1,7 +1,6 @@
 import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/models/follow/list.dart';
-import 'package:PiliPlus/features/share/presentation/pages/share_page.dart'
-    show UserModel;
+import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart';

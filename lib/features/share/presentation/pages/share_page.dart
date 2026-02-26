@@ -1,42 +1,15 @@
+import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/self_sized_horizontal_list.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/features/contact/contact.dart';
+import 'package:PiliPlus/features/share/share.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
-import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-
-class UserModel {
-  UserModel({
-    required this.mid,
-    required this.name,
-    required this.avatar,
-    this.selected = false,
-  });
-
-  final int mid;
-  final String name;
-  final String avatar;
-  bool selected;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is UserModel) {
-      return mid == other.mid;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => mid.hashCode;
-}
 
 class SharePanel extends StatefulWidget {
   const SharePanel({
@@ -46,17 +19,24 @@ class SharePanel extends StatefulWidget {
   });
 
   final Map content;
-  final List<UserModel>? userList;
+  final List<ShareUserEntity>? userList;
 
   @override
   State<SharePanel> createState() => _SharePanelState();
 }
 
 class _SharePanelState extends State<SharePanel> {
-  final List<UserModel> _userList = <UserModel>[];
+  final List<ShareUserEntity> _userList = <ShareUserEntity>[];
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
+
+  // Initialize use case with repository
+  late final SendShare _sendShare = SendShare(
+    ShareRepositoryImpl(
+      remoteDataSource: ShareRemoteDataSourceImpl(),
+    ),
+  );
 
   @override
   void dispose() {
@@ -114,8 +94,9 @@ class _SharePanelState extends State<SharePanel> {
                       builder: (context) {
                         return GestureDetector(
                           onTap: () {
-                            item.selected = !item.selected;
-                            (context as Element).markNeedsBuild();
+                            setState(() {
+                              item.selected = !item.selected;
+                            });
                           },
                           behavior: HitTestBehavior.opaque,
                           child: SizedBox(
@@ -177,15 +158,16 @@ class _SharePanelState extends State<SharePanel> {
               GestureDetector(
                 onTap: () async {
                   _focusNode.unfocus();
-                  final UserModel? userModel = await Navigator.of(context).push(
+                  final ShareUserEntity? userModel = await Navigator.of(context).push(
                     GetPageRoute(page: () => const ContactPage()),
                   );
                   if (userModel != null) {
-                    _userList
-                      ..remove(userModel)
-                      ..insert(0, userModel);
-                    _scrollController.jumpToTop();
-                    setState(() {});
+                    setState(() {
+                      _userList
+                        ..remove(userModel)
+                        ..insert(0, userModel);
+                      _scrollController.jumpToTop();
+                    });
                   }
                 },
                 behavior: HitTestBehavior.opaque,
@@ -267,29 +249,31 @@ class _SharePanelState extends State<SharePanel> {
   }
 
   Future<void> _onSend() async {
-    final list = _userList.where((user) => user.selected);
-    if (list.isEmpty) {
+    final selectedUsers = _userList.where((user) => user.selected).toList();
+    if (selectedUsers.isEmpty) {
       SmartDialog.showToast('请选择分享的用户');
       return;
     }
     SmartDialog.showLoading();
-    final res = await Future.wait(
-      list.map(
-        (user) => RequestUtils.pmShare(
-          receiverId: user.mid,
-          content: widget.content,
-          message: _controller.text,
-        ),
-      ),
+    final result = await _sendShare(
+      users: selectedUsers,
+      content: widget.content,
+      message: _controller.text.isNotEmpty ? _controller.text : null,
     );
     SmartDialog.dismiss();
-    if (res.every((e) => e)) {
-      Get.back();
-      SmartDialog.showToast('分享成功');
-    } else if (res.every((e) => !e)) {
-      SmartDialog.showToast('分享失败');
+
+    if (result case Success(:final data)) {
+      final successCount = data.values.where((success) => success).length;
+      if (successCount == data.length) {
+        Get.back();
+        SmartDialog.showToast('分享成功');
+      } else if (successCount == 0) {
+        SmartDialog.showToast('分享失败');
+      } else {
+        SmartDialog.showToast('部分分享失败');
+      }
     } else {
-      SmartDialog.showToast('部分分享失败');
+      SmartDialog.showToast('分享失败');
     }
   }
 }
