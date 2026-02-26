@@ -13,4 +13,5 @@ export 'presentation/providers/danmaku_providers.dart' show
   danmakuRepositoryProvider,
   sendDanmakuUseCaseProvider;
 export 'presentation/pages/danmaku_controller.dart' show PlDanmakuController;
+export 'presentation/pages/danmaku_page.dart' show PlDanmaku;
 
