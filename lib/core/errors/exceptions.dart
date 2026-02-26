@@ -106,3 +106,16 @@ class BusinessLogicException extends AppException {
   String toString() =>
       'BusinessLogicException: $message${code != null ? ' (code: $code)' : ''}';
 }
+
+/// 验证异常
+///
+/// 当输入验证失败时抛出
+class ValidationException extends AppException {
+  @override
+  final String message;
+
+  ValidationException(this.message);
+
+  @override
+  String toString() => 'ValidationException: $message';
+}

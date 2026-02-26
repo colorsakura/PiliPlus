@@ -95,3 +95,13 @@ class UnknownFailure extends Failure {
   String toString() =>
       'UnknownFailure: $message${originalError != null ? ' ($originalError)' : ''}';
 }
+
+/// 验证失败
+///
+/// 当输入验证失败时使用
+class ValidationFailure extends Failure {
+  const ValidationFailure(super.message);
+
+  @override
+  String toString() => 'ValidationFailure: $message';
+}
