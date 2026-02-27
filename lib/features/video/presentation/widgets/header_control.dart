@@ -33,6 +33,7 @@ import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/me
 import 'package:PiliPlus/features/video/presentation/widgets/header_mixin.dart';
 import 'package:PiliPlus/features/danmaku_block/data/datasources/danmaku_filter_api_datasource.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
+import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/services/service_locator.dart';
@@ -545,7 +546,7 @@ class HeaderControlState extends State<HeaderControl>
                           );
                         },
                       ),
-                      if ((isFileSource && plPlayerController.mediaType != 1) ||
+                      if ((isFileSource && plPlayerController.dataSource is FileSource && !(plPlayerController.dataSource as FileSource).isMp4) ||
                           (!isFileSource &&
                               videoDetailCtr.audioUrl?.isNotEmpty == true))
                         Obx(
@@ -763,7 +764,7 @@ class HeaderControlState extends State<HeaderControl>
       SmartDialog.showToast('播放器未初始化');
       return;
     }
-    final hwdec = await player.platform!.getProperty(
+    final hwdec = await player.getProperty(
       'hwdec-current',
     );
     if (!context.mounted) return;
@@ -858,16 +859,17 @@ class HeaderControlState extends State<HeaderControl>
                       subtitle: Text(state.rate.toString()),
                       onTap: () => Utils.copyText('rate\n${state.rate}'),
                     ),
-                    ListTile(
-                      dense: true,
-                      title: const Text("AudioBitrate"),
-                      subtitle: Text(
-                        state.audioBitrate.toString(),
-                      ),
-                      onTap: () => Utils.copyText(
-                        'AudioBitrate\n${state.audioBitrate}',
-                      ),
-                    ),
+                    // AudioBitrate is not available in new media-kit
+                    // ListTile(
+                    //   dense: true,
+                    //   title: const Text("AudioBitrate"),
+                    //   subtitle: Text(
+                    //     state.audioBitrate.toString(),
+                    //   ),
+                    //   onTap: () => Utils.copyText(
+                    //     'AudioBitrate\n${state.audioBitrate}',
+                    //   ),
+                    // ),
                     ListTile(
                       dense: true,
                       title: const Text("Volume"),

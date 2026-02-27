@@ -210,15 +210,9 @@ class LiveRoomController extends GetxController {
       return null;
     }
     return plPlayerController.setDataSource(
-      DataSource(
-        videoSource: videoUrl,
+      NetworkSource(
+        videoSource: videoUrl!,
         audioSource: null,
-        type: DataSourceType.network,
-        httpHeaders: {
-          'user-agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15',
-          'referer': HttpString.baseUrl,
-        },
       ),
       isLive: true,
       autoplay: autoplay,

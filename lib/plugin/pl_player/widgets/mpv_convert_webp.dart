@@ -39,6 +39,10 @@ class MpvConvertWebp {
   }) : duration = end - start;
 
   Future<void> _init() async {
+    // TODO: This functionality is incompatible with current media-kit version
+    // NativePlayer.setHeader API has changed
+    throw UnimplementedError('MPV to WebP conversion is not yet supported with current media-kit version');
+    /*
     final enableHA = Pref.enableHA;
     _ctx = await Initializer.create(
       NativeLibrary.path,
@@ -66,6 +70,7 @@ class MpvConvertWebp {
       _mpv,
       _ctx,
     );
+    */
     if (progress != null) {
       _observeProperty('time-pos');
     }

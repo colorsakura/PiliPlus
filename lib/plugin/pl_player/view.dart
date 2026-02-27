@@ -201,7 +201,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               (await FlutterVolumeController.getVolume())!;
           FlutterVolumeController.addListener((double value) {
             if (mounted &&
-                !plPlayerController.volumeInterceptEventStream.value) {
+                !plPlayerController.volumeInterceptEventStream) {
               plPlayerController.volume.value = value;
               if (Platform.isIOS && !FlutterVolumeController.showSystemUI) {
                 plPlayerController

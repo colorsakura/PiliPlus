@@ -3,11 +3,20 @@ import 'dart:convert' show jsonDecode, utf8;
 import 'dart:io';
 import 'dart:math';
 
-import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
-import 'package:PiliPlus/shared/widgets/custom_icon.dart';
-import 'package:PiliPlus/shared/widgets/dialog/report.dart';
-import 'package:PiliPlus/shared/widgets/marquee.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/core/storage/storage.dart';
+import 'package:PiliPlus/core/storage/storage_key.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
+import 'package:PiliPlus/features/setting/presentation/widgets/popup_item.dart';
+import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
+import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/introduction/local/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/introduction/pgc/controller.dart';
+import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/controller.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/header_mixin.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/action_item.dart';
+import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
 import 'package:PiliPlus/http/danmaku.dart';
 import 'package:PiliPlus/http/danmaku_block.dart';
 import 'package:PiliPlus/http/init.dart';
@@ -19,25 +28,20 @@ import 'package:PiliPlus/models/common/video/audio_quality.dart';
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
 import 'package:PiliPlus/models/common/video/video_decode_type.dart';
 import 'package:PiliPlus/models/common/video/video_quality.dart';
+import 'package:PiliPlus/models/danmaku/danmaku_model.dart';
 import 'package:PiliPlus/models/video/play/url.dart';
 import 'package:PiliPlus/models/video/video_play_info/subtitle.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
-import 'package:PiliPlus/models/danmaku/danmaku_model.dart';
-import 'package:PiliPlus/features/setting/presentation/widgets/popup_item.dart';
-import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
-import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
-import 'package:PiliPlus/features/video/presentation/pages/introduction/local/controller.dart';
-import 'package:PiliPlus/features/video/presentation/pages/introduction/pgc/controller.dart';
-import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/controller.dart';
-import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/action_item.dart';
-import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
-import 'package:PiliPlus/features/video/presentation/widgets/header_mixin.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
+import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/services/shutdown_timer_service.dart'
     show shutdownTimerService;
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/custom_icon.dart';
+import 'package:PiliPlus/shared/widgets/dialog/report.dart';
+import 'package:PiliPlus/shared/widgets/marquee.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
@@ -46,9 +50,6 @@ import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:PiliPlus/core/storage/storage_key.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -542,7 +543,9 @@ class HeaderControlState extends State<HeaderControl>
                           );
                         },
                       ),
-                      if ((isFileSource && plPlayerController.mediaType != 1) ||
+                      if ((isFileSource &&
+                              !(plPlayerController.dataSource as FileSource)
+                                  .isMp4) ||
                           (!isFileSource &&
                               videoDetailCtr.audioUrl?.isNotEmpty == true))
                         Obx(
@@ -751,19 +754,18 @@ class HeaderControlState extends State<HeaderControl>
     );
   }
 
-  static Future<void> showPlayerInfo(
+  static void showPlayerInfo(
     BuildContext context, {
     required PlPlayerController plPlayerController,
-  }) async {
+  }) {
     final player = plPlayerController.videoPlayerController;
     if (player == null) {
       SmartDialog.showToast('播放器未初始化');
       return;
     }
-    final hwdec = await player.platform!.getProperty(
+    final hwdec = player.getProperty(
       'hwdec-current',
     );
-    if (!context.mounted) return;
     showDialog(
       context: context,
       builder: (context) {
@@ -854,16 +856,6 @@ class HeaderControlState extends State<HeaderControl>
                       title: const Text("rate"),
                       subtitle: Text(state.rate.toString()),
                       onTap: () => Utils.copyText('rate\n${state.rate}'),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title: const Text("AudioBitrate"),
-                      subtitle: Text(
-                        state.audioBitrate.toString(),
-                      ),
-                      onTap: () => Utils.copyText(
-                        'AudioBitrate\n${state.audioBitrate}',
-                      ),
                     ),
                     ListTile(
                       dense: true,
@@ -1723,9 +1715,7 @@ class HeaderControlState extends State<HeaderControl>
     showCurrTimeIfNeeded(isFullScreen);
     Widget title;
     if (introController.videoDetail.value.title != null &&
-        (isFullScreen ||
-            ((!horizontalScreen || false) &&
-                !isPortrait))) {
+        (isFullScreen || ((!horizontalScreen || false) && !isPortrait))) {
       title = Padding(
         key: titleKey,
         padding: isPortrait
@@ -1828,8 +1818,7 @@ class HeaderControlState extends State<HeaderControl>
                   },
                 ),
               ),
-              if (!false &&
-                  (!isFullScreen || !isPortrait))
+              if (!false && (!isFullScreen || !isPortrait))
                 SizedBox(
                   width: btnWidth,
                   height: btnHeight,

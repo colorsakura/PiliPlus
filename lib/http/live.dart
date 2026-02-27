@@ -1,9 +1,9 @@
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
+import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
-import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/live/live_contribution_rank_type.dart';
 import 'package:PiliPlus/models/common/live/live_search_type.dart';
@@ -132,7 +132,7 @@ abstract final class LiveHttp {
       options: Options(
         headers: {
           'referer': 'https://live.bilibili.com/$roomId',
-          'user-agent': UaType.pc.ua,
+          'user-agent': BrowserUa.pc,
         },
       ),
     );

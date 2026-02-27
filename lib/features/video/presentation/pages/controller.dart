@@ -8,11 +8,11 @@ import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
+import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
@@ -71,7 +71,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:media_kit/media_kit.dart' as media_kit;
 
 class VideoDetailController extends GetxController
     with GetTickerProviderStateMixin, BlockMixin {
@@ -489,7 +489,7 @@ class VideoDetailController extends GetxController
   @override
   BlockConfigMixin get blockConfig => plPlayerController;
   @override
-  Player? get player => plPlayerController.videoPlayerController;
+  media_kit.Player? get player => plPlayerController.videoPlayerController;
   @override
   bool get isFullScreen => plPlayerController.isFullScreen.value;
   @override
@@ -681,21 +681,16 @@ class VideoDetailController extends GetxController
       seek = getFirstSegment();
     }
     await plPlayerController.setDataSource(
-      DataSource(
-        videoSource: isFileSource
-            ? null
-            : onlyPlayAudio
-            ? audio ?? audioUrl
-            : video ?? videoUrl,
-        audioSource: isFileSource || onlyPlayAudio ? null : audio ?? audioUrl,
-        type: isFileSource ? DataSourceType.file : DataSourceType.network,
-        httpHeaders: isFileSource
-            ? null
-            : {
-                'user-agent': UaType.pc.ua,
-                'referer': HttpString.baseUrl,
-              },
-      ),
+      isFileSource
+          ? FileSource(
+              dir: args['dirPath'],
+              typeTag: entry.typeTag!,
+              isMp4: entry.mediaType == 1,
+            )
+          : NetworkSource(
+              videoSource: video ?? videoUrl!,
+              audioSource: audio ?? audioUrl,
+            ),
       seekTo: seek,
       duration:
           duration ??
@@ -720,9 +715,6 @@ class VideoDetailController extends GetxController
       width: firstVideo.width,
       height: firstVideo.height,
       volume: volume ?? this.volume,
-      dirPath: isFileSource ? args['dirPath'] : null,
-      typeTag: isFileSource ? entry.typeTag : null,
-      mediaType: isFileSource ? entry.mediaType : null,
     );
 
     if (isClosed) return;
@@ -1005,7 +997,7 @@ class VideoDetailController extends GetxController
   Future<void> setSubtitle(int index) async {
     if (index <= 0) {
       await plPlayerController.videoPlayerController?.setSubtitleTrack(
-        SubtitleTrack.no(),
+        media_kit.SubtitleTrack.no(),
       );
       vttSubtitlesIndex.value = index;
       return;
@@ -1014,12 +1006,11 @@ class VideoDetailController extends GetxController
     Future<void> setSub(({bool isData, String id}) subtitle) async {
       final sub = subtitles[index - 1];
       await plPlayerController.videoPlayerController?.setSubtitleTrack(
-        SubtitleTrack(
+        media_kit.SubtitleTrack(
           subtitle.id,
           sub.lanDoc,
           sub.lan,
           uri: !subtitle.isData,
-          data: subtitle.isData,
         ),
       );
       vttSubtitlesIndex.value = index;

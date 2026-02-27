@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
+import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
-import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
@@ -383,7 +383,7 @@ abstract final class VideoHttp {
         headers: {
           'origin': 'https://www.bilibili.com',
           'referer': 'https://www.bilibili.com/bangumi/play/ss$seasonId',
-          'user-agent': UaType.pc.ua,
+          'user-agent': BrowserUa.pc,
         },
       ),
     );
@@ -415,7 +415,7 @@ abstract final class VideoHttp {
         headers: {
           'origin': 'https://www.bilibili.com',
           'referer': 'https://www.bilibili.com/video/$bvid',
-          'user-agent': UaType.pc.ua,
+          'user-agent': BrowserUa.pc,
         },
       ),
     );
@@ -612,7 +612,7 @@ abstract final class VideoHttp {
         'extend_content': jsonEncode({
           "entity": "user",
           "entity_id": mid,
-          'fp': UaType.pc.ua,
+          'fp': BrowserUa.pc,
         }),
         'csrf': Accounts.main.csrf,
       },
@@ -621,7 +621,7 @@ abstract final class VideoHttp {
         headers: {
           'origin': 'https://space.bilibili.com',
           'referer': 'https://space.bilibili.com/$mid/dynamic',
-          'user-agent': UaType.pc.ua,
+          'user-agent': BrowserUa.pc,
         },
       ),
     );

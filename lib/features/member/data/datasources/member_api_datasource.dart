@@ -31,7 +31,7 @@ import 'package:PiliPlus/models/upower_rank/data.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
-import 'package:PiliPlus/http/ua_type.dart';
+import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:dio/dio.dart';
 
 /// 成员远程数据源
@@ -360,7 +360,7 @@ class MemberRemoteDataSource {
           headers: {
             'origin': 'https://space.bilibili.com',
             'referer': 'https://space.bilibili.com/$mid/dynamic',
-            'user-agent': UaType.pc.ua,
+            'user-agent': BrowserUa.pc,
           },
         ),
       );

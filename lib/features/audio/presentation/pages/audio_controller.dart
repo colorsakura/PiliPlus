@@ -12,9 +12,9 @@ import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pb.dart'
         ListOrder,
         DashItem,
         ResponseUrl;
+import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/http/ua_type.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart'
     show FavMixin;
 import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
@@ -92,7 +92,7 @@ class AudioController extends GetxController
   ListOrder order = ListOrder.ORDER_NORMAL;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     final args = Get.arguments;
     oid = Int64(args['oid']);
@@ -118,9 +118,9 @@ class AudioController extends GetxController
     final hasAudioUrl = audioUrl != null;
     if (hasAudioUrl) {
       _querySponsorBlock();
-      _onOpenMedia(
+      await _onOpenMedia(
         audioUrl,
-        ua: UaType.pc.ua,
+        ua: BrowserUa.pc,
         referer: HttpString.baseUrl,
       );
     }
@@ -249,7 +249,7 @@ class AudioController extends GetxController
     }
   }
 
-  void _onPlay(PlayURLResp data) {
+  Future<void> _onPlay(PlayURLResp data) async {
     final PlayInfo? playInfo = data.playerInfo.values.firstOrNull;
     if (playInfo != null) {
       if (playInfo.hasPlayDash()) {
@@ -263,7 +263,7 @@ class AudioController extends GetxController
           (e) => e.id <= cacheAudioQa,
           (a, b) => a.id > b.id ? a : b,
         );
-        _onOpenMedia(VideoUtils.getCdnUrl(audio.playUrls));
+        await _onOpenMedia(VideoUtils.getCdnUrl(audio.playUrls));
       } else if (playInfo.hasPlayUrl()) {
         final playUrl = playInfo.playUrl;
         final durls = playUrl.durl;
@@ -272,32 +272,32 @@ class AudioController extends GetxController
         }
         final durl = durls.first;
         position.value = Duration.zero;
-        _onOpenMedia(VideoUtils.getCdnUrl(durl.playUrls));
+        await _onOpenMedia(VideoUtils.getCdnUrl(durl.playUrls));
       }
     }
   }
 
-  void _onOpenMedia(
+  Future<void> _onOpenMedia(
     String url, {
     String? referer,
     String ua = Constants.userAgentApp,
-  }) {
-    _initPlayerIfNeeded();
+  }) async {
+    await _initPlayerIfNeeded();
     player!.open(
       Media(
         url,
         start: _start,
-        httpHeaders: {
+        extras: {
           'user-agent': ua,
-          'referer': ?referer,
+          if (referer != null) 'referer': referer,
         },
       ),
     );
     _start = null;
   }
 
-  void _initPlayerIfNeeded() {
-    player ??= Player();
+  Future<void> _initPlayerIfNeeded() async {
+    player ??= await Player.create();
     _subscriptions ??= {
       player!.stream.position.listen((position) {
         if (isDragging) return;

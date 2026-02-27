@@ -28,6 +28,7 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
+import 'package:media_kit/media_kit.dart' as media_kit;
 import 'package:flutter/material.dart' hide TextField;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -382,7 +383,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
                     final res = await plPlayerController
                         .plPlayerController
                         .videoPlayerController
-                        ?.screenshot(format: 'image/png');
+                        ?.screenshot(format: media_kit.ScreenshotFormat.png);
                     if (res != null) {
                       final file = File(
                         '$tmpDirPath/${Utils.generateRandomString(8)}.png',

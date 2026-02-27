@@ -15,7 +15,6 @@ import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
-import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -28,49 +27,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 /// Shell 页面 - 应用主框架
-///
-/// ## 架构
-///
-/// 本页面采用**干净架构（Clean Architecture）** + **Riverpod** 状态管理：
-///
-/// - **Presentation Layer**: 本页面作为 UI 入口，使用 `ConsumerWidget` 监听状态变化
-/// - **Domain Layer**: 通过 Use Cases 执行业务逻辑
-/// - **Data Layer**: 通过 Repositories 获取数据
-///
-/// ## 使用的 Providers
-///
-/// ### 导航相关
-/// - `navigationConfigControllerProvider`: 导航配置（选中项、导航栏列表等）
-/// - `navigationStateControllerProvider`: 导航 UI 状态（滚动偏移、显示/隐藏等）
-///
-/// ### 未读消息/动态
-/// - `unreadMessageControllerProvider`: 未读消息状态
-/// - `unreadDynamicControllerProvider`: 未读动态状态
-///
-/// ### 定时任务
-/// - `periodicCheckSchedulerProvider`: 定时检查未读消息/动态
-///
-/// ### Use Cases
-/// - `getNavigationConfigUseCaseProvider`: 获取导航配置
-/// - `checkUnreadMessagesUseCaseProvider`: 检查未读消息
-/// - `checkUnreadDynamicsUseCaseProvider`: 检查未读动态
-///
-/// ## 桌面端功能
-///
-/// - 窗口管理（最小化、最大化、关闭）
-/// - 系统托盘图标
-/// - 后台播放控制
-///
-/// ## 向后兼容
-///
-/// 为支持渐进式迁移，临时注册了 `MainController`（@deprecated）。
-/// 待所有依赖页面迁移完成后将移除。
-///
-/// ## 相关文件
-///
-/// - 导航 Provider: `presentation/providers/navigation_provider.dart`
-/// - 未读 Provider: `presentation/providers/unread_provider.dart`
-/// - Shell Providers: `presentation/providers/shell_providers.dart`
 class ShellPage extends ConsumerStatefulWidget {
   const ShellPage({super.key});
 
@@ -233,6 +189,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
     if (config == null) return;
 
+    // Validate index bounds
+    if (index < 0 || index >= config.navigationBars.length) return;
+
     final currentNav = config.navigationBars[index];
 
     if (index != currentIndex) {
@@ -288,7 +247,8 @@ class _ShellPageState extends ConsumerState<ShellPage>
     if (shouldUseBottomNav) {
       bottomNav = _buildBottomNav(config, unreadDyn.count);
       child = Row(children: [Expanded(child: child)]);
-    } else {
+    } else if (config.navigationBars.isNotEmpty) {
+      // 只有在有导航项时才显示侧边栏
       child = Row(
         children: [
           _buildSideBar(config, theme, unreadDyn.count),
@@ -301,6 +261,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
         ],
       );
     }
+    // 如果没有导航项，直接显示内容（不加任何导航栏）
 
     child = Scaffold(
       extendBody: true,
@@ -343,10 +304,13 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
   /// 构建底部导航栏（移动端竖屏）
   Widget _buildBottomNav(NavigationConfig config, int dynCount) {
-    final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
-
     return BottomNavigationBar(
-      currentIndex: config.selectedIndex,
+      currentIndex: config.navigationBars.isEmpty
+          ? 0
+          : config.selectedIndex.clamp(
+              0,
+              config.navigationBars.length - 1,
+            ),
       onTap: _handleNavTap,
       iconSize: 16,
       selectedFontSize: 12,
@@ -359,13 +323,11 @@ class _ShellPageState extends ConsumerState<ShellPage>
               icon: _buildIcon(
                 type: e,
                 dynCount: dynCount,
-                dynamicBadgeMode: dynamicBadgeMode,
               ),
               activeIcon: _buildIcon(
                 type: e,
                 selected: true,
                 dynCount: dynCount,
-                dynamicBadgeMode: dynamicBadgeMode,
               ),
             ),
           )
@@ -374,116 +336,65 @@ class _ShellPageState extends ConsumerState<ShellPage>
   }
 
   /// 构建侧边导航栏（桌面端/平板）
-  ///
-  /// 根据 `optTabletNav` 配置选择：
-  /// - true: 使用 NavigationDrawer（平板优化）
-  /// - false: 使用 NavigationRail（标准侧边栏）
   Widget _buildSideBar(NavigationConfig config, ThemeData theme, int dynCount) {
-    final optTabletNav = ref.watch(optTabletNavProvider);
     final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
 
-    return config.navigationBars.length > 1
-        ? context.isTablet && optTabletNav
-              ? Column(
-                  children: [
-                    const SizedBox(height: 25),
-                    _buildUserAndSearchVertical(
-                      theme,
-                      dynCount,
-                      dynamicBadgeMode,
+    return Column(
+      children: [
+        const SizedBox(height: 25),
+        Expanded(
+          flex: 5,
+          child: SizedBox(
+            width: 60,
+            child: NavigationRail(
+              backgroundColor: Colors.transparent,
+              labelType: NavigationRailLabelType.all,
+              indicatorShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              onDestinationSelected: _handleNavTap,
+              selectedIndex: config.navigationBars.isEmpty
+                  ? 0
+                  : config.selectedIndex.clamp(
+                      0,
+                      config.navigationBars.length - 1,
                     ),
-                    const Spacer(flex: 2),
-                    Expanded(
-                      flex: 5,
-                      child: SizedBox(
-                        width: 130,
-                        child: NavigationDrawer(
-                          backgroundColor: Colors.transparent,
-                          tilePadding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 12,
-                          ),
-                          indicatorShape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                          onDestinationSelected: _handleNavTap,
-                          selectedIndex: config.selectedIndex,
-                          children: config.navigationBars
-                              .map(
-                                (e) => NavigationDrawerDestination(
-                                  label: Text(e.label),
-                                  icon: _buildIcon(
-                                    type: e,
-                                    dynCount: dynCount,
-                                    dynamicBadgeMode: dynamicBadgeMode,
-                                  ),
-                                  selectedIcon: _buildIcon(
-                                    type: e,
-                                    selected: true,
-                                    dynCount: dynCount,
-                                    dynamicBadgeMode: dynamicBadgeMode,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
+              destinations: config.navigationBars
+                  .map(
+                    (e) => NavigationRailDestination(
+                      label: Text(e.label),
+                      icon: _buildIcon(
+                        type: e,
+                        dynCount: dynCount,
+                      ),
+                      selectedIcon: _buildIcon(
+                        type: e,
+                        selected: true,
+                        dynCount: dynCount,
                       ),
                     ),
-                  ],
-                )
-              : NavigationRail(
-                  groupAlignment: 0.5,
-                  selectedIndex: config.selectedIndex,
-                  onDestinationSelected: _handleNavTap,
-                  labelType: NavigationRailLabelType.selected,
-                  leading: _buildUserAndSearchVertical(
-                    theme,
-                    dynCount,
-                    dynamicBadgeMode,
-                  ),
-                  destinations: config.navigationBars
-                      .map(
-                        (e) => NavigationRailDestination(
-                          label: Text(e.label),
-                          icon: _buildIcon(
-                            type: e,
-                            dynCount: dynCount,
-                            dynamicBadgeMode: dynamicBadgeMode,
-                          ),
-                          selectedIcon: _buildIcon(
-                            type: e,
-                            selected: true,
-                            dynCount: dynCount,
-                            dynamicBadgeMode: dynamicBadgeMode,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                )
-        : Container(
-            width: 80,
-            padding: const EdgeInsets.only(top: 10),
-            child: _buildUserAndSearchVertical(
-              theme,
-              dynCount,
-              dynamicBadgeMode,
+                  )
+                  .toList(),
             ),
-          );
+          ),
+        ),
+        const Spacer(flex: 2),
+        _buildUserAndSearchVertical(
+          theme,
+          dynCount,
+          dynamicBadgeMode,
+        ),
+      ],
+    );
   }
 
   // ========== 导航图标 ==========
 
   /// 构建导航图标
-  ///
-  /// 为动态页面添加未读角标，角标样式由 `dynamicBadgeMode` 决定：
-  /// - `DynamicBadgeMode.number`: 显示数字
-  /// - `DynamicBadgeMode.dot`: 显示圆点
-  /// - `DynamicBadgeMode.hidden`: 不显示
   Widget _buildIcon({
     required NavigationBarType type,
     bool selected = false,
     required int dynCount,
-    required DynamicBadgeMode dynamicBadgeMode,
   }) {
     final icon = selected ? type.selectIcon : type.icon;
 
@@ -491,9 +402,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
     if (type == NavigationBarType.dynamics) {
       return Badge(
         isLabelVisible: dynCount > 0,
-        label: dynamicBadgeMode == DynamicBadgeMode.number
-            ? Text(dynCount.toString())
-            : null,
+        label: Text(dynCount.toString()),
         padding: const EdgeInsets.symmetric(horizontal: 6),
         child: icon,
       );
@@ -521,9 +430,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
     return Column(
       children: [
-        _buildUserAvatar(theme, accountService),
-        const SizedBox(height: 8),
-        _buildMsgBadge(unreadMsg, msgBadgeMode),
         IconButton(
           tooltip: '搜索',
           icon: const Icon(
@@ -532,6 +438,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
           ),
           onPressed: () => Get.toNamed('/search'),
         ),
+        _buildMsgBadge(unreadMsg, msgBadgeMode),
+        _buildUserAvatar(theme, accountService),
+        const SizedBox(height: 8),
       ],
     );
   }
