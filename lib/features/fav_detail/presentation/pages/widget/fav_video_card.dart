@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/select_mask.dart';
 import 'package:PiliPlus/shared/widgets/stat/stat.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
@@ -63,7 +64,7 @@ class FavVideoCardH extends StatelessWidget {
             ? () => ctr!.onSelect(item)
             : () {
                 if (!const [0, 16].contains(item.attr)) {
-                  Get.toNamed('/member?mid=${item.upper?.mid}');
+                  PageUtils.toDupNamed('/member?mid=${item.upper?.mid}');
                   return;
                 }
 

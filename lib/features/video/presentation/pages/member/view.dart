@@ -301,7 +301,7 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
               ),
               onPressed: () {
                 if (widget.mid == account.mid) {
-                  Get.toNamed('/editProfile');
+                  PageUtils.toDupNamed('/editProfile');
                 } else {
                   if (!account.isLogin) {
                     SmartDialog.showToast('账号未登录');
@@ -337,7 +337,7 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
                 tapTargetSize: .shrinkWrap,
                 visualDensity: const VisualDensity(vertical: -2),
               ),
-              onPressed: () => Get.toNamed('/member?mid=${widget.mid}'),
+              onPressed: () => PageUtils.toDupNamed('/member?mid=${widget.mid}'),
               child: const Text(
                 '查看主页',
                 maxLines: 1,

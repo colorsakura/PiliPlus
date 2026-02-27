@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
 import 'package:PiliPlus/models/common/setting_type.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/login/presentation/pages/login_controller.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/extra_setting.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/play_setting.dart';
@@ -156,7 +157,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void _toPage(SettingType type) {
     if (_isPortrait) {
-      Get.toNamed('/${type.name}');
+      PageUtils.toDupNamed('/${type.name}');
     } else {
       _type = type;
       setState(() {});
@@ -294,7 +295,7 @@ class _SettingPageState extends State<SettingPage> {
     child: Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => Get.toNamed('/settingsSearch'),
+        onTap: () => PageUtils.toDupNamed('/settingsSearch'),
         borderRadius: const BorderRadius.all(Radius.circular(50)),
         child: Ink(
           padding: const EdgeInsets.symmetric(vertical: 8),

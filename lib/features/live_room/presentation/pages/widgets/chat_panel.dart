@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/live.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_danmaku/danmaku_msg.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/live/live_superchat/item.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/superchat/superchat_card.dart';
@@ -101,7 +102,7 @@ class LiveRoomChatPanel extends StatelessWidget {
                                   ),
                                   recognizer: NoDeadlineTapGestureRecognizer()
                                     ..onTap = () =>
-                                        Get.toNamed('/member?mid=${reply.mid}'),
+                                        PageUtils.toDupNamed('/member?mid=${reply.mid}'),
                                 ),
                               _buildMsg(devicePixelRatio, item),
                             ],
@@ -321,7 +322,7 @@ class LiveRoomChatPanel extends StatelessWidget {
         ),
         PopupMenuItem(
           height: 38,
-          onTap: () => Get.toNamed('/member?mid=${item.uid}'),
+          onTap: () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
           child: const Text(
             '去TA的个人空间',
             style: TextStyle(fontSize: 13),

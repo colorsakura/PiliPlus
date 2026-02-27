@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/fav.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/fav_order_type.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
@@ -176,7 +177,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
         tooltip: '搜索',
         onPressed: () {
           final folderInfo = _favDetailController.folderInfo.value;
-          Get.toNamed(
+          PageUtils.toDupNamed(
             '/favSearch',
             arguments: {
               'type': 0,
@@ -235,7 +236,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
               ),
               PopupMenuItem(
                 onTap: () =>
-                    Get.toNamed(
+                    PageUtils.toDupNamed(
                       '/createFav',
                       parameters: {'mediaId': mediaId},
                     )?.then((res) {
@@ -427,7 +428,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => Get.toNamed(
+                            onTap: () => PageUtils.toDupNamed(
                               '/member?mid=${folderInfo.upper!.mid}',
                             ),
                             child: Text(

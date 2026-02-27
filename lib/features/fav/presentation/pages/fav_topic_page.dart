@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_topic/topic_item.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_topic_controller.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -91,7 +92,7 @@ class _FavTopicPageState extends State<FavTopicPage>
                     color: theme.colorScheme.onInverseSurface,
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                     child: InkWell(
-                      onTap: () => Get.toNamed(
+                      onTap: () => PageUtils.toDupNamed(
                         '/dynTopic',
                         parameters: {
                           'id': item.id!.toString(),

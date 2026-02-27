@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/keep_alive_wrapper.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/result.dart';
 import 'package:PiliPlus/models/video/video_tag/data.dart';
@@ -201,7 +202,7 @@ class _IntroDetailState extends State<PgcIntroPanel>
                   (item) => SearchText(
                     fontSize: 13,
                     text: item.tagName!,
-                    onTap: (tagName) => Get.toNamed(
+                    onTap: (tagName) => PageUtils.toDupNamed(
                       '/searchResult',
                       parameters: {'keyword': tagName},
                     ),

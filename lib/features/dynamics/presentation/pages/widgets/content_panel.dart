@@ -37,7 +37,7 @@ Widget content(
       children: [
         if (moduleDynamic?.topic case final topic?)
           GestureDetector(
-            onTap: () => Get.toNamed(
+            onTap: () => PageUtils.toDupNamed(
               '/dynTopic',
               parameters: {
                 'id': topic.id!.toString(),

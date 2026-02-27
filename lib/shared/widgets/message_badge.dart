@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.d
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 
 /// 消息角标 Widget
@@ -29,7 +30,7 @@ class MessageBadge extends ConsumerWidget {
       onPressed: () {
         ref.read(unreadMessageControllerProvider.notifier).clear();
         ref.read(unreadMessageControllerProvider.notifier).resetCheckTime();
-        Get.toNamed('/whisper');
+        PageUtils.toDupNamed('/whisper');
       },
       icon: Badge(
         isLabelVisible:

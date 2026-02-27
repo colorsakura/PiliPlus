@@ -36,7 +36,7 @@ class WebviewPage extends StatefulWidget {
     int? oid,
     String? title,
     UaType? uaType,
-  }) => Get.toNamed(
+  }) => PageUtils.toDupNamed(
     '/webview',
     parameters: {
       'url': url ?? '',

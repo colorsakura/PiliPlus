@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/radio_widget.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -742,7 +743,7 @@ class LoginPageController extends GetxController
   static Future<void>? switchAccountDialog(BuildContext context) {
     if (Accounts.account.isEmpty) {
       SmartDialog.showToast('请先登录');
-      return Get.toNamed('/loginPage');
+      return PageUtils.toDupNamed('/loginPage');
     }
     final selectAccount = List.of(Accounts.accountMode);
     final options = {

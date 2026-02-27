@@ -354,7 +354,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
-                    onTap: () => Get.toNamed(
+                    onTap: () => PageUtils.toDupNamed(
                       '/member?mid=${controller.summary.author?.mid}',
                     ),
                     child: Row(

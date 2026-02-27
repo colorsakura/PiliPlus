@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
 import 'package:PiliPlus/features/home_zone/view_v2.dart';
 import 'package:PiliPlus/utils/grid.dart';
@@ -95,13 +96,13 @@ class _HotPageState extends ConsumerState<HotPage>
                       iconUrl:
                           'https://i0.hdslb.com/bfs/archive/552ebe8c4794aeef30ebd1568b59ad35f15e21ad.png',
                       title: '每周必看',
-                      onTap: () => Get.toNamed('/popularSeries'),
+                      onTap: () => PageUtils.toDupNamed('/popularSeries'),
                     ),
                     _buildEntranceItem(
                       iconUrl:
                           'https://i0.hdslb.com/bfs/archive/3693ec9335b78ca57353ac0734f36a46f3d179a9.png',
                       title: '入站必刷',
-                      onTap: () => Get.toNamed('/popularPrecious'),
+                      onTap: () => PageUtils.toDupNamed('/popularPrecious'),
                     ),
                   ],
                 ),

@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/fav/fav_video/presentation/providers/fav_video
 import 'package:PiliPlus/features/fav/presentation/pages/video/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class _FavVideoPageState extends ConsumerState<FavVideoPage>
                     heroTag: heroTag,
                     item: item,
                     onTap: () async {
-                      final res = await Get.toNamed(
+                      final res = await PageUtils.toDupNamed(
                         '/favDetail',
                         arguments: item,
                         parameters: {

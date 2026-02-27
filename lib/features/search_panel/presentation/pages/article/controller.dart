@@ -4,6 +4,7 @@ import 'package:PiliPlus/models/common/search/article_search_type.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/controller.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class SearchArticleController
     ).matchAsPrefix(keyword)?.group(2);
     if (cvid != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.toNamed(
+        PageUtils.toDupNamed(
           '/articlePage',
           parameters: {
             'id': cvid,

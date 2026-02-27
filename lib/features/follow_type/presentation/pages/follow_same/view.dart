@@ -4,6 +4,7 @@ import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class FollowSamePage extends StatefulWidget {
   const FollowSamePage({super.key});
@@ -13,7 +14,7 @@ class FollowSamePage extends StatefulWidget {
 
   static void toFollowSamePage({dynamic mid, String? name}) {
     if (mid == null) return;
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/sameFollowing',
       arguments: {
         'mid': Utils.safeToInt(mid),

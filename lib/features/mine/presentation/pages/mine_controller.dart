@@ -4,6 +4,7 @@ import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/models/user/info.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/user/stat.dart';
 import 'package:PiliPlus/models/fav/fav_folder/data.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_data_controller.dart';
@@ -45,7 +46,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           size: 23,
           icon: MdiIcons.folderDownloadOutline,
           title: '离线缓存',
-          onTap: () => Get.toNamed('/download'),
+          onTap: () => PageUtils.toDupNamed('/download'),
         ),
         (
           size: 23,
@@ -53,7 +54,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '观看记录',
           onTap: () {
             if (isLogin) {
-              Get.toNamed('/history');
+              PageUtils.toDupNamed('/history');
             }
           },
         ),
@@ -63,7 +64,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '我的订阅',
           onTap: () {
             if (isLogin) {
-              Get.toNamed('/subscription');
+              PageUtils.toDupNamed('/subscription');
             }
           },
         ),
@@ -73,7 +74,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '稍后再看',
           onTap: () {
             if (isLogin) {
-              Get.toNamed('/later');
+              PageUtils.toDupNamed('/later');
             }
           },
         ),
@@ -277,15 +278,15 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   void push(String name) {
     late final mid = userInfo.value.mid;
     if (isLogin && mid != null) {
-      Get.toNamed('/$name?mid=$mid');
+      PageUtils.toDupNamed('/$name?mid=$mid');
     }
   }
 
   void onLogin([bool longPress = false]) {
     if (!accountService.isLogin.value || longPress) {
-      Get.toNamed('/loginPage');
+      PageUtils.toDupNamed('/loginPage');
     } else {
-      Get.toNamed('/member?mid=${userInfo.value.mid}');
+      PageUtils.toDupNamed('/member?mid=${userInfo.value.mid}');
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/keep_alive_wrapper.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
@@ -80,7 +81,7 @@ class _UpowerRankPageState extends State<UpowerRankPage>
           }),
           actions: [
             TextButton(
-              onPressed: () => Get.toNamed(
+              onPressed: () => PageUtils.toDupNamed(
                 '/webview',
                 parameters: {
                   'url':
@@ -185,7 +186,7 @@ class _UpowerRankPageState extends State<UpowerRankPage>
                   return Material(
                     type: MaterialType.transparency,
                     child: ListTile(
-                      onTap: () => Get.toNamed('/member?mid=${item.mid}'),
+                      onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
                       leading: SizedBox(
                         width: width,
                         child: Center(

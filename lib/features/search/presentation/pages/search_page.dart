@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/disabled_icon.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/search/search_rcmd/data.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart'
     show showImportExportDialog;
 import 'package:PiliPlus/features/search/presentation/pages/search_controller.dart';
@@ -55,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                 ? IconButton(
                     tooltip: 'UID搜索用户',
                     icon: const Icon(Icons.person_outline, size: 22),
-                    onPressed: () => Get.toNamed(
+                    onPressed: () => PageUtils.toDupNamed(
                       '/member?mid=${_searchController.controller.text}',
                     ),
                   )
@@ -210,7 +211,7 @@ class _SearchPageState extends State<SearchPage> {
                           SizedBox(
                             height: 34,
                             child: TextButton(
-                              onPressed: () => Get.toNamed('/searchTrending'),
+                              onPressed: () => PageUtils.toDupNamed('/searchTrending'),
                               child: Row(
                                 children: [
                                   Text(

@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selectable_text.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/pgc_review/presentation/pages/post/view.dart';
 import 'package:PiliPlus/features/pgc_review/presentation/providers/pgc_review_controller.dart';
@@ -202,7 +203,7 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
       type: MaterialType.transparency,
       child: InkWell(
         onTap: isLongReview
-            ? () => Get.toNamed(
+            ? () => PageUtils.toDupNamed(
                 '/articlePage',
                 parameters: {
                   'id': item.articleId!.toString(),
@@ -221,7 +222,7 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => Get.toNamed('/member?mid=${item.author!.mid}'),
+                onTap: () => PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

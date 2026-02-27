@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/features/emote/presentation/providers/emote_providers.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/emote/emote.dart';
@@ -195,7 +196,7 @@ class _EmotePanelState extends ConsumerState<EmotePanel>
                           iconSize: 20,
                           iconColor: theme.colorScheme.onSurfaceVariant
                               .withValues(alpha: 0.8),
-                          onPressed: () => Get.toNamed(
+                          onPressed: () => PageUtils.toDupNamed(
                             '/webview',
                             parameters: {
                               'url':

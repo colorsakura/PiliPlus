@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/live/live_contribution_rank_type.dart';
 import 'package:PiliPlus/models/live/live_contribution_rank/item.dart';
@@ -192,7 +193,7 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     late final colorScheme = ColorScheme.of(context);
     return InkWell(
-      onTap: () => Get.toNamed('/member?mid=${item.uid}'),
+      onTap: () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
       child: Padding(
         padding: const .only(left: 10, top: 9, bottom: 8, right: 16),
         child: Row(

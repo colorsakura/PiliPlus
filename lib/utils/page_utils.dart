@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:PiliPlus/app/router/go_router_config.dart';
 import 'package:PiliPlus/shared/widgets/image_viewer/gallery_viewer.dart';
 import 'package:PiliPlus/shared/widgets/image_viewer/hero_dialog_route.dart';
 import 'package:PiliPlus/grpc/im.dart';
@@ -34,6 +35,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract final class PageUtils {
@@ -49,7 +51,11 @@ abstract final class PageUtils {
     required List<SourceModel> imgList,
     int? quality,
   }) {
-    return Get.key.currentState!.push<void>(
+    final navigatorState = rootNavigatorKey.currentState;
+    if (navigatorState == null) {
+      return Future.value();
+    }
+    return navigatorState.push<void>(
       HeroDialogRoute(
         pageBuilder: (context, animation, secondaryAnimation) => GalleryViewer(
           sources: imgList,
@@ -85,7 +91,7 @@ abstract final class PageUtils {
 
     if (userList.isEmpty && context.mounted) {
       final UserModel? userModel = await Navigator.of(context).push(
-        GetPageRoute(page: () => const ContactPage()),
+        MaterialPageRoute(builder: (context) => const ContactPage()),
       );
       if (userModel != null) {
         userList.add(userModel);
@@ -178,7 +184,7 @@ abstract final class PageUtils {
   }
 
   static void reportVideo(int aid) {
-    Get.toNamed(
+    toDupNamed(
       '/webview',
       parameters: {'url': 'https://www.bilibili.com/appeal/?avid=$aid'},
     );
@@ -350,7 +356,7 @@ abstract final class PageUtils {
           final String? url = medialist.jumpUrl;
           if (url != null) {
             if (url.contains('medialist/detail/ml')) {
-              Get.toNamed(
+              PageUtils.toDupNamed(
                 '/favDetail',
                 parameters: {
                   'heroTag': '${medialist.cover}',
@@ -410,19 +416,12 @@ abstract final class PageUtils {
     if (Pref.openInBrowser) {
       launchURL(url);
     } else {
-      if (off) {
-        Get.offNamed(
-          '/webview',
-          parameters: {'url': url},
-          arguments: {'inApp': true},
-        );
-      } else {
-        Get.toNamed(
-          '/webview',
-          parameters: {'url': url},
-          arguments: {'inApp': true},
-        );
-      }
+      toDupNamed(
+        '/webview',
+        parameters: {'url': url},
+        arguments: {'inApp': true},
+        off: off,
+      );
     }
   }
 
@@ -452,12 +451,13 @@ abstract final class PageUtils {
       }
     } else {
       if (off) {
-        Get.offNamed(
+        toDupNamed(
           '/webview',
           parameters: {
             'url': url,
             ...?parameters,
           },
+          off: off,
         );
       } else {
         PiliScheme.routePushFromUrl(url, parameters: parameters);
@@ -474,7 +474,11 @@ abstract final class PageUtils {
     if (!context.mounted) {
       return null;
     }
-    return Get.key.currentState!.push(
+    final navigatorState = rootNavigatorKey.currentState;
+    if (navigatorState == null) {
+      return null;
+    }
+    return navigatorState.push(
       PublishRoute(
         pageBuilder: (context, animation, secondaryAnimation) {
           if (context.isPortrait) {
@@ -528,11 +532,7 @@ abstract final class PageUtils {
     if (roomId == null) {
       return;
     }
-    if (off) {
-      Get.offNamed('/liveRoom', arguments: roomId);
-    } else {
-      Get.toNamed('/liveRoom', arguments: roomId);
-    }
+    toDupNamed('/liveRoom', arguments: roomId, off: off);
   }
 
   static Future<void>? toVideoPage({
@@ -563,19 +563,8 @@ abstract final class PageUtils {
       'heroTag': Utils.makeHeroTag(cid),
       ...?extraArguments,
     };
-    if (off) {
-      return Get.offNamed(
-        '/videoV',
-        arguments: arguments,
-        preventDuplicates: false,
-      );
-    } else {
-      return Get.toNamed(
-        '/videoV',
-        arguments: arguments,
-        preventDuplicates: false,
-      );
-    }
+    toDupNamed('/videoV', arguments: arguments, off: off);
+    return Future.value();
   }
 
   static final _pgcRegex = RegExp(r'(ep|ss)(\d+)');
@@ -764,26 +753,93 @@ abstract final class PageUtils {
     }
   }
 
-  static void toDupNamed(
+  static Future<T?> toDupNamed<T extends Object?>(
     String page, {
     dynamic arguments,
     Map<String, String>? parameters,
     bool off = false,
+    bool preventDuplicates = false,
+    int? id,
   }) {
+    // Use GetX navigation for compatibility with pages that use Get.arguments
+    // TODO: Migrate to go_router navigation when pages are updated
     if (off) {
-      Get.offNamed(
+      return Get.offNamed<T>(
         page,
         arguments: arguments,
         parameters: parameters,
-        preventDuplicates: false,
-      );
+        preventDuplicates: preventDuplicates,
+        id: id,
+      ) as Future<T?>;
     } else {
-      Get.toNamed(
+      return Get.toNamed<T>(
         page,
         arguments: arguments,
         parameters: parameters,
-        preventDuplicates: false,
-      );
+        preventDuplicates: preventDuplicates,
+        id: id,
+      ) as Future<T?>;
     }
+  }
+
+  /// Build URI with path and query parameters
+  static Uri _buildUri(String path, Map<String, String>? parameters) {
+    if (parameters == null || parameters.isEmpty) {
+      return Uri.parse(path);
+    }
+    return Uri.parse(path).replace(queryParameters: parameters);
+  }
+
+  /// go_router specific navigation method
+  static void goNamed(
+    String path, {
+    Object? extra,
+    Map<String, String>? parameters,
+  }) {
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return;
+
+    final uri = _buildUri(path, parameters);
+    context.go(uri.toString(), extra: extra);
+  }
+
+  /// go_router specific push method
+  static void pushNamed(
+    String path, {
+    Object? extra,
+    Map<String, String>? parameters,
+  }) {
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return;
+
+    final uri = _buildUri(path, parameters);
+    context.push(uri.toString(), extra: extra);
+  }
+
+  /// go_router specific replace method
+  static void replaceNamed(
+    String path, {
+    Object? extra,
+    Map<String, String>? parameters,
+  }) {
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return;
+
+    final uri = _buildUri(path, parameters);
+    context.pushReplacement(uri.toString(), extra: extra);
+  }
+
+  /// Check if router can pop
+  static bool canPop() {
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return false;
+    return context.canPop();
+  }
+
+  /// Pop the current route
+  static void pop<T extends Object?>([T? result]) {
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return;
+    context.pop(result);
   }
 }

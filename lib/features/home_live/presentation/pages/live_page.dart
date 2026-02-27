@@ -194,11 +194,11 @@ class _LivePageState extends ConsumerState<LivePage>
                       onTap: () => PageUtils.toLiveRoom(item.roomid),
                       onLongPress: () {
                         Feedback.forLongPress(context);
-                        Get.toNamed('/member?mid=${item.uid}');
+                        PageUtils.toDupNamed('/member?mid=${item.uid}');
                       },
                       onSecondaryTap: PlatformUtils.isMobile
                           ? null
-                          : () => Get.toNamed('/member?mid=${item.uid}'),
+                          : () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -293,7 +293,7 @@ class _LivePageState extends ConsumerState<LivePage>
               context: context,
               tooltip: '游戏赛事',
               icon: const Icon(Icons.gamepad),
-              onPressed: () => Get.toNamed(
+              onPressed: () => PageUtils.toDupNamed(
                 '/webview',
                 parameters: {
                   'uaType': 'mob',

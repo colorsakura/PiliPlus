@@ -4,6 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/account/domain/entities/account_state.dart';
 import 'package:PiliPlus/features/account/presentation/providers/account_provider.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
@@ -223,7 +224,7 @@ class SearchBar extends ConsumerWidget {
           splashColor: theme.colorScheme.primaryContainer.withValues(
             alpha: 0.3,
           ),
-          onTap: () => Get.toNamed(
+          onTap: () => PageUtils.toDupNamed(
             '/search',
             parameters:
                 config.enableSearchWord && searchState.defaultSearch.isNotEmpty
@@ -278,7 +279,7 @@ class MsgBadge extends ConsumerWidget {
       onPressed: () {
         ref.read(unreadMessageControllerProvider.notifier).clear();
         ref.read(unreadMessageControllerProvider.notifier).resetCheckTime();
-        Get.toNamed('/whisper');
+        PageUtils.toDupNamed('/whisper');
       },
       icon: Badge(
         isLabelVisible:

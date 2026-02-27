@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/features/follow_type/presentation/widgets/item.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/features/fan/presentation/providers/fan_controller.dart';
 import 'package:PiliPlus/features/fan/presentation/providers/fan_providers.dart';
@@ -33,7 +34,7 @@ class FanPageV2 extends ConsumerStatefulWidget {
 
   static void toFanPage({int? mid, String? name}) {
     if (mid == null) return;
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/fan',
       arguments: {
         'mid': mid,
@@ -149,7 +150,7 @@ class _FanPageV2State extends ConsumerState<FanPageV2> {
           );
           return;
         }
-        Get.toNamed('/member?mid=${item.mid}');
+        PageUtils.toDupNamed('/member?mid=${item.mid}');
       },
       onLongPress: flag ? onRemove : null,
       onSecondaryTap: flag && !PlatformUtils.isMobile ? onRemove : null,

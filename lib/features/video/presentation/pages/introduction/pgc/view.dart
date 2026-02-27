@@ -329,7 +329,7 @@ class _PgcIntroPageState extends State<PgcIntroPage> {
     Widget upInfo(int mid, String avatar, String name, {String? role}) =>
         GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () => Get.toNamed('/member?mid=$mid'),
+          onTap: () => PageUtils.toDupNamed('/member?mid=$mid'),
           child: Row(
             spacing: 8,
             mainAxisSize: MainAxisSize.min,

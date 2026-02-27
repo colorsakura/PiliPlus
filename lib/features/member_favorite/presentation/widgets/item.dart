@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/space/space_fav/list.dart';
 import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -34,7 +35,7 @@ class MemberFavItem extends StatelessWidget {
           }
 
           if (item.type == 0 || item.type == 11) {
-            final isDeleted = await Get.toNamed(
+            final isDeleted = await PageUtils.toDupNamed<bool>(
               '/favDetail',
               parameters: {
                 'mediaId': item.id.toString(),

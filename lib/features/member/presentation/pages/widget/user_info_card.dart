@@ -379,7 +379,7 @@ class UserInfoCard extends StatelessWidget {
               onPressed: () {
                 if (Accounts.main.isLogin) {
                   int mid = int.parse(card.mid!);
-                  Get.toNamed(
+                  PageUtils.toDupNamed(
                     '/whisperDetail',
                     arguments: {
                       'talkerId': mid,

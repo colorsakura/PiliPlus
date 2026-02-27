@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:PiliPlus/shared/widgets/avatars.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/dialog/report.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -169,7 +170,7 @@ class _VotePanelState extends State<VotePanel> {
                                   (e) => ListTile(
                                     dense: true,
                                     onTap: () =>
-                                        Get.toNamed('/member?mid=${e.mid}'),
+                                        PageUtils.toDupNamed('/member?mid=${e.mid}'),
                                     leading: NetworkImgLayer(
                                       src: e.face,
                                       width: 40,

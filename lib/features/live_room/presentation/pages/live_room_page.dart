@@ -508,7 +508,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () =>
-                      Get.toNamed('/member?mid=${roomInfoH5.roomInfo?.uid}'),
+                      PageUtils.toDupNamed('/member?mid=${roomInfoH5.roomInfo?.uid}'),
                   child: Row(
                     spacing: 10,
                     mainAxisSize: MainAxisSize.min,

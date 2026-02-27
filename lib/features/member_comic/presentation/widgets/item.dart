@@ -4,6 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 
 class MemberComicItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class MemberComicItem extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: () {
-          Get.toNamed(
+          PageUtils.toDupNamed(
             '/webview',
             parameters: {
               'url': 'https://manga.bilibili.com/detail/mc${item.param}',

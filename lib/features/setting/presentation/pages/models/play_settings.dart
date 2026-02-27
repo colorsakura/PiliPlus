@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/models/common/super_chat_type.dart';
 import 'package:PiliPlus/models/common/video/subtitle_pref_type.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
 import 'package:PiliPlus/plugin/pl_player/models/bottom_progress_behavior.dart';
 import 'package:PiliPlus/plugin/pl_player/models/fullscreen_mode.dart';
@@ -37,7 +38,7 @@ List<SettingsModel> get playSettings => [
       defaultVal: true,
     ),
   NormalModel(
-    onTap: (context, setState) => Get.toNamed('/playSpeedSet'),
+    onTap: (context, setState) => PageUtils.toDupNamed('/playSpeedSet'),
     leading: const Icon(Icons.speed_outlined),
     title: '倍速设置',
     subtitle: '设置视频播放速度',

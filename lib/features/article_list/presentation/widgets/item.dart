@@ -4,6 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/article/article_list/article.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:flutter/material.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 
 class ArticleListItem extends StatelessWidget {
@@ -22,7 +23,7 @@ class ArticleListItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           final dynIdStr = item.dynIdStr;
-          Get.toNamed(
+          PageUtils.toDupNamed(
             '/articlePage',
             parameters: {
               'id': dynIdStr ?? item.id!.toString(),

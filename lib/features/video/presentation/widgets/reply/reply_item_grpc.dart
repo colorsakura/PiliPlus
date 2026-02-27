@@ -179,7 +179,7 @@ class ReplyItemGrpc extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             feedBack();
-            Get.toNamed('/member?mid=${replyItem.mid}');
+            PageUtils.toDupNamed('/member?mid=${replyItem.mid}');
           },
           child: Row(
             mainAxisSize: .min,
@@ -481,7 +481,7 @@ class ReplyItemGrpc extends StatelessWidget {
                             recognizer: NoDeadlineTapGestureRecognizer()
                               ..onTap = () {
                                 feedBack();
-                                Get.toNamed(
+                                PageUtils.toDupNamed(
                                   '/member?mid=${childReply.member.mid}',
                                 );
                               },
@@ -627,7 +627,7 @@ class ReplyItemGrpc extends StatelessWidget {
                   String? cvid =
                       match?.group(1) ?? match?.group(2) ?? match?.group(3);
                   if (cvid != null) {
-                    Get.toNamed(
+                    PageUtils.toDupNamed(
                       '/articlePage',
                       parameters: {
                         'id': cvid,
@@ -640,7 +640,7 @@ class ReplyItemGrpc extends StatelessWidget {
                 }
               } else {
                 if (url.extra.isWordSearch) {
-                  Get.toNamed(
+                  PageUtils.toDupNamed(
                     '/searchResult',
                     parameters: {'keyword': url.title},
                   );
@@ -692,7 +692,7 @@ class ReplyItemGrpc extends StatelessWidget {
               style: TextStyle(color: theme.colorScheme.primary),
               recognizer: NoDeadlineTapGestureRecognizer()
                 ..onTap = () =>
-                    Get.toNamed('/member?mid=${content.atNameToMid[name]}'),
+                    PageUtils.toDupNamed('/member?mid=${content.atNameToMid[name]}'),
             ),
           );
         } else if (_voteRegExp.hasMatch(matchStr)) {
@@ -758,7 +758,7 @@ class ReplyItemGrpc extends StatelessWidget {
                 style: TextStyle(color: theme.colorScheme.primary),
                 recognizer: NoDeadlineTapGestureRecognizer()
                   ..onTap = () {
-                    Get.toNamed(
+                    PageUtils.toDupNamed(
                       '/searchResult',
                       parameters: {'keyword': topic},
                     );
@@ -809,7 +809,7 @@ class ReplyItemGrpc extends StatelessWidget {
         recognizer = NoDeadlineTapGestureRecognizer()
           ..onTap = () => hasClickUrl
               ? PiliScheme.routePushFromUrl(content.richText.note.clickUrl)
-              : Get.toNamed(
+              : PageUtils.toDupNamed(
                   '/articlePage',
                   parameters: {
                     'id': content.richText.opus.opusId.toString(),

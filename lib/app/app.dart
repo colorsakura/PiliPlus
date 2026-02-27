@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/go_router_config.dart';
 import 'package:PiliPlus/app/router/app_pages.dart';
 import 'package:PiliPlus/shared/widgets/back_detector.dart';
 import 'package:PiliPlus/shared/widgets/custom_toast.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -93,6 +95,10 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  // GoRouter instance for future migration
+  // Currently using GetMaterialApp for backward compatibility
+  static final GoRouter _router = goRouter();
 
   static Widget _builder(BuildContext context, Widget? child) {
     final uiScale = Pref.uiScale;

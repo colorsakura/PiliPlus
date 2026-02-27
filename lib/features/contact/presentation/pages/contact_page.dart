@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/follow/presentation/pages/child/child_view.dar
 import 'package:PiliPlus/features/follow_search/follow_search.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ class ContactPage extends StatefulWidget {
   State<ContactPage> createState() => _ContactPageState();
 
   /// 导航到联系人页面
-  static void toContactPage({bool isFromSelect = true}) => Get.toNamed(
+  static void toContactPage({bool isFromSelect = true}) => PageUtils.toDupNamed(
     '/contact',
     parameters: {'isFromSelect': isFromSelect.toString()},
   );

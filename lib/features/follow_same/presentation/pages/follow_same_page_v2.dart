@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/follow/presentation/widgets/follow_item.dart';
 import 'package:PiliPlus/features/follow_same/presentation/providers/follow_same_controller.dart';
 import 'package:PiliPlus/features/follow_same/presentation/providers/follow_same_providers.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
@@ -34,7 +35,7 @@ class FollowSamePageV2 extends ConsumerStatefulWidget {
         ? mid
         : (mid != null ? int.tryParse(mid.toString()) : null);
     if (midInt == null) return;
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/sameFollowing',
       arguments: {
         'mid': midInt,

@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/vote.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
@@ -127,7 +128,7 @@ Widget addWidget(
                                       ? null
                                       : (NoDeadlineTapGestureRecognizer()
                                           ..onTap = () {
-                                            Get.toNamed(
+                                            PageUtils.toDupNamed(
                                               '/webview',
                                               parameters: {
                                                 'url': reserve.desc3!.jumpUrl!,
@@ -263,7 +264,7 @@ Widget addWidget(
                                     ? null
                                     : (NoDeadlineTapGestureRecognizer()
                                         ..onTap = () {
-                                          Get.toNamed(
+                                          PageUtils.toDupNamed(
                                             '/webview',
                                             parameters: {
                                               'url': content.desc!.jumpUrl!,

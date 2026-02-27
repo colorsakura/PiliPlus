@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:PiliPlus/app/router/go_router_config.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_zone/home_zone.dart';
@@ -23,7 +24,6 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get.dart';
 
 abstract final class PiliScheme {
   static late AppLinks appLinks;
@@ -98,9 +98,10 @@ abstract final class PiliScheme {
       case 'bilibili':
         switch (host) {
           case 'root':
-            Get.key.currentState!.popUntil(
-              (Route<dynamic> route) => route.isFirst,
-            );
+            final navigatorState = rootNavigatorKey.currentState;
+            if (navigatorState != null) {
+              navigatorState.popUntil((Route<dynamic> route) => route.isFirst);
+            }
             return true;
           case 'pgc':
             // bilibili://pgc/season/ep/123456?h5_awaken_params=random
@@ -204,7 +205,7 @@ abstract final class PiliScheme {
               );
               return true;
             }
-            Get.toNamed('/search');
+            PageUtils.toDupNamed('/search');
             return true;
           case 'article':
             // bilibili://article/40679479?jump_opus=1&jump_opus_type=1&opus_type=article&h5awaken=random
@@ -344,7 +345,7 @@ abstract final class PiliScheme {
             }
             return false;
           case 'history':
-            Get.toNamed('/history');
+            PageUtils.toDupNamed('/history');
             return true;
           case 'main':
             if (path.startsWith('/favorite')) {
@@ -357,36 +358,46 @@ abstract final class PiliScheme {
                   if (kDebugMode) debugPrint('favorite jump: $e');
                 }
               }
-              Get.toNamed('/fav', arguments: index);
+              PageUtils.toDupNamed('/fav', arguments: index);
               return true;
             }
             return false;
           case 'livearea':
-            Get.to(
-              Scaffold(
-                resizeToAvoidBottomInset: false,
-                appBar: AppBar(title: const Text('直播')),
-                body: const ViewSafeArea(child: LivePage()),
-              ),
-            );
+            final context = rootNavigatorKey.currentContext;
+            if (context != null) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    resizeToAvoidBottomInset: false,
+                    appBar: AppBar(title: const Text('直播')),
+                    body: const ViewSafeArea(child: LivePage()),
+                  ),
+                ),
+              );
+            }
             return true;
           case 'rank':
-            Get.to(
-              Scaffold(
-                resizeToAvoidBottomInset: false,
-                appBar: AppBar(title: const Text('排行榜')),
-                body: const ViewSafeArea(child: RankPageV2()),
-              ),
-            );
+            final context = rootNavigatorKey.currentContext;
+            if (context != null) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    resizeToAvoidBottomInset: false,
+                    appBar: AppBar(title: const Text('排行榜')),
+                    body: const ViewSafeArea(child: RankPageV2()),
+                  ),
+                ),
+              );
+            }
             return true;
           case 'login':
-            Get.toNamed('/loginPage');
+            PageUtils.toDupNamed('/loginPage');
             return true;
           case 'music':
             if (path.startsWith('/playlist/')) {
               final mediaId = uriDigitRegExp.firstMatch(path)?.group(1);
               if (mediaId != null) {
-                Get.toNamed(
+                PageUtils.toDupNamed(
                   '/favDetail',
                   parameters: {
                     'mediaId': mediaId,

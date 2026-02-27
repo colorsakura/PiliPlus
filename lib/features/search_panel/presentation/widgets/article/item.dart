@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,7 @@ class SearchArticleItem extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => Get.toNamed(
+        onTap: () => PageUtils.toDupNamed(
           '/articlePage',
           parameters: {
             'id': '${item.id}',

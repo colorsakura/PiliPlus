@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:dlna_dart/dlna.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +21,7 @@ class DlnaPage extends StatefulWidget {
   static void toDlnaPage({
     required String url,
     String? title,
-  }) => Get.toNamed(
+  }) => PageUtils.toDupNamed(
     '/dlna',
     parameters: {
       'url': url,

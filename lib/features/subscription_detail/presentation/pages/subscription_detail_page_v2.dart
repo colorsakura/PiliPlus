@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_controller.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/providers/subscription_detail_providers.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/widgets/sub_video_card.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/models/sub/sub_detail/media.dart';
@@ -35,7 +36,7 @@ class SubscriptionDetailPageV2 extends ConsumerStatefulWidget {
     String? heroTag,
     SubItemModel? subInfo,
   }) {
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/subDetail',
       arguments: {
         'id': id,
@@ -208,7 +209,7 @@ class _SubscriptionDetailPageV2State
                     ),
                     GestureDetector(
                       onTap: () =>
-                          Get.toNamed('/member?mid=${info.upper!.mid}'),
+                          PageUtils.toDupNamed('/member?mid=${info.upper!.mid}'),
                       child: Text(
                         info.upper!.name!,
                         style: TextStyle(color: theme.colorScheme.primary),

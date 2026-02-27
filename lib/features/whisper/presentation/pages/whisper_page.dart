@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/whisper/presentation/pages/whisper_controller.
 import 'package:PiliPlus/features/whisper/presentation/widgets/item.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/skeleton/whisper_item.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/extension/three_dot_ext.dart';
@@ -33,7 +34,7 @@ class _WhisperPageState extends State<WhisperPage> {
         actions: [
           IconButton(
             tooltip: '新增粉丝',
-            onPressed: () => Get.toNamed(
+            onPressed: () => PageUtils.toDupNamed(
               '/webview',
               parameters: {
                 'url':
@@ -199,7 +200,7 @@ class _WhisperPageState extends State<WhisperPage> {
                   return;
                 }
                 _controller.unreadCounts[index] = 0;
-                Get.toNamed(item.route);
+                PageUtils.toDupNamed(item.route);
               },
             );
           }),

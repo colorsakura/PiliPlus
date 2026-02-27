@@ -17,6 +17,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "9.0.0"
+  analyzer_buffer:
+    dependency: transitive
+    description:
+      name: analyzer_buffer
+      sha256: ff4bd291778c7417fe53fe24ee0d0a1f1ffe281a2d4ea887e7094f16e36eace7
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "0.3.0"
   ansicolor:
     dependency: transitive
     description:
@@ -796,6 +804,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "10.9.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      sha256: "7294967ff0a6d98638e7acb774aac3af2550777accd8149c90af5b014e6d44d8"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "3.1.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -821,6 +837,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "2.1.3"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: f02fd7d2a4dc512fec615529824fdd217fecb3a3d3de68360293a551f21634b3
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "14.8.1"
   graphs:
     dependency: transitive
     description:
@@ -1276,6 +1300,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "2.3.0"
+  mockito:
+    dependency: transitive
+    description:
+      name: mockito
+      sha256: a45d1aa065b796922db7b9e7e7e45f921aed17adf3a8318a1f47097e7e695566
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "5.6.3"
   native_toolchain_c:
     dependency: transitive
     description:
@@ -1532,6 +1564,30 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "3.2.1"
+  riverpod_analyzer_utils:
+    dependency: transitive
+    description:
+      name: riverpod_analyzer_utils
+      sha256: e55bc08c084a424e1bbdc303fe8ea75daafe4269b68fd0e0f6f1678413715b66
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "1.0.0-dev.9"
+  riverpod_annotation:
+    dependency: "direct main"
+    description:
+      name: riverpod_annotation
+      sha256: "16471a1260b94e939394d78f1c63a9350936ac4a68c9fbdab40be47268c0b04f"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "4.0.2"
+  riverpod_generator:
+    dependency: "direct dev"
+    description:
+      name: riverpod_generator
+      sha256: "6f9220534d7a353b53c875ea191a84d28cb4e52ac420a66a1bd7318329d977b0"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "4.0.3"
   rxdart:
     dependency: "direct overridden"
     description:
@@ -1729,6 +1785,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  source_gen:
+    dependency: transitive
+    description:
+      name: source_gen
+      sha256: "1d562a3c1f713904ebbed50d2760217fd8a51ca170ac4b05b0db490699dbac17"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "4.2.0"
   source_map_stack_trace:
     dependency: transitive
     description:

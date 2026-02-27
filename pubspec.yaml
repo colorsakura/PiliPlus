@@ -45,7 +45,9 @@ dependencies:
     git:
       url: https://github.com/bggRGjQaUbCoE/getx.git
       ref: version_4.7.2
+  go_router: ^14.6.0
   flutter_riverpod: ^3.2.1
+  riverpod_annotation: ^4.0.2
 
   # 网络
   dio: ^5.9.1
@@ -286,8 +288,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
-  # hive_generator: ^2.0.1
   build_runner: ^2.10.3
+  riverpod_generator: ^4.0.3
   flutter_native_splash: ^2.4.6
 
 flutter_launcher_icons:

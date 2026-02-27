@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space/data.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/coin_log/presentation/pages/coin_log_controller.dart'
     show CoinLogController;
 import 'package:PiliPlus/features/exp_log/presentation/pages/exp_log_controller.dart'
@@ -146,7 +147,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
   List<Widget> _actions(ColorScheme theme, MemberController controller) => [
     IconButton(
       tooltip: '搜索',
-      onPressed: () => Get.toNamed(
+      onPressed: () => PageUtils.toDupNamed(
         '/memberSearch?mid=$_mid&uname=${controller.state.username}',
       ),
       icon: const Icon(Icons.search_outlined),
@@ -195,7 +196,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
           ),
         ),
         PopupMenuItem(
-          onTap: () => Get.toNamed(
+          onTap: () => PageUtils.toDupNamed(
             '/upowerRank',
             parameters: {
               'mid': controller.mid.toString(),
@@ -282,7 +283,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
               ),
             ),
             PopupMenuItem(
-              onTap: () => Get.toNamed('/spaceSetting'),
+              onTap: () => PageUtils.toDupNamed('/spaceSetting'),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

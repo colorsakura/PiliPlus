@@ -4,6 +4,7 @@ import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:PiliPlus/utils/page_utils.dart';
 class FavFolderItem extends StatelessWidget {
   const FavFolderItem({
     super.key,
@@ -21,7 +22,7 @@ class FavFolderItem extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        Get.toNamed(
+        PageUtils.toDupNamed(
           '/favDetail',
           arguments: item,
           parameters: {

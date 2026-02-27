@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/main_reply/presentation/pages/main_reply_controller.dart';
 import 'package:PiliPlus/features/video/presentation/pages/reply_reply/view.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_grpc.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
@@ -28,7 +29,7 @@ class MainReplyPage extends StatefulWidget {
     required int oid,
     required int replyType,
   }) {
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/mainReply',
       arguments: {
         'oid': oid,

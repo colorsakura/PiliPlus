@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/blacklist/domain/entities/blacklist_item.dart';
 import 'package:PiliPlus/features/blacklist/presentation/providers/blacklist_controller.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
@@ -115,7 +116,7 @@ class _BlacklistPageState extends ConsumerState<BlacklistPage> {
 
     return ListTile(
       visualDensity: VisualDensity.standard,
-      onTap: () => Get.toNamed('/member?mid=${item.mid}'),
+      onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
       leading: NetworkImgLayer(
         width: 45,
         height: 45,

@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class SubItem extends StatelessWidget {
             return;
           }
           if (item.type == 11) {
-            Get.toNamed(
+            PageUtils.toDupNamed(
               '/favDetail',
               parameters: {
                 'mediaId': item.id!.toString(),

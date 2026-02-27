@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/models/fav/fav_article/item.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +28,7 @@ class FavArticleItem extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           InkWell(
-            onTap: () => Get.toNamed(
+            onTap: () => PageUtils.toDupNamed(
               '/articlePage',
               parameters: {
                 'id': item.opusId!.toString(),

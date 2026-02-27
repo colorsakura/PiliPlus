@@ -4,6 +4,7 @@ import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/models/home/rcmd/result.dart';
 import 'package:PiliPlus/models/model_video.dart';
 import 'package:PiliPlus/models/space/space_archive/item.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/features/video/presentation/pages/ai_conclusion/view.dart';
@@ -122,7 +123,7 @@ class VideoPopupMenu extends StatelessWidget {
                   _VideoCustomAction(
                     '访问：${videoItem.owner.name}',
                     const Icon(MdiIcons.accountCircleOutline, size: 16),
-                    () => Get.toNamed('/member?mid=${videoItem.owner.mid}'),
+                    () => PageUtils.toDupNamed('/member?mid=${videoItem.owner.mid}'),
                   ),
                   _VideoCustomAction(
                     '不感兴趣',

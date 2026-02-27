@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/color_palette.dart';
 import 'package:PiliPlus/shared/widgets/custom_toast.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/scale_app.dart';
@@ -258,7 +259,7 @@ List<SettingsModel> get styleSettings => [
     },
   ),
   NormalModel(
-    onTap: (context, setState) => Get.toNamed('/colorSetting'),
+    onTap: (context, setState) => PageUtils.toDupNamed('/colorSetting'),
     leading: const Icon(Icons.color_lens_outlined),
     title: '应用主题',
     getSubtitle: () => '当前主题：${Pref.dynamicColor ? '动态取色' : '指定颜色'}',
@@ -286,7 +287,7 @@ List<SettingsModel> get styleSettings => [
     onTap: _showSpringDialog,
   ),
   NormalModel(
-    onTap: (context, setState) => Get.toNamed(
+    onTap: (context, setState) => PageUtils.toDupNamed(
       '/barSetting',
       arguments: {
         'key': SettingBoxKey.tabBarSort,
@@ -299,7 +300,7 @@ List<SettingsModel> get styleSettings => [
     leading: const Icon(Icons.toc_outlined),
   ),
   NormalModel(
-    onTap: (context, setState) => Get.toNamed(
+    onTap: (context, setState) => PageUtils.toDupNamed(
       '/barSetting',
       arguments: {
         'key': SettingBoxKey.navBarSort,
@@ -321,7 +322,7 @@ List<SettingsModel> get styleSettings => [
   ),
   if (Platform.isAndroid)
     NormalModel(
-      onTap: (context, setState) => Get.toNamed('/displayModeSetting'),
+      onTap: (context, setState) => PageUtils.toDupNamed('/displayModeSetting'),
       title: '屏幕帧率',
       leading: const Icon(Icons.autofps_select_outlined),
     ),

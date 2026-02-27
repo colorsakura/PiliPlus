@@ -4,6 +4,7 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/space/space_shop/item.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 
 class MemberShopItem extends StatelessWidget {
@@ -28,7 +29,7 @@ class MemberShopItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (item.cardUrl case final cardUrl?) {
-            Get.toNamed('/webview', parameters: {'url': cardUrl});
+            PageUtils.toDupNamed('/webview', parameters: {'url': cardUrl});
           }
         },
         child: Column(

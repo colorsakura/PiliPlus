@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/video/video_note_list/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_page.dart';
 import 'package:PiliPlus/features/video/presentation/pages/note/controller.dart';
@@ -218,7 +219,7 @@ class _NoteListPageState extends State<NoteListPage>
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => Get.toNamed(
+        onTap: () => PageUtils.toDupNamed(
           '/articlePage',
           parameters: {
             'id': item.cvid!.toString(),
@@ -231,7 +232,7 @@ class _NoteListPageState extends State<NoteListPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => Get.toNamed('/member?mid=${item.author!.mid}'),
+                onTap: () => PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
                 child: NetworkImgLayer(
                   height: 34,
                   width: 34,
@@ -247,7 +248,7 @@ class _NoteListPageState extends State<NoteListPage>
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          Get.toNamed('/member?mid=${item.author!.mid}'),
+                          PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
                       child: Row(
                         children: [
                           Text(

@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/msg_feed/presentation/pages/like_detail/controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/card.dart';
 import 'package:PiliPlus/models/msg/msg_like_detail/item.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
@@ -111,7 +112,7 @@ class _LikeDetailPageState extends State<LikeDetailPage> {
 
   Widget _buildItem(ThemeData theme, MsgLikeDetailItem item) {
     return ListTile(
-      onTap: () => Get.toNamed('/member?mid=${item.user!.mid}'),
+      onTap: () => PageUtils.toDupNamed('/member?mid=${item.user!.mid}'),
       leading: NetworkImgLayer(
         width: 45,
         height: 45,

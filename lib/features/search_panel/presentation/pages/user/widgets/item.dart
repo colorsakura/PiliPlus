@@ -4,6 +4,7 @@ import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 
 class SearchUserItem extends StatelessWidget {
@@ -24,7 +25,7 @@ class SearchUserItem extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => Get.toNamed('/member?mid=${item.mid}'),
+        onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
         child: Row(
           children: [
             const SizedBox(width: 15),

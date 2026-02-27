@@ -71,7 +71,7 @@ TextSpan? richNode(
                 text: ' ${i.text}',
                 style: style,
                 recognizer: NoDeadlineTapGestureRecognizer()
-                  ..onTap = () => Get.toNamed('/member?mid=${i.rid}'),
+                  ..onTap = () => PageUtils.toDupNamed('/member?mid=${i.rid}'),
               ),
             );
             break;
@@ -82,7 +82,7 @@ TextSpan? richNode(
                 text: i.origText,
                 style: style,
                 recognizer: NoDeadlineTapGestureRecognizer()
-                  ..onTap = () => Get.toNamed(
+                  ..onTap = () => PageUtils.toDupNamed(
                     '/searchResult',
                     parameters: {
                       'keyword': i.origText!.substring(
@@ -178,7 +178,7 @@ TextSpan? richNode(
                   text: '${i.origText} ',
                   style: style,
                   recognizer: NoDeadlineTapGestureRecognizer()
-                    ..onTap = () => Get.toNamed(
+                    ..onTap = () => PageUtils.toDupNamed(
                       '/webview',
                       parameters: {
                         'url':

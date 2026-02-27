@@ -1546,7 +1546,7 @@ class VideoDetailController extends GetxController
       if (kDebugMode) {
         debugPrint(title);
       }
-      Get.toNamed(
+      PageUtils.toDupNamed(
         '/dlna',
         parameters: {
           'url': url,

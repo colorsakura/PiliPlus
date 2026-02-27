@@ -27,6 +27,7 @@ import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_p
 import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dart';
 import 'package:PiliPlus/features/setting/presentation/widgets/slider_dialog.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_grpc.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
@@ -61,7 +62,7 @@ List<SettingsModel> get extraSettings => [
     subtitle: '点击配置',
     setKey: SettingBoxKey.enableSponsorBlock,
     defaultVal: false,
-    onTap: (context) => Get.toNamed('/sponsorBlock'),
+    onTap: (context) => PageUtils.toDupNamed('/sponsorBlock'),
     leading: const Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,

@@ -48,7 +48,7 @@ class AudioPage extends StatefulWidget {
     Duration? start,
     String? audioUrl,
     int? extraId,
-  }) => Get.toNamed(
+  }) => PageUtils.toDupNamed(
     '/audio',
     arguments: {
       'id': ?id,
@@ -930,7 +930,7 @@ class _AudioPageState extends State<AudioPage> {
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           _controller.player?.pause();
-                          Get.toNamed('/member?mid=${audioItem.owner.mid}');
+                          PageUtils.toDupNamed('/member?mid=${audioItem.owner.mid}');
                         },
                         child: Row(
                           spacing: 6,

@@ -54,6 +54,7 @@ import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -2369,7 +2370,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                   MdiIcons.accountOutline,
                   color: Colors.white,
                 ),
-                onTap: () => Get.toNamed('/member?mid=${extra.mid}'),
+                onTap: () => PageUtils.toDupNamed('/member?mid=${extra.mid}'),
               ),
               _dmActionItem(
                 const Icon(

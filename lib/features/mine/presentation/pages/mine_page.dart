@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/message_badge.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -156,7 +157,7 @@ class _MediaPageState extends CommonPageState<MinePage>
             padding: padding,
             style: style,
             tooltip: '搜索',
-            onPressed: () => Get.toNamed('/search'),
+            onPressed: () => PageUtils.toDupNamed('/search'),
             icon: const Icon(Icons.search),
           ),
           const MessageBadge(),
@@ -201,7 +202,7 @@ class _MediaPageState extends CommonPageState<MinePage>
           padding: padding,
           style: style,
           tooltip: '设置',
-          onPressed: () => Get.toNamed('/setting', preventDuplicates: false),
+          onPressed: () => PageUtils.toDupNamed('/setting', preventDuplicates: false),
           icon: const Icon(Icons.settings_outlined),
         ),
         const SizedBox(width: 16),
@@ -439,7 +440,7 @@ class _MediaPageState extends CommonPageState<MinePage>
           color: theme.dividerColor.withValues(alpha: 0.1),
         ),
         ListTile(
-          onTap: () => Get.toNamed('/fav')?.whenComplete(
+          onTap: () => PageUtils.toDupNamed('/fav')?.whenComplete(
             () => Future.delayed(
               const Duration(milliseconds: 150),
               controller.onRefresh,
@@ -522,7 +523,7 @@ class _MediaPageState extends CommonPageState<MinePage>
                             ),
                           ),
                         ),
-                        onPressed: () => Get.toNamed('/fav')?.whenComplete(
+                        onPressed: () => PageUtils.toDupNamed('/fav')?.whenComplete(
                           () => Future.delayed(
                             const Duration(milliseconds: 150),
                             controller.onRefresh,

@@ -118,7 +118,7 @@ class AuthorPanel extends StatelessWidget {
             onTap: moduleAuthor.type == 'AUTHOR_TYPE_NORMAL'
                 ? () {
                     feedBack();
-                    Get.toNamed('/member?mid=${moduleAuthor.mid}');
+                    PageUtils.toDupNamed('/member?mid=${moduleAuthor.mid}');
                   }
                 : null,
             child: Row(

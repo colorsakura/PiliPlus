@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/member/tags.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/follow/presentation/pages/child/child_view.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
@@ -45,7 +46,7 @@ class FollowPageV2 extends ConsumerStatefulWidget {
         ? mid
         : (mid != null ? int.tryParse(mid.toString()) : null);
     if (midInt == null) return;
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/follow',
       arguments: {
         'mid': midInt,

@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/models/search/suggest.dart';
 import 'package:PiliPlus/models/search/search_rcmd/data.dart';
@@ -182,7 +183,7 @@ class SSearchController extends GetxController
     }
 
     searchFocusNode.unfocus();
-    await Get.toNamed(
+    await PageUtils.toDupNamed(
       '/searchResult',
       parameters: {
         'tag': tag,

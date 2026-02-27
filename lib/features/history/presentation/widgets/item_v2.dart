@@ -198,7 +198,7 @@ class HistoryItemV2 extends StatelessWidget {
                   if (item.authorMid != null &&
                       item.authorName?.isNotEmpty == true)
                     PopupMenuItem(
-                      onTap: () => Get.toNamed('/member?mid=${item.authorMid}'),
+                      onTap: () => PageUtils.toDupNamed('/member?mid=${item.authorMid}'),
                       height: 38,
                       child: Row(
                         children: [

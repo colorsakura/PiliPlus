@@ -4,6 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/features/dynamics_topic_rcmd/presentation/providers/dyn_topic_rcmd_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/dynamic/dyn_topic_top/topic_item.dart';
 import 'package:PiliPlus/features/dynamics_select_topic/dynamics_select_topic.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class DynTopicRcmdPage extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   return TopicItemWidget(
                     item: response[index],
-                    onTap: (item) => Get.toNamed(
+                    onTap: (item) => PageUtils.toDupNamed(
                       '/dynTopic',
                       parameters: {
                         'id': item.id.toString(),

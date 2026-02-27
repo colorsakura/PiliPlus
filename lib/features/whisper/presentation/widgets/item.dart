@@ -138,7 +138,7 @@ class WhisperSessionItem extends StatelessWidget {
           }
         }
         if (item.id.privateId.hasTalkerUid()) {
-          Get.toNamed(
+          PageUtils.toDupNamed(
             '/whisperDetail',
             arguments: {
               'talkerId': item.id.privateId.talkerUid.toInt(),
@@ -204,7 +204,7 @@ class WhisperSessionItem extends StatelessWidget {
           return GestureDetector(
             onTap: item.sessionInfo.avatar.hasMid()
                 ? () =>
-                      Get.toNamed('/member?mid=${item.sessionInfo.avatar.mid}')
+                      PageUtils.toDupNamed('/member?mid=${item.sessionInfo.avatar.mid}')
                 : null,
             child: PendantAvatar(
               size: 42,

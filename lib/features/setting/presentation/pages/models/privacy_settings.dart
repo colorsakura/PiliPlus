@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/api_type.dart';
 import 'package:flutter/material.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,7 @@ List<SettingsModel> get privacySettings => [
         SmartDialog.showToast('登录后查看');
         return;
       }
-      Get.toNamed('/blackListPage');
+      PageUtils.toDupNamed('/blackListPage');
     },
     title: '黑名单管理',
     subtitle: '已拉黑用户',

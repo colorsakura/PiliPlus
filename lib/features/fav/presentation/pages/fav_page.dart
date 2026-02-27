@@ -2,8 +2,10 @@ import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/fav_type.dart';
+import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_article_controller.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_cheese_controller.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_topic_controller.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_video_controller.dart';
 import 'package:PiliPlus/features/fav_folder_sort/fav_folder_sort.dart';
@@ -59,16 +61,16 @@ class _FavPageState extends State<FavPage> with SingleTickerProviderStateMixin {
           Obx(
             () => _showVideoFavMenu.value
                 ? IconButton(
-                    onPressed: () => Get.toNamed('/createFav')?.then(
+                    onPressed: () => PageUtils.toDupNamed('/createFav')?.then(
                       (data) {
                         if (data != null) {
                           final list =
                               _favController.loadingState.value.dataOrNull;
                           if (list != null && list.isNotEmpty) {
-                            list.insert(1, data);
+                            list.insert(1, data as FavFolderInfo);
                             _favController.loadingState.refresh();
                           } else {
-                            _favController.loadingState.value = Success([data]);
+                            _favController.loadingState.value = Success([data as FavFolderInfo]);
                           }
                         }
                       },
@@ -106,7 +108,7 @@ class _FavPageState extends State<FavPage> with SingleTickerProviderStateMixin {
                       )) {
                         try {
                           final item = response!.first;
-                          Get.toNamed(
+                          PageUtils.toDupNamed(
                             '/favSearch',
                             arguments: {
                               'type': 1,

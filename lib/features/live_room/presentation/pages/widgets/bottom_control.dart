@@ -4,6 +4,7 @@ import 'package:PiliPlus/features/video/presentation/widgets/header_mixin.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/video_fit_type.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/common_btn.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/play_pause_btn.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -70,7 +71,7 @@ class _BottomControlState extends State<BottomControl> with HeaderMixin {
             ),
             onTap: () {
               if (liveRoomCtr.isLogin) {
-                Get.toNamed(
+                PageUtils.toDupNamed(
                   '/liveDmBlockPage',
                   parameters: {
                     'roomId': liveRoomCtr.roomId.toString(),

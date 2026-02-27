@@ -4,6 +4,7 @@ import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:get/get.dart';
 
 // Adapter to use Riverpod page with GetX routing
+import 'package:PiliPlus/utils/page_utils.dart';
 class SubDetailPage extends StatelessWidget {
   const SubDetailPage({super.key});
 
@@ -23,7 +24,7 @@ class SubDetailPage extends StatelessWidget {
     String? heroTag,
     SubItemModel? subInfo,
   }) {
-    Get.toNamed(
+    PageUtils.toDupNamed(
       '/subDetail',
       parameters: {
         'id': id.toString(),
