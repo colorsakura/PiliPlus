@@ -73,6 +73,10 @@ class VideoDetailState {
   final PlayerStatus? playerStatus;
   final bool showSteinEdgeInfo;
 
+  // Stein edge info for interactive videos
+  final int? graphVersion;
+  final dynamic steinEdgeInfo;
+
   const VideoDetailState({
     required this.args,
     required this.bvid,
@@ -116,6 +120,8 @@ class VideoDetailState {
     this.seasonIndex = 0,
     this.playerStatus,
     this.showSteinEdgeInfo = false,
+    this.graphVersion,
+    this.steinEdgeInfo,
   });
 
   VideoDetailState.initial()
@@ -160,7 +166,9 @@ class VideoDetailState {
         imageview = false,
         seasonIndex = 0,
         playerStatus = null,
-        showSteinEdgeInfo = false;
+        showSteinEdgeInfo = false,
+        graphVersion = null,
+        steinEdgeInfo = null;
 
 
   VideoDetailState copyWith({
@@ -206,6 +214,8 @@ class VideoDetailState {
     int? seasonIndex,
     PlayerStatus? playerStatus,
     bool? showSteinEdgeInfo,
+    int? graphVersion,
+    dynamic steinEdgeInfo,
   }) {
     return VideoDetailState(
       args: args ?? this.args,
@@ -250,6 +260,8 @@ class VideoDetailState {
       seasonIndex: seasonIndex ?? this.seasonIndex,
       playerStatus: playerStatus ?? this.playerStatus,
       showSteinEdgeInfo: showSteinEdgeInfo ?? this.showSteinEdgeInfo,
+      graphVersion: graphVersion ?? this.graphVersion,
+      steinEdgeInfo: steinEdgeInfo ?? this.steinEdgeInfo,
     );
   }
 }

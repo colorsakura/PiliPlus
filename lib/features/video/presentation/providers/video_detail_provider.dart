@@ -8,6 +8,7 @@ import 'package:PiliPlus/models/common/video/video_quality.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/models/video/play/url.dart';
+import 'package:PiliPlus/models/video/video_stein_edgeinfo/data.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/heart_beat_type.dart';
@@ -18,6 +19,8 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/http/init.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
 import 'video_states.dart';
 
@@ -394,6 +397,109 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
   /// Update showSteinEdgeInfo
   void setShowSteinEdgeInfo(bool value) {
     state = state.copyWith(showSteinEdgeInfo: value);
+  }
+
+  /// Get stein edge info for interactive videos
+  Future<void> getSteinEdgeInfo([int? edgeId]) async {
+    state = state.copyWith(steinEdgeInfo: null);
+
+    try {
+      final res = await Request().get(
+        '/x/stein/edgeinfo_v2',
+        queryParameters: {
+          'bvid': state.bvid,
+          'graph_version': state.graphVersion?.toString(),
+          'edge_id': edgeId?.toString(),
+        },
+      );
+
+      if (res.data['code'] == 0) {
+        state = state.copyWith(
+          steinEdgeInfo: EdgeInfoData.fromJson(res.data['data']),
+        );
+      } else {
+        if (kDebugMode) {
+          debugPrint('getSteinEdgeInfo error: ${res.data['message']}');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('getSteinEdgeInfo: $e');
+    }
+  }
+
+  /// Add item to sponsor block list
+  ///
+  /// NOTE: This method manages sponsor block segments (from BlockMixin).
+  /// The full implementation requires additional state fields:
+  /// - blockListener (StreamSubscription)
+  /// - segmentProgressList (for UI progress bar)
+  /// - listData (for AnimatedList items)
+  /// - skipTimer (Timer for auto-removal)
+  ///
+  /// Currently delegated to VideoDetailController.getBlockMixin() due to
+  /// tight coupling with GetxController lifecycle and complex state management.
+  ///
+  /// Future enhancement: Extract sponsor block logic into separate Riverpod provider.
+  void onAddItem(Object item) {
+    // Delegated to VideoDetailController's BlockMixin
+    // TODO: Migrate when sponsor block state is fully implemented in VideoDetailState
+  }
+
+  /// Cancel sponsor block listener
+  ///
+  /// NOTE: This method cancels the position listener that checks for
+  /// sponsor block segments during playback. Requires tracking of
+  /// StreamSubscription state.
+  ///
+  /// Currently delegated to VideoDetailController.getBlockMixin().
+  void cancelBlockListener() {
+    // Delegated to VideoDetailController's BlockMixin
+    // TODO: Migrate when sponsor block state is fully implemented in VideoDetailState
+  }
+
+  /// Show note list panel
+  ///
+  /// NOTE: This is a UI method that displays a bottom sheet.
+  /// UI methods should remain in the widget layer, not in business logic.
+  ///
+  /// To call from widget: Use video_page.dart to show NoteListPage directly.
+  void showNoteList(BuildContext context) {
+    // UI method - should be called from widget layer
+    // Kept for API compatibility
+  }
+
+  /// Show download panel
+  ///
+  /// NOTE: This is a UI method that displays a modal bottom sheet.
+  /// UI methods should remain in the widget layer.
+  ///
+  /// To call from widget: Use video_page.dart to show DownloadPanel directly.
+  Future<void> onDownload(BuildContext context) async {
+    // UI method - should be called from widget layer
+    // Kept for API compatibility
+  }
+
+  /// Show media list panel (选集/稍后再看)
+  ///
+  /// NOTE: This is a UI method that displays a bottom sheet with
+  /// episode/media list. UI methods should remain in widget layer.
+  ///
+  /// To call from widget: Use video_page.dart to show MediaListPanel directly.
+  void showMediaListPanel(BuildContext context) {
+    // UI method - should be called from widget layer
+    // Kept for API compatibility
+  }
+
+  /// Build sponsor block list item widget
+  ///
+  /// NOTE: This is a UI widget builder method. It returns a Widget
+  /// and should be in the widget layer, not in business logic.
+  ///
+  /// To use: Create a separate widget component in video_page.dart.
+  Widget buildItem(Object item, Animation<double> animation) {
+    // UI widget builder - should be in widget layer
+    // Kept for API compatibility
+    return const SizedBox.shrink();
   }
 }
 
