@@ -108,7 +108,12 @@ class Routes {
     // 动态
     GetPage(name: '/dynamics', page: () => const dynamics.DynamicsPage()),
     // 动态详情
-    GetPage(name: '/dynamicDetail', page: () => const DynamicDetailPage()),
+    GetPage(
+      name: '/dynamicDetail',
+      page: () => DynamicDetailPage(
+        item: Get.arguments['item'],
+      ),
+    ),
     // 关注 - requires mid parameter
     GetPage(
       name: '/follow',

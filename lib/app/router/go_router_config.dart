@@ -13,6 +13,7 @@ import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_page.dart
     as dynamics;
 import 'package:PiliPlus/features/dynamics_create_vote/dynamics_create_vote.dart';
 import 'package:PiliPlus/features/dynamics_detail/dynamics_detail.dart';
+import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics_topic/dynamics_topic.dart';
 import 'package:PiliPlus/features/dynamics_topic_rcmd/dynamics_topic_rcmd.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
@@ -194,9 +195,13 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.dynamicDetail,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: DynamicDetailPage(),
-        ),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final item = extra?['item'] as DynamicItemModel?;
+          return MaterialPage(
+            child: DynamicDetailPage(item: item),
+          );
+        },
       ),
 
       GoRoute(

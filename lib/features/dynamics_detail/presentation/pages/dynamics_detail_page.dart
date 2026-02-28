@@ -26,7 +26,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class DynamicDetailPage extends StatefulWidget {
-  const DynamicDetailPage({super.key});
+  const DynamicDetailPage({
+    super.key,
+    this.item,
+  });
+
+  final DynamicItemModel? item;
 
   @override
   State<DynamicDetailPage> createState() => _DynamicDetailPageState();
@@ -34,10 +39,18 @@ class DynamicDetailPage extends StatefulWidget {
 
 class _DynamicDetailPageState extends CommonDynPageState<DynamicDetailPage> {
   @override
-  final DynamicDetailController controller = Get.putOrFind(
-    DynamicDetailController.new,
-    tag: (Get.arguments['item'] as DynamicItemModel).idStr.toString(),
+  late final DynamicDetailController controller = Get.putOrFind(
+    () => DynamicDetailController(item: _getItem()),
+    tag: _getItem().idStr.toString(),
   );
+
+  DynamicItemModel _getItem() {
+    // Prioritize widget.item (go_router), fallback to Get.arguments (compatibility)
+    if (widget.item != null) {
+      return widget.item!;
+    }
+    return Get.arguments['item'] as DynamicItemModel;
+  }
 
   @override
   dynamic get arguments => {

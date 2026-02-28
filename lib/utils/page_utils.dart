@@ -147,13 +147,18 @@ abstract final class PageUtils {
           );
         }
       } else {
-        toDupNamed(
-          '/dynamicDetail',
-          arguments: {
-            'item': response,
-          },
-          off: off,
-        );
+        // Use go_router navigation
+        if (off) {
+          replaceNamed(
+            AppRoutes.dynamicDetail,
+            extra: {'item': response},
+          );
+        } else {
+          pushNamed(
+            AppRoutes.dynamicDetail,
+            extra: {'item': response},
+          );
+        }
       }
     } else {
       res.toast();
@@ -235,11 +240,9 @@ abstract final class PageUtils {
           },
         );
       } else {
-        toDupNamed(
-          '/dynamicDetail',
-          arguments: {
-            'item': item,
-          },
+        pushNamed(
+          AppRoutes.dynamicDetail,
+          extra: {'item': item},
         );
       }
     }

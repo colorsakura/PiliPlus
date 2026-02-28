@@ -9,6 +9,14 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class DynamicDetailController extends CommonDynController {
+  DynamicDetailController({DynamicItemModel? item}) {
+    if (item != null) {
+      dynItem = item;
+      _itemInitialized = true;
+    }
+  }
+
+  bool _itemInitialized = false;
   @override
   late int oid;
   @override
@@ -23,7 +31,10 @@ class DynamicDetailController extends CommonDynController {
   @override
   void onInit() {
     super.onInit();
-    dynItem = Get.arguments['item'];
+    // Fallback to Get.arguments if not provided via constructor
+    if (!_itemInitialized) {
+      dynItem = Get.arguments['item'];
+    }
     final commentType = dynItem.basic?.commentType;
     final commentIdStr = dynItem.basic?.commentIdStr;
     if (commentType != null &&
