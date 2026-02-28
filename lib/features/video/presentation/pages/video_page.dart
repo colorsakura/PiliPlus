@@ -98,13 +98,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get isFileSource => videoState.isFileSource;
   VideoType get videoType => videoState.videoType;
 
-  // intro ctr
-  late final CommonIntroController introController =
-      videoDetailController.isFileSource
-      ? localIntroController
-      : videoDetailController.isUgc
-      ? ugcIntroController
-      : pgcIntroController;
+  // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
+  late CommonIntroController introController;
   late final UgcIntroController ugcIntroController;
   late final PgcIntroController pgcIntroController;
   late final LocalIntroController localIntroController;
@@ -168,6 +163,13 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     } else {
       pgcIntroController = Get.put(PgcIntroController(), tag: heroTag);
     }
+
+    // PHASE 6: Initialize introController based on state (replaces field initializer)
+    introController = isFileSource
+        ? localIntroController
+        : isUgc
+        ? ugcIntroController
+        : pgcIntroController;
 
     videoSourceInit();
     autoScreen();
