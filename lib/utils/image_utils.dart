@@ -255,9 +255,9 @@ abstract final class ImageUtils {
     r'\.(jpg|jpeg|png|webp|gif|avif)$',
     caseSensitive: false,
   );
-  static String safeThumbnailUrl(String? src) {
+  static String safeThumbnailUrl(String? src, [int maxQuality = 1]) {
     if (src != null && _suffixRegex.hasMatch(src)) {
-      return thumbnailUrl(src);
+      return thumbnailUrl(src, maxQuality);
     }
     return src.http2https;
   }

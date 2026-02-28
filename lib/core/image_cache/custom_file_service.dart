@@ -1,6 +1,6 @@
 /// 自定义文件服务
 ///
-/// 使用应用的 HttpClientManager 下载图片，支持重试和超时配置
+/// 使用独立的 Dio 实例下载图片，支持重试和超时配置
 library;
 
 import 'dart:async';
@@ -10,7 +10,6 @@ import 'package:clock/clock.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
-import 'package:PiliPlus/core/network/http_client.dart' as http;
 import 'package:PiliPlus/utils/log.dart';
 
 /// 自定义文件服务响应
@@ -86,11 +85,25 @@ class DioFileServiceResponse implements FileServiceResponse {
 
 /// 自定义文件服务
 ///
-/// 使用应用的 Dio 客户端下载文件，支持重试机制和超时配置
+/// 使用独立的 Dio 客户端下载文件，避免 baseUrl 干扰
 class CustomFileService extends FileService {
   final Duration timeout;
+  late final Dio _dio;
 
-  CustomFileService({this.timeout = const Duration(seconds: 15)});
+  CustomFileService({this.timeout = const Duration(seconds: 15)}) {
+    _dio = Dio(
+      BaseOptions(
+        // 不设置 baseUrl，避免干扰完整 URL
+        connectTimeout: const Duration(milliseconds: 10000),
+        receiveTimeout: timeout,
+        sendTimeout: timeout,
+        headers: {
+          'accept-encoding': 'br,gzip',
+        },
+        persistentConnection: true,
+      ),
+    );
+  }
 
   @override
   Future<FileServiceResponse> get(
@@ -98,13 +111,11 @@ class CustomFileService extends FileService {
     Map<String, String>? headers,
   }) async {
     try {
-      final response = await http.HttpClientManager.instance.get(
+      final response = await _dio.get(
         url,
         options: Options(
           headers: headers,
           responseType: ResponseType.stream,
-          receiveTimeout: timeout,
-          sendTimeout: timeout,
         ),
       );
 

@@ -1,11 +1,12 @@
-import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/shared/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/home_rcmd/presentation/providers/recommendation_controller.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/shared/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/utils/grid.dart';
+import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,12 +42,21 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
     super.dispose();
   }
 
+  bool _isLoadingMore = false;
+
   void _onScroll() {
+    if (_isLoadingMore) return;
+
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      // 延迟执行，避免在构建过程中修改状态
+      // 使用防抖，避免频繁触发
+      _isLoadingMore = true;
       Future.microtask(() {
         ref.read(recommendationControllerProvider.notifier).onLoadMore();
+        // 延迟重置标志，给加载一些时间
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _isLoadingMore = false;
+        });
       });
     }
   }
@@ -80,14 +90,22 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
     );
   }
 
-  SliverGridDelegateWithExtentAndRatio get gridDelegate =>
-      SliverGridDelegateWithExtentAndRatio(
-        mainAxisSpacing: StyleString.cardSpace,
-        crossAxisSpacing: StyleString.cardSpace,
-        maxCrossAxisExtent: Pref.recommendCardWidth,
-        childAspectRatio: StyleString.aspectRatio,
-        mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
-      );
+  SliverGridDelegateWithExtentAndRatio get gridDelegate {
+    // PC端使用更大的卡片宽度，减少每行的卡片数量
+    return SliverGridDelegateWithExtentAndRatio(
+      mainAxisSpacing: PlatformUtils.isDesktop
+          ? StyleString.cardSpace * 6
+          : StyleString.cardSpace,
+      crossAxisSpacing: PlatformUtils.isDesktop
+          ? StyleString.cardSpace * 4
+          : StyleString.cardSpace,
+      maxCrossAxisExtent: PlatformUtils.isDesktop
+          ? 320.0
+          : Pref.recommendCardWidth,
+      childAspectRatio: StyleString.aspectRatio,
+      mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
+    );
+  }
 
   Widget _buildBody(RecommendationState state) {
     if (state.isLoading && state.result == null) {
@@ -126,17 +144,6 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
       gridDelegate: gridDelegate,
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final displayCount = state.lastRefreshAt != null
-              ? videos.length + 1
-              : videos.length;
-
-          // 延迟加载更多，避免在构建过程中修改状态
-          if (index == displayCount - 1) {
-            Future.microtask(() {
-              ref.read(recommendationControllerProvider.notifier).onLoadMore();
-            });
-          }
-
           // 显示"上次看到这里"标记
           if (state.lastRefreshAt != null && index == state.lastRefreshAt) {
             return GestureDetector(
@@ -188,8 +195,8 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
         childCount: state.lastRefreshAt != null
             ? videos.length + 1
             : videos.length,
-        addAutomaticKeepAlives: true,
-        addRepaintBoundaries: true,
+        addAutomaticKeepAlives: false, // 优化：不保持所有widget存活，减少内存
+        addRepaintBoundaries: true, // 保持重绘边界，减少重绘范围
       ),
     );
   }
