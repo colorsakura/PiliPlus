@@ -817,14 +817,23 @@ abstract final class PiliScheme {
       case 'medialist':
         String? mediaId = RegExp(r'/ml(\d+)').firstMatch(path)?.group(1);
         if (mediaId != null) {
-          PageUtils.toDupNamed(
-            '/favDetail',
-            parameters: {
-              'mediaId': mediaId,
-              'heroTag': Utils.makeHeroTag(mediaId),
-            },
-            off: off,
-          );
+          if (off) {
+            PageUtils.replaceNamed(
+              AppRoutes.favDetail,
+              parameters: {
+                'mediaId': mediaId,
+                'heroTag': Utils.makeHeroTag(mediaId),
+              },
+            );
+          } else {
+            PageUtils.pushNamed(
+              AppRoutes.favDetail,
+              parameters: {
+                'mediaId': mediaId,
+                'heroTag': Utils.makeHeroTag(mediaId),
+              },
+            );
+          }
           return true;
         }
         launchURL();
@@ -832,11 +841,17 @@ abstract final class PiliScheme {
       case 'topic' || 'topic-detail':
         String? id = uri.queryParameters['topic_id'];
         if (id != null) {
-          PageUtils.toDupNamed(
-            '/dynTopic',
-            parameters: {'id': id},
-            off: off,
-          );
+          if (off) {
+            PageUtils.replaceNamed(
+              AppRoutes.dynTopic,
+              parameters: {'id': id},
+            );
+          } else {
+            PageUtils.pushNamed(
+              AppRoutes.dynTopic,
+              parameters: {'id': id},
+            );
+          }
           return true;
         }
         launchURL();
@@ -938,14 +953,23 @@ abstract final class PiliScheme {
     bool off,
     Map? parameters,
   ) {
-    PageUtils.toDupNamed(
-      '/webview',
-      parameters: {
-        'url': url,
-        ...?parameters,
-      },
-      off: off,
-    );
+    if (off) {
+      PageUtils.replaceNamed(
+        AppRoutes.webview,
+        parameters: {
+          'url': url,
+          ...?parameters,
+        },
+      );
+    } else {
+      PageUtils.pushNamed(
+        AppRoutes.webview,
+        parameters: {
+          'url': url,
+          ...?parameters,
+        },
+      );
+    }
   }
 
   // 投稿跳转
