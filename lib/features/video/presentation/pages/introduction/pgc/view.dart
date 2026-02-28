@@ -50,10 +50,17 @@ class _PgcIntroPageState extends State<PgcIntroPage> {
   @override
   void initState() {
     super.initState();
-    introController = Get.putOrFind(
-      PgcIntroController.new,
-      tag: widget.heroTag,
-    );
+    // Find existing controller (created in video_page.dart)
+    if (Get.isRegistered<PgcIntroController>(tag: widget.heroTag)) {
+      introController = Get.find<PgcIntroController>(tag: widget.heroTag);
+    } else {
+      // Fallback: create with args from videoDetailCtr
+      videoDetailCtr = Get.find<VideoDetailController>(tag: widget.heroTag);
+      introController = Get.put(
+        PgcIntroController(args: Map<String, dynamic>.from(videoDetailCtr.args)),
+        tag: widget.heroTag,
+      );
+    }
     videoDetailCtr = Get.find<VideoDetailController>(tag: widget.heroTag);
   }
 

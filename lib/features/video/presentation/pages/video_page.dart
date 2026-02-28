@@ -194,11 +194,11 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     }
 
     if (state.isFileSource) { // PHASE 11: Direct state access in initState
-      localIntroController = Get.put(LocalIntroController(), tag: heroTag);
+      localIntroController = Get.put(LocalIntroController(args: args), tag: heroTag);
     } else if (state.isUgc) { // PHASE 11: Direct state access in initState
-      ugcIntroController = Get.put(UgcIntroController(), tag: heroTag);
+      ugcIntroController = Get.put(UgcIntroController(args: args), tag: heroTag);
     } else {
-      pgcIntroController = Get.put(PgcIntroController(), tag: heroTag);
+      pgcIntroController = Get.put(PgcIntroController(args: args), tag: heroTag);
     }
 
     // PHASE 6: Initialize introController based on state (replaces field initializer)

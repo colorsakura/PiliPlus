@@ -11,6 +11,8 @@ import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:get/get.dart';
 
 class LocalIntroController extends CommonIntroController {
+  /// Constructor: Accept route arguments
+  LocalIntroController({required super.args});
   @override
   void queryVideoIntro() {}
 

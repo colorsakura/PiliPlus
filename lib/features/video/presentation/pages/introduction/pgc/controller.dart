@@ -33,6 +33,9 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class PgcIntroController extends CommonIntroController {
+  /// Constructor: Accept route arguments
+  PgcIntroController({required super.args});
+
   final _pgcApiDataSource = PgcApiDataSource();
   int? seasonId;
   int? epId;
@@ -56,7 +59,6 @@ class PgcIntroController extends CommonIntroController {
 
   @override
   void onInit() {
-    final args = Get.arguments;
     seasonId = args['seasonId'];
     epId = args['epId'];
     isPgc = args['videoType'] == VideoType.pgc;

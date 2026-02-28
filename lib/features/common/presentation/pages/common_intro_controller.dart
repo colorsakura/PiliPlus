@@ -26,8 +26,14 @@ import 'package:get/get.dart';
 
 abstract class CommonIntroController extends GetxController
     with GetSingleTickerProviderStateMixin, TripleMixin, FavMixin {
+  /// Route arguments passed from video page
+  final Map<String, dynamic> args;
+
   late final String heroTag;
   late String bvid;
+
+  /// Constructor: Accept route arguments
+  CommonIntroController({required this.args});
 
   // 是否稍后再看
   final RxBool hasLater = false.obs;
@@ -74,7 +80,6 @@ abstract class CommonIntroController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    final args = Get.arguments;
     heroTag = args['heroTag'];
     bvid = args['bvid'];
     cid = RxInt(args['cid']);

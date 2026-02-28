@@ -73,10 +73,16 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
   @override
   void initState() {
     super.initState();
-    introController = Get.putOrFind(
-      UgcIntroController.new,
-      tag: widget.heroTag,
-    );
+    // Find existing controller (created in video_page.dart)
+    if (Get.isRegistered<UgcIntroController>(tag: widget.heroTag)) {
+      introController = Get.find<UgcIntroController>(tag: widget.heroTag);
+    } else {
+      // Fallback: create with args from videoDetailCtr
+      introController = Get.put(
+        UgcIntroController(args: Map<String, dynamic>.from(videoDetailCtr.args)),
+        tag: widget.heroTag,
+      );
+    }
   }
 
   @override
