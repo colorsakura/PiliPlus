@@ -12,22 +12,25 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 class PersistentImageCacheManager extends CacheManager with ImageCacheManager {
   static const key = 'persistentImageCache';
 
-  static final PersistentImageCacheManager _instance = PersistentImageCacheManager._();
+  static final PersistentImageCacheManager _instance =
+      PersistentImageCacheManager._();
 
   factory PersistentImageCacheManager() {
     return _instance;
   }
 
-  PersistentImageCacheManager._() : super(
-    Config(
-      key,
-      stalePeriod: const Duration(days: 90),  // 90天有效期
-      maxNrOfCacheObjects: 1000,  // 最多1000个图片
-      // 使用持久化文件系统，存储在应用文档目录
-      fileSystem: PersistentFileSystem(key),
-    ),
-  );
+  PersistentImageCacheManager._()
+    : super(
+        Config(
+          key,
+          stalePeriod: const Duration(days: 7), // 7天有效期
+          maxNrOfCacheObjects: 1000, // 最多1000个图片
+          // 使用持久化文件系统，存储在应用文档目录
+          fileSystem: PersistentFileSystem(key),
+        ),
+      );
 }
 
 /// 持久化图片缓存管理器实例
-late final PersistentImageCacheManager persistentImageCacheManager = PersistentImageCacheManager();
+final PersistentImageCacheManager persistentImageCacheManager =
+    PersistentImageCacheManager();

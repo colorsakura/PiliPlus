@@ -14,23 +14,27 @@ class ImagePreloader {
   static Future<int> preloadImages(List<String> urls) async {
     if (urls.isEmpty) return 0;
 
-    AppLog.info('Starting to preload ${urls.length} images', name: 'ImagePreloader');
+    AppLog.info(
+      'Starting to preload ${urls.length} images',
+      name: 'ImagePreloader',
+    );
 
     int successCount = 0;
-    final futures = urls.map((url) => _preloadSingleImage(url));
+    final futures = urls.map(_preloadSingleImage);
 
     // 等待所有预加载完成（但设置超时）
     try {
-      final results = await Future.wait(
-        futures,
-        eagerError: false,
-      ).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          AppLog.warning('Image preload timeout', name: 'ImagePreloader');
-          return List.filled(urls.length, false);
-        },
-      );
+      final results =
+          await Future.wait(
+            futures,
+            eagerError: false,
+          ).timeout(
+            const Duration(seconds: 30),
+            onTimeout: () {
+              AppLog.warning('Image preload timeout', name: 'ImagePreloader');
+              return List.filled(urls.length, false);
+            },
+          );
 
       successCount = results.where((success) => success).length;
     } catch (e) {

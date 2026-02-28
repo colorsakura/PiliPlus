@@ -20,8 +20,8 @@ class PersistentFileSystem implements FileSystem {
 
   static Future<Directory> _createDirectory(String key) async {
     // 使用应用文档目录实现持久化存储
-    final baseDir = await getApplicationDocumentsDirectory();
-    final path = p.join(baseDir.path, 'image_cache', key);
+    final baseDir = await getApplicationCacheDirectory();
+    final path = p.join(baseDir.path, 'piliplus', key);
 
     const fs = LocalFileSystem();
     final directory = fs.directory(path);
