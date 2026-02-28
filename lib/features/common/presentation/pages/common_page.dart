@@ -1,5 +1,4 @@
 import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,15 +7,16 @@ abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
   RxDouble? _barOffset;
   RxBool? _showTopBar;
   RxBool? _showBottomBar;
-  final _mainController = Get.find<MainController>();
+
+  // NOTE: MainController has been removed. Bar hiding functionality is now
+  // managed locally. Pages that need scroll-based bar hiding should implement
+  // their own scroll notification listeners.
 
   @override
   void initState() {
     super.initState();
-    _barOffset = _mainController.barOffset;
-    _showBottomBar = _mainController.showBottomBar;
-    // HomeController has been removed, showTopBar is now handled by Riverpod providers
-    // _showTopBar = _mainController.showTopBar;
+    // Bar offset and show/hide states are no longer initialized from MainController
+    // Subclasses can initialize them locally if needed
   }
 
   Widget onBuild(Widget child) {
@@ -36,8 +36,9 @@ abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
   }
 
   bool onNotificationType1(UserScrollNotification notification) {
-    if (!_mainController.useBottomNav) return false;
-    if (notification.metrics.axis == .horizontal) return false;
+    // Check if this page should handle scroll-based bar hiding
+    if (!shouldHandleScrollBars()) return false;
+    if (notification.metrics.axis == Axis.horizontal) return false;
     switch (notification.direction) {
       case .forward:
         _showTopBar?.value = true;
@@ -59,9 +60,9 @@ abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
   }
 
   bool onNotificationType2(ScrollNotification notification) {
-    if (!_mainController.useBottomNav) return false;
+    if (!shouldHandleScrollBars()) return false;
 
-    if (notification.metrics.axis == .horizontal) return false;
+    if (notification.metrics.axis == Axis.horizontal) return false;
 
     if (notification is ScrollUpdateNotification) {
       if (notification.dragDetails == null) return false;
@@ -76,6 +77,11 @@ abstract class CommonPageState<T extends StatefulWidget> extends State<T> {
 
     return false;
   }
+
+  /// Override this in subclasses to determine if this page should handle
+  /// scroll-based bar hiding. MinePage returns false since state is managed
+  /// by StatefulShellRoute.
+  bool shouldHandleScrollBars() => false;
 
   @override
   void dispose() {

@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:PiliPlus/app/router/app_routes.dart';
+import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/shell/controller.dart' show MainController;
 import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
 import 'package:PiliPlus/features/shell/domain/entities/unread_message.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
@@ -24,10 +26,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 /// Shell 页面 - 应用主框架
 class ShellPage extends ConsumerStatefulWidget {
-  const ShellPage({super.key});
+  final StatefulNavigationShell navigationShell;
+
+  const ShellPage({
+    super.key,
+    required this.navigationShell,
+  });
 
   @override
   ConsumerState<ShellPage> createState() => _ShellPageState();
@@ -35,28 +43,18 @@ class ShellPage extends ConsumerStatefulWidget {
 
 class _ShellPageState extends ConsumerState<ShellPage>
     with RouteAware, WidgetsBindingObserver {
-  // PageController 用于 PageView
-  late final PageController _pageController;
-
   // 存储相关
   late EdgeInsets _padding;
 
   // 配置
   late final bool directExitOnBack = Pref.directExitOnBack;
 
+  // 初始化状态
+  bool _isInitialized = false;
+
   @override
   void initState() {
     super.initState();
-
-    // 临时兼容：注册 MainController 以支持旧的页面
-    // 这样 HomePage 可以找到 MainController
-    // TODO: 迁移完 HomePage 和 DynamicsPage 后移除
-    Get.put(MainController());
-
-    // 初始化 PageController
-    final navConfigState = ref.read(navigationConfigControllerProvider);
-    final initialIndex = navConfigState.config?.selectedIndex ?? 0;
-    _pageController = PageController(initialPage: initialIndex);
 
     // 初始化其他功能
     _initializeApp();
@@ -74,14 +72,25 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
   /// 初始化导航配置和未读消息检查
   ///
-  /// 1. 加载导航配置
-  /// 2. 启动定时检查调度器
+  /// 1. 等待核心阶段完成（数据库初始化）
+  /// 2. 加载导航配置
+  /// 3. 启动定时检查调度器
   Future<void> _initializeNavigationConfig() async {
+    // 等待核心阶段完成（DatabaseManager 等核心服务）
+    await AppInitializer.ensureCoreReady();
+
     // 初始化配置
     await ref.read(navigationConfigControllerProvider.notifier).initialize();
 
     // 启动定时检查
     ref.read(periodicCheckSchedulerProvider).start();
+
+    // 标记为已初始化
+    if (mounted) {
+      setState(() {
+        _isInitialized = true;
+      });
+    }
   }
 
   @override
@@ -119,17 +128,12 @@ class _ShellPageState extends ConsumerState<ShellPage>
     // 停止定时检查调度器
     ref.read(periodicCheckSchedulerProvider).stop();
 
-    // 临时兼容：清理 MainController
-    // TODO: 在迁移完 HomePage 和 DynamicsPage 后删除
-    Get.delete<MainController>();
-
     // 清理路由和生命周期监听器
     PageUtils.routeObserver.unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
 
     // 清理其他资源
     PiliScheme.listener?.cancel();
-    _pageController.dispose();
 
     super.dispose();
   }
@@ -145,11 +149,11 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
   /// 处理系统返回键
   void _handlePop() {
-    final navState = ref.read(navigationConfigControllerProvider);
-    final selectedIndex = navState.config?.selectedIndex ?? 0;
+    final currentIndex = widget.navigationShell.currentIndex;
 
-    if (selectedIndex != 0) {
+    if (currentIndex != 0) {
       // 返回到首页
+      widget.navigationShell.goBranch(0);
       ref.read(navigationConfigControllerProvider.notifier).updateIndex(0);
       ref.read(navigationStateControllerProvider.notifier).reset();
       // TODO: setSearchBar
@@ -162,7 +166,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
   void _handleNavTap(int index) {
     feedBack();
     final navState = ref.read(navigationConfigControllerProvider);
-    final currentIndex = navState.config?.selectedIndex ?? 0;
+    final currentIndex = widget.navigationShell.currentIndex;
     final config = navState.config;
 
     if (config == null) return;
@@ -173,9 +177,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
     final currentNav = config.navigationBars[index];
 
     if (index != currentIndex) {
-      // 切换到新页面
+      // 切换到新分支
+      widget.navigationShell.goBranch(index);
       ref.read(navigationConfigControllerProvider.notifier).updateIndex(index);
-      _pageController.jumpToPage(index);
 
       // 根据页面类型执行特定操作
       if (currentNav == NavigationBarType.home) {
@@ -184,8 +188,8 @@ class _ShellPageState extends ConsumerState<ShellPage>
         ref.read(unreadDynamicControllerProvider.notifier).clear();
       }
     } else {
-      // 双击同页面：刷新或滚动到顶部
-      // TODO: 实现双击刷新逻辑
+      // 双击同页面：触发刷新
+      ref.read(refreshTriggerProvider.notifier).trigger(index);
     }
   }
 
@@ -194,6 +198,15 @@ class _ShellPageState extends ConsumerState<ShellPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    // 如果未初始化，显示加载界面
+    if (!_isInitialized) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     // 监听导航配置
     final navConfigState = ref.watch(navigationConfigControllerProvider);
@@ -212,11 +225,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
     // 根据当前屏幕尺寸判断是否使用底部导航
     final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
 
-    Widget child = PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: _pageController,
-      children: config.navigationBars.map((i) => i.page).toList(),
-    );
+    Widget child = widget.navigationShell; // 使用 StatefulNavigationShell
 
     Widget? bottomNav;
     // 只有在竖屏模式且有至少2个导航项时才使用底部导航栏
@@ -426,7 +435,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
     return Semantics(
       label: "我的",
       child: GestureDetector(
-        onTap: () => Get.toNamed('/mine'),
+        onTap: () => widget.navigationShell.goBranch(2),
         child: Obx(
           () {
             if (accountService.isLogin.value) {
@@ -443,7 +452,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
                     child: Material(
                       type: MaterialType.transparency,
                       child: InkWell(
-                        onTap: () => Get.toNamed('/mine'),
+                        onTap: () => widget.navigationShell.goBranch(2),
                       ),
                     ),
                   ),

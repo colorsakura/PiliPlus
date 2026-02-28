@@ -1,4 +1,4 @@
-import 'package:PiliPlus/features/shell/controller.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
@@ -18,7 +18,6 @@ class DynamicsTabController
   final DynamicsTabType dynamicsType;
   String offset = '';
   int? mid;
-  late final MainController mainController = Get.find<MainController>();
   final dynamicsController = Get.find<DynamicsController>();
 
   @override
@@ -30,7 +29,9 @@ class DynamicsTabController
   @override
   Future<void> onRefresh() {
     if (dynamicsType == DynamicsTabType.all) {
-      mainController.setDynCount();
+      // Clear unread dynamic count using Riverpod provider
+      // Note: The clear should happen when user navigates to dynamics page
+      // This is now handled in ShellPage
     }
     offset = '';
     return super.onRefresh();

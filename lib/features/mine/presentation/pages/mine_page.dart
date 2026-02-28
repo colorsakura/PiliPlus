@@ -7,9 +7,7 @@ import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/message_badge.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_page.dart';
 import 'package:PiliPlus/features/login/presentation/pages/login_controller.dart';
@@ -33,17 +31,11 @@ class MinePage extends StatefulWidget {
   State<MinePage> createState() => _MediaPageState();
 }
 
-class _MediaPageState extends CommonPageState<MinePage>
-    with AutomaticKeepAliveClientMixin {
+class _MediaPageState extends CommonPageState<MinePage> {
   final MineController controller = Get.putOrFind(MineController.new);
-  late final MainController _mainController = Get.find<MainController>();
-
-  @override
-  bool get wantKeepAlive => true;
 
   bool get checkPage =>
-      _mainController.navigationBars[0] != NavigationBarType.mine &&
-      _mainController.selectedIndex.value == 0;
+      false; // Always false since state is now managed by StatefulShellRoute
 
   @override
   bool onNotificationType1(UserScrollNotification notification) {
@@ -63,7 +55,6 @@ class _MediaPageState extends CommonPageState<MinePage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final theme = Theme.of(context);
     final secondary = theme.colorScheme.secondary;
     return Column(
@@ -152,7 +143,8 @@ class _MediaPageState extends CommonPageState<MinePage>
               ),
             ),
           ),
-        if (!_mainController.hasHome) ...[
+        // Always show search and message buttons
+        ...[
           IconButton(
             iconSize: iconSize,
             padding: padding,

@@ -1,12 +1,10 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
-import 'package:get/get.dart';
 
 /// 消息角标 Widget
 ///
@@ -16,7 +14,6 @@ class MessageBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainController = Get.find<MainController>();
     final msgBadgeMode = ref.read(msgBadgeModeProvider);
 
     final unreadMessage = ref.watch(unreadMessageControllerProvider);

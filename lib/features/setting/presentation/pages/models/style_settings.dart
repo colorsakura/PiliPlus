@@ -10,7 +10,8 @@ import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/scale_app.dart';
 import 'package:PiliPlus/shared/widgets/stateful_builder.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/dynamic/up_panel_position.dart';
@@ -319,7 +320,9 @@ List<SettingsModel> get styleSettings => [
     leading: const Icon(Icons.exit_to_app_outlined),
     setKey: SettingBoxKey.directExitOnBack,
     defaultVal: false,
-    onChanged: (value) => Get.find<MainController>().directExitOnBack = value,
+    onChanged: (value) {
+      // Value is automatically saved to storage via setKey
+    },
   ),
   if (Platform.isAndroid)
     NormalModel(
@@ -679,15 +682,12 @@ Future<void> _showDynBadgeDialog(
     ),
   );
   if (res != null) {
-    final mainController = Get.find<MainController>()
-      ..dynamicBadgeMode = DynamicBadgeMode.values[res.index];
-    if (mainController.dynamicBadgeMode != DynamicBadgeMode.hidden) {
-      mainController.getUnreadDynamic();
-    }
     await GStorage.setting.put(
       SettingBoxKey.dynamicBadgeMode,
       res.index,
     );
+    // Refresh unread dynamic count via Riverpod provider
+    // This is now handled by PeriodicCheckScheduler
     SmartDialog.showToast('设置成功');
     setState();
   }
@@ -706,14 +706,9 @@ Future<void> _showMsgBadgeDialog(
     ),
   );
   if (res != null) {
-    final mainController = Get.find<MainController>()
-      ..msgBadgeMode = DynamicBadgeMode.values[res.index];
-    if (mainController.msgBadgeMode != DynamicBadgeMode.hidden) {
-      mainController.queryUnreadMsg(true);
-    } else {
-      mainController.msgUnReadCount.value = '';
-    }
     await GStorage.setting.put(SettingBoxKey.msgBadgeMode, res.index);
+    // Refresh unread message count via Riverpod provider
+    // This is now handled by PeriodicCheckScheduler
     SmartDialog.showToast('设置成功');
     setState();
   }
@@ -732,14 +727,12 @@ Future<void> _showMsgUnReadDialog(
     ),
   );
   if (res != null) {
-    final mainController = Get.find<MainController>()..msgUnReadTypes = res;
-    if (mainController.msgBadgeMode != DynamicBadgeMode.hidden) {
-      mainController.queryUnreadMsg();
-    }
     await GStorage.setting.put(
       SettingBoxKey.msgUnReadTypeV2,
       res.map((item) => item.index).toList()..sort(),
     );
+    // Refresh unread message count via Riverpod provider
+    // This is now handled by PeriodicCheckScheduler
     SmartDialog.showToast('设置成功');
     setState();
   }

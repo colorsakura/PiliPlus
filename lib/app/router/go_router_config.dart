@@ -13,7 +13,6 @@ import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_page.dart
     as dynamics;
 import 'package:PiliPlus/features/dynamics_create_vote/dynamics_create_vote.dart';
 import 'package:PiliPlus/features/dynamics_detail/dynamics_detail.dart';
-import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/features/dynamics_topic/dynamics_topic.dart';
 import 'package:PiliPlus/features/dynamics_topic_rcmd/dynamics_topic_rcmd.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
@@ -28,12 +27,12 @@ import 'package:PiliPlus/features/followed/followed.dart';
 import 'package:PiliPlus/features/history/history.dart';
 import 'package:PiliPlus/features/history_search/history_search.dart';
 import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
-import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
 import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
 import 'package:PiliPlus/features/live_dm_block/live_dm_block.dart';
 import 'package:PiliPlus/features/live_room/live_room.dart';
 import 'package:PiliPlus/features/login/login.dart';
 import 'package:PiliPlus/features/main_reply/main_reply.dart';
+import 'package:PiliPlus/features/mine/mine.dart' as mine;
 import 'package:PiliPlus/features/match_info/match_info.dart';
 import 'package:PiliPlus/features/member/member.dart';
 import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';
@@ -68,6 +67,7 @@ import 'package:PiliPlus/features/video/video.dart';
 import 'package:PiliPlus/features/webview/webview.dart';
 import 'package:PiliPlus/features/whisper/whisper.dart';
 import 'package:PiliPlus/features/whisper_detail/whisper_detail.dart';
+import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -81,29 +81,47 @@ final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter goRouter() {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoutes.root,
+    initialLocation: AppRoutes.home,
     redirect: RouteGuard.redirect,
     observers: [
       PageUtils.routeObserver,
       FlutterSmartDialog.observer,
     ],
     routes: [
-      // Root / Shell route - contains bottom navigation
-      GoRoute(
-        path: AppRoutes.root,
-        pageBuilder: (context, state) => const MaterialPage(child: ShellPage()),
-        routes: [
-          // Home tab
-          GoRoute(
-            path: AppRoutes.home,
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: HomePage()),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) => ShellPage(
+          navigationShell: navigationShell,
+        ),
+        branches: [
+          // Branch 0: Home
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                pageBuilder: (context, state) =>
+                    const MaterialPage(child: HomePage()),
+              ),
+            ],
           ),
-          // Hot tab
-          GoRoute(
-            path: AppRoutes.hot,
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: HotPage()),
+          // Branch 1: Dynamics
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.dynamics,
+                pageBuilder: (context, state) =>
+                    const MaterialPage(child: dynamics.DynamicsPage()),
+              ),
+            ],
+          ),
+          // Branch 2: Mine
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.mine,
+                pageBuilder: (context, state) =>
+                    const MaterialPage(child: mine.MinePage()),
+              ),
+            ],
           ),
         ],
       ),
@@ -148,7 +166,8 @@ GoRouter goRouter() {
         pageBuilder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
           final indexStr = state.uri.queryParameters['index'];
-          final initialIndex = extra?['index'] as int? ??
+          final initialIndex =
+              extra?['index'] as int? ??
               (indexStr != null ? int.tryParse(indexStr) : null);
           return MaterialPage(
             child: FavPage(initialIndex: initialIndex),
@@ -193,12 +212,6 @@ GoRouter goRouter() {
           final keyword = state.uri.queryParameters['keyword'] ?? '';
           return MaterialPage(child: SearchResultPageV2(keyword: keyword));
         },
-      ),
-
-      GoRoute(
-        path: AppRoutes.dynamics,
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: dynamics.DynamicsPage()),
       ),
 
       GoRoute(

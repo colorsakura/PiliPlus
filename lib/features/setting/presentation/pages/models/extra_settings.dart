@@ -12,7 +12,6 @@ import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -88,7 +87,9 @@ List<SettingsModel> get extraSettings => [
     leading: const Icon(Icons.notifications_none),
     setKey: SettingBoxKey.checkDynamic,
     defaultVal: true,
-    onChanged: (value) => Get.find<MainController>().checkDynamic = value,
+    onChanged: (value) {
+      // Value is automatically saved to storage via setKey
+    },
     onTap: _showDynDialog,
   ),
   SwitchModel(
@@ -780,7 +781,7 @@ void _showDynDialog(BuildContext context) {
               final val = int.parse(dynamicPeriod);
               PageUtils.pop();
               GStorage.setting.put(SettingBoxKey.dynamicPeriod, val);
-              Get.find<MainController>().dynamicPeriod = val * 60 * 1000;
+              // dynamicPeriod is now read directly from storage by providers
             } catch (e) {
               SmartDialog.showToast(e.toString());
             }

@@ -13,6 +13,7 @@ abstract class AppRoutes {
   static const String search = '/search';
   static const String searchResult = '/searchResult';
   static const String dynamics = '/dynamics';
+  static const String mine = '/mine';
   static const String dynamicDetail = '/dynamicDetail';
   static const String follow = '/follow';
   static const String fan = '/fan';

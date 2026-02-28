@@ -7,8 +7,8 @@ import 'package:PiliPlus/features/account/presentation/providers/account_provide
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
-import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
@@ -193,10 +193,9 @@ class UserAvatar extends ConsumerWidget {
     );
   }
 
-  /// 处理点击事件
+  /// 处理点击事件 - 跳转到我的页面
   void _handleTap(BuildContext context, WidgetRef ref) {
-    final mainController = Get.find<MainController>();
-    mainController.toMinePage();
+    context.pushNamed(AppRoutes.mine);
   }
 }
 
@@ -264,7 +263,6 @@ class MsgBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainController = Get.find<MainController>();
     final accountState = ref.watch(accountControllerProvider);
     final msgBadgeMode = ref.read(msgBadgeModeProvider);
 

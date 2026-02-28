@@ -5,6 +5,7 @@ import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/home_tab_controller.dart';
 import 'package:PiliPlus/features/home/presentation/widgets/home_app_bar.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
 import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
@@ -19,13 +20,10 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   bool _controllerInitialized = false;
   int _lastTabLength = 0;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
@@ -78,8 +76,14 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final theme = Theme.of(context);
+
+    // 监听刷新触发器（branchIndex 0 = home）
+    ref.listen(refreshTriggerProvider, (previous, next) {
+      if (next == 0) {
+        _scrollToTop();
+      }
+    });
 
     // 监听首页标签配置
     final tabConfigState = ref.watch(homeTabConfigControllerProvider);
@@ -166,5 +170,11 @@ class _HomePageState extends ConsumerState<HomePage>
   void _handleTabTap(int index) {
     ref.read(homeTabConfigControllerProvider.notifier).updateIndex(index);
     // TODO: 滚动到顶部
+  }
+
+  /// 滚动到顶部（双击刷新时触发）
+  void _scrollToTop() {
+    // TODO: Implement scroll to top for current tab
+    // This should notify the current tab page to scroll to top
   }
 }
