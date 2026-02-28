@@ -1,8 +1,6 @@
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show MainListReply, Mode;
-import 'package:PiliPlus/grpc/bilibili/pagination.pb.dart'
-    show FeedPaginationReply;
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/reply/reply_sort_type.dart';
