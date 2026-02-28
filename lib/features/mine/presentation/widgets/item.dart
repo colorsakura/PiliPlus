@@ -23,12 +23,14 @@ class FavFolderItem extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        PageUtils.toDupNamed('/favDetail', arguments: item,
+        PageUtils.pushNamed(
+          AppRoutes.favDetail,
+          extra: item,
           parameters: {
             'mediaId': item.id.toString(),
             'heroTag': heroTag,
           },
-        )?.whenComplete(onPop);
+        ).whenComplete(onPop);
       },
       behavior: HitTestBehavior.opaque,
       child: Column(

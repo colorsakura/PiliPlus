@@ -910,29 +910,30 @@ abstract final class PageUtils {
   }
 
   /// go_router specific push method
-  static void pushNamed(
+  static Future<bool?> pushNamed(
     String path, {
     Object? extra,
     Map<String, String>? parameters,
   }) {
     final context = rootNavigatorKey.currentContext;
-    if (context == null) return;
+    if (context == null) return Future.value(false);
 
     final uri = _buildUri(path, parameters);
-    context.push(uri.toString(), extra: extra);
+    return context.push(uri.toString(), extra: extra);
   }
 
   /// go_router specific replace method
-  static void replaceNamed(
+  static Future<bool?> replaceNamed(
     String path, {
     Object? extra,
     Map<String, String>? parameters,
   }) {
     final context = rootNavigatorKey.currentContext;
-    if (context == null) return;
+    if (context == null) return Future.value(false);
 
     final uri = _buildUri(path, parameters);
     context.pushReplacement(uri.toString(), extra: extra);
+    return Future.value(true);
   }
 
   /// Check if router can pop

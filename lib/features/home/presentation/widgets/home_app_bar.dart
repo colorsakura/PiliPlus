@@ -225,8 +225,8 @@ class SearchBar extends ConsumerWidget {
           splashColor: theme.colorScheme.primaryContainer.withValues(
             alpha: 0.3,
           ),
-          onTap: () => PageUtils.toDupNamed(
-            '/search',
+          onTap: () => PageUtils.pushNamed(
+            AppRoutes.search,
             parameters:
                 config.enableSearchWord && searchState.defaultSearch.isNotEmpty
                 ? {'hintText': searchState.defaultSearch}

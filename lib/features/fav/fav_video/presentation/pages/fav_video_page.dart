@@ -65,7 +65,7 @@ class _FavVideoPageState extends ConsumerState<FavVideoPage>
                     heroTag: heroTag,
                     item: item,
                     onTap: () async {
-                      final res = await PageUtils.toDupNamed('/favDetail', arguments: item,
+                      final res = await PageUtils.pushNamed(AppRoutes.favDetail, extra: item,
                         parameters: {
                           'heroTag': heroTag,
                           'mediaId': item.id.toString(),
