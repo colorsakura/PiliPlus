@@ -467,7 +467,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   @override
   // 返回当前页面时
   void didPopNext() {
-    if (videoDetailController.imageview) {
+    if (imageview) { // PHASE 7: Using Riverpod state
       ref.read(videoDetailProvider.notifier).setImageview(false); // PHASE 7: Using Riverpod notifier
       return;
     }
@@ -597,7 +597,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       ..addListener(animListener);
     if (PlatformUtils.isMobile && mounted && isShowing && !isFullScreen) {
       if (isPortrait) {
-        if (!videoDetailController.imageview) {
+        if (!imageview) { // PHASE 7: Using Riverpod state
           showStatusBar();
         }
       } else if (!videoDetailController.horizontalScreen) {
