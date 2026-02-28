@@ -74,7 +74,8 @@ class Routes {
     GetPage(name: '/home', page: () => const HomePage()),
     // 热门
     GetPage(name: '/hot', page: () => const HotPage()),
-    // 视频详情
+    // 视频详情 - DEPRECATED: Use go_router instead (PageUtils.toVideoPage)
+    // This route is kept for backward compatibility only
     GetPage(name: '/videoV', page: () => const VideoDetailPageV()),
     //
     GetPage(name: '/webview', page: () => const WebviewPage()),

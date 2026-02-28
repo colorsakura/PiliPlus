@@ -768,7 +768,8 @@ abstract final class PageUtils {
     int? id,
   }) {
     // Use GetX navigation for compatibility with pages that use Get.arguments
-    // TODO: Migrate to go_router navigation when pages are updated
+    // Note: Video page (/videoV) has been migrated to go_router (Phase 13)
+    // TODO: Migrate remaining pages to go_router navigation
     if (off) {
       return Get.offNamed<T>(
         page,
