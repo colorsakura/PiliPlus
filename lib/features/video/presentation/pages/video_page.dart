@@ -71,6 +71,8 @@ import 'package:screen_brightness_platform_interface/screen_brightness_platform_
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/features/video/presentation/providers/video_detail_provider.dart';
 import 'package:PiliPlus/features/video/presentation/providers/video_reply_provider.dart';
+import 'package:PiliPlus/features/video/presentation/providers/video_states.dart';
+import 'package:PiliPlus/models/common/video/video_type.dart';
 
 class VideoDetailPageV extends ConsumerStatefulWidget {
   const VideoDetailPageV({super.key, this.args});
@@ -117,6 +119,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get isPlayAll => videoState.args['isPlayAll'] == true; // PHASE 7: From args
   bool get continuePlayingPart => videoState.args['isContinuePlaying'] == true; // PHASE 7: From args
   bool get showRelatedVideo => videoState.args['showRelatedVideo'] == true; // PHASE 7: From args
+  bool get imageview => videoState.imageview; // PHASE 7: Added for state access
+  bool get autoPlay => videoState.autoPlay; // PHASE 7: Added for state access
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -161,6 +165,12 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   @override
   void initState() {
     super.initState();
+
+    // PHASE 7: Initialize Riverpod provider with route arguments
+    ref.read(videoDetailProvider.notifier).setArgs(
+      Get.arguments as Map<String, dynamic>,
+      isInit: true,
+    );
 
     PlPlayerController.setPlayCallBack(playCallBack);
     videoDetailController = Get.put(VideoDetailController(), tag: heroTag);
@@ -518,7 +528,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       } else if (videoDetailController.plPlayerController.preInitPlayer &&
           !isQuerying && // PHASE 7: Using Riverpod state
           videoDetailController.videoState.value is! Error) {
-        await ref.read(videoDetailProvider.notifier).playerInit( // PHASE 7: Using Riverpod notifier);
+        await ref.read(videoDetailProvider.notifier).playerInit(); // PHASE 7: Using Riverpod notifier
       }
       if (!mounted || !isShowing) return;
       plPlayerController
@@ -2008,13 +2018,16 @@ class _PlDanmakuWidget extends ConsumerWidget {
     // Cross-controller: plPlayerController.isFullScreen
     final isFullScreen = plPlayerController.isFullScreen.value;
 
+    // PHASE 6: Using Riverpod state directly in separate widget
+    final isFileSource = ref.watch(videoDetailProvider.select((s) => s.isFileSource));
+
     return PlDanmaku(
       key: ValueKey(cid),
       isPipMode: isPipMode,
       cid: cid,
       playerController: plPlayerController,
       isFullScreen: isFullScreen,
-      isFileSource: isFileSource, // PHASE 6: Using Riverpod state
+      isFileSource: isFileSource,
       size: Size(width, height),
     );
   }
@@ -2166,10 +2179,15 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
     );
     final cover = ref.watch(videoDetailProvider.select((s) => s.cover));
 
+    // PHASE 6: Watch required state values
+    final isUgc = ref.watch(videoDetailProvider.select((s) => s.isUgc));
+    final bvid = ref.watch(videoDetailProvider.select((s) => s.bvid));
+    final aid = ref.watch(videoDetailProvider.select((s) => s.aid));
+
     return EpisodePanel(
       heroTag: heroTag,
       enableSlide: false,
-      ugcIntroController: isUgc // PHASE 6: Using Riverpod state
+      ugcIntroController: isUgc
           ? ugcIntroController
           : null,
       type: EpisodeType.season,
@@ -2177,8 +2195,8 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
       cover: cover,
       seasonId: videoDetail.ugcSeason!.id,
       list: videoDetail.ugcSeason!.sections!,
-      bvid: bvid, // PHASE 6: Using Riverpod state
-      aid: aid, // PHASE 6: Using Riverpod state
+      bvid: bvid,
+      aid: aid,
       cid: videoDetailController.seasonCid ?? 0,
       isReversed: ugcIntroController
           .videoDetail
@@ -2186,11 +2204,11 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
           .ugcSeason!
           .sections![seasonIndex]
           .isReversed,
-      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
+      onChangeEpisode: isUgc
           ? ugcIntroController.onChangeEpisode
           : pgcIntroController.onChangeEpisode,
       showTitle: false,
-      isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
+      isSupportReverse: isUgc,
       onReverse: () => onReversePlay(),
     );
   }
@@ -2227,24 +2245,29 @@ class _PartEpisodePanelWidget2 extends ConsumerWidget {
     final cover = ref.watch(videoDetailProvider.select((s) => s.cover));
     final cid = ref.watch(videoDetailProvider.select((s) => s.cid));
 
+    // PHASE 6: Watch required state values
+    final isUgc = ref.watch(videoDetailProvider.select((s) => s.isUgc));
+    final bvid = ref.watch(videoDetailProvider.select((s) => s.bvid));
+    final aid = ref.watch(videoDetailProvider.select((s) => s.aid));
+
     return EpisodePanel(
       heroTag: heroTag,
       enableSlide: false,
-      ugcIntroController: isUgc // PHASE 6: Using Riverpod state
+      ugcIntroController: isUgc
           ? ugcIntroController
           : null,
       type: EpisodeType.part,
       list: [videoDetail.pages!],
       cover: cover,
-      bvid: bvid, // PHASE 6: Using Riverpod state
-      aid: aid, // PHASE 6: Using Riverpod state
+      bvid: bvid,
+      aid: aid,
       cid: cid,
       isReversed: videoDetail.isPageReversed,
-      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
+      onChangeEpisode: isUgc
           ? ugcIntroController.onChangeEpisode
           : pgcIntroController.onChangeEpisode,
       showTitle: false,
-      isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
+      isSupportReverse: isUgc,
       onReverse: () => onReversePlay(),
     );
   }
@@ -2471,7 +2494,12 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
   final double maxWidth;
   final Widget Function(Color color, {List<Shadow>? shadows}) moreBtn;
 
-  Widget _buildToolbar(double scrollRatio) {
+  Widget _buildToolbar(
+    double scrollRatio,
+    Duration? playedTime,
+    bool isFileSource,
+    bool isQuerying,
+  ) {
     return Opacity(
       opacity: scrollRatio,
       child: Container(
@@ -2590,6 +2618,11 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
       videoDetailProvider.select((s) => s.scrollRatio),
     );
 
+    // PHASE 6: Watch required state values
+    final playedTime = ref.watch(videoDetailProvider.select((s) => s.playedTime));
+    final isFileSource = ref.watch(videoDetailProvider.select((s) => s.isFileSource));
+    final isQuerying = ref.watch(videoDetailProvider.select((s) => s.isQuerying));
+
     // Conditional rendering based on scrollRatio and scroll offset
     if (scrollRatio == 0 ||
         videoDetailController.scrollCtr.offset == 0 ||
@@ -2632,7 +2665,12 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
           }
         },
         behavior: HitTestBehavior.opaque,
-        child: _buildToolbar(scrollRatio),
+        child: _buildToolbar(
+          scrollRatio,
+          playedTime,
+          isFileSource,
+          isQuerying,
+        ),
       ),
     );
   }

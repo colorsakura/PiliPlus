@@ -234,6 +234,9 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
     String? video,
     String? audio,
     Duration? seekToTime,
+    Duration? duration,
+    bool? autoplay,
+    Volume? volume,
   }) async {
     final plPlayerController = _plPlayerController;
 
@@ -249,14 +252,15 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
               audioSource: audio ?? state.audioUrl,
             ),
       seekTo: seekToTime ?? state.defaultST,
-      duration: state.data?.timeLength != null
-          ? Duration(milliseconds: state.data!.timeLength!)
-          : null,
+      duration: duration ??
+          (state.data?.timeLength != null
+              ? Duration(milliseconds: state.data!.timeLength!)
+              : null),
       isVertical: state.isVertical,
       aid: state.aid,
       bvid: state.bvid,
       cid: state.cid,
-      autoplay: state.autoPlay,
+      autoplay: autoplay ?? state.autoPlay,
       epid: state.isUgc ? null : state.args['epId'] as int?,
       seasonId: state.isUgc ? null : state.args['seasonId'] as int?,
       pgcType: state.isUgc ? null : state.args['pgcType'] as int?,
@@ -268,7 +272,7 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
       },
       width: state.firstVideo?.width,
       height: state.firstVideo?.height,
-      volume: null,
+      volume: volume,
     );
   }
 
