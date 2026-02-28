@@ -1,9 +1,13 @@
 import 'dart:math';
 
-import 'package:PiliPlus/app/router/go_router_config.dart';
+import 'package:PiliPlus/app/router/app_router.dart';
 import 'package:PiliPlus/app/router/app_routes.dart';
-import 'package:PiliPlus/shared/widgets/image_viewer/gallery_viewer.dart';
-import 'package:PiliPlus/shared/widgets/image_viewer/hero_dialog_route.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
+import 'package:PiliPlus/features/common/presentation/pages/publish/publish_route.dart';
+import 'package:PiliPlus/features/contact/contact.dart';
+import 'package:PiliPlus/features/fav_panel/fav_panel.dart';
+import 'package:PiliPlus/features/share/share.dart';
 import 'package:PiliPlus/grpc/im.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -13,11 +17,8 @@ import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/episode.dart';
-import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
-import 'package:PiliPlus/features/common/presentation/pages/publish/publish_route.dart';
-import 'package:PiliPlus/features/contact/contact.dart';
-import 'package:PiliPlus/features/fav_panel/fav_panel.dart';
-import 'package:PiliPlus/features/share/share.dart';
+import 'package:PiliPlus/shared/widgets/image_viewer/gallery_viewer.dart';
+import 'package:PiliPlus/shared/widgets/image_viewer/hero_dialog_route.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/extension.dart';
@@ -28,7 +29,6 @@ import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/url_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:floating/floating.dart';
@@ -484,7 +484,10 @@ abstract final class PageUtils {
         });
         final context = rootNavigatorKey.currentContext;
         if (context != null) {
-          context.pushReplacement(uri.toString(), extra: {'inApp': inApp, 'off': off});
+          context.pushReplacement(
+            uri.toString(),
+            extra: {'inApp': inApp, 'off': off},
+          );
         }
       } else {
         PiliScheme.routePushFromUrl(url, parameters: parameters);
@@ -875,16 +878,18 @@ abstract final class PageUtils {
       '/whisperDetail': AppRoutes.whisperDetail,
       '/audio': AppRoutes.audio,
       '/mainReply': AppRoutes.mainReply,
-      '/contact': AppRoutes.search,  // Contact uses search page
+      '/contact': AppRoutes.search, // Contact uses search page
     };
 
     final targetRoute = routeMap[page] ?? page;
 
     // Use go_router for navigation
     if (off) {
-      return replaceNamed(targetRoute, extra: arguments, parameters: parameters) as Future<T?>;
+      return replaceNamed(targetRoute, extra: arguments, parameters: parameters)
+          as Future<T?>;
     } else {
-      return pushNamed(targetRoute, extra: arguments, parameters: parameters) as Future<T?>;
+      return pushNamed(targetRoute, extra: arguments, parameters: parameters)
+          as Future<T?>;
     }
   }
 

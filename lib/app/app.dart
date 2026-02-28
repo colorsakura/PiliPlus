@@ -1,4 +1,4 @@
-import 'package:PiliPlus/app/router/go_router_config.dart';
+import 'package:PiliPlus/app/router/app_router.dart';
 import 'package:PiliPlus/app/theme/entities/theme_colors.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/app/theme/services/theme_service.dart';

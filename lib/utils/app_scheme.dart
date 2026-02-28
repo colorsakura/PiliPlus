@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:PiliPlus/app/router/go_router_config.dart';
+import 'package:PiliPlus/app/router/app_router.dart';
 import 'package:PiliPlus/app/router/app_routes.dart';
-import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
+import 'package:PiliPlus/features/fan/fan.dart';
+import 'package:PiliPlus/features/follow/follow.dart';
+import 'package:PiliPlus/features/followed/followed.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_zone/home_zone.dart';
+import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
+import 'package:PiliPlus/features/video/presentation/pages/reply_reply/view.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/models/common/fav_type.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
-import 'package:PiliPlus/features/audio/audio.dart';
-import 'package:PiliPlus/features/fan/fan.dart';
-import 'package:PiliPlus/features/follow/follow.dart';
-import 'package:PiliPlus/features/followed/followed.dart';
-import 'package:PiliPlus/features/subscription_detail/subscription_detail.dart';
-import 'package:PiliPlus/features/video/presentation/pages/reply_reply/view.dart';
+import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
@@ -126,7 +126,10 @@ abstract final class PiliScheme {
                 return true;
               }
               if (off) {
-                PageUtils.replaceNamed(AppRoutes.member, parameters: {'mid': mid});
+                PageUtils.replaceNamed(
+                  AppRoutes.member,
+                  parameters: {'mid': mid},
+                );
               } else {
                 PageUtils.pushNamed(AppRoutes.member, parameters: {'mid': mid});
               }
@@ -562,7 +565,10 @@ abstract final class PiliScheme {
             break;
           default:
             if (off) {
-              PageUtils.replaceNamed(AppRoutes.member, parameters: {'mid': mid});
+              PageUtils.replaceNamed(
+                AppRoutes.member,
+                parameters: {'mid': mid},
+              );
             } else {
               PageUtils.pushNamed(AppRoutes.member, parameters: {'mid': mid});
             }
