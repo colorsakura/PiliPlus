@@ -293,9 +293,13 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.articlePage,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: ArticlePage(),
-        ),
+        pageBuilder: (context, state) {
+          final id = state.uri.queryParameters['id'] ?? '';
+          final type = state.uri.queryParameters['type'] ?? '';
+          return MaterialPage(
+            child: ArticlePage(id: id, type: type),
+          );
+        },
       ),
 
       GoRoute(

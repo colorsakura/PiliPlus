@@ -136,7 +136,13 @@ class Routes {
     // 关于
     GetPage(name: '/about', page: () => const AboutPage()),
     //
-    GetPage(name: '/articlePage', page: () => const ArticlePage()),
+    GetPage(
+      name: '/articlePage',
+      page: () => ArticlePage(
+        id: Get.parameters['id'] ?? '',
+        type: Get.parameters['type'] ?? '',
+      ),
+    ),
 
     // 历史记录搜索
     GetPage(name: '/playSpeedSet', page: () => const PlaySpeedPage()),

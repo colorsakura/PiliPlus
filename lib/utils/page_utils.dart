@@ -128,14 +128,24 @@ abstract final class PageUtils {
     SmartDialog.dismiss();
     if (res case Success(:final response)) {
       if (response.basic?.commentType == 12) {
-        toDupNamed(
-          '/articlePage',
-          parameters: {
-            'id': id!,
-            'type': 'opus',
-          },
-          off: off,
-        );
+        // Use go_router navigation
+        if (off) {
+          replaceNamed(
+            AppRoutes.articlePage,
+            parameters: {
+              'id': id!,
+              'type': 'opus',
+            },
+          );
+        } else {
+          pushNamed(
+            AppRoutes.articlePage,
+            parameters: {
+              'id': id!,
+              'type': 'opus',
+            },
+          );
+        }
       } else {
         toDupNamed(
           '/dynamicDetail',
@@ -217,8 +227,8 @@ abstract final class PageUtils {
 
     void push() {
       if (item.basic?.commentType == 12) {
-        toDupNamed(
-          '/articlePage',
+        pushNamed(
+          AppRoutes.articlePage,
           parameters: {
             'id': item.idStr,
             'type': 'opus',
@@ -287,8 +297,8 @@ abstract final class PageUtils {
 
       /// 专栏文章查看
       case 'DYNAMIC_TYPE_ARTICLE':
-        toDupNamed(
-          '/articlePage',
+        pushNamed(
+          AppRoutes.articlePage,
           parameters: {
             'id': item.idStr,
             'type': 'opus',

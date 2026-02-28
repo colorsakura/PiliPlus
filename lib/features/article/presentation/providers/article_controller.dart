@@ -18,6 +18,8 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class ArticleController extends CommonDynController {
+  ArticleController({required this.id, required this.type});
+
   late String id;
   late String type;
 
@@ -48,9 +50,12 @@ class ArticleController extends CommonDynController {
   @override
   void onInit() {
     super.onInit();
-    final params = Get.parameters;
-    id = params['id']!;
-    type = params['type']!;
+    // Fallback to Get.parameters if not provided via constructor (for backward compatibility)
+    if (id.isEmpty) {
+      final params = Get.parameters;
+      id = params['id']!;
+      type = params['type']!;
+    }
 
     // to opus
     if (type == 'read') {
