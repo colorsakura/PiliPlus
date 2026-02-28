@@ -417,12 +417,24 @@ abstract final class PageUtils {
     if (Pref.openInBrowser) {
       launchURL(url);
     } else {
-      toDupNamed(
-        '/webview',
-        parameters: {'url': url},
-        arguments: {'inApp': true},
-        off: off,
-      );
+      // Use go_router navigation
+      final extra = <String, dynamic>{
+        'inApp': true,
+        'off': off,
+      };
+      if (off) {
+        replaceNamed(
+          AppRoutes.webview,
+          parameters: {'url': url},
+          extra: extra,
+        );
+      } else {
+        pushNamed(
+          AppRoutes.webview,
+          parameters: {'url': url},
+          extra: extra,
+        );
+      }
     }
   }
 
@@ -452,14 +464,15 @@ abstract final class PageUtils {
       }
     } else {
       if (off) {
-        toDupNamed(
-          '/webview',
-          parameters: {
-            'url': url,
-            ...?parameters,
-          },
-          off: off,
-        );
+        // Use go_router navigation
+        final uri = _buildUri(AppRoutes.webview, {
+          'url': url,
+          ...?parameters,
+        });
+        final context = rootNavigatorKey.currentContext;
+        if (context != null) {
+          context.pushReplacement(uri.toString(), extra: {'inApp': inApp, 'off': off});
+        }
       } else {
         PiliScheme.routePushFromUrl(url, parameters: parameters);
       }

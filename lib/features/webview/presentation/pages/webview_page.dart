@@ -18,7 +18,15 @@ import 'package:get/get.dart';
 ///
 /// 用于显示网页内容,支持B站链接拦截和自定义UA
 class WebviewPage extends StatefulWidget {
-  const WebviewPage({super.key, this.url, this.oid, this.title, this.uaType});
+  const WebviewPage({
+    super.key,
+    this.url,
+    this.oid,
+    this.title,
+    this.uaType,
+    this.inApp = false,
+    this.off = false,
+  });
 
   final String? url;
 
@@ -26,6 +34,8 @@ class WebviewPage extends StatefulWidget {
   final int? oid;
   final String? title;
   final String? uaType;
+  final bool inApp;
+  final bool off;
 
   @override
   State<WebviewPage> createState() => _WebviewPageState();
@@ -68,9 +78,15 @@ class _WebviewPageState extends State<WebviewPage> {
     late final uaTypeParam = Get.parameters['uaType'];
     this.uaType = widget.uaType ??
         (uaTypeParam?.isNotEmpty == true ? uaTypeParam! : BrowserUa.platform);
-    if (Get.arguments case final Map map) {
-      _inApp = map['inApp'] ?? false;
-      _off = map['off'] ?? false;
+    // Use widget parameters (go_router) or fallback to Get.arguments (compatibility)
+    _inApp = widget.inApp;
+    _off = widget.off;
+    // Fallback to Get.arguments for compatibility
+    if (!_inApp && !_off) {
+      if (Get.arguments case final Map map) {
+        _inApp = map['inApp'] ?? false;
+        _off = map['off'] ?? false;
+      }
     }
   }
 

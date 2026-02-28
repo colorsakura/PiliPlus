@@ -122,7 +122,17 @@ GoRouter goRouter() {
         path: AppRoutes.webview,
         pageBuilder: (context, state) {
           final url = state.uri.queryParameters['url'];
-          return MaterialPage(child: WebviewPage(url: url));
+          final extra = state.extra as Map<String, dynamic>?;
+          return MaterialPage(
+            child: WebviewPage(
+              url: url,
+              oid: extra?['oid'],
+              title: extra?['title'],
+              uaType: extra?['uaType'],
+              inApp: extra?['inApp'] ?? false,
+              off: extra?['off'] ?? false,
+            ),
+          );
         },
       ),
 
