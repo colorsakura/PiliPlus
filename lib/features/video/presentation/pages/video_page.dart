@@ -206,34 +206,9 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     videoSourceInit();
     autoScreen();
 
-    // MIGRATION: Add auto-sync listeners to keep provider state in sync
-    _setupAutoSyncListeners();
+    // PHASE 9: Auto-sync listeners removed - Riverpod is now the single source of truth
 
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  /// Setup auto-sync listeners to keep provider state in sync with controller
-  void _setupAutoSyncListeners() {
-    // VideoState auto-sync
-    ever(videoDetailController.videoState, (LoadingState state) {
-      if (mounted) {
-        ref.read(videoDetailProvider.notifier).setVideoState(state);
-      }
-    });
-
-    // ScrollRatio auto-sync
-    ever(videoDetailController.scrollRatio, (double ratio) {
-      if (mounted) {
-        ref.read(videoDetailProvider.notifier).setScrollRatio(ratio);
-      }
-    });
-
-    // ShowSteinEdgeInfo auto-sync
-    ever(videoDetailController.showSteinEdgeInfo, (bool value) {
-      if (mounted) {
-        ref.read(videoDetailProvider.notifier).setShowSteinEdgeInfo(value);
-      }
-    });
   }
 
   // 获取视频资源，初始化播放器
