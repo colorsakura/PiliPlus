@@ -369,6 +369,11 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
     state = state.copyWith(showVideoSheet: value);
   }
 
+  /// Update autoPlay
+  void setAutoPlay(bool value) {
+    state = state.copyWith(autoPlay: value);
+  }
+
   /// Update setSystemBrightness
   void setSetSystemBrightness(bool value) {
     state = state.copyWith(setSystemBrightness: value);

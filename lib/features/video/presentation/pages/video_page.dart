@@ -89,6 +89,15 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   late final VideoReplyController _videoReplyController;
   PlPlayerController? plPlayerController;
 
+  // PHASE 6: Riverpod state access (replacing GetX controller property access)
+  VideoDetailState get videoState => ref.watch(videoDetailProvider);
+  String get bvid => videoState.bvid;
+  int get aid => videoState.aid;
+  int get cid => videoState.cid;
+  bool get isUgc => videoState.isUgc;
+  bool get isFileSource => videoState.isFileSource;
+  VideoType get videoType => videoState.videoType;
+
   // intro ctr
   late final CommonIntroController introController =
       videoDetailController.isFileSource
@@ -100,6 +109,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   late final PgcIntroController pgcIntroController;
   late final LocalIntroController localIntroController;
 
+  // PlPlayerController shortcuts (accessed via controller for now)
   bool get autoExitFullscreen =>
       videoDetailController.plPlayerController.autoExitFullscreen;
 
@@ -118,9 +128,9 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       videoDetailController.plPlayerController.isFullScreen.value;
 
   bool get _shouldShowSeasonPanel {
-    if (videoDetailController.isFileSource ||
+    if (isFileSource || // PHASE 6: Using Riverpod state
         isPortrait ||
-        !videoDetailController.isUgc) {
+        !isUgc) { // PHASE 6: Using Riverpod state
       return false;
     }
     late final videoDetail = ugcIntroController.videoDetail.value;
@@ -143,17 +153,17 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     if (videoDetailController.showReply) {
       _videoReplyController = Get.put(
         VideoReplyController(
-          aid: videoDetailController.aid,
-          videoType: videoDetailController.videoType,
+          aid: aid, // PHASE 6: Using Riverpod state
+          videoType: videoType, // PHASE 6: Using Riverpod state
           heroTag: heroTag,
         ),
         tag: heroTag,
       );
     }
 
-    if (videoDetailController.isFileSource) {
+    if (isFileSource) { // PHASE 6: Using Riverpod state
       localIntroController = Get.put(LocalIntroController(), tag: heroTag);
-    } else if (videoDetailController.isUgc) {
+    } else if (isUgc) { // PHASE 6: Using Riverpod state
       ugcIntroController = Get.put(UgcIntroController(), tag: heroTag);
     } else {
       pgcIntroController = Get.put(PgcIntroController(), tag: heroTag);
@@ -195,7 +205,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   // 获取视频资源，初始化播放器
   Future<void> videoSourceInit() async {
     videoDetailController.queryVideoUrl();
-    if (videoDetailController.autoPlay) {
+    if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
       plPlayerController = videoDetailController.plPlayerController;
       plPlayerController!
         ..addStatusLister(playerListener)
@@ -342,7 +352,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       }
     }
     plPlayerController = videoDetailController.plPlayerController;
-    videoDetailController.autoPlay = true;
+    ref.read(videoDetailProvider.notifier).setAutoPlay(true); // PHASE 6: Using Riverpod notifier
     if (videoDetailController.plPlayerController.preInitPlayer) {
       await plPlayerController!.play();
     } else {
@@ -479,7 +489,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     }
 
     () async {
-      if (videoDetailController.autoPlay) {
+      if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
         await videoDetailController.playerInit(
           autoplay: videoDetailController.playerStatus?.isPlaying ?? false,
         );
@@ -1143,7 +1153,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         introController: introController,
         onSendDanmaku: videoDetailController.showShootDanmakuSheet,
         canPlay: () {
-          if (videoDetailController.autoPlay) {
+          if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
             return true;
           }
           handlePlay();
