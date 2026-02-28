@@ -564,9 +564,12 @@ abstract final class PageUtils {
       'heroTag': Utils.makeHeroTag(cid),
       ...?extraArguments,
     };
-    // Use GetX navigation for video pages since controllers depend on Get.arguments
-    // TODO: Migrate to go_router after fully migrating to Riverpod
-    toDupNamed('/videoV', arguments: arguments, off: off);
+    // Use go_router navigation
+    if (off) {
+      replaceNamed(AppRoutes.video, extra: arguments);
+    } else {
+      pushNamed(AppRoutes.video, extra: arguments);
+    }
     return Future.value();
   }
 

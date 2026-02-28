@@ -55,6 +55,7 @@ import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:auto_orientation/auto_orientation.dart';
@@ -84,7 +85,7 @@ class VideoDetailPageV extends ConsumerStatefulWidget {
 
 class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     with TickerProviderStateMixin, RouteAware, WidgetsBindingObserver {
-  final heroTag = Get.arguments['heroTag'];
+  late final String heroTag;
 
   late final VideoDetailController videoDetailController;
   late final VideoReplyController _videoReplyController;
@@ -167,17 +168,19 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   void initState() {
     super.initState();
 
+    // Merge parameters: prioritize widget.args (go_router), fallback to Get.arguments (compatibility)
+    final args = widget.args ?? Get.arguments as Map<String, dynamic>? ?? {};
+
     // PHASE 7: Initialize Riverpod provider with route arguments
-    ref.read(videoDetailProvider.notifier).setArgs(
-      Get.arguments as Map<String, dynamic>,
-      isInit: true,
-    );
+    ref.read(videoDetailProvider.notifier).setArgs(args, isInit: true);
+
+    heroTag = args['heroTag'] ?? Utils.makeHeroTag(args['cid']);
 
     // PHASE 11 FIX: Read state directly in initState (cannot use ref.watch())
     final state = ref.read(videoDetailProvider);
 
     PlPlayerController.setPlayCallBack(playCallBack);
-    videoDetailController = Get.put(VideoDetailController(), tag: heroTag);
+    videoDetailController = Get.put(VideoDetailController(args: args), tag: heroTag);
 
     if (state.showReply) { // PHASE 11: Direct state access in initState
       _videoReplyController = Get.put(

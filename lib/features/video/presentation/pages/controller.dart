@@ -181,6 +181,12 @@ class VideoDetailController extends GetxController
   late double maxVideoHeight;
   late double videoHeight;
 
+  /// Constructor: Accept route arguments
+  VideoDetailController({required Map<String, dynamic> args}) {
+    this.args = args;
+    heroTag = args['heroTag'] ?? Utils.makeHeroTag(args['cid']);
+  }
+
   void animToTop() {
     final outerController = scrollKey.currentState!.outerController;
     if (outerController.hasClients) {
@@ -307,7 +313,7 @@ class VideoDetailController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    args = Get.arguments;
+    // args is already set in constructor
     videoType = args['videoType'];
     if (videoType == VideoType.pgc) {
       if (!isLoginVideo) {
@@ -323,7 +329,7 @@ class VideoDetailController extends GetxController
     epId = args['epId'];
     seasonId = args['seasonId'];
     pgcType = args['pgcType'];
-    heroTag = args['heroTag'];
+    // heroTag is already set in constructor
     cover = RxString(args['cover'] ?? '');
 
     sourceType = args['sourceType'] ?? SourceType.normal;
