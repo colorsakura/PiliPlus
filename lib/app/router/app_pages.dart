@@ -84,7 +84,13 @@ class Routes {
     //
     GetPage(name: '/fav', page: () => const FavPage()),
     //
-    GetPage(name: '/favDetail', page: () => const FavDetailPage()),
+    GetPage(
+      name: '/favDetail',
+      page: () => FavDetailPage(
+        mediaId: Get.parameters['mediaId'] ?? '',
+        heroTag: Get.parameters['heroTag'],
+      ),
+    ),
     // 稍后再看
     GetPage(name: '/later', page: () => const LaterPage()),
     // 历史记录

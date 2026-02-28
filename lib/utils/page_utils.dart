@@ -195,8 +195,8 @@ abstract final class PageUtils {
   }
 
   static void reportVideo(int aid) {
-    toDupNamed(
-      '/webview',
+    pushNamed(
+      AppRoutes.webview,
       parameters: {'url': 'https://www.bilibili.com/appeal/?avid=$aid'},
     );
   }
@@ -367,8 +367,8 @@ abstract final class PageUtils {
           final String? url = medialist.jumpUrl;
           if (url != null) {
             if (url.contains('medialist/detail/ml')) {
-              PageUtils.toDupNamed(
-                '/favDetail',
+              pushNamed(
+                AppRoutes.favDetail,
                 parameters: {
                   'heroTag': '${medialist.cover}',
                   'mediaId': '${medialist.id}',

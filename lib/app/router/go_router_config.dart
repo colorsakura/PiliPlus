@@ -149,9 +149,16 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.favDetail,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: FavDetailPage(),
-        ),
+        pageBuilder: (context, state) {
+          final mediaId = state.uri.queryParameters['mediaId'] ?? '';
+          final heroTag = state.uri.queryParameters['heroTag'];
+          return MaterialPage(
+            child: FavDetailPage(
+              mediaId: mediaId,
+              heroTag: heroTag,
+            ),
+          );
+        },
       ),
 
       GoRoute(

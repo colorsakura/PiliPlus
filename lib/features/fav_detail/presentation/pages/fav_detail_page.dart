@@ -21,7 +21,14 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class FavDetailPage extends StatefulWidget {
-  const FavDetailPage({super.key});
+  const FavDetailPage({
+    super.key,
+    required this.mediaId,
+    this.heroTag,
+  });
+
+  final String mediaId;
+  final String? heroTag;
 
   @override
   State<FavDetailPage> createState() => _FavDetailPageState();
@@ -34,7 +41,11 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
   @override
   void initState() {
     super.initState();
-    mediaId = Get.parameters['mediaId']!;
+    // Use widget.mediaId (go_router) or fallback to Get.parameters (compatibility)
+    final mediaIdParam = widget.mediaId.isEmpty
+        ? (Get.parameters['mediaId'] ?? '')
+        : widget.mediaId;
+    mediaId = mediaIdParam;
     _favDetailController = Get.put(
       FavDetailController(),
       tag: Utils.makeHeroTag(mediaId),

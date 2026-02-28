@@ -76,6 +76,15 @@ mixin BaseFavController
 class FavDetailController
     extends MultiSelectController<FavDetailData, FavDetailItemModel>
     with BaseFavController {
+  FavDetailController({String? mediaId, String? heroTag}) {
+    if (mediaId != null) {
+      this.mediaId = int.parse(mediaId);
+      this.heroTag = heroTag ?? '';
+      _initialized = true;
+    }
+  }
+
+  bool _initialized = false;
   @override
   late int mediaId;
   late String heroTag;
@@ -101,8 +110,11 @@ class FavDetailController
   void onInit() {
     super.onInit();
 
-    mediaId = int.parse(Get.parameters['mediaId']!);
-    heroTag = Get.parameters['heroTag']!;
+    // Fallback to Get.parameters if not provided via constructor
+    if (!_initialized) {
+      mediaId = int.parse(Get.parameters['mediaId']!);
+      heroTag = Get.parameters['heroTag']!;
+    }
 
     queryData();
   }
