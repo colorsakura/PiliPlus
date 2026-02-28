@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:PiliPlus/app/router/go_router_config.dart';
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/home_live/presentation/pages/live_page.dart';
 import 'package:PiliPlus/features/home_zone/home_zone.dart';
@@ -205,7 +206,7 @@ abstract final class PiliScheme {
               );
               return true;
             }
-            PageUtils.toDupNamed('/search');
+            PageUtils.pushNamed(AppRoutes.search);
             return true;
           case 'article':
             // bilibili://article/40679479?jump_opus=1&jump_opus_type=1&opus_type=article&h5awaken=random
@@ -345,7 +346,7 @@ abstract final class PiliScheme {
             }
             return false;
           case 'history':
-            PageUtils.toDupNamed('/history');
+            PageUtils.pushNamed(AppRoutes.history);
             return true;
           case 'main':
             if (path.startsWith('/favorite')) {
@@ -358,7 +359,7 @@ abstract final class PiliScheme {
                   if (kDebugMode) debugPrint('favorite jump: $e');
                 }
               }
-              PageUtils.toDupNamed('/fav', arguments: index);
+              PageUtils.pushNamed(AppRoutes.fav, extra: {'index': index});
               return true;
             }
             return false;
@@ -391,7 +392,7 @@ abstract final class PiliScheme {
             }
             return true;
           case 'login':
-            PageUtils.toDupNamed('/loginPage');
+            PageUtils.pushNamed(AppRoutes.loginPage);
             return true;
           case 'music':
             if (path.startsWith('/playlist/')) {

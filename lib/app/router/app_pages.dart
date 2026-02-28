@@ -82,7 +82,12 @@ class Routes {
     // 设置
     GetPage(name: '/setting', page: () => const SettingPage()),
     //
-    GetPage(name: '/fav', page: () => const FavPage()),
+    GetPage(
+      name: '/fav',
+      page: () => FavPage(
+        initialIndex: Get.arguments is int ? Get.arguments as int : null,
+      ),
+    ),
     //
     GetPage(
       name: '/favDetail',

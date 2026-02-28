@@ -145,7 +145,15 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.fav,
-        pageBuilder: (context, state) => const MaterialPage(child: FavPage()),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final indexStr = state.uri.queryParameters['index'];
+          final initialIndex = extra?['index'] as int? ??
+              (indexStr != null ? int.tryParse(indexStr) : null);
+          return MaterialPage(
+            child: FavPage(initialIndex: initialIndex),
+          );
+        },
       ),
 
       GoRoute(
