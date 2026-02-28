@@ -206,7 +206,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
   // 获取视频资源，初始化播放器
   Future<void> videoSourceInit() async {
-    videoDetailController.queryVideoUrl();
+    ref.read(videoDetailProvider.notifier).queryVideoUrl(); // PHASE 7: Using Riverpod notifier
     if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
       plPlayerController = videoDetailController.plPlayerController;
       plPlayerController!
@@ -217,7 +217,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   }
 
   void positionListener(Duration position) {
-    videoDetailController.playedTime = position;
+    ref.read(videoDetailProvider.notifier).updatePlayedTime(position); // PHASE 7: Using Riverpod notifier
   }
 
   @override
@@ -349,7 +349,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         if (kDebugMode) {
           debugPrint('handlePlay: videoUrl/audioUrl not initialized');
         }
-        videoDetailController.queryVideoUrl();
+        ref.read(videoDetailProvider.notifier).queryVideoUrl(); // PHASE 7: Using Riverpod notifier
         return;
       }
     }
@@ -358,7 +358,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     if (videoDetailController.plPlayerController.preInitPlayer) {
       await plPlayerController!.play();
     } else {
-      await videoDetailController.playerInit(autoplay: true);
+      await ref.read(videoDetailProvider.notifier).playerInit(autoplay: true); // PHASE 7: Using Riverpod notifier
     }
     if (!mounted || !isShowing) return;
     plPlayerController!
@@ -401,7 +401,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     if (!videoDetailController.plPlayerController.isCloseAll) {
       videoPlayerServiceHandler?.onVideoDetailDispose(heroTag);
       if (plPlayerController != null) {
-        videoDetailController.makeHeartBeat();
+        ref.read(videoDetailProvider.notifier).makeHeartBeat(); // PHASE 7: Using Riverpod notifier
         plPlayerController!.dispose();
       } else {
         PlPlayerController.updatePlayCount();
@@ -429,7 +429,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       ScreenBrightnessPlatform.instance.resetApplicationScreenBrightness();
     }
 
-    videoDetailController.cancelBlockListener();
+    ref.read(videoDetailProvider.notifier).cancelBlockListener(); // PHASE 7: Using Riverpod notifier
 
     introController.cancelTimer();
 
@@ -437,7 +437,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       ..playerStatus = plPlayerController?.playerStatus.value
       ..brightness = plPlayerController?.brightness.value;
     if (plPlayerController != null) {
-      videoDetailController.makeHeartBeat();
+      ref.read(videoDetailProvider.notifier).makeHeartBeat(); // PHASE 7: Using Riverpod notifier
       plPlayerController!
         ..removeStatusLister(playerListener)
         ..removePositionListener(positionListener)
@@ -492,13 +492,13 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
     () async {
       if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
-        await videoDetailController.playerInit(
+        await ref.read(videoDetailProvider.notifier).playerInit( // PHASE 7: Using Riverpod notifier
           autoplay: videoDetailController.playerStatus?.isPlaying ?? false,
         );
       } else if (videoDetailController.plPlayerController.preInitPlayer &&
           !videoDetailController.isQuerying &&
           videoDetailController.videoState.value is! Error) {
-        await videoDetailController.playerInit();
+        await ref.read(videoDetailProvider.notifier).playerInit( // PHASE 7: Using Riverpod notifier);
       }
       if (!mounted || !isShowing) return;
       plPlayerController
@@ -2593,7 +2593,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
               if (kDebugMode) {
                 debugPrint('handlePlay: videoUrl/audioUrl not initialized');
               }
-              videoDetailController.queryVideoUrl();
+              ref.read(videoDetailProvider.notifier).queryVideoUrl(); // PHASE 7: Using Riverpod notifier
               return;
             }
           }
