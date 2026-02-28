@@ -114,6 +114,9 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   int get seasonIndex => videoState.seasonIndex; // PHASE 7: Added for state access (non-Rx)
   double get minVideoHeight => videoState.minVideoHeight; // PHASE 7: Added for state access
   double get maxVideoHeight => videoState.maxVideoHeight; // PHASE 7: Added for state access
+  bool get isPlayAll => videoState.args['isPlayAll'] == true; // PHASE 7: From args
+  bool get continuePlayingPart => videoState.args['isContinuePlaying'] == true; // PHASE 7: From args
+  bool get showRelatedVideo => videoState.args['showRelatedVideo'] == true; // PHASE 7: From args
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -1362,7 +1365,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         manualPlayerWidget,
 
         if (videoDetailController.plPlayerController.enableBlock ||
-            videoDetailController.continuePlayingPart)
+            continuePlayingPart) // PHASE 7: Using Riverpod state
           Positioned(
             left: 16,
             bottom: isFullScreen ? max(75, maxHeight * 0.25) : 75,
@@ -1483,7 +1486,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 isPortrait: isPortrait,
                 isHorizontal: isHorizontal ?? width! / height! >= kScreenRatio,
               ),
-              if (needRelated && videoDetailController.showRelatedVideo) ...[
+              if (needRelated && showRelatedVideo) ...[ // PHASE 7: Using Riverpod state
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(top: StyleString.safeSpace),
@@ -1529,7 +1532,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         return child;
       },
     );
-    if (videoDetailController.isPlayAll) {
+    if (isPlayAll) { // PHASE 7: Using Riverpod state
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -1750,7 +1753,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   }
 
   void onReversePlay({required bool isSeason}) {
-    if (isSeason && videoDetailController.isPlayAll) {
+    if (isSeason && isPlayAll) { // PHASE 7: Using Riverpod state
       SmartDialog.showToast('当前为播放全部，合集不支持倒序');
       return;
     }
