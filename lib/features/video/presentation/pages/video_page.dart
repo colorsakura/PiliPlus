@@ -899,7 +899,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     }
     final introHeight = maxHeight - height - padding.top;
     final showIntro =
-        isUgc && videoDetailController.showRelatedVideo; // PHASE 6: Using Riverpod state
+        isUgc && showRelatedVideo; // PHASE 8: Using Riverpod state getter
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1525,7 +1525,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             SliverToBoxAdapter(
               child: SizedBox(
                 height:
-                    (videoDetailController.isPlayAll && !isPortrait
+                    (isPlayAll && !isPortrait // PHASE 8: Using Riverpod state getter
                         ? 80
                         : StyleString.safeSpace) +
                     padding.bottom,
