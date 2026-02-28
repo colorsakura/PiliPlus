@@ -110,7 +110,7 @@ class _FavPanelState extends State<FavPanel> {
           title: const Text('添加到收藏夹'),
           actions: [
             TextButton.icon(
-              onPressed: () => PageUtils.toDupNamed('/createFav')?.then((data) {
+              onPressed: () => PageUtils.pushNamed(AppRoutes.createFav).then((data) {
                 if (data != null) {
                   widget.ctr.favFolderData
                     ..value.list?.insert(1, data as FavFolderInfo)

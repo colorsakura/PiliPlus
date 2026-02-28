@@ -323,7 +323,7 @@ List<SettingsModel> get styleSettings => [
   ),
   if (Platform.isAndroid)
     NormalModel(
-      onTap: (context, setState) => PageUtils.toDupNamed('/displayModeSetting'),
+      onTap: (context, setState) => PageUtils.pushNamed(AppRoutes.displayModeSetting),
       title: '屏幕帧率',
       leading: const Icon(Icons.autofps_select_outlined),
     ),

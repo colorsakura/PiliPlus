@@ -441,7 +441,7 @@ class _MediaPageState extends CommonPageState<MinePage>
           color: theme.dividerColor.withValues(alpha: 0.1),
         ),
         ListTile(
-          onTap: () => PageUtils.toDupNamed('/fav')?.whenComplete(
+          onTap: () => PageUtils.pushNamed(AppRoutes.fav).whenComplete(
             () => Future.delayed(
               const Duration(milliseconds: 150),
               controller.onRefresh,
@@ -524,7 +524,7 @@ class _MediaPageState extends CommonPageState<MinePage>
                             ),
                           ),
                         ),
-                        onPressed: () => PageUtils.toDupNamed('/fav')?.whenComplete(
+                        onPressed: () => PageUtils.pushNamed(AppRoutes.fav).whenComplete(
                           () => Future.delayed(
                             const Duration(milliseconds: 150),
                             controller.onRefresh,

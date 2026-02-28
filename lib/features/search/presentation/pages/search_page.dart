@@ -212,7 +212,7 @@ class _SearchPageState extends State<SearchPage> {
                           SizedBox(
                             height: 34,
                             child: TextButton(
-                              onPressed: () => PageUtils.toDupNamed('/searchTrending'),
+                              onPressed: () => PageUtils.pushNamed(AppRoutes.searchTrending),
                               child: Row(
                                 children: [
                                   Text(

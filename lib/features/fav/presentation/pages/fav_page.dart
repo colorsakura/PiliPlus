@@ -66,7 +66,7 @@ class _FavPageState extends State<FavPage> with SingleTickerProviderStateMixin {
           Obx(
             () => _showVideoFavMenu.value
                 ? IconButton(
-                    onPressed: () => PageUtils.toDupNamed('/createFav')?.then(
+                    onPressed: () => PageUtils.pushNamed(AppRoutes.createFav).then(
                       (data) {
                         if (data != null) {
                           final list =

@@ -744,7 +744,7 @@ class LoginPageController extends GetxController
   static Future<void>? switchAccountDialog(BuildContext context) {
     if (Accounts.account.isEmpty) {
       SmartDialog.showToast('请先登录');
-      return PageUtils.toDupNamed('/loginPage');
+      return PageUtils.pushNamed(AppRoutes.loginPage);
     }
     final selectAccount = List.of(Accounts.accountMode);
     final options = {
