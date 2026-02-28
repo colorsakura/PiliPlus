@@ -106,6 +106,10 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get setSystemBrightness => videoState.setSystemBrightness; // PHASE 7: Added for state access
   double get videoHeight => videoState.videoHeight; // PHASE 7: Added for state access
   bool get isVerticalState => videoState.isVertical; // PHASE 7: Non-Rx version from state
+  bool get isExpanding => videoState.isExpanding; // PHASE 7: Added for state access
+  bool get isCollapsing => videoState.isCollapsing; // PHASE 7: Added for state access
+  bool get showVideoSheet => videoState.showVideoSheet; // PHASE 7: Added for state access
+  PlayerStatus? get playerStatus => videoState.playerStatus; // PHASE 7: Added for state access
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -269,7 +273,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     try {
       if (videoDetailController.scrollCtr.hasClients) {
         if (isPlaying) {
-          if (!videoDetailController.isExpanding &&
+          if (!isExpanding && // PHASE 7: Using Riverpod state
               videoDetailController.scrollCtr.offset != 0 &&
               !videoDetailController.animationController.isAnimating) {
             ref.read(videoDetailProvider.notifier).setExpanding(true); // PHASE 7: Using Riverpod notifier
@@ -502,7 +506,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     () async {
       if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
         await ref.read(videoDetailProvider.notifier).playerInit( // PHASE 7: Using Riverpod notifier
-          autoplay: videoDetailController.playerStatus?.isPlaying ?? false,
+          autoplay: playerStatus?.isPlaying ?? false, // PHASE 7: Using Riverpod state
         );
       } else if (videoDetailController.plPlayerController.preInitPlayer &&
           !videoDetailController.isQuerying &&
@@ -558,14 +562,14 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   late double animHeight;
 
   void cal() {
-    if (videoDetailController.isExpanding) {
+    if (isExpanding) { // PHASE 7: Using Riverpod state
       animHeight = clampDouble(
         videoHeight * // PHASE 7: Using Riverpod state
             videoDetailController.animationController.value,
         kToolbarHeight,
         videoDetailController.videoHeight,
       );
-    } else if (videoDetailController.isCollapsing) {
+    } else if (isCollapsing) { // PHASE 7: Using Riverpod state
       animHeight = clampDouble(
         videoDetailController.maxVideoHeight -
             (videoDetailController.maxVideoHeight -
@@ -640,21 +644,21 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             pinnedHeaderSliverHeightBuilder: () {
               double pinnedHeight = this.isFullScreen || !isPortrait
                   ? maxHeight - padding.top
-                  : videoDetailController.isExpanding ||
-                        videoDetailController.isCollapsing
+                  : isExpanding || // PHASE 7: Using Riverpod state
+                        isCollapsing // PHASE 7: Using Riverpod state
                   ? animHeight
-                  : videoDetailController.isCollapsing ||
+                  : isCollapsing || // PHASE 7: Using Riverpod state
                         (plPlayerController?.playerStatus.isPlaying ?? false)
                   ? videoDetailController.minVideoHeight
                   : kToolbarHeight;
-              if (videoDetailController.isExpanding &&
+              if (isExpanding && // PHASE 7: Using Riverpod state
                   videoDetailController.animationController.value == 1) {
                 ref.read(videoDetailProvider.notifier).setExpanding(false); // PHASE 7: Using Riverpod notifier
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   videoDetailController.scrollRatio.value = 0;
                   refreshPage();
                 });
-              } else if (videoDetailController.isCollapsing &&
+              } else if (isCollapsing && // PHASE 7: Using Riverpod state
                   videoDetailController.animationController.value == 1) {
                 ref.read(videoDetailProvider.notifier).setCollapsing(false); // PHASE 7: Using Riverpod notifier
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -666,8 +670,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               final height = isFullScreen || !isPortrait
                   ? maxHeight - padding.top
-                  : videoDetailController.isExpanding ||
-                        videoDetailController.isCollapsing
+                  : isExpanding || // PHASE 7: Using Riverpod state
+                        isCollapsing // PHASE 7: Using Riverpod state
                   ? animHeight
                   : videoHeight; // PHASE 7: Using Riverpod state
               return [
@@ -1721,7 +1725,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         onReversePlay(isSeason: season != null);
       },
     );
-    if (isFullScreen || videoDetailController.showVideoSheet) {
+    if (isFullScreen || showVideoSheet) { // PHASE 7: Using Riverpod state
       PageUtils.showVideoBottomSheet(
         context,
         isFullScreen: () => isFullScreen,
@@ -1801,7 +1805,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   }
 
   void showViewPoints() {
-    if (isFullScreen || videoDetailController.showVideoSheet) {
+    if (isFullScreen || showVideoSheet) { // PHASE 7: Using Riverpod state
       PageUtils.showVideoBottomSheet(
         context,
         isFullScreen: () => isFullScreen,
@@ -2701,7 +2705,7 @@ class _SteinEdgeInfoWidget extends ConsumerWidget {
                         item,
                         isStein: true,
                       );
-                      videoDetailController.getSteinEdgeInfo(
+                      ref.read(videoDetailProvider.notifier).getSteinEdgeInfo( // PHASE 7: Using Riverpod notifier
                         item.id,
                       );
                     },
