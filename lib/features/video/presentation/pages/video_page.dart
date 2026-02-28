@@ -571,7 +571,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         videoHeight * // PHASE 7: Using Riverpod state
             videoDetailController.animationController.value,
         kToolbarHeight,
-        videoDetailController.videoHeight,
+        videoHeight, // PHASE 7: Using Riverpod state
       );
     } else if (isCollapsing) { // PHASE 7: Using Riverpod state
       animHeight = clampDouble(
@@ -1157,7 +1157,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     Widget child;
     if (videoDetailController.plPlayerController.isPipMode) {
       child = plPlayer(width: maxWidth, height: maxHeight, isPipMode: true);
-    } else if (!videoDetailController.horizontalScreen) {
+    } else if (!horizontalScreen) { // PHASE 7: Using Riverpod state
       child = childWhenDisabled;
     } else if (maxWidth / maxHeight >= kScreenRatio) {
       child = childWhenDisabledLandscape;
@@ -1196,7 +1196,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     List<String> tabs = [
       if (showIntro)
         isFileSource ? '离线视频' : introText ?? '简介', // PHASE 6: Using Riverpod state
-      if (videoDetailController.showReply) '评论',
+      if (showReply) '评论', // PHASE 7: Using Riverpod state
       if (_shouldShowSeasonPanel) '播放列表',
     ];
     if (videoDetailController.tabCtr.length != tabs.length) {
