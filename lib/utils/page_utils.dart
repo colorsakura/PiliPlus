@@ -810,25 +810,81 @@ abstract final class PageUtils {
     bool preventDuplicates = false,
     int? id,
   }) {
-    // Use GetX navigation for compatibility with pages that use Get.arguments
-    // Note: Video page (/videoV) has been migrated to go_router (Phase 13)
-    // TODO: Migrate remaining pages to go_router navigation
+    // Migrated to use go_router instead of GetX
+    // Map old GetX routes to go_router routes
+    final routeMap = {
+      '/videoV': AppRoutes.video,
+      '/webview': AppRoutes.webview,
+      '/search': AppRoutes.search,
+      '/searchResult': AppRoutes.searchResult,
+      '/searchTrending': AppRoutes.searchTrending,
+      '/setting': AppRoutes.setting,
+      '/privacySetting': AppRoutes.privacySetting,
+      '/recommendSetting': AppRoutes.recommendSetting,
+      '/videoSetting': AppRoutes.videoSetting,
+      '/playSetting': AppRoutes.playSetting,
+      '/styleSetting': AppRoutes.styleSetting,
+      '/extraSetting': AppRoutes.extraSetting,
+      '/blackListPage': AppRoutes.blackListPage,
+      '/colorSetting': AppRoutes.colorSetting,
+      '/displayModeSetting': AppRoutes.displayModeSetting,
+      '/playSpeedSet': AppRoutes.playSpeedSet,
+      '/sponsorBlock': AppRoutes.sponsorBlock,
+      '/spaceSetting': AppRoutes.spaceSetting,
+      '/settingsSearch': AppRoutes.settingsSearch,
+      '/about': AppRoutes.about,
+      '/articlePage': AppRoutes.articlePage,
+      '/articleList': AppRoutes.articleList,
+      '/barSetting': AppRoutes.barSetting,
+      '/createFav': AppRoutes.createFav,
+      '/download': AppRoutes.download,
+      '/dlna': AppRoutes.dlna,
+      '/dynTopic': AppRoutes.dynTopic,
+      '/dynTopicRcmd': AppRoutes.dynTopicRcmd,
+      '/dynamicDetail': AppRoutes.dynamicDetail,
+      '/dynamics': AppRoutes.dynamics,
+      '/fav': AppRoutes.fav,
+      '/favDetail': AppRoutes.favDetail,
+      '/favSearch': AppRoutes.favSearch,
+      '/fan': AppRoutes.fan,
+      '/follow': AppRoutes.follow,
+      '/followed': AppRoutes.followed,
+      '/followSearch': AppRoutes.followSearch,
+      '/sameFollowing': AppRoutes.sameFollowing,
+      '/history': AppRoutes.history,
+      '/historySearch': AppRoutes.historySearch,
+      '/home': AppRoutes.home,
+      '/hot': AppRoutes.hot,
+      '/later': AppRoutes.later,
+      '/liveDmBlockPage': AppRoutes.liveDmBlockPage,
+      '/liveRoom': AppRoutes.liveRoom,
+      '/loginPage': AppRoutes.loginPage,
+      '/matchInfo': AppRoutes.matchInfo,
+      '/member': AppRoutes.member,
+      '/memberSearch': AppRoutes.memberSearch,
+      '/memberDynamics': AppRoutes.memberDynamics,
+      '/upowerRank': AppRoutes.upowerRank,
+      '/musicDetail': AppRoutes.musicDetail,
+      '/popularSeries': AppRoutes.popularSeries,
+      '/popularPrecious': AppRoutes.popularPrecious,
+      '/replyMe': AppRoutes.replyMe,
+      '/atMe': AppRoutes.atMe,
+      '/likeMe': AppRoutes.likeMe,
+      '/sysMsg': AppRoutes.sysMsg,
+      '/whisper': AppRoutes.whisper,
+      '/whisperDetail': AppRoutes.whisperDetail,
+      '/audio': AppRoutes.audio,
+      '/mainReply': AppRoutes.mainReply,
+      '/contact': AppRoutes.search,  // Contact uses search page
+    };
+
+    final targetRoute = routeMap[page] ?? page;
+
+    // Use go_router for navigation
     if (off) {
-      return Get.offNamed<T>(
-        page,
-        arguments: arguments,
-        parameters: parameters,
-        preventDuplicates: preventDuplicates,
-        id: id,
-      ) as Future<T?>;
+      return replaceNamed(targetRoute, extra: arguments, parameters: parameters) as Future<T?>;
     } else {
-      return Get.toNamed<T>(
-        page,
-        arguments: arguments,
-        parameters: parameters,
-        preventDuplicates: preventDuplicates,
-        id: id,
-      ) as Future<T?>;
+      return pushNamed(targetRoute, extra: arguments, parameters: parameters) as Future<T?>;
     }
   }
 

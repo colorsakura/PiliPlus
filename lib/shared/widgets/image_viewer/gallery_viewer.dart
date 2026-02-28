@@ -226,7 +226,7 @@ class _GalleryViewerState extends State<GalleryViewer>
 
     if (!_animateController.isDismissed) {
       if (_animateController.value > 0.2) {
-        Get.back();
+        PageUtils.pop();
       } else {
         _animateController.reverse();
       }
@@ -497,7 +497,7 @@ class _GalleryViewerState extends State<GalleryViewer>
             if (PlatformUtils.isMobile)
               ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   ImageUtils.onShareImg(item.url);
                 },
                 dense: true,
@@ -505,7 +505,7 @@ class _GalleryViewerState extends State<GalleryViewer>
               ),
             ListTile(
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 Utils.copyText(item.url);
               },
               dense: true,
@@ -513,7 +513,7 @@ class _GalleryViewerState extends State<GalleryViewer>
             ),
             ListTile(
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 ImageUtils.downloadImg([item.url]);
               },
               dense: true,
@@ -522,7 +522,7 @@ class _GalleryViewerState extends State<GalleryViewer>
             if (PlatformUtils.isDesktop)
               ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   PageUtils.launchURL(item.url);
                 },
                 dense: true,
@@ -531,7 +531,7 @@ class _GalleryViewerState extends State<GalleryViewer>
             else if (widget.sources.length > 1)
               ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   ImageUtils.downloadImg(
                     widget.sources.map((item) => item.url).toList(),
                   );
@@ -542,7 +542,7 @@ class _GalleryViewerState extends State<GalleryViewer>
             if (item.sourceType == SourceType.livePhoto)
               ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   ImageUtils.downloadLivePhoto(
                     url: item.url,
                     liveUrl: item.liveUrl!,

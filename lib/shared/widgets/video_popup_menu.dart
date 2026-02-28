@@ -152,7 +152,7 @@ class VideoPopupMenu extends StatelessWidget {
                           return SearchText(
                             text: r?.name ?? f?.name ?? '未知',
                             onTap: (_) async {
-                              Get.back();
+                              PageUtils.pop();
                               SmartDialog.showLoading(msg: '正在提交');
                               final res = await VideoHttp.feedDislike(
                                 reasonId: r?.id,
@@ -224,7 +224,7 @@ class VideoPopupMenu extends StatelessWidget {
                                                 ? "成功"
                                                 : res.toString(),
                                           );
-                                          Get.back();
+                                          PageUtils.pop();
                                         },
                                         style: FilledButton.styleFrom(
                                           visualDensity: VisualDensity.compact,
@@ -254,7 +254,7 @@ class VideoPopupMenu extends StatelessWidget {
                                     children: [
                                       FilledButton.tonal(
                                         onPressed: () async {
-                                          Get.back();
+                                          PageUtils.pop();
                                           SmartDialog.showLoading(
                                             msg: '正在提交',
                                           );
@@ -278,7 +278,7 @@ class VideoPopupMenu extends StatelessWidget {
                                       ),
                                       FilledButton.tonal(
                                         onPressed: () async {
-                                          Get.back();
+                                          PageUtils.pop();
                                           SmartDialog.showLoading(
                                             msg: '正在提交',
                                           );
@@ -323,7 +323,7 @@ class VideoPopupMenu extends StatelessWidget {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: Get.back,
+                              onPressed: () => PageUtils.pop(),
                               child: Text(
                                 '点错了',
                                 style: TextStyle(
@@ -335,7 +335,7 @@ class VideoPopupMenu extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () async {
-                                Get.back();
+                                PageUtils.pop();
                                 final res = await VideoHttp.relationMod(
                                   mid: videoItem.owner.mid!,
                                   act: 5,
