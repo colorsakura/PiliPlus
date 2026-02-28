@@ -110,6 +110,10 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get isCollapsing => videoState.isCollapsing; // PHASE 7: Added for state access
   bool get showVideoSheet => videoState.showVideoSheet; // PHASE 7: Added for state access
   PlayerStatus? get playerStatus => videoState.playerStatus; // PHASE 7: Added for state access
+  String get cover => videoState.cover; // PHASE 7: Added for state access (non-Rx)
+  int get seasonIndex => videoState.seasonIndex; // PHASE 7: Added for state access (non-Rx)
+  double get minVideoHeight => videoState.minVideoHeight; // PHASE 7: Added for state access
+  double get maxVideoHeight => videoState.maxVideoHeight; // PHASE 7: Added for state access
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -571,12 +575,12 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       );
     } else if (isCollapsing) { // PHASE 7: Using Riverpod state
       animHeight = clampDouble(
-        videoDetailController.maxVideoHeight -
-            (videoDetailController.maxVideoHeight -
-                    videoDetailController.minVideoHeight) *
+        maxVideoHeight -
+            (maxVideoHeight -
+                    minVideoHeight) *
                 videoDetailController.animationController.value,
-        videoDetailController.minVideoHeight,
-        videoDetailController.maxVideoHeight,
+        minVideoHeight,
+        maxVideoHeight, // PHASE 7: Using Riverpod state
       );
     }
   }
@@ -649,13 +653,13 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                   ? animHeight
                   : isCollapsing || // PHASE 7: Using Riverpod state
                         (plPlayerController?.playerStatus.isPlaying ?? false)
-                  ? videoDetailController.minVideoHeight
+                  ? minVideoHeight // PHASE 7: Using Riverpod state
                   : kToolbarHeight;
               if (isExpanding && // PHASE 7: Using Riverpod state
                   videoDetailController.animationController.value == 1) {
                 ref.read(videoDetailProvider.notifier).setExpanding(false); // PHASE 7: Using Riverpod notifier
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  videoDetailController.scrollRatio.value = 0;
+                  ref.read(videoDetailProvider.notifier).setScrollRatio(0); // PHASE 7: Using Riverpod notifier
                   refreshPage();
                 });
               } else if (isCollapsing && // PHASE 7: Using Riverpod state
@@ -1089,10 +1093,10 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           onTap: () => videoDetailController.onDownload(this.context),
           child: const Text('缓存视频'),
         ),
-      if (videoDetailController.cover.value.isNotEmpty)
+      if (cover.isNotEmpty) // PHASE 7: Using Riverpod state (non-Rx)
         PopupMenuItem(
           onTap: () =>
-              ImageUtils.downloadImg([videoDetailController.cover.value]),
+              ImageUtils.downloadImg([cover]), // PHASE 7: Using Riverpod state (non-Rx)
           child: const Text('保存封面'),
         ),
       if (!isFileSource && isUgc) // PHASE 6: Using Riverpod state
@@ -1499,7 +1503,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
               PgcIntroPage(
                 key: videoIntroKey,
                 heroTag: heroTag,
-                cid: videoDetailController.cid.value,
+                cid: cid, // PHASE 7: Using Riverpod state (non-Rx)
                 showEpisodes: showEpisodes,
                 showIntroDetail: showIntroDetail,
                 maxWidth: width ?? maxWidth,
@@ -1697,7 +1701,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           : episodes is List<Part>
           ? EpisodeType.part
           : EpisodeType.pgc,
-      cover: videoDetailController.cover.value,
+      cover: cover, // PHASE 7: Using Riverpod state (non-Rx)
       enableSlide: enableSlide,
       initialTabIndex: index ?? 0,
       bvid: bvid!,
@@ -1712,7 +1716,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 .videoDetail
                 .value
                 .ugcSeason!
-                .sections![videoDetailController.seasonIndex.value]
+                .sections![seasonIndex] // PHASE 7: Using Riverpod state (non-Rx)
                 .isReversed
           : ugcIntroController.videoDetail.value.isPageReversed,
       isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
@@ -1775,7 +1779,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             .sections![videoDetailController.seasonIndex.value]
             .episodes!
             .first;
-        if (episode.cid != videoDetailController.cid.value) {
+        if (episode.cid != cid) { // PHASE 7: Using Riverpod state (non-Rx)
           ugcIntroController.onChangeEpisode(episode);
           videoDetailController.seasonCid = episode.cid;
         } else {
@@ -1795,7 +1799,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       } else {
         // switch to first episode
         final episode = videoDetail.pages!.first;
-        if (episode.cid != videoDetailController.cid.value) {
+        if (episode.cid != cid) { // PHASE 7: Using Riverpod state (non-Rx)
           ugcIntroController.onChangeEpisode(episode);
         } else {
           videoDetailController.cid.refresh();
