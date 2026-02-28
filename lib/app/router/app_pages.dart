@@ -130,7 +130,12 @@ class Routes {
     // 直播详情
     GetPage(name: '/liveRoom', page: () => const LiveRoomPage()),
     // 用户中心
-    GetPage(name: '/member', page: () => const MemberPage()),
+    GetPage(
+      name: '/member',
+      page: () => MemberPage(
+        mid: int.tryParse(Get.parameters['mid'] ?? ''),
+      ),
+    ),
     GetPage(name: '/memberSearch', page: () => const MemberSearchPageV2()),
     // 推荐流设置
     GetPage(name: '/recommendSetting', page: () => const RecommendSetting()),

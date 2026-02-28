@@ -30,7 +30,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class MemberPage extends ConsumerStatefulWidget {
-  const MemberPage({super.key});
+  const MemberPage({super.key, this.mid});
+
+  final int? mid;
 
   @override
   ConsumerState<MemberPage> createState() => _MemberPageState();
@@ -45,7 +47,10 @@ class _MemberPageState extends ConsumerState<MemberPage>
   @override
   void initState() {
     super.initState();
-    _mid = int.tryParse(Get.parameters['mid']!) ?? -1;
+    // Use widget.mid (go_router) or fallback to Get.parameters (compatibility)
+    final midParam = widget.mid ??
+        int.tryParse(Get.parameters['mid'] ?? '');
+    _mid = midParam ?? -1;
     _heroTag = Utils.makeHeroTag(_mid);
   }
 

@@ -241,9 +241,13 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.member,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: MemberPage(),
-        ),
+        pageBuilder: (context, state) {
+          final midStr = state.uri.queryParameters['mid'];
+          final mid = midStr != null ? int.tryParse(midStr) : null;
+          return MaterialPage(
+            child: MemberPage(mid: mid),
+          );
+        },
       ),
 
       GoRoute(

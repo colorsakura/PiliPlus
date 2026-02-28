@@ -125,7 +125,11 @@ abstract final class PiliScheme {
                 RequestUtils.showUserRealName(mid);
                 return true;
               }
-              PageUtils.toDupNamed('/member?mid=$mid', off: off);
+              if (off) {
+                PageUtils.replaceNamed(AppRoutes.member, parameters: {'mid': mid});
+              } else {
+                PageUtils.pushNamed(AppRoutes.member, parameters: {'mid': mid});
+              }
               return true;
             }
             return false;
@@ -518,7 +522,11 @@ abstract final class PiliScheme {
             FollowedPageV2.toFollowedPage(mid: mid);
             break;
           default:
-            PageUtils.toDupNamed('/member?mid=$mid', off: off);
+            if (off) {
+              PageUtils.replaceNamed(AppRoutes.member, parameters: {'mid': mid});
+            } else {
+              PageUtils.pushNamed(AppRoutes.member, parameters: {'mid': mid});
+            }
         }
       }
 
