@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/controller.dart' show MainController;
@@ -408,7 +409,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
             Icons.search_outlined,
             semanticLabel: '搜索',
           ),
-          onPressed: () => Get.toNamed('/search'),
+          onPressed: () => PageUtils.goNamed(AppRoutes.search),
         ),
         _buildMsgBadge(unreadMsg, msgBadgeMode),
         _buildUserAvatar(theme, accountService),
@@ -489,7 +490,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
           Icons.notifications_none,
           semanticLabel: '消息',
         ),
-        onPressed: () => Get.toNamed('/whisper'),
+        onPressed: () => PageUtils.goNamed(AppRoutes.whisper),
       ),
     );
   }
