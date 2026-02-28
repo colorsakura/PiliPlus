@@ -1,5 +1,4 @@
 import 'package:PiliPlus/app/router/go_router_config.dart';
-import 'package:PiliPlus/app/router/app_pages.dart';
 import 'package:PiliPlus/shared/widgets/back_detector.dart';
 import 'package:PiliPlus/shared/widgets/custom_toast.dart';
 import 'package:PiliPlus/shared/widgets/scroll_behavior.dart';
@@ -19,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class MyApp extends StatelessWidget {
@@ -35,17 +33,10 @@ class MyApp extends StatelessWidget {
       return;
     }
 
-    final route = Get.routing.route;
-    if (route is GetPageRoute) {
-      if (route.popDisposition == .doNotPop) {
-        route.onPopInvokedWithResult(false, null);
-        return;
-      }
-    }
-
-    final navigator = Get.key.currentState;
-    if (navigator?.canPop() ?? false) {
-      navigator!.pop();
+    // Use go_router for back navigation
+    final context = rootNavigatorKey.currentContext;
+    if (context != null && context.canPop()) {
+      context.pop();
     }
   }
 
@@ -54,7 +45,8 @@ class MyApp extends StatelessWidget {
     final dynamicColor = Pref.dynamicColor && _light != null && _dark != null;
     late final brandColor = colorThemeTypes[Pref.customColor].color;
     late final variant = Pref.schemeVariant;
-    return GetMaterialApp(
+
+    return MaterialApp.router(
       title: Constants.appName,
       theme: ThemeService.getThemeData(
         colorScheme: dynamicColor
@@ -76,29 +68,18 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       locale: const Locale("zh", "CN"),
-      fallbackLocale: const Locale("zh", "CN"),
       supportedLocales: const [Locale("zh", "CN"), Locale("en", "US")],
-      initialRoute: '/',
-      getPages: Routes.getPages,
-      defaultTransition: Pref.pageTransition,
+      routerConfig: goRouter(),
       builder: FlutterSmartDialog.init(
         toastBuilder: (msg) => CustomToast(msg: msg),
         loadingBuilder: (msg) => LoadingWidget(msg: msg),
         builder: _builder,
       ),
-      navigatorObservers: [
-        PageUtils.routeObserver,
-        FlutterSmartDialog.observer,
-      ],
       scrollBehavior: CustomScrollBehavior(
         PlatformUtils.isDesktop ? desktopDragDevices : mobileDragDevices,
       ),
     );
   }
-
-  // GoRouter instance for future migration
-  // Currently using GetMaterialApp for backward compatibility
-  static final GoRouter _router = goRouter();
 
   static Widget _builder(BuildContext context, Widget? child) {
     final uiScale = Pref.uiScale;
