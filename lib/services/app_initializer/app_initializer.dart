@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:PiliPlus/core/image_cache/persistent_cache_manager.dart';
 import 'package:PiliPlus/core/storage/database/database_manager.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -266,10 +265,6 @@ class AppInitializer {
     try {
       await DatabaseManager.init();
       AppLog.info('DatabaseManager initialized', name: 'AppInitializer');
-
-      // 初始化图片缓存
-      await PersistentCacheManager.init();
-      AppLog.info('Image cache initialized', name: 'AppInitializer');
     } catch (e) {
       AppLog.severe(
         'Database initialization failed: $e',

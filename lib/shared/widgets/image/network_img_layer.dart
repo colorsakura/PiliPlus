@@ -1,16 +1,16 @@
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/core/image_cache/persistent_image_cache_manager.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 /// 默认的图片请求头
 Map<String, String> get _defaultImageHeaders => const {
   'referer': 'https://www.bilibili.com',
-  'user-agent': 'Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2',
+  'user-agent':
+      'Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2',
 };
 
 class NetworkImgLayer extends StatelessWidget {
@@ -78,7 +78,7 @@ class NetworkImgLayer extends StatelessWidget {
     }
 
     // 只使用原始URL并转换为https，不添加任何后缀
-    final imageUrl = src == null ? null : src.http2https;
+    final imageUrl = src?.http2https;
 
     if (imageUrl == null) {
       return getPlaceHolder?.call() ??
@@ -98,7 +98,6 @@ class NetworkImgLayer extends StatelessWidget {
       filterQuality: FilterQuality.low,
       maxWidthDiskCache: isEmote ? 400 : (width * 1.5).toInt(),
       maxHeightDiskCache: isEmote ? 300 : (height * 1.5).toInt(),
-      cacheManager: persistentImageCacheManager,
       httpHeaders: _defaultImageHeaders,
       placeholder: (_, _) =>
           getPlaceHolder?.call() ??

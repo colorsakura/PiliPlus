@@ -55,9 +55,9 @@ class ImagePreloader {
       if (url.isEmpty) return false;
 
       // 使用 CachedNetworkImageProvider 预加载图片
-      final provider = CachedNetworkImageProvider(url);
-      // 预加载图片到缓存
-      await provider.resolve(const ImageConfiguration());
+      final provider = CachedNetworkImageProvider(url)
+        // 预加载图片到缓存
+        ..resolve(ImageConfiguration.empty);
 
       return true;
     } catch (e) {
