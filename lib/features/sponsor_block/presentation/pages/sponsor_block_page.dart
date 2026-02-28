@@ -118,7 +118,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                   onPressed: () {
                     try {
                       _blockLimit = double.parse(_textController.text);
-                      Get.back();
+                      PageUtils.pop();
                       setting.put(SettingBoxKey.blockLimit, _blockLimit);
                       (context as Element).markNeedsBuild();
                     } catch (e) {
@@ -189,7 +189,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Get.back();
+                      PageUtils.pop();
                       _userId = Digest(
                         List.generate(16, (_) => Utils.random.nextInt(256)),
                       ).toString();
@@ -210,7 +210,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                   TextButton(
                     onPressed: () {
                       if (key.currentState?.validate() == true) {
-                        Get.back();
+                        PageUtils.pop();
                         _userId = _textController.text;
                         setting.put(SettingBoxKey.blockUserID, _userId);
                         (context as Element).markNeedsBuild();
@@ -342,7 +342,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Get.back();
+                    PageUtils.pop();
                     _blockServer = HttpString.sponsorBlockBaseUrl;
                     setting.put(SettingBoxKey.blockServer, _blockServer);
                     Request.accountManager.blockServer = _blockServer;
@@ -361,7 +361,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.back();
+                    PageUtils.pop();
                     _blockServer = _textController.text;
                     setting.put(SettingBoxKey.blockServer, _blockServer);
                     Request.accountManager.blockServer = _blockServer;

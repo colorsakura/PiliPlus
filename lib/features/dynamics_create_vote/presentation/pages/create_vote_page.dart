@@ -15,6 +15,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 /// Page for creating or editing a vote for a dynamic post
 class CreateVotePage extends ConsumerWidget {
@@ -550,7 +551,7 @@ class _CreateVoteButton extends ConsumerWidget {
     final res = await controller.createVote();
 
     if (res case Success()) {
-      Get.back(result: controller.voteId);
+      PageUtils.pop(controller.voteId);
     } else {
       res.toast();
     }

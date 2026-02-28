@@ -317,7 +317,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 Utils.copyText(videoUrl);
               },
               trailing: playedTimePos.isNotEmpty
@@ -325,7 +325,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                       tooltip: '精确分享',
                       icon: const Icon(Icons.timer_outlined),
                       onPressed: () {
-                        Get.back();
+                        PageUtils.pop();
                         Utils.copyText('$videoUrl$playedTimePos');
                       },
                     )
@@ -338,7 +338,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 PageUtils.launchURL(videoUrl);
               },
             ),
@@ -350,7 +350,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   Utils.shareText(
                     '${videoDetail.title} '
                     'UP主: ${videoDetail.owner!.name!}'
@@ -365,7 +365,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -387,7 +387,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 try {
                   PageUtils.pmShare(
                     context,

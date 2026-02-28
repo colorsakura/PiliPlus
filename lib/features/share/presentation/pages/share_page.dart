@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class SharePanel extends StatefulWidget {
   const SharePanel({
@@ -265,7 +266,7 @@ class _SharePanelState extends State<SharePanel> {
     if (result case Success(:final data)) {
       final successCount = data.values.where((success) => success).length;
       if (successCount == data.length) {
-        Get.back();
+        PageUtils.pop();
         SmartDialog.showToast('分享成功');
       } else if (successCount == 0) {
         SmartDialog.showToast('分享失败');

@@ -16,6 +16,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 mixin BlockConfigMixin {
   late final pgcSkipType = Pref.pgcSkipType;
@@ -294,7 +295,7 @@ mixin BlockMixin on GetxController {
                 dense: true,
                 title: const Text('赞成票', style: TextStyle(fontSize: 14)),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   _doVote(segment.uuid, 1);
                 },
               ),
@@ -302,7 +303,7 @@ mixin BlockMixin on GetxController {
                 dense: true,
                 title: const Text('反对票', style: TextStyle(fontSize: 14)),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   _doVote(segment.uuid, 0);
                 },
               ),
@@ -310,7 +311,7 @@ mixin BlockMixin on GetxController {
                 dense: true,
                 title: const Text('更改类别', style: TextStyle(fontSize: 14)),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   _showCategoryDialog(segment);
                 },
               ),
@@ -346,7 +347,7 @@ mixin BlockMixin on GetxController {
                   (item) => ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      PageUtils.pop();
                       _dataSource
                           .voteOnSponsorTime(
                             uuid: segment.uuid,
@@ -403,7 +404,7 @@ mixin BlockMixin on GetxController {
                 .map(
                   (item) => ListTile(
                     onTap: () {
-                      Get.back();
+                      PageUtils.pop();
                       if (isBlock) {
                         _showVoteDialog(item);
                       }
@@ -452,7 +453,7 @@ mixin BlockMixin on GetxController {
                                   ? '跳至此片段'
                                   : '跳过此片段',
                               onPressed: () {
-                                Get.back();
+                                PageUtils.pop();
                                 onSkip(
                                   item,
                                   isSkip: item.skipType != SkipType.showOnly,

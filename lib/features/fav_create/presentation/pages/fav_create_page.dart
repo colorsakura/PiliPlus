@@ -16,6 +16,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class CreateFavPage extends StatefulWidget {
   const CreateFavPage({super.key});
@@ -90,7 +91,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
                 intro: _introController.text,
               ).then((res) {
                 if (res case Success(:final response)) {
-                  Get.back(result: response);
+                  PageUtils.pop(response);
                   SmartDialog.showToast('${_mediaId != null ? '编辑' : '创建'}成功');
                 } else {
                   res.toast();
@@ -201,7 +202,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
                                 ListTile(
                                   dense: true,
                                   onTap: () {
-                                    Get.back();
+                                    PageUtils.pop();
                                     _pickImg(context, theme);
                                   },
                                   title: const Text(
@@ -212,7 +213,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
                                 ListTile(
                                   dense: true,
                                   onTap: () {
-                                    Get.back();
+                                    PageUtils.pop();
                                     _cover = null;
                                     (context as Element).markNeedsBuild();
                                   },

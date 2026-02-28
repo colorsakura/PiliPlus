@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class PostPanel extends CommonSlidePage {
   const PostPanel({
@@ -127,7 +128,7 @@ class PostPanel extends CommonSlidePage {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => Get.back(result: initV),
+                        onPressed: () => PageUtils.pop(initV),
                         child: const Text('确定'),
                       ),
                     ],
@@ -302,7 +303,7 @@ class _PostPanelState extends State<PostPanel>
   }
 
   Future<void> _onPost() async {
-    Get.back();
+    PageUtils.pop();
     final dataSource = SponsorBlockRemoteDataSource();
     try {
       final response = await dataSource.postSkipSegments(
@@ -311,7 +312,7 @@ class _PostPanelState extends State<PostPanel>
         videoDuration: videoDuration,
         segments: list,
       );
-      Get.back();
+      PageUtils.pop();
       SmartDialog.showToast('提交成功');
       list.clear();
       videoDetailController.handleSBData(response);

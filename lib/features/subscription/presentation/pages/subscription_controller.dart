@@ -8,6 +8,7 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class SubController extends CommonListController<SubData, SubItemModel> {
   late final account = Accounts.main;
@@ -56,7 +57,7 @@ class SubController extends CommonListController<SubData, SubItemModel> {
               } else {
                 res.toast();
               }
-              Get.back();
+              PageUtils.pop();
             },
             child: const Text('确定'),
           ),

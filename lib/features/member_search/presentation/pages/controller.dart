@@ -4,6 +4,7 @@ import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class MemberSearchController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -43,7 +44,7 @@ class MemberSearchController extends GetxController
       hasData.value = false;
       focusNode.requestFocus();
     } else {
-      Get.back();
+      PageUtils.pop();
     }
   }
 

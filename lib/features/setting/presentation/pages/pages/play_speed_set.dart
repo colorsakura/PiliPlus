@@ -12,6 +12,7 @@ import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class PlaySpeedPage extends StatefulWidget {
   const PlaySpeedPage({super.key});
@@ -95,7 +96,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
                 if (speedList.contains(val)) {
                   SmartDialog.showToast('该倍速已存在');
                 } else {
-                  Get.back();
+                  PageUtils.pop();
                   speedList
                     ..add(val)
                     ..sort();
@@ -134,7 +135,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
                     ? false
                     : true,
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   menuAction(index, item.id);
                 },
                 minLeadingWidth: 0,

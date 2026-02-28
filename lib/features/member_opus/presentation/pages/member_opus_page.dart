@@ -1,5 +1,6 @@
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/member_opus/presentation/pages/member_opus_controller.dart';
 import 'package:PiliPlus/features/member_opus/presentation/widgets/space_opus_item.dart';
@@ -89,7 +90,7 @@ class _MemberOpusState extends State<MemberOpus>
                               if (e == _controller.type.value) {
                                 return;
                               }
-                              Get.back();
+                              PageUtils.pop();
                               _controller
                                 ..type.value = e
                                 ..onReload();

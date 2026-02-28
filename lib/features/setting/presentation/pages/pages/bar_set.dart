@@ -4,6 +4,7 @@ import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class BarSetPage extends StatefulWidget {
   const BarSetPage({super.key});
@@ -46,7 +47,7 @@ class _BarSetPageState extends State<BarSetPage> {
   }
 
   void onReset() {
-    Get.back();
+    PageUtils.pop();
     GStorage.setting.delete(key);
     SmartDialog.showToast('重置成功，下次启动时生效');
   }

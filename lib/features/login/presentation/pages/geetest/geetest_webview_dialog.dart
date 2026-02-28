@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class GeetestWebviewDialog extends StatelessWidget {
   const GeetestWebviewDialog(this.gt, this.challenge, {super.key});
@@ -93,7 +94,7 @@ class GeetestWebviewDialog extends StatelessWidget {
                 callback: (args) {
                   if (args.isNotEmpty) {
                     if (args[0] case Map<String, dynamic> data) {
-                      Get.back(result: data);
+                      PageUtils.pop(data);
                       return;
                     }
                   }
@@ -116,7 +117,7 @@ class GeetestWebviewDialog extends StatelessWidget {
               );
             } else {
               config.toast();
-              Get.back();
+              PageUtils.pop();
             }
           },
         ),

@@ -158,7 +158,7 @@ class PgcIntroController extends CommonIntroController {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 Utils.copyText(videoUrl);
               },
             ),
@@ -169,7 +169,7 @@ class PgcIntroController extends CommonIntroController {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 PageUtils.launchURL(videoUrl);
               },
             ),
@@ -181,7 +181,7 @@ class PgcIntroController extends CommonIntroController {
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   Utils.shareText(videoUrl);
                 },
               ),
@@ -192,7 +192,7 @@ class PgcIntroController extends CommonIntroController {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 EpisodeItem? item = pgcItem.episodes?.firstWhereOrNull(
                   (item) => item.epId == epId,
                 );
@@ -234,7 +234,7 @@ class PgcIntroController extends CommonIntroController {
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 try {
                   EpisodeItem item = pgcItem.episodes!.firstWhere(
                     (item) => item.epId == epId,

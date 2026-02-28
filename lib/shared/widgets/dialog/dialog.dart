@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 Future<bool> showConfirmDialog({
   required BuildContext context,
@@ -30,7 +31,7 @@ Future<bool> showConfirmDialog({
             ),
             TextButton(
               onPressed: () {
-                Get.back(result: true);
+                PageUtils.pop(true);
                 onConfirm?.call();
               },
               child: const Text('确认'),
@@ -84,7 +85,7 @@ void showPgcFollowDialog({
               enabled: followStatus != item.followStatus,
               text: item.title,
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 onUpdateStatus(item.followStatus);
               },
             ),
@@ -99,7 +100,7 @@ void showPgcFollowDialog({
               ),
             ),
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               onUpdateStatus(-1);
             },
           ),

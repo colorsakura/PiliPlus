@@ -29,6 +29,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class SavePanel extends StatefulWidget {
   const SavePanel({
@@ -301,7 +302,7 @@ class _SavePanelState extends State<SavePanel> {
       String picName =
           "${Constants.appName}_${DateFormat('yyyyMMddHHmmss').format(DateTime.now())}";
       if (isShare) {
-        Get.back();
+        PageUtils.pop();
         SmartDialog.dismiss();
         SharePlus.instance.share(
           ShareParams(
@@ -322,7 +323,7 @@ class _SavePanelState extends State<SavePanel> {
         );
         if (result != null) {
           if (result.isSuccess) {
-            Get.back();
+            PageUtils.pop();
           }
         }
       }

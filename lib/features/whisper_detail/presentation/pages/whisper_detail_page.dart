@@ -244,7 +244,7 @@ class _WhisperDetailPageState
         content: isOwner
             ? ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   _whisperDetailController.sendMsg(
                     message: '${item.msgKey}',
                     onClearText: editController.clear,
@@ -257,7 +257,7 @@ class _WhisperDetailPageState
               )
             : ListTile(
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   autoWrapReportDialog(
                     context,
                     ban: false,

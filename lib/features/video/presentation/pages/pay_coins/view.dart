@@ -13,6 +13,7 @@ import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class PayCoinsPage extends StatefulWidget {
   const PayCoinsPage({
@@ -562,7 +563,7 @@ class _PayCoinsPageState extends State<PayCoinsPage>
         }
         _boxAnimController.forward().whenComplete(_boxAnimController.reverse);
         _coinController.forward().whenComplete(() {
-          Get.back();
+          PageUtils.pop();
           widget.onPayCoin(_pageIndex.value + 1, _coinWithLike.value);
         });
       });

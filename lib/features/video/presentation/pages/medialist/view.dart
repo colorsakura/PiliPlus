@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class MediaListPanel extends CommonSlidePage {
   const MediaListPanel({
@@ -82,7 +83,7 @@ class _MediaListPanelState extends State<MediaListPanel>
                     ? const Icon(MdiIcons.sortAscending)
                     : const Icon(MdiIcons.sortDescending),
                 onPressed: () {
-                  Get.back();
+                  PageUtils.pop();
                   widget.onReverse();
                 },
               ),
@@ -175,7 +176,7 @@ class _MediaListPanelState extends State<MediaListPanel>
                 SmartDialog.showToast('不支持播放该类型视频');
                 return;
               }
-              Get.back();
+              PageUtils.pop();
               widget.onChangeEpisode(item);
             },
             onLongPress: onLongPress,

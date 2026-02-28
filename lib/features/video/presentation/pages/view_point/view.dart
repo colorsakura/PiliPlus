@@ -9,6 +9,7 @@ import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class ViewPointsPage extends CommonSlidePage {
   const ViewPointsPage({
@@ -129,7 +130,7 @@ class _ViewPointsPageState extends State<ViewPointsPage>
       child: InkWell(
         onTap: segment.from != null
             ? () {
-                Get.back();
+                PageUtils.pop();
                 plPlayerController?.seekTo(
                   Duration(seconds: segment.from!),
                   isSeek: false,

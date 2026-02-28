@@ -5,6 +5,7 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/gestures.dart' show HorizontalDragGestureRecognizer;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 abstract class CommonSlidePage extends StatefulWidget {
   const CommonSlidePage({super.key, this.enableSlide = true});
@@ -102,7 +103,7 @@ mixin CommonSlideMixin<T extends CommonSlidePage> on State<T>, TickerProvider {
     final dx = _downDx!;
     if (_animController.value * _maxWidth + (_isRTL ? (_maxWidth - dx) : dx) >=
         100) {
-      Get.back();
+      PageUtils.pop();
     } else {
       _animController.reverse();
     }

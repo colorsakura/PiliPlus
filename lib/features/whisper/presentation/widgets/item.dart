@@ -67,7 +67,7 @@ class WhisperSessionItem extends StatelessWidget {
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    PageUtils.pop();
                     onSetTop(item.isPinned, item.id);
                   },
                   title: Text(item.isPinned ? '移除置顶' : '置顶'),
@@ -76,7 +76,7 @@ class WhisperSessionItem extends StatelessWidget {
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      PageUtils.pop();
                       onSetMute(item.isMuted, item.id.privateId.talkerUid);
                     },
                     title: Text('${item.isMuted ? '关闭' : '开启'}免打扰'),
@@ -85,7 +85,7 @@ class WhisperSessionItem extends StatelessWidget {
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      PageUtils.pop();
                       showConfirmDialog(
                         context: context,
                         title: '确定删除该对话？',

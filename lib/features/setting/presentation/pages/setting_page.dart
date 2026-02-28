@@ -269,7 +269,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
             TextButton(
               onPressed: () {
-                Get.back();
+                PageUtils.pop();
                 logout();
               },
               child: Text(
@@ -284,7 +284,7 @@ class _SettingPageState extends State<SettingPage> {
                 if (res['status']) {
                   SmartDialog.dismiss();
                   logout();
-                  Get.back();
+                  PageUtils.pop();
                 } else {
                   SmartDialog.dismiss();
                   SmartDialog.showToast(res['msg'].toString());

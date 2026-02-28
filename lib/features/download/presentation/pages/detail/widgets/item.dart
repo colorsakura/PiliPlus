@@ -69,7 +69,7 @@ class DetailItem extends StatelessWidget {
                 children: [
                   ListTile(
                     onTap: () {
-                      Get.back();
+                      PageUtils.pop();
                       showConfirmDialog(
                         context: context,
                         title: '确定删除该视频？',
@@ -84,7 +84,7 @@ class DetailItem extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () async {
-                      Get.back();
+                      PageUtils.pop();
                       final res = await downloadService.downloadDanmaku(
                         entry: entry,
                         isUpdate: true,

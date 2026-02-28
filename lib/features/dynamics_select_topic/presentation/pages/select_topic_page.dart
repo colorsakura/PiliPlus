@@ -15,6 +15,7 @@ import 'package:PiliPlus/utils/mixins/debounce_stream_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 /// Panel for selecting topics for a dynamic post
 class SelectTopicPanel extends StatefulWidget {
@@ -252,7 +253,7 @@ class _SelectTopicPanelState
                       }
                       return TopicItemWidget(
                         item: response[index],
-                        onTap: (item) => Get.back(result: item),
+                        onTap: (item) => PageUtils.pop(item),
                       );
                     },
                     itemCount: response.length,

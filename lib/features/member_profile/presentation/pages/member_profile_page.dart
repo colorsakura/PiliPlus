@@ -278,7 +278,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       trailing: current == sex ? const Icon(size: 22, Icons.check) : null,
       onTap: () {
-        Get.back();
+        PageUtils.pop();
         _update(type: ProfileType.sex, datum: sex);
       },
     );
@@ -408,7 +408,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               setState(() {});
             }
             if (type == ProfileType.uname || type == ProfileType.sign) {
-              Get.back();
+              PageUtils.pop();
             }
           } else {
             SmartDialog.showToast(res.data['message']);

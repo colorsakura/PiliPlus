@@ -2139,7 +2139,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               TextButton(
                 onPressed: () {
                   if (segment.first < segment.second) {
-                    Get.back(result: true);
+                    PageUtils.pop(true);
                   }
                 },
                 child: const Text('确定'),

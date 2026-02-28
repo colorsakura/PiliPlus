@@ -235,7 +235,7 @@ class FavVideoCardH extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Get.back();
+                          PageUtils.pop();
                           ctr!.onCancelFav(index!, item.id!, item.type!);
                         },
                         child: const Text('确定取消'),

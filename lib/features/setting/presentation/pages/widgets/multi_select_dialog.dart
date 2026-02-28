@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class MultiSelectDialog<T> extends StatefulWidget {
   final Iterable<T> initValues;
@@ -75,7 +76,7 @@ class _MultiSelectDialogState<T> extends State<MultiSelectDialog<T>> {
           ),
         ),
         TextButton(
-          onPressed: () => Get.back(result: _tempValues),
+          onPressed: () => PageUtils.pop(_tempValues),
           child: const Text('确定'),
         ),
       ],

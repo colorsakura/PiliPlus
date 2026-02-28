@@ -680,7 +680,7 @@ Future<void> audioNormalization(
             ),
             TextButton(
               onPressed: () {
-                Get.back();
+                PageUtils.pop();
                 GStorage.setting.put(key, param);
                 if (!fallback &&
                     PlPlayerController.loudnormRegExp.hasMatch(param)) {
@@ -714,7 +714,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
         children: [
           ListTile(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               Utils.copyText(downloadPath);
             },
             dense: true,
@@ -722,7 +722,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
           ),
           ListTile(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               final defPath = defDownloadPath;
               if (downloadPath == defPath) return;
               downloadPath = defPath;
@@ -735,7 +735,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
           ),
           ListTile(
             onTap: () async {
-              Get.back();
+              PageUtils.pop();
               final path = await FilePicker.platform.getDirectoryPath();
               if (path == null || path == downloadPath) return;
               downloadPath = path;
@@ -778,7 +778,7 @@ void _showDynDialog(BuildContext context) {
           onPressed: () {
             try {
               final val = int.parse(dynamicPeriod);
-              Get.back();
+              PageUtils.pop();
               GStorage.setting.put(SettingBoxKey.dynamicPeriod, val);
               Get.find<MainController>().dynamicPeriod = val * 60 * 1000;
             } catch (e) {
@@ -818,7 +818,7 @@ void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
           onPressed: () async {
             try {
               final val = int.parse(replyLengthLimit);
-              Get.back();
+              PageUtils.pop();
               ReplyItemGrpc.replyLengthLimit = val == 0 ? null : val;
               await GStorage.setting.put(SettingBoxKey.replyLengthLimit, val);
               setState();
@@ -863,7 +863,7 @@ void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
                 1.0,
                 double.parse(danmakuLineHeight).toPrecision(1),
               );
-              Get.back();
+              PageUtils.pop();
               await GStorage.setting.put(SettingBoxKey.danmakuLineHeight, val);
               setState();
             } catch (e) {
@@ -904,7 +904,7 @@ void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
           onPressed: () async {
             try {
               final val = double.parse(initialValue);
-              Get.back();
+              PageUtils.pop();
               touchSlopH = val;
               await GStorage.setting.put(SettingBoxKey.touchSlopH, val);
               setState();
@@ -1003,7 +1003,7 @@ Future<void> _showFavDialog(BuildContext context) async {
           content: SingleChildScrollView(
             child: RadioGroup(
               onChanged: (value) {
-                Get.back();
+                PageUtils.pop();
                 GStorage.setting.put(SettingBoxKey.quickFavId, value);
                 SmartDialog.showToast('设置成功');
               },
@@ -1181,7 +1181,7 @@ void _showProxyDialog(BuildContext context) {
         ),
         TextButton(
           onPressed: () {
-            Get.back();
+            PageUtils.pop();
             GStorage.setting.put(
               SettingBoxKey.systemProxyHost,
               systemProxyHost,
@@ -1225,7 +1225,7 @@ void _showCacheDialog(BuildContext context, VoidCallback setState) {
           onPressed: () async {
             try {
               final val = num.parse(valueStr);
-              Get.back();
+              PageUtils.pop();
               await GStorage.setting.put(
                 SettingBoxKey.maxCacheSize,
                 val * 1024 * 1024,

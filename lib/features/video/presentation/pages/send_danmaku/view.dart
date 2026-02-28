@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class SendDanmakuPanel extends CommonTextPubPage {
   // video
@@ -468,7 +469,7 @@ class _SendDanmakuPanelState extends CommonTextPubPageState<SendDanmakuPanel> {
     SmartDialog.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
-      Get.back();
+      PageUtils.pop();
       SmartDialog.showToast('发送成功');
       VideoDanmaku? extra;
       if (response.dmid case final dmid?) {

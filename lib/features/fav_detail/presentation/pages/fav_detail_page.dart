@@ -295,7 +295,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                         FavHttp.deleteFolder(mediaIds: mediaId).then((res) {
                           if (res.isSuccess) {
                             SmartDialog.showToast('删除成功');
-                            Get.back(result: true);
+                            PageUtils.pop(true);
                           } else {
                             res.toast();
                           }

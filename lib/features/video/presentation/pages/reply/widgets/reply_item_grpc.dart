@@ -864,7 +864,7 @@ class ReplyItemGrpc extends StatelessWidget {
           if (ownerMid == upMid || ownerMid == item.member.mid)
             ListTile(
               onTap: () async {
-                Get.back();
+                PageUtils.pop();
                 bool? isDelete = await showDialog<bool>(
                   context: context,
                   builder: (context) {
@@ -890,7 +890,7 @@ class ReplyItemGrpc extends StatelessWidget {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Get.back(result: false),
+                          onPressed: () => PageUtils.pop(false),
                           child: Text(
                             '取消',
                             style: TextStyle(
@@ -899,7 +899,7 @@ class ReplyItemGrpc extends StatelessWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => Get.back(result: true),
+                          onPressed: () => PageUtils.pop(true),
                           child: const Text('确定'),
                         ),
                       ],
@@ -930,7 +930,7 @@ class ReplyItemGrpc extends StatelessWidget {
           if (ownerMid != Int64.ZERO)
             ListTile(
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 autoWrapReportDialog(
                   context,
                   ReportOptions.commentReport,
@@ -956,7 +956,7 @@ class ReplyItemGrpc extends StatelessWidget {
           if (replyLevel == 1 && !isSubReply && ownerMid == upMid)
             ListTile(
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 onToggleTop?.call(item);
               },
               minLeadingWidth: 0,
@@ -968,7 +968,7 @@ class ReplyItemGrpc extends StatelessWidget {
             ),
           ListTile(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               Utils.copyText(message);
             },
             minLeadingWidth: 0,
@@ -977,7 +977,7 @@ class ReplyItemGrpc extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               showDialog(
                 context: context,
                 builder: (context) => Dialog(
@@ -997,7 +997,7 @@ class ReplyItemGrpc extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               SavePanel.toSavePanel(upMid: upMid, item: item);
             },
             minLeadingWidth: 0,
@@ -1007,7 +1007,7 @@ class ReplyItemGrpc extends StatelessWidget {
           if (kDebugMode || item.mid == ownerMid)
             ListTile(
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 onCheckReply?.call(item);
               },
               minLeadingWidth: 0,

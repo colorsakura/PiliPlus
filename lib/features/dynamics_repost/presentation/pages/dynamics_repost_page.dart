@@ -15,6 +15,7 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart' hide DraggableScrollableSheet, TextField;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class RepostPanel extends CommonRichTextPubPage {
   const RepostPanel({
@@ -431,7 +432,7 @@ class _RepostPanelState extends CommonRichTextPubPageState<RepostPanel> {
     SmartDialog.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
-      Get.back();
+      PageUtils.pop();
       SmartDialog.showToast('转发成功');
       widget.onSuccess?.call();
       final id = response?['dyn_id'];

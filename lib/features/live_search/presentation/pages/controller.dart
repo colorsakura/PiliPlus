@@ -41,7 +41,7 @@ class LiveSearchController extends GetxController
       hasData.value = false;
       focusNode.requestFocus();
     } else {
-      Get.back();
+      PageUtils.pop();
     }
   }
 

@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 /// Danmaku block page (v2 - Riverpod)
 class DanmakuBlockPageV2 extends ConsumerStatefulWidget {
@@ -187,7 +188,7 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
             child: const Text('确定'),
             onPressed: () async {
               if (filter != initFilter) {
-                Get.back();
+                PageUtils.pop();
                 if (itemId != null) {
                   await _controller.deleteRule(
                     type.index,

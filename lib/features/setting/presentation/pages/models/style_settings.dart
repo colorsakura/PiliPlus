@@ -549,7 +549,7 @@ void _showSpringDialog(BuildContext context, _) {
       actions: [
         TextButton(
           onPressed: () {
-            Get.back();
+            PageUtils.pop();
             GStorage.setting.delete(SettingBoxKey.springDescription);
             SmartDialog.showToast('重置成功，重启生效');
           },
@@ -569,7 +569,7 @@ void _showSpringDialog(BuildContext context, _) {
                 duration2Physical();
               }
               final res = springDescription.map(double.parse).toList();
-              Get.back();
+              PageUtils.pop();
               GStorage.setting.put(SettingBoxKey.springDescription, res);
               SmartDialog.showToast('设置成功，重启生效');
             } catch (e) {

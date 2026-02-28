@@ -45,7 +45,7 @@ class _ContactPageState extends State<ContactPage>
   }
 
   void onSelect(UserModel userModel) {
-    Get.back(result: userModel);
+    PageUtils.pop(userModel);
   }
 
   @override
@@ -73,7 +73,7 @@ class _ContactPageState extends State<ContactPage>
                 ),
               );
               if (userModel != null) {
-                Get.back(result: userModel);
+                PageUtils.pop(userModel);
               }
             },
             icon: const Icon(Icons.search),

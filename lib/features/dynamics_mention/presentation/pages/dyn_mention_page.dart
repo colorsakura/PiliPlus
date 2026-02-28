@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
 import 'package:PiliPlus/shared/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_topic.dart'
     as topic_sheet;
@@ -266,9 +267,7 @@ class _DynMentionPanelState
                                 controller.clearSelection();
                                 return;
                               }
-                              Get.back(
-                                result: controller.state.selectedMentions,
-                              );
+                              PageUtils.pop(controller.state.selectedMentions);
                               controller.clearSelection();
                             },
                             child: const Icon(Icons.check),
@@ -329,7 +328,7 @@ class _DynMentionPanelState
                               final item = group.items![index];
                               return DynMentionItem(
                                 item: item,
-                                onTap: () => Get.back(result: item),
+                                onTap: () => PageUtils.pop(item),
                                 onCheck: (value) =>
                                     controller.toggleMention(item, value),
                               );

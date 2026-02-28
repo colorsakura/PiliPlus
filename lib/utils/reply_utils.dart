@@ -15,6 +15,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 abstract final class ReplyUtils {
   static final ReplyRemoteDataSource _replyDataSource = ReplyRemoteDataSource();
@@ -103,7 +104,7 @@ abstract final class ReplyUtils {
         if (isBan)
           TextButton(
             onPressed: () {
-              Get.back();
+              PageUtils.pop();
               String? uri;
               switch (type) {
                 case 1:

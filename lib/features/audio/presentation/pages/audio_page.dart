@@ -312,7 +312,7 @@ class _AudioPageState extends State<AudioPage> {
                                                 end: 24.0,
                                               ),
                                           onTap: () {
-                                            Get.back();
+                                            PageUtils.pop();
                                             if (!isCurr) {
                                               _controller.playIndex(
                                                 index,
@@ -364,7 +364,7 @@ class _AudioPageState extends State<AudioPage> {
                                     dense: true,
                                     minTileHeight: 45,
                                     onTap: () {
-                                      Get.back();
+                                      PageUtils.pop();
                                       if (!isCurr) {
                                         _controller.playIndex(index);
                                       }
@@ -554,7 +554,7 @@ class _AudioPageState extends State<AudioPage> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Get.back();
+        PageUtils.pop();
         if (!isCurr) {
           _controller.playMode.value = playMode;
           GStorage.setting.put(SettingBoxKey.audioPlayMode, playMode.index);
@@ -632,7 +632,7 @@ class _AudioPageState extends State<AudioPage> {
               //     style: TextStyle(fontSize: 14),
               //   ),
               //   onTap: () {
-              //     Get.back();
+              //     PageUtils.pop();
               //     _controller.showTimerDialog();
               //   },
               // ),
@@ -643,7 +643,7 @@ class _AudioPageState extends State<AudioPage> {
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   PageUtils.reportVideo(_controller.oid.toInt());
                 },
               ),

@@ -8,6 +8,7 @@ import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class GroupPanel extends StatefulWidget {
   final int mid;
@@ -49,7 +50,7 @@ class _GroupPanelState extends State<GroupPanel> {
 
   Future<void> onSave() async {
     if (!loadingState.isSuccess) {
-      Get.back();
+      PageUtils.pop();
       return;
     }
     feedBack();
@@ -60,7 +61,7 @@ class _GroupPanelState extends State<GroupPanel> {
     );
     if (res.isSuccess) {
       SmartDialog.showToast('操作成功');
-      Get.back(result: tags);
+      PageUtils.pop(tags);
     } else {
       res.toast();
     }

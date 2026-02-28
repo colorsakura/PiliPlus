@@ -6,6 +6,7 @@ import 'package:PiliPlus/features/fav/presentation/pages/video/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class FavFolderSortPage extends StatefulWidget {
   const FavFolderSortPage({super.key, required this.favController});
@@ -39,7 +40,7 @@ class _FavFolderSortPageState extends State<FavFolderSortPage> {
               if (res.isSuccess) {
                 SmartDialog.showToast('排序完成');
                 _favController.loadingState.value = Success(sortList);
-                Get.back();
+                PageUtils.pop();
               } else {
                 res.toast();
               }

@@ -1,5 +1,6 @@
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/search/presentation/pages/search_controller.dart'
     show DebounceStreamState;
 import 'package:PiliPlus/features/setting/presentation/pages/models/extra_settings.dart';
@@ -69,7 +70,7 @@ class _SettingsSearchPageState
                 _textEditingController.clear();
                 _list.clear();
               } else {
-                Get.back();
+                PageUtils.pop();
               }
             },
             icon: const Icon(Icons.clear),

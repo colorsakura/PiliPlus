@@ -529,7 +529,7 @@ class AudioController extends GetxController
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 Utils.copyText(audioUrl);
               },
             ),
@@ -540,7 +540,7 @@ class AudioController extends GetxController
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 PageUtils.launchURL(audioUrl);
               },
             ),
@@ -552,7 +552,7 @@ class AudioController extends GetxController
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   if (audioItem.value case DetailItem(
                     :final arc,
                     :final owner,
@@ -572,7 +572,7 @@ class AudioController extends GetxController
                 style: TextStyle(fontSize: 14),
               ),
               onTap: () {
-                Get.back();
+                PageUtils.pop();
                 if (audioItem.value case DetailItem(
                   :final arc,
                   :final owner,
@@ -600,7 +600,7 @@ class AudioController extends GetxController
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   if (audioItem.value case DetailItem(
                     :final arc,
                     :final owner,

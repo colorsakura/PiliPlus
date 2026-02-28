@@ -1725,7 +1725,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           : (episode) async => true, // No-op for PGC and file source
       onClose: Get.back,
       onReverse: () {
-        Get.back();
+        PageUtils.pop();
         onReversePlay(isSeason: season != null);
       },
     );

@@ -162,7 +162,7 @@ class SSearchController extends GetxController
       searchFocusNode.requestFocus();
       showUidBtn.value = false;
     } else {
-      Get.back();
+      PageUtils.pop();
     }
   }
 

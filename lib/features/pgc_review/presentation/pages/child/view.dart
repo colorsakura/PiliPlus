@@ -137,7 +137,7 @@ class _PgcReviewChildPageState extends State<PgcReviewChildPage>
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   showModalBottomSheet(
                     context: context,
                     useSafeArea: true,
@@ -161,7 +161,7 @@ class _PgcReviewChildPageState extends State<PgcReviewChildPage>
                   style: TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  Get.back();
+                  PageUtils.pop();
                   showConfirmDialog(
                     context: context,
                     title: '删除短评，同时删除评分？',

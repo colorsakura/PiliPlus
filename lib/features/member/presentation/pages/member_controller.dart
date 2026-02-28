@@ -163,7 +163,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
           ),
           TextButton(
             onPressed: () {
-              Get.back();
+              PageUtils.pop();
               _onBlock();
             },
             child: const Text('确认'),

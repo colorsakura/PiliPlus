@@ -4,6 +4,7 @@ import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 Future<void> autoWrapReportDialog(
   BuildContext context,
@@ -111,7 +112,7 @@ Future<void> autoWrapReportDialog(
               final res = await onSuccess(reasonType!, reasonDesc, banUid);
               SmartDialog.dismiss();
               if (res.isSuccess) {
-                Get.back();
+                PageUtils.pop();
                 SmartDialog.showToast('举报成功');
               } else {
                 res.toast();

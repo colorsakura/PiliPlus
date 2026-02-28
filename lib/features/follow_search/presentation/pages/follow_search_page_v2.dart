@@ -9,6 +9,7 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 /// Follow search page (v2 - Riverpod)
 class FollowSearchPageV2 extends ConsumerStatefulWidget {
@@ -125,7 +126,7 @@ class _FollowSearchPageV2State extends ConsumerState<FollowSearchPageV2> {
         return FollowItem(
           item: list[index],
           onSelect: widget.mid != null && widget.isFromSelect
-              ? (userModel) => Get.back(result: userModel)
+              ? (userModel) => PageUtils.pop(userModel)
               : null,
         );
       },

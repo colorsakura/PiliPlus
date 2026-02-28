@@ -1499,7 +1499,7 @@ class VideoDetailController extends GetxController
         actions: [
           TextButton(
             onPressed: () {
-              Get.back();
+              PageUtils.pop();
               this.videoUrl = videoUrl;
               this.audioUrl = audioUrl;
               playerInit();

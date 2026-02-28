@@ -98,7 +98,7 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
                   dense: true,
                   onTap: () async {
                     if (!e.selected) {
-                      Get.back();
+                      PageUtils.pop();
                       for (final j in item.redirect.windowSelect.item) {
                         j.selected = false;
                       }

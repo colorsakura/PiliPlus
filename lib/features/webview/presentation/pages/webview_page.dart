@@ -160,7 +160,7 @@ class _WebviewPageState extends State<WebviewPage> {
                         if (await _webViewController?.canGoBack() == true) {
                           _webViewController?.goBack();
                         } else {
-                          Get.back();
+                          PageUtils.pop();
                         }
                         break;
                       case WebviewMenuItem.resetCookie:
@@ -214,7 +214,7 @@ class _WebviewPageState extends State<WebviewPage> {
               ..addJavaScriptHandler(
                 handlerName: 'finishButtonClicked',
                 callback: (args) {
-                  Get.back();
+                  PageUtils.pop();
                 },
               )
               ..addJavaScriptHandler(
@@ -236,7 +236,7 @@ class _WebviewPageState extends State<WebviewPage> {
           onTitleChanged: (controller, title) {
             this.title.value = title ?? '';
           },
-          onCloseWindow: (controller) => Get.back(),
+          onCloseWindow: (controller) => PageUtils.pop(),
           onLoadStop: (controller, uri) {
             final url = uri.toString();
             if (url.startsWith('https://www.bilibili.com/h5/note-app')) {
@@ -299,7 +299,7 @@ class _WebviewPageState extends State<WebviewPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Get.back();
+                              PageUtils.pop();
                               PageUtils.launchURL(request.url.toString());
                             },
                             child: Text('确定 ($fileSize)'),

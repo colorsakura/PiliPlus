@@ -276,7 +276,7 @@ mixin FavMixin on TripleMixin {
     );
     SmartDialog.dismiss();
     if (result.isSuccess) {
-      Get.back();
+      PageUtils.pop();
       final newVal =
           addMediaIdsNew.isNotEmpty || favIds?.length != delMediaIdsNew.length;
       if (hasFav.value != newVal) {

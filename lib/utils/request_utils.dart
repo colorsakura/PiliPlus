@@ -39,6 +39,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:gt3_flutter_plugin/gt3_flutter_plugin.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 abstract final class RequestUtils {
   static Future<void> syncHistoryStatus() async {
@@ -146,7 +147,7 @@ abstract final class RequestUtils {
                 ListTile(
                   dense: true,
                   onTap: () async {
-                    Get.back();
+                    PageUtils.pop();
                     final res = await MemberHttp.specialAction(
                       fid: mid,
                       isAdd: !isSpecialFollowed,
@@ -166,7 +167,7 @@ abstract final class RequestUtils {
                 ListTile(
                   dense: true,
                   onTap: () async {
-                    Get.back();
+                    PageUtils.pop();
                     final result = await showModalBottomSheet<Set<int>>(
                       context: context,
                       useSafeArea: true,
@@ -214,7 +215,7 @@ abstract final class RequestUtils {
                 ListTile(
                   dense: true,
                   onTap: () async {
-                    Get.back();
+                    PageUtils.pop();
                     final res = await VideoHttp.relationMod(
                       mid: mid,
                       act: 2,
@@ -320,7 +321,7 @@ abstract final class RequestUtils {
             if (!isSuccess)
               TextButton(
                 onPressed: () {
-                  Get.back();
+                  PageUtils.pop();
                   Utils.copyText('https://www.bilibili.com/opus/$id');
                   Get.toNamed(
                     '/webview',
@@ -466,7 +467,7 @@ abstract final class RequestUtils {
                           }
                           SmartDialog.dismiss();
                           SmartDialog.showToast('${isCopy ? '复制' : '移动'}成功');
-                          Get.back();
+                          PageUtils.pop();
                         } else {
                           SmartDialog.dismiss();
                           res.toast();

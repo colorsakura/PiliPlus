@@ -165,7 +165,7 @@ class _BlacklistPageState extends ConsumerState<BlacklistPage> {
           ),
           TextButton(
             onPressed: () async {
-              Get.back();
+              PageUtils.pop();
               final success = await controller.removeFromBlacklist(
                 index,
                 item.mid,

@@ -37,6 +37,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class CreateDynPanel extends CommonRichTextPubPage {
   const CreateDynPanel({
@@ -763,7 +764,7 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
       SmartDialog.dismiss();
       if (res.isSuccess) {
         hasPub = true;
-        Get.back();
+        PageUtils.pop();
         SmartDialog.showToast('发布成功');
         widget.onSuccess?.call();
       } else {
@@ -799,7 +800,7 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
     SmartDialog.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
-      Get.back();
+      PageUtils.pop();
       SmartDialog.showToast('发布成功');
       final id = response?['dyn_id'];
       RequestUtils.insertCreatedDyn(id);

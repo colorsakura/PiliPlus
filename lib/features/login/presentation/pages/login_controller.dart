@@ -108,7 +108,7 @@ class LoginPageController extends GetxController
                     value['data'],
                     value['data']['cookie_info']['cookies'],
                   );
-                  Get.back();
+                  PageUtils.pop();
                 } else if (value['code'] == 86038) {
                   t.cancel();
                   qrCodeLeftTime.value = 0;
@@ -283,7 +283,7 @@ class LoginPageController extends GetxController
           ).onChange();
           if (!Accounts.main.isLogin) await switchAccountDialog(Get.context!);
           SmartDialog.showToast('登录成功');
-          Get.back();
+          PageUtils.pop();
         } catch (e) {
           SmartDialog.showToast("登录失败: $e");
         }
@@ -529,7 +529,7 @@ class LoginPageController extends GetxController
       }
       SmartDialog.showToast('正在保存身份信息');
       await setAccount(data['token_info'], data['cookie_info']['cookies']);
-      Get.back();
+      PageUtils.pop();
     } else {
       // handle login result
       switch (res['code']) {
@@ -590,7 +590,7 @@ class LoginPageController extends GetxController
       SmartDialog.showToast('登录成功');
       final data = res['data'];
       await setAccount(data['token_info'], data['cookie_info']['cookies']);
-      Get.back();
+      PageUtils.pop();
     } else {
       SmartDialog.showToast(res['msg']);
     }
@@ -854,7 +854,7 @@ class LoginPageController extends GetxController
           ),
           TextButton(
             onPressed: () {
-              Get.back();
+              PageUtils.pop();
               for (final type in AccountType.values) {
                 final index = type.index;
                 final account = quickSelect

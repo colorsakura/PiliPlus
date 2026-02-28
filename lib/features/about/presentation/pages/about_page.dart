@@ -60,7 +60,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
       content: TextField(
         autofocus: true,
         onSubmitted: (value) {
-          Get.back();
+          PageUtils.pop();
           if (value.isNotEmpty) {
             PageUtils.handleWebview(value, inApp: true);
           }
@@ -258,7 +258,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                     ListTile(
                       dense: true,
                       onTap: () async {
-                        Get.back();
+                        PageUtils.pop();
                         await Future.wait([
                           GStorage.setting.clear(),
                           GStorage.video.clear(),
@@ -270,7 +270,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                     ListTile(
                       dense: true,
                       onTap: () async {
-                        Get.back();
+                        PageUtils.pop();
                         await Future.wait([
                           GStorage.userInfo.clear(),
                           GStorage.setting.clear(),
@@ -314,7 +314,7 @@ Future<void> showImportExportDialog<T>(
             dense: true,
             title: const Text('导出文件至本地', style: style),
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               final res = utf8.encode(toJson());
               final name =
                   'piliplus_${label}_${context.isTablet ? 'pad' : 'phone'}_'
@@ -330,7 +330,7 @@ Future<void> showImportExportDialog<T>(
           dense: true,
           title: Text('导出$title至剪贴板', style: style),
           onTap: () {
-            Get.back();
+            PageUtils.pop();
             Utils.copyText(toJson());
           },
         ),
@@ -338,7 +338,7 @@ Future<void> showImportExportDialog<T>(
           dense: true,
           title: Text('从剪贴板导入$title', style: style),
           onTap: () async {
-            Get.back();
+            PageUtils.pop();
             ClipboardData? data = await Clipboard.getData(
               'text/plain',
             );
@@ -393,7 +393,7 @@ Future<void> showImportExportDialog<T>(
                     ),
                     TextButton(
                       onPressed: () async {
-                        Get.back();
+                        PageUtils.pop();
                         try {
                           if (await fromJson(json)) {
                             SmartDialog.showToast('导入成功');
@@ -414,7 +414,7 @@ Future<void> showImportExportDialog<T>(
           dense: true,
           title: Text('输入$title', style: style),
           onTap: () {
-            Get.back();
+            PageUtils.pop();
             final key = GlobalKey<FormFieldState<String>>();
             late T json;
             String? forceErrorText;
@@ -459,7 +459,7 @@ Future<void> showImportExportDialog<T>(
                       if (key.currentState?.validate() == true) {
                         try {
                           if (await fromJson(json)) {
-                            Get.back();
+                            PageUtils.pop();
                             SmartDialog.showToast('导入成功');
                             return;
                           }

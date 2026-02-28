@@ -1694,7 +1694,7 @@ class PlPlayerController with BlockConfigMixin {
           context: Get.context!,
           builder: (context) => GestureDetector(
             onTap: () {
-              Get.back();
+              PageUtils.pop();
               ImageUtils.saveByteImg(
                 bytes: value,
                 fileName: 'screenshot_${ImageUtils.time}',

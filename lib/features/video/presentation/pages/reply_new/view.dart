@@ -32,6 +32,7 @@ import 'package:media_kit/media_kit.dart' as media_kit;
 import 'package:flutter/material.dart' hide TextField;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 
 class ReplyPage extends CommonRichTextPubPage {
   final int oid;
@@ -341,7 +342,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
             // if (isRoot)
             //   item(
             //     onTap: () {
-            //       Get.back();
+            //       PageUtils.pop();
             //       try {
             //         Get.find<VideoDetailController>(tag: heroTag)
             //             .showNoteList(context);
@@ -434,7 +435,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
     if (res case Success(:final response)) {
       hasPub = true;
       SmartDialog.showToast(response['success_toast']);
-      Get.back(result: response['reply']);
+      PageUtils.pop(response['reply']);
     } else {
       res.toast();
     }
