@@ -158,7 +158,18 @@ class _SettingPageState extends State<SettingPage> {
 
   void _toPage(SettingType type) {
     if (_isPortrait) {
-      PageUtils.toDupNamed('/${type.name}');
+      // Map SettingType to AppRoutes
+      final route = switch (type) {
+        SettingType.privacySetting => AppRoutes.privacySetting,
+        SettingType.recommendSetting => AppRoutes.recommendSetting,
+        SettingType.videoSetting => AppRoutes.videoSetting,
+        SettingType.playSetting => AppRoutes.playSetting,
+        SettingType.styleSetting => AppRoutes.styleSetting,
+        SettingType.extraSetting => AppRoutes.extraSetting,
+        SettingType.webdavSetting => AppRoutes.webdavSetting,
+        SettingType.about => AppRoutes.about,
+      };
+      PageUtils.pushNamed(route);
     } else {
       _type = type;
       setState(() {});

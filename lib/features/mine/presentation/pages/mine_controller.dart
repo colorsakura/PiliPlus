@@ -279,7 +279,17 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   void push(String name) {
     late final mid = userInfo.value.mid;
     if (isLogin && mid != null) {
-      PageUtils.toDupNamed('/$name?mid=$mid');
+      // Map route names to AppRoutes
+      final route = switch (name) {
+        'memberDynamics' => AppRoutes.memberDynamics,
+        'follow' => AppRoutes.follow,
+        'fan' => AppRoutes.fan,
+        _ => null,
+      };
+
+      if (route != null) {
+        PageUtils.pushNamed(route, parameters: {'mid': mid.toString()});
+      }
     }
   }
 

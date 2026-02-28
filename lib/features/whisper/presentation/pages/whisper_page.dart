@@ -199,7 +199,19 @@ class _WhisperPageState extends State<WhisperPage> {
                   return;
                 }
                 _controller.unreadCounts[index] = 0;
-                PageUtils.toDupNamed(item.route);
+
+                // Map route strings to AppRoutes
+                final route = switch (item.route) {
+                  '/replyMe' => AppRoutes.replyMe,
+                  '/atMe' => AppRoutes.atMe,
+                  '/likeMe' => AppRoutes.likeMe,
+                  '/sysMsg' => AppRoutes.sysMsg,
+                  _ => null,
+                };
+
+                if (route != null) {
+                  PageUtils.pushNamed(route);
+                }
               },
             );
           }),

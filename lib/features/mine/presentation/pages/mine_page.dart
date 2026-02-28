@@ -203,7 +203,7 @@ class _MediaPageState extends CommonPageState<MinePage>
           padding: padding,
           style: style,
           tooltip: '设置',
-          onPressed: () => PageUtils.toDupNamed('/setting', preventDuplicates: false),
+          onPressed: () => PageUtils.pushNamed(AppRoutes.setting),
           icon: const Icon(Icons.settings_outlined),
         ),
         const SizedBox(width: 16),
