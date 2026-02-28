@@ -203,11 +203,17 @@ abstract final class PiliScheme {
           case 'search':
             final keyword = uri.queryParameters['keyword'];
             if (keyword != null) {
-              PageUtils.toDupNamed(
-                '/searchResult',
-                parameters: {'keyword': keyword},
-                off: off,
-              );
+              if (off) {
+                PageUtils.replaceNamed(
+                  AppRoutes.searchResult,
+                  parameters: {'keyword': keyword},
+                );
+              } else {
+                PageUtils.pushNamed(
+                  AppRoutes.searchResult,
+                  parameters: {'keyword': keyword},
+                );
+              }
               return true;
             }
             PageUtils.pushNamed(AppRoutes.search);
@@ -216,14 +222,23 @@ abstract final class PiliScheme {
             // bilibili://article/40679479?jump_opus=1&jump_opus_type=1&opus_type=article&h5awaken=random
             String? id = uriDigitRegExp.firstMatch(path)?.group(1);
             if (id != null) {
-              PageUtils.toDupNamed(
-                '/articlePage',
-                parameters: {
-                  'id': id,
-                  'type': 'read',
-                },
-                off: off,
-              );
+              if (off) {
+                PageUtils.replaceNamed(
+                  AppRoutes.articlePage,
+                  parameters: {
+                    'id': id,
+                    'type': 'read',
+                  },
+                );
+              } else {
+                PageUtils.pushNamed(
+                  AppRoutes.articlePage,
+                  parameters: {
+                    'id': id,
+                    'type': 'read',
+                  },
+                );
+              }
               return true;
             }
             return false;
@@ -269,14 +284,23 @@ abstract final class PiliScheme {
               caseSensitive: false,
             ).matchAsPrefix(path)?.group(1);
             if (cvid != null) {
-              PageUtils.toDupNamed(
-                '/articlePage',
-                parameters: {
-                  'id': cvid,
-                  'type': 'read',
-                },
-                off: off,
-              );
+              if (off) {
+                PageUtils.replaceNamed(
+                  AppRoutes.articlePage,
+                  parameters: {
+                    'id': cvid,
+                    'type': 'read',
+                  },
+                );
+              } else {
+                PageUtils.pushNamed(
+                  AppRoutes.articlePage,
+                  parameters: {
+                    'id': cvid,
+                    'type': 'read',
+                  },
+                );
+              }
               return true;
             }
             if ((oid != null || businessId == 17) &&
@@ -309,14 +333,23 @@ abstract final class PiliScheme {
           case 'medialist':
             String? mediaId = uriDigitRegExp.firstMatch(path)?.group(1);
             if (mediaId != null) {
-              PageUtils.toDupNamed(
-                '/favDetail',
-                parameters: {
-                  'mediaId': mediaId,
-                  'heroTag': Utils.makeHeroTag(mediaId),
-                },
-                off: off,
-              );
+              if (off) {
+                PageUtils.replaceNamed(
+                  AppRoutes.favDetail,
+                  parameters: {
+                    'mediaId': mediaId,
+                    'heroTag': Utils.makeHeroTag(mediaId),
+                  },
+                );
+              } else {
+                PageUtils.pushNamed(
+                  AppRoutes.favDetail,
+                  parameters: {
+                    'mediaId': mediaId,
+                    'heroTag': Utils.makeHeroTag(mediaId),
+                  },
+                );
+              }
               return true;
             }
             return false;
@@ -333,11 +366,17 @@ abstract final class PiliScheme {
             // bilibili://m.bilibili.com/topic-detail?topic_id=1028161&frommodule=H5&h5awaken=xxx
             final id = uri.queryParameters['topic_id'];
             if (id != null) {
-              PageUtils.toDupNamed(
-                '/dynTopic',
-                parameters: {'id': id},
-                off: off,
-              );
+              if (off) {
+                PageUtils.replaceNamed(
+                  AppRoutes.dynTopic,
+                  parameters: {'id': id},
+                );
+              } else {
+                PageUtils.pushNamed(
+                  AppRoutes.dynTopic,
+                  parameters: {'id': id},
+                );
+              }
               return true;
             }
             return false;
@@ -402,8 +441,8 @@ abstract final class PiliScheme {
             if (path.startsWith('/playlist/')) {
               final mediaId = uriDigitRegExp.firstMatch(path)?.group(1);
               if (mediaId != null) {
-                PageUtils.toDupNamed(
-                  '/favDetail',
+                PageUtils.pushNamed(
+                  AppRoutes.favDetail,
                   parameters: {
                     'mediaId': mediaId,
                     'heroTag': Utils.makeHeroTag(mediaId),
@@ -565,11 +604,17 @@ abstract final class PiliScheme {
     } else if (host.contains('search.bilibili.com')) {
       String? keyword = uri.queryParameters['keyword'];
       if (keyword != null) {
-        PageUtils.toDupNamed(
-          '/searchResult',
-          parameters: {'keyword': keyword},
-          off: off,
-        );
+        if (off) {
+          PageUtils.replaceNamed(
+            AppRoutes.searchResult,
+            parameters: {'keyword': keyword},
+          );
+        } else {
+          PageUtils.pushNamed(
+            AppRoutes.searchResult,
+            parameters: {'keyword': keyword},
+          );
+        }
         return true;
       }
       launchURL();
@@ -580,12 +625,14 @@ abstract final class PiliScheme {
       if (path.contains('music-detail')) {
         final musicId = uri.queryParameters['music_id'];
         if (musicId != null && musicId.startsWith('MA')) {
-          PageUtils.toDupNamed(
-            '/musicDetail',
+          PageUtils.pushNamed(
+            AppRoutes.musicDetail,
             parameters: {'musicId': musicId},
           );
           return true;
         }
+        launchURL();
+        return false;
       }
       launchURL();
       return false;
@@ -605,14 +652,23 @@ abstract final class PiliScheme {
       case 'note' || 'note-app':
         String? id = uri.queryParameters['cvid'];
         if (id != null) {
-          PageUtils.toDupNamed(
-            '/articlePage',
-            parameters: {
-              'id': id,
-              'type': 'read',
-            },
-            off: off,
-          );
+          if (off) {
+            PageUtils.replaceNamed(
+              AppRoutes.articlePage,
+              parameters: {
+                'id': id,
+                'type': 'read',
+              },
+            );
+          } else {
+            PageUtils.pushNamed(
+              AppRoutes.articlePage,
+              parameters: {
+                'id': id,
+                'type': 'read',
+              },
+            );
+          }
           return true;
         }
         launchURL();
@@ -702,11 +758,17 @@ abstract final class PiliScheme {
             caseSensitive: false,
           ).firstMatch(path)?.group(1);
           if (id != null) {
-            PageUtils.toDupNamed(
-              '/articleList',
-              parameters: {'id': id},
-              off: off,
-            );
+            if (off) {
+              PageUtils.replaceNamed(
+                AppRoutes.articleList,
+                parameters: {'id': id},
+              );
+            } else {
+              PageUtils.pushNamed(
+                AppRoutes.articleList,
+                parameters: {'id': id},
+              );
+            }
             return true;
           }
           launchURL();
@@ -718,14 +780,23 @@ abstract final class PiliScheme {
           caseSensitive: false,
         ).firstMatch(path)?.group(1);
         if (id != null) {
-          PageUtils.toDupNamed(
-            '/articlePage',
-            parameters: {
-              'id': id,
-              'type': 'read',
-            },
-            off: off,
-          );
+          if (off) {
+            PageUtils.replaceNamed(
+              AppRoutes.articlePage,
+              parameters: {
+                'id': id,
+                'type': 'read',
+              },
+            );
+          } else {
+            PageUtils.pushNamed(
+              AppRoutes.articlePage,
+              parameters: {
+                'id': id,
+                'type': 'read',
+              },
+            );
+          }
           return true;
         }
         launchURL();
@@ -734,10 +805,11 @@ abstract final class PiliScheme {
         // if (kDebugMode) debugPrint('个人空间');
         String? mid = uriDigitRegExp.firstMatch(path)?.group(1);
         if (mid != null) {
-          PageUtils.toDupNamed(
-            '/member?mid=$mid',
-            off: off,
-          );
+          if (off) {
+            PageUtils.replaceNamed(AppRoutes.member, parameters: {'mid': mid});
+          } else {
+            PageUtils.pushNamed(AppRoutes.member, parameters: {'mid': mid});
+          }
           return true;
         }
         launchURL();
@@ -792,11 +864,17 @@ abstract final class PiliScheme {
             path.contains('match/singledata')) {
           String? cid = uriDigitRegExp.firstMatch(path)?.group(1);
           if (cid != null) {
-            PageUtils.toDupNamed(
-              '/matchInfo',
-              parameters: {'cid': cid},
-              off: off,
-            );
+            if (off) {
+              PageUtils.replaceNamed(
+                AppRoutes.matchInfo,
+                parameters: {'cid': cid},
+              );
+            } else {
+              PageUtils.pushNamed(
+                AppRoutes.matchInfo,
+                parameters: {'cid': cid},
+              );
+            }
             return true;
           }
         }
