@@ -97,6 +97,15 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get isUgc => videoState.isUgc;
   bool get isFileSource => videoState.isFileSource;
   VideoType get videoType => videoState.videoType;
+  bool get showReply => videoState.showReply; // PHASE 7: Added for state access
+  bool get isQuerying => videoState.isQuerying; // PHASE 7: Added for state access
+  String? get videoUrl => videoState.videoUrl; // PHASE 7: Added for state access
+  String? get audioUrl => videoState.audioUrl; // PHASE 7: Added for state access
+  Duration? get playedTime => videoState.playedTime; // PHASE 7: Added for state access
+  bool get horizontalScreen => videoState.horizontalScreen; // PHASE 7: Added for state access
+  bool get setSystemBrightness => videoState.setSystemBrightness; // PHASE 7: Added for state access
+  double get videoHeight => videoState.videoHeight; // PHASE 7: Added for state access
+  bool get isVerticalState => videoState.isVertical; // PHASE 7: Non-Rx version from state
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -145,7 +154,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     PlPlayerController.setPlayCallBack(playCallBack);
     videoDetailController = Get.put(VideoDetailController(), tag: heroTag);
 
-    if (videoDetailController.showReply) {
+    if (showReply) { // PHASE 7: Using Riverpod state
       _videoReplyController = Get.put(
         VideoReplyController(
           aid: aid, // PHASE 6: Using Riverpod state
@@ -268,7 +277,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
               from:
                   1 -
                   videoDetailController.scrollCtr.offset /
-                      videoDetailController.videoHeight,
+                      videoHeight, // PHASE 7: Using Riverpod state
             );
           } else {
             refreshPage();
@@ -340,12 +349,12 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   /// 未开启自动播放时触发播放
   Future<void> handlePlay() async {
     if (!isFileSource) { // PHASE 6: Using Riverpod state
-      if (videoDetailController.isQuerying) {
+      if (isQuerying) { // PHASE 7: Using Riverpod state
         if (kDebugMode) debugPrint('handlePlay: querying');
         return;
       }
-      if (videoDetailController.videoUrl == null ||
-          videoDetailController.audioUrl == null) {
+      if (videoUrl == null || // PHASE 7: Using Riverpod state
+          audioUrl == null) { // PHASE 7: Using Riverpod state
         if (kDebugMode) {
           debugPrint('handlePlay: videoUrl/audioUrl not initialized');
         }
@@ -380,7 +389,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     );
 
     if (!Get.previousRoute.startsWith('/video')) {
-      if (Platform.isAndroid && !videoDetailController.setSystemBrightness) {
+      if (Platform.isAndroid && !setSystemBrightness) { // PHASE 7: Using Riverpod state
         ScreenBrightnessPlatform.instance.resetApplicationScreenBrightness();
       }
       PlPlayerController.setPlayCallBack(null);
@@ -395,7 +404,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         pgcIntroController.cancelTimer();
       }
     }
-    if (!videoDetailController.horizontalScreen) {
+    if (!horizontalScreen) { // PHASE 7: Using Riverpod state
       AutoOrientation.portraitUpMode();
     }
     if (!videoDetailController.plPlayerController.isCloseAll) {
@@ -551,7 +560,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   void cal() {
     if (videoDetailController.isExpanding) {
       animHeight = clampDouble(
-        videoDetailController.videoHeight *
+        videoHeight * // PHASE 7: Using Riverpod state
             videoDetailController.animationController.value,
         kToolbarHeight,
         videoDetailController.videoHeight,
@@ -660,7 +669,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                   : videoDetailController.isExpanding ||
                         videoDetailController.isCollapsing
                   ? animHeight
-                  : videoDetailController.videoHeight;
+                  : videoHeight; // PHASE 7: Using Riverpod state
               return [
                 SliverAppBar(
                   elevation: 0,
@@ -714,7 +723,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                           needCtr: false,
                           isNested: true,
                         ),
-                        if (videoDetailController.showReply)
+                        if (showReply) // PHASE 7: Using Riverpod state
                           videoReplyPanel(isNested: true),
                         if (_shouldShowSeasonPanel) seasonPanel,
                       ],
@@ -778,7 +787,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                           width: introWidth,
                           height: maxHeight,
                         ),
-                        if (videoDetailController.showReply) videoReplyPanel(),
+                        if (showReply) // PHASE 7: Using Riverpod state videoReplyPanel(),
                         if (_shouldShowSeasonPanel) seasonPanel,
                       ],
                     ),
@@ -842,7 +851,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                       child: videoTabBarView(
                         controller: videoDetailController.tabCtr,
                         children: [
-                          if (videoDetailController.showReply)
+                          if (showReply) // PHASE 7: Using Riverpod state
                             videoReplyPanel(),
                           if (_shouldShowSeasonPanel) seasonPanel,
                         ],
@@ -938,7 +947,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                               ],
                             ),
                           ),
-                        if (videoDetailController.showReply) videoReplyPanel(),
+                        if (showReply) // PHASE 7: Using Riverpod state videoReplyPanel(),
                         if (_shouldShowSeasonPanel) seasonPanel,
                       ],
                     ),
@@ -1013,14 +1022,14 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                             child: videoIntro(
                               width: () {
                                 double flex = 1;
-                                if (videoDetailController.showReply) flex++;
+                                if (showReply) // PHASE 7: Using Riverpod state flex++;
                                 if (shouldShowSeasonPanel) flex++;
                                 return maxWidth / flex;
                               }(),
                               height: bottomHeight,
                             ),
                           ),
-                          if (videoDetailController.showReply)
+                          if (showReply) // PHASE 7: Using Riverpod state
                             Expanded(child: videoReplyPanel()),
                           if (shouldShowSeasonPanel)
                             Expanded(child: seasonPanel),
@@ -2513,7 +2522,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
                       color: themeData.colorScheme.primary,
                     ),
                     Text(
-                      '${videoDetailController.playedTime == null
+                      '${playedTime == null // PHASE 7: Using Riverpod state
                           ? '立即'
                           : plPlayerController!.playerStatus.isCompleted
                           ? '重新'
@@ -2527,7 +2536,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: videoDetailController.playedTime == null
+                child: playedTime == null // PHASE 7: Using Riverpod state
                     ? moreBtn(
                         themeData.colorScheme.onSurface,
                       )
@@ -2582,7 +2591,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
       child: GestureDetector(
         onTap: () async {
           if (!isFileSource) { // PHASE 6: Using Riverpod state
-            if (videoDetailController.isQuerying) {
+            if (isQuerying) { // PHASE 7: Using Riverpod state
               if (kDebugMode) {
                 debugPrint('handlePlay: querying');
               }
