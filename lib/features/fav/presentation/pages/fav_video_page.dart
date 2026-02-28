@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -64,9 +65,7 @@ class _FavVideoPageState extends State<FavVideoPage>
                     heroTag: heroTag,
                     item: item,
                     onTap: () async {
-                      final res = await PageUtils.toDupNamed(
-                        '/favDetail',
-                        arguments: item,
+                      final res = await PageUtils.toDupNamed('/favDetail', arguments: item,
                         parameters: {
                           'heroTag': heroTag,
                           'mediaId': item.id.toString(),

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -81,9 +82,7 @@ class _UpowerRankPageState extends State<UpowerRankPage>
           }),
           actions: [
             TextButton(
-              onPressed: () => PageUtils.toDupNamed(
-                '/webview',
-                parameters: {
+              onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                   'url':
                       'https://member.bilibili.com/mall/upower-pay?mid=$_upMid&oid=$_upMid',
                 },
@@ -186,7 +185,7 @@ class _UpowerRankPageState extends State<UpowerRankPage>
                   return Material(
                     type: MaterialType.transparency,
                     child: ListTile(
-                      onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
+                      onTap: () => PageUtils.toMemberPage(item.mid!),
                       leading: SizedBox(
                         width: width,
                         child: Center(

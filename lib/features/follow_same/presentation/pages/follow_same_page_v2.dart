@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
@@ -35,9 +36,7 @@ class FollowSamePageV2 extends ConsumerStatefulWidget {
         ? mid
         : (mid != null ? int.tryParse(mid.toString()) : null);
     if (midInt == null) return;
-    PageUtils.toDupNamed(
-      '/sameFollowing',
-      arguments: {
+    PageUtils.pushNamed(AppRoutes.sameFollowing, extra: {
         'mid': midInt,
         'name': name,
       },

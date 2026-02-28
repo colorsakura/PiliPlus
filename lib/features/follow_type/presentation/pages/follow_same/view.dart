@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/features/follow_type/presentation/pages/follow_same/controller.dart';
 import 'package:PiliPlus/features/follow_type/follow_type.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
@@ -14,9 +15,7 @@ class FollowSamePage extends StatefulWidget {
 
   static void toFollowSamePage({dynamic mid, String? name}) {
     if (mid == null) return;
-    PageUtils.toDupNamed(
-      '/sameFollowing',
-      arguments: {
+    PageUtils.pushNamed(AppRoutes.sameFollowing, extra: {
         'mid': Utils.safeToInt(mid),
         'name': name,
       },

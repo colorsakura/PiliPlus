@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/features/shell/controller.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
@@ -30,7 +31,7 @@ class MessageBadge extends ConsumerWidget {
       onPressed: () {
         ref.read(unreadMessageControllerProvider.notifier).clear();
         ref.read(unreadMessageControllerProvider.notifier).resetCheckTime();
-        PageUtils.toDupNamed('/whisper');
+        PageUtils.pushNamed(AppRoutes.whisper);
       },
       icon: Badge(
         isLabelVisible:

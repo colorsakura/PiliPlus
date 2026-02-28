@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/dyn/ink_well.dart';
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -128,9 +129,7 @@ Widget addWidget(
                                       ? null
                                       : (NoDeadlineTapGestureRecognizer()
                                           ..onTap = () {
-                                            PageUtils.toDupNamed(
-                                              '/webview',
-                                              parameters: {
+                                            PageUtils.pushNamed(AppRoutes.webview, parameters: {
                                                 'url': reserve.desc3!.jumpUrl!,
                                               },
                                             );
@@ -264,9 +263,7 @@ Widget addWidget(
                                     ? null
                                     : (NoDeadlineTapGestureRecognizer()
                                         ..onTap = () {
-                                          PageUtils.toDupNamed(
-                                            '/webview',
-                                            parameters: {
+                                          PageUtils.pushNamed(AppRoutes.webview, parameters: {
                                               'url': content.desc!.jumpUrl!,
                                             },
                                           );

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math' show pi, max;
 
@@ -62,7 +63,7 @@ List<SettingsModel> get extraSettings => [
     subtitle: '点击配置',
     setKey: SettingBoxKey.enableSponsorBlock,
     defaultVal: false,
-    onTap: (context) => PageUtils.toDupNamed('/sponsorBlock'),
+    onTap: (context) => PageUtils.pushNamed(AppRoutes.sponsorBlock),
     leading: const Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,

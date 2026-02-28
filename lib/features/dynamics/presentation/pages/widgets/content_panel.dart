@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 // 内容
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/shared/widgets/flutter/text/text.dart' as custom_text;
@@ -37,9 +38,7 @@ Widget content(
       children: [
         if (moduleDynamic?.topic case final topic?)
           GestureDetector(
-            onTap: () => PageUtils.toDupNamed(
-              '/dynTopic',
-              parameters: {
+            onTap: () => PageUtils.pushNamed(AppRoutes.dynTopic, parameters: {
                 'id': topic.id!.toString(),
                 'name': topic.name!,
               },

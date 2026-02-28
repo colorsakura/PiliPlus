@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selection_area.dart';
 import 'package:PiliPlus/shared/widgets/flutter/selectable_text/text.dart';
@@ -764,7 +765,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
             text: '@${currentDesc.rawText}',
             style: TextStyle(color: colorSchemePrimary),
             recognizer: NoDeadlineTapGestureRecognizer()
-              ..onTap = () => PageUtils.toDupNamed('/member?mid=${currentDesc.bizId}'),
+              ..onTap = () => PageUtils.toMemberPage(currentDesc.bizId!),
           );
         default:
           return const TextSpan();
@@ -1046,17 +1047,11 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                     _ => item.tagName!,
                   },
                   onTap: switch (item.tagType) {
-                    'bgm' => (_) => PageUtils.toDupNamed(
-                      '/musicDetail',
-                      parameters: {'musicId': item.musicId!},
+                    'bgm' => (_) => PageUtils.pushNamed(AppRoutes.musicDetail, parameters: {'musicId': item.musicId!},
                     ),
-                    'topic' => (_) => PageUtils.toDupNamed(
-                      '/dynTopic',
-                      parameters: {'id': item.tagId!.toString()},
+                    'topic' => (_) => PageUtils.pushNamed(AppRoutes.dynTopic, parameters: {'id': item.tagId!.toString()},
                     ),
-                    _ => (tagName) => PageUtils.toDupNamed(
-                      '/searchResult',
-                      parameters: {'keyword': tagName},
+                    _ => (tagName) => PageUtils.pushNamed(AppRoutes.searchResult, parameters: {'keyword': tagName},
                     ),
                   },
                   onLongPress: Utils.copyText,

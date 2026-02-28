@@ -116,7 +116,7 @@ class _BlacklistPageState extends ConsumerState<BlacklistPage> {
 
     return ListTile(
       visualDensity: VisualDensity.standard,
-      onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
+      onTap: () => PageUtils.toMemberPage(item.mid!),
       leading: NetworkImgLayer(
         width: 45,
         height: 45,

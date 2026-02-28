@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
 
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -179,7 +180,7 @@ class ReplyItemGrpc extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             feedBack();
-            PageUtils.toDupNamed('/member?mid=${replyItem.mid}');
+            PageUtils.toMemberPage(replyItem.mid.toInt());
           },
           child: Row(
             mainAxisSize: .min,
@@ -627,9 +628,7 @@ class ReplyItemGrpc extends StatelessWidget {
                   String? cvid =
                       match?.group(1) ?? match?.group(2) ?? match?.group(3);
                   if (cvid != null) {
-                    PageUtils.toDupNamed(
-                      '/articlePage',
-                      parameters: {
+                    PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                         'id': cvid,
                         'type': 'read',
                       },
@@ -640,9 +639,7 @@ class ReplyItemGrpc extends StatelessWidget {
                 }
               } else {
                 if (url.extra.isWordSearch) {
-                  PageUtils.toDupNamed(
-                    '/searchResult',
-                    parameters: {'keyword': url.title},
+                  PageUtils.pushNamed(AppRoutes.searchResult, parameters: {'keyword': url.title},
                   );
                 } else {
                   PageUtils.handleWebview(matchStr);
@@ -692,7 +689,7 @@ class ReplyItemGrpc extends StatelessWidget {
               style: TextStyle(color: theme.colorScheme.primary),
               recognizer: NoDeadlineTapGestureRecognizer()
                 ..onTap = () =>
-                    PageUtils.toDupNamed('/member?mid=${content.atNameToMid[name]}'),
+                    PageUtils.toMemberPage(content.atNameToMid[name]!.toInt()),
             ),
           );
         } else if (_voteRegExp.hasMatch(matchStr)) {
@@ -758,9 +755,7 @@ class ReplyItemGrpc extends StatelessWidget {
                 style: TextStyle(color: theme.colorScheme.primary),
                 recognizer: NoDeadlineTapGestureRecognizer()
                   ..onTap = () {
-                    PageUtils.toDupNamed(
-                      '/searchResult',
-                      parameters: {'keyword': topic},
+                    PageUtils.pushNamed(AppRoutes.searchResult, parameters: {'keyword': topic},
                     );
                   },
               ),
@@ -809,9 +804,7 @@ class ReplyItemGrpc extends StatelessWidget {
         recognizer = NoDeadlineTapGestureRecognizer()
           ..onTap = () => hasClickUrl
               ? PiliScheme.routePushFromUrl(content.richText.note.clickUrl)
-              : PageUtils.toDupNamed(
-                  '/articlePage',
-                  parameters: {
+              : PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                     'id': content.richText.opus.opusId.toString(),
                     'type': 'opus',
                   },

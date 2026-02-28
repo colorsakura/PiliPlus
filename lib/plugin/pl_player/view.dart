@@ -2370,7 +2370,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                   MdiIcons.accountOutline,
                   color: Colors.white,
                 ),
-                onTap: () => PageUtils.toDupNamed('/member?mid=${extra.mid}'),
+                onTap: () {
+                  PageUtils.toMemberPage((extra.mid as int));
+                  return Future.value();
+                },
               ),
               _dmActionItem(
                 const Icon(

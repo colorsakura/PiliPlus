@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
@@ -36,9 +37,7 @@ class SubscriptionDetailPageV2 extends ConsumerStatefulWidget {
     String? heroTag,
     SubItemModel? subInfo,
   }) {
-    PageUtils.toDupNamed(
-      '/subDetail',
-      arguments: {
+    PageUtils.pushNamed(AppRoutes.subDetail, extra: {
         'id': id,
         'subInfo': subInfo,
         'heroTag': heroTag,
@@ -209,7 +208,7 @@ class _SubscriptionDetailPageV2State
                     ),
                     GestureDetector(
                       onTap: () =>
-                          PageUtils.toDupNamed('/member?mid=${info.upper!.mid}'),
+                          PageUtils.toMemberPage(info.upper!.mid!),
                       child: Text(
                         info.upper!.name!,
                         style: TextStyle(color: theme.colorScheme.primary),

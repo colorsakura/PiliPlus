@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -259,7 +260,7 @@ List<SettingsModel> get styleSettings => [
     },
   ),
   NormalModel(
-    onTap: (context, setState) => PageUtils.toDupNamed('/colorSetting'),
+    onTap: (context, setState) => PageUtils.pushNamed(AppRoutes.colorSetting),
     leading: const Icon(Icons.color_lens_outlined),
     title: '应用主题',
     getSubtitle: () => '当前主题：${Pref.dynamicColor ? '动态取色' : '指定颜色'}',

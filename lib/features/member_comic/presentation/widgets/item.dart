@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -24,9 +25,7 @@ class MemberComicItem extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: () {
-          PageUtils.toDupNamed(
-            '/webview',
-            parameters: {
+          PageUtils.pushNamed(AppRoutes.webview, parameters: {
               'url': 'https://manga.bilibili.com/detail/mc${item.param}',
             },
           );

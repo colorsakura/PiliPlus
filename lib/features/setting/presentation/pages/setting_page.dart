@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
@@ -295,7 +296,7 @@ class _SettingPageState extends State<SettingPage> {
     child: Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => PageUtils.toDupNamed('/settingsSearch'),
+        onTap: () => PageUtils.pushNamed(AppRoutes.settingsSearch),
         borderRadius: const BorderRadius.all(Radius.circular(50)),
         child: Ink(
           padding: const EdgeInsets.symmetric(vertical: 8),

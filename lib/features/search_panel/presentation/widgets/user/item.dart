@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
@@ -25,7 +26,7 @@ class SearchUserItem extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => PageUtils.toDupNamed('/member?mid=${item.mid}'),
+        onTap: () => PageUtils.toMemberPage(item.mid!),
         child: Row(
           children: [
             const SizedBox(width: 15),

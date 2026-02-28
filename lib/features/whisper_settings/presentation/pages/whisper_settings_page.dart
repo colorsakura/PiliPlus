@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show IMSettingType, Setting;
@@ -130,11 +131,9 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
       );
     } else if (item.redirect.otherPage.hasUrl()) {
       if (item.redirect.title == '黑名单') {
-        PageUtils.toDupNamed('/blackListPage');
+        PageUtils.pushNamed(AppRoutes.blackListPage);
       } else if (item.redirect.otherPage.url.startsWith('http')) {
-        PageUtils.toDupNamed(
-          '/webview',
-          parameters: {'url': item.redirect.otherPage.url},
+        PageUtils.pushNamed(AppRoutes.webview, parameters: {'url': item.redirect.otherPage.url},
         );
       } else {
         SmartDialog.showToast(item.redirect.otherPage.url);
@@ -143,9 +142,7 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
       if (item.redirect.title == '消息屏蔽词') {
         Get.to(const WhisperBlockPage());
       } else if (item.redirect.settingPage.url.startsWith('http')) {
-        PageUtils.toDupNamed(
-          '/webview',
-          parameters: {'url': item.redirect.settingPage.url},
+        PageUtils.pushNamed(AppRoutes.webview, parameters: {'url': item.redirect.settingPage.url},
         );
       } else {
         SmartDialog.showToast(item.redirect.settingPage.url);

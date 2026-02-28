@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
 
 import 'package:PiliPlus/http/loading_state.dart';
@@ -190,7 +191,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
 
   void onFollow(BuildContext context) {
     if (mid == account.mid) {
-      PageUtils.toDupNamed('/editProfile');
+      PageUtils.pushNamed(AppRoutes.editProfile);
     } else if (relation.value == 128) {
       _onBlock();
     } else {

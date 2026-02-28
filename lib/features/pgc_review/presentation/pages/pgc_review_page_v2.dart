@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/shared/widgets/custom_sliver_persistent_header_delegate.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
@@ -203,9 +204,7 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
       type: MaterialType.transparency,
       child: InkWell(
         onTap: isLongReview
-            ? () => PageUtils.toDupNamed(
-                '/articlePage',
-                parameters: {
+            ? () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                   'id': item.articleId!.toString(),
                   'type': 'read',
                 },
@@ -222,7 +221,7 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
+                onTap: () => PageUtils.toMemberPage(item.author!.mid!),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

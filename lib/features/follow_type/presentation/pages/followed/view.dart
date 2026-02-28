@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/features/follow_type/presentation/pages/followed/controller.dart';
 import 'package:PiliPlus/features/follow_type/follow_type.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
@@ -14,9 +15,7 @@ class FollowedPage extends StatefulWidget {
 
   static void toFollowedPage({dynamic mid, String? name}) {
     if (mid == null) return;
-    PageUtils.toDupNamed(
-      '/followed',
-      arguments: {
+    PageUtils.pushNamed(AppRoutes.followed, extra: {
         'mid': Utils.safeToInt(mid),
         'name': name,
       },

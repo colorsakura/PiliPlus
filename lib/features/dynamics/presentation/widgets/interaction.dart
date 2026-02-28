@@ -80,7 +80,7 @@ Widget _item(
                   : TextStyle(color: theme.colorScheme.onSurfaceVariant),
               recognizer: isAt
                   ? (NoDeadlineTapGestureRecognizer()
-                      ..onTap = () => PageUtils.toDupNamed('/member?mid=${e.rid}'))
+                      ..onTap = () => PageUtils.toMemberPage(int.parse(e.rid!)))
                   : null,
             );
           },

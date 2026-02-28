@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/skeleton/video_reply.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -219,9 +220,7 @@ class _NoteListPageState extends State<NoteListPage>
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => PageUtils.toDupNamed(
-          '/articlePage',
-          parameters: {
+        onTap: () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
             'id': item.cvid!.toString(),
             'type': 'read',
           },
@@ -232,7 +231,7 @@ class _NoteListPageState extends State<NoteListPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
+                onTap: () => PageUtils.toMemberPage(item.author!.mid!),
                 child: NetworkImgLayer(
                   height: 34,
                   width: 34,
@@ -248,7 +247,7 @@ class _NoteListPageState extends State<NoteListPage>
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          PageUtils.toDupNamed('/member?mid=${item.author!.mid}'),
+                          PageUtils.toMemberPage(item.author!.mid!),
                       child: Row(
                         children: [
                           Text(

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -51,9 +52,7 @@ class DynTopicRcmdPage extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   return TopicItemWidget(
                     item: response[index],
-                    onTap: (item) => PageUtils.toDupNamed(
-                      '/dynTopic',
-                      parameters: {
+                    onTap: (item) => PageUtils.pushNamed(AppRoutes.dynTopic, parameters: {
                         'id': item.id.toString(),
                         'name': item.name,
                       },

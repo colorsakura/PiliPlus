@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/stat/stat.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -23,9 +24,7 @@ class ArticleListItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           final dynIdStr = item.dynIdStr;
-          PageUtils.toDupNamed(
-            '/articlePage',
-            parameters: {
+          PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
               'id': dynIdStr ?? item.id!.toString(),
               'type': dynIdStr != null ? 'opus' : 'read',
             },

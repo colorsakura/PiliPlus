@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -27,9 +28,7 @@ class SearchArticleItem extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => PageUtils.toDupNamed(
-          '/articlePage',
-          parameters: {
+        onTap: () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
             'id': '${item.id}',
             'type': 'read',
           },

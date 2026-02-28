@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/dialog/report_member.dart';
 import 'package:PiliPlus/shared/widgets/dynamic_sliver_appbar_medium.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -201,9 +202,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
           ),
         ),
         PopupMenuItem(
-          onTap: () => PageUtils.toDupNamed(
-            '/upowerRank',
-            parameters: {
+          onTap: () => PageUtils.pushNamed(AppRoutes.upowerRank, parameters: {
               'mid': controller.mid.toString(),
             },
           ),
@@ -288,7 +287,7 @@ class _MemberPageState extends ConsumerState<MemberPage>
               ),
             ),
             PopupMenuItem(
-              onTap: () => PageUtils.toDupNamed('/spaceSetting'),
+              onTap: () => PageUtils.pushNamed(AppRoutes.spaceSetting),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

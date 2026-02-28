@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:async';
 
 import 'package:PiliPlus/shared/widgets/flutter/selectable_text/selection_area.dart';
@@ -99,7 +100,7 @@ class _SuperChatCardState extends State<SuperChatCard> {
       items: [
         PopupMenuItem(
           height: 38,
-          onTap: () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
+          onTap: () => PageUtils.toMemberPage((item.uid as int)),
           child: Text(
             '访问: ${item.userInfo.uname}',
             style: const TextStyle(fontSize: 13),

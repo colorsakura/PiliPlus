@@ -106,7 +106,7 @@ class BiliDownloadEntryInfo with MultiSelectData {
                 fontSize: 13,
               ),
             ),
-            onTap: () => PageUtils.toDupNamed('/member?mid=$mid'),
+            onTap: () => PageUtils.toMemberPage(mid),
           ),
       ],
     ),

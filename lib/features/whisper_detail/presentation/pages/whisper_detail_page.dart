@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:async';
 import 'dart:io' show File;
 
@@ -63,7 +64,7 @@ class _WhisperDetailPageState
           onTap: () {
             if (_whisperDetailController.mid != null) {
               feedBack();
-              PageUtils.toDupNamed('/member?mid=${_whisperDetailController.mid}');
+              PageUtils.toMemberPage(_whisperDetailController.mid!);
             }
           },
           child: Row(

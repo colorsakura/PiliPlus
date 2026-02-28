@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/user.dart';
@@ -46,7 +47,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           size: 23,
           icon: MdiIcons.folderDownloadOutline,
           title: '离线缓存',
-          onTap: () => PageUtils.toDupNamed('/download'),
+          onTap: () => PageUtils.pushNamed(AppRoutes.download),
         ),
         (
           size: 23,
@@ -54,7 +55,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '观看记录',
           onTap: () {
             if (isLogin) {
-              PageUtils.toDupNamed('/history');
+              PageUtils.pushNamed(AppRoutes.history);
             }
           },
         ),
@@ -64,7 +65,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '我的订阅',
           onTap: () {
             if (isLogin) {
-              PageUtils.toDupNamed('/subscription');
+              PageUtils.pushNamed(AppRoutes.subscription);
             }
           },
         ),
@@ -74,7 +75,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
           title: '稍后再看',
           onTap: () {
             if (isLogin) {
-              PageUtils.toDupNamed('/later');
+              PageUtils.pushNamed(AppRoutes.later);
             }
           },
         ),
@@ -284,9 +285,12 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
 
   void onLogin([bool longPress = false]) {
     if (!accountService.isLogin.value || longPress) {
-      PageUtils.toDupNamed('/loginPage');
+      PageUtils.pushNamed(AppRoutes.loginPage);
     } else {
-      PageUtils.toDupNamed('/member?mid=${userInfo.value.mid}');
+      final mid = userInfo.value.mid;
+      if (mid != null) {
+        PageUtils.toMemberPage(mid);
+      }
     }
   }
 

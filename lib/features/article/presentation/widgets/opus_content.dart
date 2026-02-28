@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math' as math;
 
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
@@ -73,7 +74,12 @@ class OpusContent extends StatelessWidget {
                 ..onTap = () {
                   switch (rich.type) {
                     case 'RICH_TEXT_NODE_TYPE_AT':
-                      PageUtils.toDupNamed('/member?mid=${rich.rid}');
+                      if (rich.rid != null) {
+                        final mid = int.tryParse(rich.rid!);
+                        if (mid != null) {
+                          PageUtils.toMemberPage(mid);
+                        }
+                      }
                     // case 'RICH_TEXT_NODE_TYPE_TOPIC':
                     default:
                       if (rich.jumpUrl != null) {

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/utils/fav_utils.dart';
@@ -22,9 +23,7 @@ class FavFolderItem extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        PageUtils.toDupNamed(
-          '/favDetail',
-          arguments: item,
+        PageUtils.toDupNamed('/favDetail', arguments: item,
           parameters: {
             'mediaId': item.id.toString(),
             'heroTag': heroTag,

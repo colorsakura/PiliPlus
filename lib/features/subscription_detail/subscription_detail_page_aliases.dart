@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:PiliPlus/features/subscription_detail/presentation/pages/subscription_detail_page_v2.dart';
 import 'package:PiliPlus/models/sub/sub/list.dart';
@@ -24,9 +25,7 @@ class SubDetailPage extends StatelessWidget {
     String? heroTag,
     SubItemModel? subInfo,
   }) {
-    PageUtils.toDupNamed(
-      '/subDetail',
-      parameters: {
+    PageUtils.pushNamed(AppRoutes.subDetail, parameters: {
         'id': id.toString(),
         if (heroTag != null) 'heroTag': heroTag,
       },

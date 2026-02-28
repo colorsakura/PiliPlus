@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:async';
 
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
@@ -157,7 +158,7 @@ class _MediaPageState extends CommonPageState<MinePage>
             padding: padding,
             style: style,
             tooltip: '搜索',
-            onPressed: () => PageUtils.toDupNamed('/search'),
+            onPressed: () => PageUtils.pushNamed(AppRoutes.search),
             icon: const Icon(Icons.search),
           ),
           const MessageBadge(),

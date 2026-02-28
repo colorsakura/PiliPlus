@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/image/image_save.dart';
@@ -64,7 +65,10 @@ class FavVideoCardH extends StatelessWidget {
             ? () => ctr!.onSelect(item)
             : () {
                 if (!const [0, 16].contains(item.attr)) {
-                  PageUtils.toDupNamed('/member?mid=${item.upper?.mid}');
+                  final mid = item.upper?.mid;
+                  if (mid != null) {
+                    PageUtils.toMemberPage(mid);
+                  }
                   return;
                 }
 

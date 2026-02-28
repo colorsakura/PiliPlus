@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -23,9 +24,7 @@ class MemberFavItem extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: () {
-          PageUtils.toDupNamed(
-            '/favDetail',
-            parameters: {
+          PageUtils.pushNamed(AppRoutes.favDetail, parameters: {
               'mediaId': item.mediaId.toString(),
               'heroTag': Utils.makeHeroTag(item.mediaId),
             },

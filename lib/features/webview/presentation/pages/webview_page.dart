@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 
 import 'package:PiliPlus/http/browser_ua.dart';
@@ -46,9 +47,7 @@ class WebviewPage extends StatefulWidget {
     int? oid,
     String? title,
     String? uaType,
-  }) => PageUtils.toDupNamed(
-    '/webview',
-    parameters: {
+  }) => PageUtils.pushNamed(AppRoutes.webview, parameters: {
       'url': url ?? '',
       'oid': oid?.toString() ?? '',
       'title': title ?? '',

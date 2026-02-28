@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/button/more_btn.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
@@ -194,11 +195,11 @@ class _LivePageState extends ConsumerState<LivePage>
                       onTap: () => PageUtils.toLiveRoom(item.roomid),
                       onLongPress: () {
                         Feedback.forLongPress(context);
-                        PageUtils.toDupNamed('/member?mid=${item.uid}');
+                        PageUtils.toMemberPage((item.uid as int));
                       },
                       onSecondaryTap: PlatformUtils.isMobile
                           ? null
-                          : () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
+                          : () => PageUtils.toMemberPage((item.uid as int)),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -293,9 +294,7 @@ class _LivePageState extends ConsumerState<LivePage>
               context: context,
               tooltip: '游戏赛事',
               icon: const Icon(Icons.gamepad),
-              onPressed: () => PageUtils.toDupNamed(
-                '/webview',
-                parameters: {
+              onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                   'uaType': 'mob',
                   'url':
                       'https://www.bilibili.com/h5/match/data/home?navhide=1&${theme.brightness.isDark ? 'dark=1' : 'dark=0'}',

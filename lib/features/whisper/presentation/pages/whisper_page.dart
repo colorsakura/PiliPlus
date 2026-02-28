@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/whisper/presentation/pages/whisper_controller.dart';
@@ -34,9 +35,7 @@ class _WhisperPageState extends State<WhisperPage> {
         actions: [
           IconButton(
             tooltip: '新增粉丝',
-            onPressed: () => PageUtils.toDupNamed(
-              '/webview',
-              parameters: {
+            onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                 'url':
                     'https://www.bilibili.com/h5/follow/newFans?navhide=1&${Utils.themeUrl(theme.colorScheme.isDark)}',
               },

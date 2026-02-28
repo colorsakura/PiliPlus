@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:convert';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
@@ -204,7 +205,7 @@ class WhisperSessionItem extends StatelessWidget {
           return GestureDetector(
             onTap: item.sessionInfo.avatar.hasMid()
                 ? () =>
-                      PageUtils.toDupNamed('/member?mid=${item.sessionInfo.avatar.mid}')
+                      PageUtils.toMemberPage(item.sessionInfo.avatar.mid.toInt())
                 : null,
             child: PendantAvatar(
               size: 42,

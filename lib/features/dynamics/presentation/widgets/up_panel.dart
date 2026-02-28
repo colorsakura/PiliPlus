@@ -147,7 +147,7 @@ class _UpPanelState extends State<UpPanel> {
     final isCurrent = isLive || currentMid == data.mid || currentMid == -1;
 
     final isAll = data.mid == -1;
-    void toMemberPage() => PageUtils.toDupNamed('/member?mid=${data.mid}');
+    void toMemberPage() => PageUtils.toMemberPage(data.mid!);
 
     Widget avatar;
     if (isAll) {

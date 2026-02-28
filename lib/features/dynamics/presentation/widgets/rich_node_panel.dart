@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io' show Platform;
 
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
@@ -71,7 +72,7 @@ TextSpan? richNode(
                 text: ' ${i.text}',
                 style: style,
                 recognizer: NoDeadlineTapGestureRecognizer()
-                  ..onTap = () => PageUtils.toDupNamed('/member?mid=${i.rid}'),
+                  ..onTap = () => PageUtils.toMemberPage(int.parse(i.rid!)),
               ),
             );
             break;
@@ -82,9 +83,7 @@ TextSpan? richNode(
                 text: i.origText,
                 style: style,
                 recognizer: NoDeadlineTapGestureRecognizer()
-                  ..onTap = () => PageUtils.toDupNamed(
-                    '/searchResult',
-                    parameters: {
+                  ..onTap = () => PageUtils.pushNamed(AppRoutes.searchResult, parameters: {
                       'keyword': i.origText!.substring(
                         1,
                         i.origText!.length - 1,
@@ -178,9 +177,7 @@ TextSpan? richNode(
                   text: '${i.origText} ',
                   style: style,
                   recognizer: NoDeadlineTapGestureRecognizer()
-                    ..onTap = () => PageUtils.toDupNamed(
-                      '/webview',
-                      parameters: {
+                    ..onTap = () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                         'url':
                             'https://www.bilibili.com/h5/lottery/result?business_id=${item.idStr}',
                       },

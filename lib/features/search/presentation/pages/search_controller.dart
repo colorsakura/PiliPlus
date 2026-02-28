@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 // Note: DebounceStreamMixin and DebounceStreamState are also available from
 // package:PiliPlus/utils/mixins/debounce_stream_mixin.dart for reuse
 import 'dart:async';
@@ -183,13 +184,13 @@ class SSearchController extends GetxController
     }
 
     searchFocusNode.unfocus();
-    await PageUtils.toDupNamed(
-      '/searchResult',
+    PageUtils.pushNamed(
+      AppRoutes.searchResult,
       parameters: {
         'tag': tag,
         'keyword': controller.text,
       },
-      arguments: {
+      extra: {
         'initIndex': initIndex,
         'fromSearch': true,
       },

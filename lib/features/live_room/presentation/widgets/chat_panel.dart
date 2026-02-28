@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/popup_menu.dart';
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -102,7 +103,7 @@ class LiveRoomChatPanel extends StatelessWidget {
                                   ),
                                   recognizer: NoDeadlineTapGestureRecognizer()
                                     ..onTap = () =>
-                                        PageUtils.toDupNamed('/member?mid=${reply.mid}'),
+                                        PageUtils.toMemberPage(reply.mid!),
                                 ),
                               _buildMsg(devicePixelRatio, item),
                             ],
@@ -322,7 +323,7 @@ class LiveRoomChatPanel extends StatelessWidget {
         ),
         PopupMenuItem(
           height: 38,
-          onTap: () => PageUtils.toDupNamed('/member?mid=${item.uid}'),
+          onTap: () => PageUtils.toMemberPage((item.uid as int)),
           child: const Text(
             '去TA的个人空间',
             style: TextStyle(fontSize: 13),

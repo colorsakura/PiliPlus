@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
@@ -96,13 +97,13 @@ class _HotPageState extends ConsumerState<HotPage>
                       iconUrl:
                           'https://i0.hdslb.com/bfs/archive/552ebe8c4794aeef30ebd1568b59ad35f15e21ad.png',
                       title: '每周必看',
-                      onTap: () => PageUtils.toDupNamed('/popularSeries'),
+                      onTap: () => PageUtils.pushNamed(AppRoutes.popularSeries),
                     ),
                     _buildEntranceItem(
                       iconUrl:
                           'https://i0.hdslb.com/bfs/archive/3693ec9335b78ca57353ac0734f36a46f3d179a9.png',
                       title: '入站必刷',
-                      onTap: () => PageUtils.toDupNamed('/popularPrecious'),
+                      onTap: () => PageUtils.pushNamed(AppRoutes.popularPrecious),
                     ),
                   ],
                 ),

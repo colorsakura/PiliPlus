@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:convert';
 import 'dart:math';
 
@@ -244,9 +245,7 @@ class ChatItem extends StatelessWidget {
 
   Widget msgTypeArticleCard_12(dynamic content, Color textColor) {
     return GestureDetector(
-      onTap: () => PageUtils.toDupNamed(
-        '/articlePage',
-        parameters: {
+      onTap: () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
           'id': '${content['rid']}',
           'type': "read",
         },
@@ -513,9 +512,7 @@ class ChatItem extends StatelessWidget {
       // article
       case 6:
         type = '专栏';
-        onTap = () => PageUtils.toDupNamed(
-          '/articlePage',
-          parameters: {
+        onTap = () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
             'id': '${content['id']}',
             'type': 'read',
           },

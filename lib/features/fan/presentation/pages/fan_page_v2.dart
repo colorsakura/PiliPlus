@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
@@ -34,9 +35,7 @@ class FanPageV2 extends ConsumerStatefulWidget {
 
   static void toFanPage({int? mid, String? name}) {
     if (mid == null) return;
-    PageUtils.toDupNamed(
-      '/fan',
-      arguments: {
+    PageUtils.pushNamed(AppRoutes.fan, extra: {
         'mid': mid,
         'name': name,
       },
@@ -150,7 +149,7 @@ class _FanPageV2State extends ConsumerState<FanPageV2> {
           );
           return;
         }
-        PageUtils.toDupNamed('/member?mid=${item.mid}');
+        PageUtils.toMemberPage(item.mid!);
       },
       onLongPress: flag ? onRemove : null,
       onSecondaryTap: flag && !PlatformUtils.isMobile ? onRemove : null,

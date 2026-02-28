@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -301,7 +302,7 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
               ),
               onPressed: () {
                 if (widget.mid == account.mid) {
-                  PageUtils.toDupNamed('/editProfile');
+                  PageUtils.pushNamed(AppRoutes.editProfile);
                 } else {
                   if (!account.isLogin) {
                     SmartDialog.showToast('账号未登录');
@@ -337,7 +338,7 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
                 tapTargetSize: .shrinkWrap,
                 visualDensity: const VisualDensity(vertical: -2),
               ),
-              onPressed: () => PageUtils.toDupNamed('/member?mid=${widget.mid}'),
+              onPressed: () => PageUtils.toMemberPage(widget.mid!),
               child: const Text(
                 '查看主页',
                 maxLines: 1,

@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -53,9 +54,7 @@ class HistoryItemV2 extends StatelessWidget {
             ? () => ctr.onSelect(item)
             : () async {
                 if (business?.contains('article') == true) {
-                  PageUtils.toDupNamed(
-                    '/articlePage',
-                    parameters: {
+                  PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                       'id': business == 'article-list'
                           ? '${item.history.cid}'
                           : '${item.history.oid}',
@@ -198,7 +197,7 @@ class HistoryItemV2 extends StatelessWidget {
                   if (item.authorMid != null &&
                       item.authorName?.isNotEmpty == true)
                     PopupMenuItem(
-                      onTap: () => PageUtils.toDupNamed('/member?mid=${item.authorMid}'),
+                      onTap: () => PageUtils.toMemberPage(item.authorMid!),
                       height: 38,
                       child: Row(
                         children: [

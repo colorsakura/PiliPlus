@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/stat/stat.dart';
@@ -28,9 +29,7 @@ class FavArticleItem extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           InkWell(
-            onTap: () => PageUtils.toDupNamed(
-              '/articlePage',
-              parameters: {
+            onTap: () => PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                 'id': item.opusId!.toString(),
                 'type': 'opus',
               },

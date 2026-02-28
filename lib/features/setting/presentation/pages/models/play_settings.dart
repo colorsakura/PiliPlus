@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
@@ -38,7 +39,7 @@ List<SettingsModel> get playSettings => [
       defaultVal: true,
     ),
   NormalModel(
-    onTap: (context, setState) => PageUtils.toDupNamed('/playSpeedSet'),
+    onTap: (context, setState) => PageUtils.pushNamed(AppRoutes.playSpeedSet),
     leading: const Icon(Icons.speed_outlined),
     title: '倍速设置',
     subtitle: '设置视频播放速度',

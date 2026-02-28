@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
@@ -92,9 +93,7 @@ class _FavTopicPageState extends ConsumerState<FavTopicPage>
                     color: theme.colorScheme.onInverseSurface,
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                     child: InkWell(
-                      onTap: () => PageUtils.toDupNamed(
-                        '/dynTopic',
-                        parameters: {
+                      onTap: () => PageUtils.pushNamed(AppRoutes.dynTopic, parameters: {
                           'id': item.id!.toString(),
                           'name': item.name!,
                         },

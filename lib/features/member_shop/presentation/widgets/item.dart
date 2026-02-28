@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
@@ -29,7 +30,7 @@ class MemberShopItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (item.cardUrl case final cardUrl?) {
-            PageUtils.toDupNamed('/webview', parameters: {'url': cardUrl});
+            PageUtils.pushNamed(AppRoutes.webview, parameters: {'url': cardUrl});
           }
         },
         child: Column(

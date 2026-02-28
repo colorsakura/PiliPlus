@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
 
 import 'package:PiliPlus/models/common/search/article_search_type.dart';
@@ -31,9 +32,7 @@ class SearchArticleController
     ).matchAsPrefix(keyword)?.group(2);
     if (cvid != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        PageUtils.toDupNamed(
-          '/articlePage',
-          parameters: {
+        PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
             'id': cvid,
             'type': 'read',
           },

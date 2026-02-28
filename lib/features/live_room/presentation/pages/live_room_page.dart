@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -509,8 +510,12 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                 }
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () =>
-                      PageUtils.toDupNamed('/member?mid=${roomInfoH5.roomInfo?.uid}'),
+                  onTap: () {
+                    final uid = roomInfoH5.roomInfo?.uid;
+                    if (uid != null) {
+                      PageUtils.toMemberPage(uid);
+                    }
+                  },
                   child: Row(
                     spacing: 10,
                     mainAxisSize: MainAxisSize.min,

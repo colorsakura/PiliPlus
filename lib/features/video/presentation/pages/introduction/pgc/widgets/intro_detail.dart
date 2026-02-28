@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/flutter/page/tabs.dart';
 import 'package:PiliPlus/shared/widgets/flutter/selectable_text/text.dart';
 import 'package:PiliPlus/shared/widgets/keep_alive_wrapper.dart';
@@ -201,9 +202,7 @@ class _IntroDetailState extends State<PgcIntroPanel>
                   (item) => SearchText(
                     fontSize: 13,
                     text: item.tagName!,
-                    onTap: (tagName) => PageUtils.toDupNamed(
-                      '/searchResult',
-                      parameters: {'keyword': tagName},
+                    onTap: (tagName) => PageUtils.pushNamed(AppRoutes.searchResult, parameters: {'keyword': tagName},
                     ),
                     onLongPress: Utils.copyText,
                   ),

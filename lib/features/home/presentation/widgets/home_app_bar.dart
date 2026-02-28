@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/custom_height_widget.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -279,7 +280,7 @@ class MsgBadge extends ConsumerWidget {
       onPressed: () {
         ref.read(unreadMessageControllerProvider.notifier).clear();
         ref.read(unreadMessageControllerProvider.notifier).resetCheckTime();
-        PageUtils.toDupNamed('/whisper');
+        PageUtils.pushNamed(AppRoutes.whisper);
       },
       icon: Badge(
         isLabelVisible:

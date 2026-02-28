@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/image/image_save.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -41,9 +42,7 @@ class SubItem extends StatelessWidget {
             return;
           }
           if (item.type == 11) {
-            PageUtils.toDupNamed(
-              '/favDetail',
-              parameters: {
+            PageUtils.pushNamed(AppRoutes.favDetail, parameters: {
                 'mediaId': item.id!.toString(),
                 'heroTag': heroTag,
               },

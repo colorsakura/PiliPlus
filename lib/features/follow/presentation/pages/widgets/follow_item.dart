@@ -39,7 +39,7 @@ class FollowItem extends StatelessWidget {
             );
           } else {
             feedBack();
-            PageUtils.toMemberPage(item.mid);
+            PageUtils.toMemberPage(item.mid!);
           }
         },
         child: Padding(

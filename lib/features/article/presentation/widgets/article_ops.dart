@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math' as math;
 
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -50,9 +51,7 @@ class ArticleOpus extends StatelessWidget {
                       switch (item.attributes?.clazz) {
                         case 'article-card card':
                           if (card.id != null) {
-                            PageUtils.toDupNamed(
-                              '/articlePage',
-                              parameters: {
+                            PageUtils.pushNamed(AppRoutes.articlePage, parameters: {
                                 'id': card.id!.substring(2),
                                 'type': 'read',
                               },
