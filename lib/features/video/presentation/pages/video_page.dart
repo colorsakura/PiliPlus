@@ -442,7 +442,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
     WidgetsBinding.instance.removeObserver(this);
 
-    if (Platform.isAndroid && !videoDetailController.setSystemBrightness) {
+    if (Platform.isAndroid && !setSystemBrightness) { // PHASE 7: Using Riverpod state
       ScreenBrightnessPlatform.instance.resetApplicationScreenBrightness();
     }
 
@@ -480,7 +480,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
     plPlayerController?.isLive = false;
     if (videoDetailController.plPlayerController.playerStatus.isPlaying &&
-        videoDetailController.playerStatus != PlayerStatus.playing) {
+        playerStatus != PlayerStatus.playing) { // PHASE 7: Using Riverpod state
       videoDetailController.plPlayerController.pause();
     }
 
@@ -491,7 +491,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
     if (mounted &&
         Platform.isAndroid &&
-        !videoDetailController.setSystemBrightness) {
+        !setSystemBrightness) { // PHASE 7: Using Riverpod state
       if (videoDetailController.brightness != null) {
         plPlayerController?.brightness.value =
             videoDetailController.brightness!;
@@ -513,7 +513,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           autoplay: playerStatus?.isPlaying ?? false, // PHASE 7: Using Riverpod state
         );
       } else if (videoDetailController.plPlayerController.preInitPlayer &&
-          !videoDetailController.isQuerying &&
+          !isQuerying && // PHASE 7: Using Riverpod state
           videoDetailController.videoState.value is! Error) {
         await ref.read(videoDetailProvider.notifier).playerInit( // PHASE 7: Using Riverpod notifier);
       }
@@ -600,7 +600,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         if (!imageview) { // PHASE 7: Using Riverpod state
           showStatusBar();
         }
-      } else if (!videoDetailController.horizontalScreen) {
+      } else if (!horizontalScreen) { // PHASE 7: Using Riverpod state
         hideStatusBar();
       }
     }
@@ -608,7 +608,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       if (!isPortrait &&
           !isFullScreen &&
           plPlayerController != null &&
-          videoDetailController.autoPlay) {
+          autoPlay) { // PHASE 7: Using Riverpod state
         WidgetsBinding.instance.addPostFrameCallback((_) {
           plPlayerController!.triggerFullScreen(
             status: true,
@@ -1125,7 +1125,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     key: videoDetailController.videoPlayerKey,
     canPop:
         !isFullScreen &&
-        (videoDetailController.horizontalScreen || isPortrait),
+        (horizontalScreen || isPortrait), // PHASE 7: Using Riverpod state
     onPopInvokedWithResult: _onPopInvokedWithResult,
     // MIGRATION: Use ConsumerWidget instead of Obx()
     // ORIGINAL: Line 1255-1277 Obx()
