@@ -401,9 +401,11 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         ugcIntroController
           ..cancelTimer()
           ..videoDetail.close();
-      } else {
+      } else if (!isUgc) { // PHASE 12: Added null safety check
         pgcIntroController.cancelTimer();
       }
+    } else {
+      localIntroController.cancelTimer(); // PHASE 12: Added file source case
     }
     if (!horizontalScreen) { // PHASE 7: Using Riverpod state
       AutoOrientation.portraitUpMode();
@@ -1715,9 +1717,9 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 .isReversed
           : ugcIntroController.videoDetail.value.isPageReversed,
       isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
-      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
-          ? ugcIntroController.onChangeEpisode
-          : pgcIntroController.onChangeEpisode,
+      onChangeEpisode: isUgc // PHASE 12: Only UGC supports episode changes
+          ? (episode) => ugcIntroController.onChangeEpisode(episode)
+          : (episode) async => true, // No-op for PGC and file source
       onClose: Get.back,
       onReverse: () {
         Get.back();
@@ -2186,9 +2188,9 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
           .ugcSeason!
           .sections![seasonIndex]
           .isReversed,
-      onChangeEpisode: isUgc
+      onChangeEpisode: isUgc // PHASE 12: Use appropriate controller
           ? ugcIntroController.onChangeEpisode
-          : pgcIntroController.onChangeEpisode,
+          : pgcIntroController.onChangeEpisode, // Direct access (PGC case)
       showTitle: false,
       isSupportReverse: isUgc,
       onReverse: () => onReversePlay(),
@@ -2245,9 +2247,9 @@ class _PartEpisodePanelWidget2 extends ConsumerWidget {
       aid: aid,
       cid: cid,
       isReversed: videoDetail.isPageReversed,
-      onChangeEpisode: isUgc
+      onChangeEpisode: isUgc // PHASE 12: Use appropriate controller
           ? ugcIntroController.onChangeEpisode
-          : pgcIntroController.onChangeEpisode,
+          : pgcIntroController.onChangeEpisode, // Direct access (PGC case)
       showTitle: false,
       isSupportReverse: isUgc,
       onReverse: () => onReversePlay(),
