@@ -2,40 +2,167 @@
 
 > 项目完整路由配置与使用说明
 
-最后更新: 2026-02-25
+最后更新: 2026-02-28 (Phase 13: go_router 迁移)
 
 ---
 
 ## 目录
 
 - [概述](#概述)
-- [一、GetX 命名路由](#一getx-命名路由)
-- [二、页面静态跳转方法](#二页面静态跳转方法)
-- [三、Deep Link / Scheme 路由](#三deep-link--scheme-路由)
-- [四、HTTPS 路由](#四https-路由)
-- [五、工具类路由方法](#五工具类路由方法)
-- [六、弹窗/面板类路由](#六弹窗面板类路由)
-- [七、路由配置文件](#七路由配置文件)
-- [八、使用示例](#八使用示例)
+- [一、路由系统架构](#一路由系统架构)
+- [二、go_router 路由](#二go_router-路由)
+- [三、GetX 命名路由](#三getx-命名路由)
+- [四、页面静态跳转方法](#四页面静态跳转方法)
+- [五、Deep Link / Scheme 路由](#五deep-link--scheme-路由)
+- [六、HTTPS 路由](#六https-路由)
+- [七、工具类路由方法](#七工具类路由方法)
+- [八、弹窗/面板类路由](#八弹窗面板类路由)
+- [九、路由配置文件](#九路由配置文件)
+- [十、使用示例](#十使用示例)
 
 ---
 
 ## 概述
 
-PiliPlus 使用 **GetX** 路由系统管理页面导航，同时支持 Deep Link 和自定义 Scheme 协议。
+PiliPlus 使用 **混合路由系统**：主要使用 go_router (Phase 13 迁移)，同时保留部分 GetX 路由用于兼容性。
 
-### 路由类型统计
+### 路由类型统计 (2026-02-28)
 
-| 类型 | 数量 |
-|------|------|
-| GetX 命名路由 | 67 个 |
-| Deep Link Host | 19 个 |
-| HTTPS 域名 | 7 个 |
-| 页面静态方法 | 15+ 个 |
-| 工具类方法 | 20+ 个 |
-| 弹窗/面板路由 | 25+ 个 |
-| **总计** | **150+ 个** |
+| 类型 | 数量 | 状态 |
+|------|------|------|
+| go_router 路由 | 56+ 个 | ✅ 主要路由系统 |
+| GetX 命名路由 | 67 个 | 🔄 逐步迁移中 |
+| Deep Link Host | 19 个 | ✅ 完整支持 |
+| HTTPS 域名 | 7 个 | ✅ 完整支持 |
+| 页面静态方法 | 15+ 个 | ✅ 完整支持 |
+| 工具类方法 | 20+ 个 | ✅ 完整支持 |
+| 弹窗/面板路由 | 25+ 个 | ✅ 完整支持 |
+| **总计** | **150+ 个** | - |
 
+---
+
+## 一、路由系统架构
+
+### 1.1 双路由系统 (过渡期)
+
+项目正在从 GetX 迁移到 go_router：
+
+```
+┌─────────────────────────────────────────┐
+│          PiliPlus 路由层                  │
+├─────────────────────────────────────────┤
+│                                         │
+│  ┌──────────────┐    ┌──────────────┐  │
+│  │  go_router   │    │    GetX      │  │
+│  │  (主要系统)   │    │  (兼容层)     │  │
+│  │              │    │              │  │
+│  │ • /videoV    │    │ • 其他路由    │  │
+│  │ • /home      │    │   (待迁移)    │  │
+│  │ • 动态路由    │    │              │  │
+│  └──────────────┘    └──────────────┘  │
+│         ↕                   ↕          │
+│  ┌─────────────────────────────────┐   │
+│  │     PageUtils (统一接口)          │   │
+│  └─────────────────────────────────┘   │
+└─────────────────────────────────────────┘
+```
+
+### 1.2 迁移进度
+
+- ✅ **Phase 13 (完成)**: 视频详情页迁移到 go_router
+- ⏳ **Phase 14+ (规划)**: 其他页面逐步迁移
+
+---
+
+## 二、go_router 路由
+
+### 2.1 配置文件
+
+路由配置位于 `lib/app/router/go_router_config.dart`
+
+### 2.2 已迁移路由
+
+| 路径 | 页面组件 | 参数传递方式 | 参数 | 迁移版本 |
+|------|---------|-------------|------|---------|
+| `/videoV` | VideoDetailPageV | `state.extra` (Map) | `aid`, `bvid`, `cid`, `seasonId`, `epId`, `cover`, `title`, `progress`, `videoType`, `heroTag` | Phase 13 |
+
+### 2.3 go_router 使用方法
+
+#### 推荐：使用 PageUtils 工具类
+
+```dart
+// 跳转视频详情页 (自动使用 go_router)
+PageUtils.toVideoPage(
+  bvid: 'BV1xx411c7mD',
+  cid: 123456,
+  cover: 'https://...',
+);
+```
+
+#### 直接使用 go_router
+
+```dart
+import 'package:go_router/go_router.dart';
+
+// Push (添加到导航栈)
+context.pushNamed(
+  AppRoutes.video,
+  extra: {
+    'bvid': 'BV1xx411c7mD',
+    'cid': 123456,
+    'cover': 'https://...',
+    'videoType': VideoType.ugc,
+    'heroTag': Utils.makeHeroTag(123456),
+  },
+);
+
+// Replace (替换当前页面)
+context.pushReplacementNamed(
+  AppRoutes.video,
+  extra: {...},
+);
+
+// Go (清空导航栈并跳转)
+context.goNamed(
+  AppRoutes.video,
+  extra: {...},
+);
+```
+
+### 2.4 参数接收模式
+
+在 ConsumerStatefulWidget 中接收 go_router 传递的参数：
+
+```dart
+class VideoDetailPageV extends ConsumerStatefulWidget {
+  const VideoDetailPageV({super.key, this.args});
+
+  final Map<String, dynamic> args;  // go_router 通过 state.extra 传递
+
+  @override
+  ConsumerState<VideoDetailPageV> createState() => _VideoDetailPageVState();
+}
+
+class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV> {
+  @override
+  void initState() {
+    super.initState();
+
+    // 使用 widget.args (来自 go_router)
+    final args = widget.args;
+
+    // 传递给 Provider
+    ref.read(videoDetailProvider.notifier).setArgs(args);
+
+    // 传递给 Controller
+    videoDetailController = VideoDetailController(args: args);
+  }
+}
+```
+
+---
+
+## 三、GetX 命名路由
 ---
 
 ## 一、GetX 命名路由
@@ -681,38 +808,48 @@ PiliScheme.videoPush(
 
 ### 7.1 核心文件
 
-| 文件 | 说明 |
-|------|------|
-| `lib/app/app.dart` | 应用入口，配置 `GetMaterialApp` |
-| `lib/app/router/app_pages.dart` | GetX 命名路由配置 |
-| `lib/utils/app_scheme.dart` | Deep Link 和 Scheme 处理 |
-| `lib/utils/page_utils.dart` | 页面工具类 |
-| `lib/features/common/presentation/pages/publish/publish_route.dart` | 发布面板路由定义 |
+| 文件 | 说明 | 状态 |
+|------|------|------|
+| `lib/app/app.dart` | 应用入口，配置 `GetMaterialApp` | ✅ |
+| `lib/app/router/go_router_config.dart` | go_router 路由配置 | ✅ Phase 13 |
+| `lib/app/router/app_routes.dart` | 路由路径常量定义 | ✅ |
+| `lib/app/router/app_pages.dart` | GetX 命名路由配置 (待迁移) | 🔄 |
+| `lib/utils/app_scheme.dart` | Deep Link 和 Scheme 处理 | ✅ |
+| `lib/utils/page_utils.dart` | 页面工具类 (统一接口) | ✅ |
+| `lib/features/common/presentation/pages/publish/publish_route.dart` | 发布面板路由定义 | ✅ |
 
-### 7.2 路由配置代码
+### 7.2 路由配置说明
+
+#### go_router 配置
 
 ```dart
-// lib/app/app.dart
-GetMaterialApp(
-  initialRoute: '/',
-  getPages: Routes.getPages,
-  defaultTransition: Pref.pageTransition,
-  navigatorObservers: [
-    PageUtils.routeObserver,
-    FlutterSmartDialog.observer,
+// lib/app/router/go_router_config.dart
+final routerConfig = GoRouter(
+  navigatorKey: rootNavigatorKey,
+  initialLocation: '/home',
+  routes: [
+    // 视频详情页路由
+    GoRoute(
+      path: '/videoV',
+      name: AppRoutes.video,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>?;
+        return VideoDetailPageV(args: args ?? const {});
+      },
+    ),
+    // ... 其他路由
   ],
-)
+);
 ```
 
+#### 路由常量定义
+
 ```dart
-// lib/app/router/app_pages.dart
-class Routes {
-  static final List<GetPage<dynamic>> getPages = [
-    GetPage(name: '/', page: () => const ShellPage()),
-    GetPage(name: '/home', page: () => const HomePage()),
-    GetPage(name: '/videoV', page: () => const VideoDetailPageV()),
-    // ... 更多路由
-  ];
+// lib/app/router/app_routes.dart
+class AppRoutes {
+  static const String video = '/videoV';
+  static const String home = '/home';
+  // ... 其他路由常量
 }
 ```
 
@@ -720,11 +857,36 @@ class Routes {
 
 ## 八、使用示例
 
-### 8.1 基础路由跳转
+### 8.1 视频导航 (使用 go_router)
+
+```dart
+// 方法1: 使用 PageUtils (推荐)
+PageUtils.toVideoPage(
+  bvid: 'BV1xx411c7mD',
+  cid: 123456,
+  cover: 'https://...',
+  title: '视频标题',
+  videoType: VideoType.ugc,
+);
+
+// 方法2: 直接使用 go_router
+import 'package:go_router/go_router.dart';
+
+context.pushNamed(
+  AppRoutes.video,
+  extra: {
+    'bvid': 'BV1xx411c7mD',
+    'cid': 123456,
+    'cover': 'https://...',
+  },
+);
+```
+
+### 8.2 其他页面导航 (使用 GetX，待迁移)
 
 ```dart
 // 使用命名路径
-Get.toNamed('/videoV', arguments: {'bvid': 'BV1xx411c7mD'});
+Get.toNamed('/webview', arguments: {'url': 'https://www.bilibili.com'});
 
 // 使用路径参数
 Get.toNamed('/member?mid=123456');
@@ -736,7 +898,7 @@ Get.offNamed('/loginPage');
 Get.offAllNamed('/home');
 ```
 
-### 8.2 使用页面静态方法
+### 8.3 使用页面静态方法
 
 ```dart
 // 跳转关注页面
@@ -757,7 +919,7 @@ VideoReplyReplyPanel.toReply(
 );
 ```
 
-### 8.3 使用工具类方法
+### 8.4 使用工具类方法
 
 ```dart
 // 跳转视频播放
