@@ -185,14 +185,18 @@ class VideoPage extends ConsumerStatefulWidget {
 
 ## Current Status
 
-The video page currently uses a **hybrid approach**:
+**Phase 13 Complete (2026-02-28)**: Video page fully migrated to go_router!
+
+The video page now uses **go_router** as the primary navigation system:
 - ✅ **Providers created**: VideoDetailNotifier and VideoReplyNotifier implemented with Riverpod 3.x
 - ✅ **Navigation migrated**: All Get.back() → context.pop(), Get.until() → context.go('/')
 - ✅ **Router updated**: go_router_config.dart accepts state.extra for arguments
-- ✅ **Video page converted**: ConsumerStatefulWidget with dual navigation support (widget.args + Get.arguments)
+- ✅ **Video page converted**: ConsumerStatefulWidget with go_router args support
 - ✅ **Providers initialized**: videoDetailProvider and videoReplyProvider initialized in initState()
+- ✅ **Controller args**: VideoDetailController accepts args via constructor
+- ✅ **PageUtils updated**: toVideoPage() uses go_router pushNamed/replaceNamed
 - ⏳ **UI migration pending**: 20+ Obx() calls still use GetX controllers (future work)
-- ⏳ **Controller methods**: Full business logic migration needed (100+ methods)
+- ⏳ **Other routes**: Other pages still use GetX (planned for future phases)
 
 ### Completed Migration Work
 
@@ -216,18 +220,33 @@ The video page currently uses a **hybrid approach**:
    - VideoReplyNotifier implements refresh/load more logic
    - Proper LoadingState handling with Success type checking
 
+4. **go_router Navigation (Phase 13)** ✅
+   - Modified `VideoDetailPageV` to use `widget.args` from go_router
+   - Added constructor to `VideoDetailController` accepting route arguments
+   - Updated `PageUtils.toVideoPage()` to use go_router navigation
+   - Removed `Get.arguments` dependency from video page initialization
+   - Added backward compatibility fallback for edge cases
+   - Marked GetX `/videoV` route as deprecated in app_pages.dart
+
 ### Architecture Notes
 
-**Dual Navigation Support:**
+**Current Navigation Flow:**
+```dart
+// All video navigation now goes through go_router
+PageUtils.toVideoPage(bvid: '...', cid: 123)
+  → context.pushNamed(AppRoutes.video, extra: arguments)
+    → VideoDetailPageV(args: arguments)
+      → VideoDetailController(args: arguments)
+```
+
+**Backward Compatibility:**
 ```dart
 // In video_page.dart initState()
-final args = widget.args.isEmpty
-    ? (Get.arguments as Map<String, dynamic>? ?? {})
-    : widget.args;
+final args = widget.args ?? Get.arguments as Map<String, dynamic>? ?? {};
 ```
 This ensures compatibility with both:
-- Old code: `Get.toNamed('/videoV', arguments: {...})`
-- New code: `context.pushNamed('video', extra: {...})`
+- **New code**: `PageUtils.toVideoPage()` → go_router → `widget.args`
+- **Old code**: `Get.toNamed('/videoV', ...)` → GetX → `Get.arguments` (fallback)
 
 **Controller Coexistence:**
 ```dart
