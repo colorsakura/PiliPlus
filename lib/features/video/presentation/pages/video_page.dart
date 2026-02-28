@@ -173,32 +173,35 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       isInit: true,
     );
 
+    // PHASE 11 FIX: Read state directly in initState (cannot use ref.watch())
+    final state = ref.read(videoDetailProvider);
+
     PlPlayerController.setPlayCallBack(playCallBack);
     videoDetailController = Get.put(VideoDetailController(), tag: heroTag);
 
-    if (showReply) { // PHASE 7: Using Riverpod state
+    if (state.showReply) { // PHASE 11: Direct state access in initState
       _videoReplyController = Get.put(
         VideoReplyController(
-          aid: aid, // PHASE 6: Using Riverpod state
-          videoType: videoType, // PHASE 6: Using Riverpod state
+          aid: state.aid,
+          videoType: state.videoType,
           heroTag: heroTag,
         ),
         tag: heroTag,
       );
     }
 
-    if (isFileSource) { // PHASE 6: Using Riverpod state
+    if (state.isFileSource) { // PHASE 11: Direct state access in initState
       localIntroController = Get.put(LocalIntroController(), tag: heroTag);
-    } else if (isUgc) { // PHASE 6: Using Riverpod state
+    } else if (state.isUgc) { // PHASE 11: Direct state access in initState
       ugcIntroController = Get.put(UgcIntroController(), tag: heroTag);
     } else {
       pgcIntroController = Get.put(PgcIntroController(), tag: heroTag);
     }
 
     // PHASE 6: Initialize introController based on state (replaces field initializer)
-    introController = isFileSource
+    introController = state.isFileSource
         ? localIntroController
-        : isUgc
+        : state.isUgc
         ? ugcIntroController
         : pgcIntroController;
 
@@ -213,7 +216,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   // 获取视频资源，初始化播放器
   Future<void> videoSourceInit() async {
     ref.read(videoDetailProvider.notifier).queryVideoUrl(); // PHASE 7: Using Riverpod notifier
-    if (videoState.autoPlay) { // PHASE 6: Using Riverpod state
+    final state = ref.read(videoDetailProvider); // PHASE 11: Read state directly
+    if (state.autoPlay) { // PHASE 11: Direct state access
       plPlayerController = videoDetailController.plPlayerController;
       plPlayerController!
         ..addStatusLister(playerListener)

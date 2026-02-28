@@ -1,7 +1,5 @@
 /// Route path constants for go_router
-class AppRoutes {
-  AppRoutes._();
-
+abstract class AppRoutes {
   static const String root = '/';
   static const String home = '/home';
   static const String hot = '/hot';

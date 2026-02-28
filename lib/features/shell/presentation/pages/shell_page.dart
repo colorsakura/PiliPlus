@@ -18,7 +18,6 @@ import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/utils/update.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,16 +67,8 @@ class _ShellPageState extends ConsumerState<ShellPage>
   }
 
   /// 初始化应用级功能
-  ///
-  /// - 注册生命周期观察者
-  /// - 检查应用更新
   void _initializeApp() {
     WidgetsBinding.instance.addObserver(this);
-
-    // 自动更新检查
-    if (Pref.autoUpdate) {
-      Update.checkUpdate();
-    }
   }
 
   /// 初始化导航配置和未读消息检查
@@ -238,11 +229,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
       child = Row(
         children: [
           _buildSideBar(config, theme, unreadDyn.count),
-          VerticalDivider(
-            width: 1,
-            endIndent: _padding.bottom,
-            color: theme.colorScheme.outline.withValues(alpha: 0.06),
-          ),
           Expanded(child: child),
         ],
       );
@@ -254,7 +240,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
       appBar: AppBar(toolbarHeight: 0),
       body: Padding(
         padding: EdgeInsets.only(
-          left: shouldUseBottomNav ? _padding.left : 0.0,
+          left: PlatformUtils.isDesktop ? 0 : _padding.left,
           right: _padding.right,
           bottom: shouldUseBottomNav ? 0.0 : _padding.bottom,
         ),
