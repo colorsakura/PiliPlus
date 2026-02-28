@@ -408,6 +408,16 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
     state = state.copyWith(showSteinEdgeInfo: value);
   }
 
+  /// Update seasonCid
+  void setSeasonCid(int? cid) {
+    state = state.copyWith(seasonCid: cid);
+  }
+
+  /// Update brightness
+  void setBrightness(double? brightness) {
+    state = state.copyWith(brightness: brightness);
+  }
+
   /// Get stein edge info for interactive videos
   Future<void> getSteinEdgeInfo([int? edgeId]) async {
     state = state.copyWith(steinEdgeInfo: null);

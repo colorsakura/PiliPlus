@@ -77,6 +77,10 @@ class VideoDetailState {
   final int? graphVersion;
   final dynamic steinEdgeInfo;
 
+  // Additional tracking state
+  final int? seasonCid; // PHASE 8: Track current season episode CID
+  final double? brightness; // PHASE 8: Screen brightness value
+
   const VideoDetailState({
     required this.args,
     required this.bvid,
@@ -122,6 +126,8 @@ class VideoDetailState {
     this.showSteinEdgeInfo = false,
     this.graphVersion,
     this.steinEdgeInfo,
+    this.seasonCid, // PHASE 8
+    this.brightness, // PHASE 8
   });
 
   VideoDetailState.initial()
@@ -168,7 +174,9 @@ class VideoDetailState {
         playerStatus = null,
         showSteinEdgeInfo = false,
         graphVersion = null,
-        steinEdgeInfo = null;
+        steinEdgeInfo = null,
+        seasonCid = null, // PHASE 8
+        brightness = null; // PHASE 8
 
 
   VideoDetailState copyWith({
@@ -216,6 +224,8 @@ class VideoDetailState {
     bool? showSteinEdgeInfo,
     int? graphVersion,
     dynamic steinEdgeInfo,
+    int? seasonCid, // PHASE 8
+    double? brightness, // PHASE 8
   }) {
     return VideoDetailState(
       args: args ?? this.args,
@@ -262,6 +272,8 @@ class VideoDetailState {
       showSteinEdgeInfo: showSteinEdgeInfo ?? this.showSteinEdgeInfo,
       graphVersion: graphVersion ?? this.graphVersion,
       steinEdgeInfo: steinEdgeInfo ?? this.steinEdgeInfo,
+      seasonCid: seasonCid ?? this.seasonCid, // PHASE 8
+      brightness: brightness ?? this.brightness, // PHASE 8
     );
   }
 }

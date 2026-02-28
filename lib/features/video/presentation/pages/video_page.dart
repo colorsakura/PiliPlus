@@ -121,6 +121,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   bool get showRelatedVideo => videoState.args['showRelatedVideo'] == true; // PHASE 7: From args
   bool get imageview => videoState.imageview; // PHASE 7: Added for state access
   bool get autoPlay => videoState.autoPlay; // PHASE 7: Added for state access
+  int? get seasonCid => videoState.seasonCid; // PHASE 8: Added for state access
+  double? get brightness => videoState.brightness; // PHASE 8: Added for state access
 
   // intro ctr - PHASE 6: Will be initialized in initState() using Riverpod state
   late CommonIntroController introController;
@@ -466,6 +468,9 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     videoDetailController
       ..playerStatus = plPlayerController?.playerStatus.value
       ..brightness = plPlayerController?.brightness.value;
+    ref.read(videoDetailProvider.notifier).setBrightness(
+      plPlayerController?.brightness.value,
+    ); // PHASE 8: Save brightness to Riverpod state
     if (plPlayerController != null) {
       ref.read(videoDetailProvider.notifier).makeHeartBeat(); // PHASE 7: Using Riverpod notifier
       plPlayerController!
@@ -505,12 +510,11 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     if (mounted &&
         Platform.isAndroid &&
         !setSystemBrightness) { // PHASE 7: Using Riverpod state
-      if (videoDetailController.brightness != null) {
-        plPlayerController?.brightness.value =
-            videoDetailController.brightness!;
-        if (videoDetailController.brightness != -1.0) {
+      if (brightness != null) { // PHASE 8: Using Riverpod state
+        plPlayerController?.brightness.value = brightness!;
+        if (brightness != -1.0) {
           ScreenBrightnessPlatform.instance.setApplicationScreenBrightness(
-            videoDetailController.brightness!,
+            brightness!,
           );
         } else {
           ScreenBrightnessPlatform.instance.resetApplicationScreenBrightness();
@@ -1794,7 +1798,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             .first;
         if (episode.cid != cid) { // PHASE 7: Using Riverpod state (non-Rx)
           ugcIntroController.onChangeEpisode(episode);
-          videoDetailController.seasonCid = episode.cid;
+          ref.read(videoDetailProvider.notifier).setSeasonCid(episode.cid); // PHASE 8: Using Riverpod
         } else {
           videoDetailController
             ..seasonIndex.refresh()
@@ -2182,6 +2186,7 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
     final isUgc = ref.watch(videoDetailProvider.select((s) => s.isUgc));
     final bvid = ref.watch(videoDetailProvider.select((s) => s.bvid));
     final aid = ref.watch(videoDetailProvider.select((s) => s.aid));
+    final seasonCid = ref.watch(videoDetailProvider.select((s) => s.seasonCid)); // PHASE 8
 
     return EpisodePanel(
       heroTag: heroTag,
@@ -2196,7 +2201,7 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
       list: videoDetail.ugcSeason!.sections!,
       bvid: bvid,
       aid: aid,
-      cid: videoDetailController.seasonCid ?? 0,
+      cid: seasonCid ?? 0, // PHASE 8
       isReversed: ugcIntroController
           .videoDetail
           .value
