@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:PiliPlus/app/router/go_router_config.dart';
+import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/image_viewer/gallery_viewer.dart';
 import 'package:PiliPlus/shared/widgets/image_viewer/hero_dialog_route.dart';
 import 'package:PiliPlus/grpc/im.dart';
@@ -549,7 +550,7 @@ abstract final class PageUtils {
     Map? extraArguments,
     bool off = false,
   }) {
-    final arguments = {
+    final arguments = <String, dynamic>{
       'aid': aid ?? IdUtils.bv2av(bvid!),
       'bvid': bvid ?? IdUtils.av2bv(aid!),
       'cid': cid,
@@ -563,6 +564,8 @@ abstract final class PageUtils {
       'heroTag': Utils.makeHeroTag(cid),
       ...?extraArguments,
     };
+    // Use GetX navigation for video pages since controllers depend on Get.arguments
+    // TODO: Migrate to go_router after fully migrating to Riverpod
     toDupNamed('/videoV', arguments: arguments, off: off);
     return Future.value();
   }

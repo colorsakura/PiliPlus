@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/core/image_cache/persistent_cache_manager.dart';
-import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/database/database_manager.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -90,9 +89,6 @@ class AppInitializer {
       await _initGetXServices();
       AppLog.fine('GetX services registered', name: 'AppInitializer');
 
-      await _initHttpClient();
-      AppLog.fine('HTTP client initialized', name: 'AppInitializer');
-
       _blockingPhaseCompleted = true;
       stopwatch.stop();
       AppLog.info(
@@ -140,6 +136,9 @@ class AppInitializer {
 
       CacheManager.autoClearCache();
       AppLog.fine('Cache cleared', name: 'AppInitializer');
+
+      await _initHttpClient();
+      AppLog.fine('HTTP client initialized', name: 'AppInitializer');
 
       _corePhaseCompleted = true;
       _corePhaseCompleter!.complete();

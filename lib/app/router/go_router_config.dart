@@ -1,16 +1,11 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/app/router/route_guards.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
+import 'package:PiliPlus/features/article/article.dart';
 import 'package:PiliPlus/features/article_list/article_list.dart';
+import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/features/backup/presentation/pages/backup_page.dart';
 import 'package:PiliPlus/features/blacklist/presentation/pages/blacklist_page.dart';
-import 'package:PiliPlus/features/history/history.dart';
-import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
-import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
-import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
-import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
-import 'package:PiliPlus/features/article/article.dart';
-import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/features/danmaku_block/danmaku_block.dart';
 import 'package:PiliPlus/features/dlna/dlna.dart';
 import 'package:PiliPlus/features/download/download.dart';
@@ -26,10 +21,14 @@ import 'package:PiliPlus/features/fav_create/fav_create.dart';
 import 'package:PiliPlus/features/fav_detail/fav_detail.dart';
 import 'package:PiliPlus/features/fav_search/fav_search.dart';
 import 'package:PiliPlus/features/follow/follow.dart';
-import 'package:PiliPlus/features/followed/followed.dart';
 import 'package:PiliPlus/features/follow_same/follow_same.dart';
 import 'package:PiliPlus/features/follow_search/follow_search.dart';
+import 'package:PiliPlus/features/followed/followed.dart';
+import 'package:PiliPlus/features/history/history.dart';
 import 'package:PiliPlus/features/history_search/history_search.dart';
+import 'package:PiliPlus/features/home/presentation/pages/home_page.dart';
+import 'package:PiliPlus/features/home_hot/presentation/pages/hot_page.dart';
+import 'package:PiliPlus/features/later/presentation/pages/later_page.dart';
 import 'package:PiliPlus/features/live_dm_block/live_dm_block.dart';
 import 'package:PiliPlus/features/live_room/live_room.dart';
 import 'package:PiliPlus/features/login/login.dart';
@@ -59,6 +58,7 @@ import 'package:PiliPlus/features/setting/presentation/pages/style_setting.dart'
 import 'package:PiliPlus/features/setting/presentation/pages/video_setting.dart';
 import 'package:PiliPlus/features/setting/setting.dart';
 import 'package:PiliPlus/features/settings_search/settings_search.dart';
+import 'package:PiliPlus/features/shell/presentation/pages/shell_page.dart';
 import 'package:PiliPlus/features/space_setting/space_setting.dart';
 import 'package:PiliPlus/features/sponsor_block/sponsor_block.dart';
 import 'package:PiliPlus/features/subscription/subscription.dart';
@@ -90,19 +90,19 @@ GoRouter goRouter() {
       // Root / Shell route - contains bottom navigation
       GoRoute(
         path: AppRoutes.root,
-        pageBuilder: (context, state) => MaterialPage(child: ShellPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: ShellPage()),
         routes: [
           // Home tab
           GoRoute(
             path: AppRoutes.home,
             pageBuilder: (context, state) =>
-                MaterialPage(child: const HomePage()),
+                const MaterialPage(child: HomePage()),
           ),
           // Hot tab
           GoRoute(
             path: AppRoutes.hot,
             pageBuilder: (context, state) =>
-                MaterialPage(child: const HotPage()),
+                const MaterialPage(child: HotPage()),
           ),
         ],
       ),
@@ -110,9 +110,12 @@ GoRouter goRouter() {
       // Standalone routes (not in shell)
       GoRoute(
         path: AppRoutes.video,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: VideoDetailPageV(),
-        ),
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>?;
+          return MaterialPage(
+            child: VideoDetailPageV(args: args ?? const {}),
+          );
+        },
       ),
 
       GoRoute(
@@ -126,13 +129,12 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.setting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SettingPage()),
+            const MaterialPage(child: SettingPage()),
       ),
 
       GoRoute(
         path: AppRoutes.fav,
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: FavPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: FavPage()),
       ),
 
       GoRoute(
@@ -144,20 +146,19 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.later,
-        pageBuilder: (context, state) =>
-            MaterialPage(child: const LaterPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: LaterPage()),
       ),
 
       GoRoute(
         path: AppRoutes.history,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const HistoryPageV2()),
+            const MaterialPage(child: HistoryPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.search,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SearchPage()),
+            const MaterialPage(child: SearchPage()),
       ),
 
       GoRoute(
@@ -171,7 +172,7 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.dynamics,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const dynamics.DynamicsPage()),
+            const MaterialPage(child: dynamics.DynamicsPage()),
       ),
 
       GoRoute(
@@ -195,8 +196,7 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.fan,
-        pageBuilder: (context, state) =>
-            MaterialPage(child: const FanPageV2()),
+        pageBuilder: (context, state) => const MaterialPage(child: FanPageV2()),
       ),
 
       GoRoute(
@@ -216,67 +216,66 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.memberSearch,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MemberSearchPageV2()),
+            const MaterialPage(child: MemberSearchPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.recommendSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const RecommendSetting()),
+            const MaterialPage(child: RecommendSetting()),
       ),
 
       GoRoute(
         path: AppRoutes.videoSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const VideoSetting()),
+            const MaterialPage(child: VideoSetting()),
       ),
 
       GoRoute(
         path: AppRoutes.playSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const PlaySetting()),
+            const MaterialPage(child: PlaySetting()),
       ),
 
       GoRoute(
         path: AppRoutes.styleSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const StyleSetting()),
+            const MaterialPage(child: StyleSetting()),
       ),
 
       GoRoute(
         path: AppRoutes.privacySetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const PrivacySetting()),
+            const MaterialPage(child: PrivacySetting()),
       ),
 
       GoRoute(
         path: AppRoutes.extraSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const ExtraSetting()),
+            const MaterialPage(child: ExtraSetting()),
       ),
 
       GoRoute(
         path: AppRoutes.blackListPage,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const BlacklistPage()),
+            const MaterialPage(child: BlacklistPage()),
       ),
 
       GoRoute(
         path: AppRoutes.colorSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const ColorSelectPage()),
+            const MaterialPage(child: ColorSelectPage()),
       ),
 
       GoRoute(
         path: AppRoutes.displayModeSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SetDisplayMode()),
+            const MaterialPage(child: SetDisplayMode()),
       ),
 
       GoRoute(
         path: AppRoutes.about,
-        pageBuilder: (context, state) =>
-            MaterialPage(child: const AboutPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: AboutPage()),
       ),
 
       GoRoute(
@@ -289,31 +288,31 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.playSpeedSet,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const PlaySpeedPage()),
+            const MaterialPage(child: PlaySpeedPage()),
       ),
 
       GoRoute(
         path: AppRoutes.favSearch,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const FavSearchPage()),
+            const MaterialPage(child: FavSearchPage()),
       ),
 
       GoRoute(
         path: AppRoutes.historySearch,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const HistorySearchPage()),
+            const MaterialPage(child: HistorySearchPage()),
       ),
 
       GoRoute(
         path: AppRoutes.followSearch,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const FollowSearchPageV2()),
+            const MaterialPage(child: FollowSearchPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.whisper,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const WhisperPage()),
+            const MaterialPage(child: WhisperPage()),
       ),
 
       GoRoute(
@@ -326,43 +325,42 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.replyMe,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MsgReplyMePageV2()),
+            const MaterialPage(child: MsgReplyMePageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.atMe,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MsgAtMePageV2()),
+            const MaterialPage(child: MsgAtMePageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.likeMe,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MsgLikeMePageV2()),
+            const MaterialPage(child: MsgLikeMePageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.sysMsg,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MsgSysMsgPageV2()),
+            const MaterialPage(child: MsgSysMsgPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.loginPage,
-        pageBuilder: (context, state) =>
-            MaterialPage(child: const LoginPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: LoginPage()),
       ),
 
       GoRoute(
         path: AppRoutes.memberDynamics,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MemberDynamicsPageV2()),
+            const MaterialPage(child: MemberDynamicsPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.subscription,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SubscriptionPageV2()),
+            const MaterialPage(child: SubscriptionPageV2()),
       ),
 
       GoRoute(
@@ -382,43 +380,43 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.danmakuBlock,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const DanmakuBlockPageV2()),
+            const MaterialPage(child: DanmakuBlockPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.sponsorBlock,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SponsorBlockPage()),
+            const MaterialPage(child: SponsorBlockPage()),
       ),
 
       GoRoute(
         path: AppRoutes.createFav,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const CreateFavPage()),
+            const MaterialPage(child: CreateFavPage()),
       ),
 
       GoRoute(
         path: AppRoutes.editProfile,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const EditProfilePage()),
+            const MaterialPage(child: EditProfilePage()),
       ),
 
       GoRoute(
         path: AppRoutes.settingsSearch,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SettingsSearchPage()),
+            const MaterialPage(child: SettingsSearchPage()),
       ),
 
       GoRoute(
         path: AppRoutes.webdavSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const BackupPage()),
+            const MaterialPage(child: BackupPage()),
       ),
 
       GoRoute(
         path: AppRoutes.searchTrending,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SearchTrendingPage()),
+            const MaterialPage(child: SearchTrendingPage()),
       ),
 
       GoRoute(
@@ -438,7 +436,7 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.barSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const BarSetPage()),
+            const MaterialPage(child: BarSetPage()),
       ),
 
       GoRoute(
@@ -451,13 +449,13 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.spaceSetting,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const SpaceSettingPage()),
+            const MaterialPage(child: SpaceSettingPage()),
       ),
 
       GoRoute(
         path: AppRoutes.dynTopicRcmd,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const DynTopicRcmdPage()),
+            const MaterialPage(child: DynTopicRcmdPage()),
       ),
 
       GoRoute(
@@ -486,13 +484,13 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.liveDmBlockPage,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const LiveDmBlockPageV2()),
+            const MaterialPage(child: LiveDmBlockPageV2()),
       ),
 
       GoRoute(
         path: AppRoutes.createVote,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const CreateVotePage()),
+            const MaterialPage(child: CreateVotePage()),
       ),
 
       GoRoute(
@@ -505,24 +503,24 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.popularSeries,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const PopularSeriesPage()),
+            const MaterialPage(child: PopularSeriesPage()),
       ),
 
       GoRoute(
         path: AppRoutes.popularPrecious,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const PopularPreciousPage()),
+            const MaterialPage(child: PopularPreciousPage()),
       ),
 
       GoRoute(
         path: AppRoutes.audio,
-        pageBuilder: (context, state) => MaterialPage(child: const AudioPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: AudioPage()),
       ),
 
       GoRoute(
         path: AppRoutes.mainReply,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const MainReplyPage()),
+            const MaterialPage(child: MainReplyPage()),
       ),
 
       GoRoute(
@@ -552,12 +550,12 @@ GoRouter goRouter() {
       GoRoute(
         path: AppRoutes.download,
         pageBuilder: (context, state) =>
-            MaterialPage(child: const DownloadPage()),
+            const MaterialPage(child: DownloadPage()),
       ),
 
       GoRoute(
         path: AppRoutes.dlna,
-        pageBuilder: (context, state) => MaterialPage(child: const DlnaPage()),
+        pageBuilder: (context, state) => const MaterialPage(child: DlnaPage()),
       ),
     ],
   );

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
-import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/controller.dart' show MainController;
 import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
@@ -40,7 +39,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
   late final PageController _pageController;
 
   // 存储相关
-  late final _setting = GStorage.setting;
   late EdgeInsets _padding;
 
   // 配置
@@ -154,33 +152,21 @@ class _ShellPageState extends ConsumerState<ShellPage>
   }
 
   /// 处理系统返回键
-  ///
-  /// 根据 `directExitOnBack` 配置决定：
-  /// - true: 直接退出应用
-  /// - false: 先返回首页，再按才退出
   void _handlePop() {
     final navState = ref.read(navigationConfigControllerProvider);
     final selectedIndex = navState.config?.selectedIndex ?? 0;
 
-    if (directExitOnBack) {
-      _onBack();
+    if (selectedIndex != 0) {
+      // 返回到首页
+      ref.read(navigationConfigControllerProvider.notifier).updateIndex(0);
+      ref.read(navigationStateControllerProvider.notifier).reset();
+      // TODO: setSearchBar
     } else {
-      if (selectedIndex != 0) {
-        // 返回到首页
-        ref.read(navigationConfigControllerProvider.notifier).updateIndex(0);
-        ref.read(navigationStateControllerProvider.notifier).reset();
-        // TODO: setSearchBar
-      } else {
-        _onBack();
-      }
+      _onBack();
     }
   }
 
   /// 处理导航栏点击
-  ///
-  /// 切换页面并更新状态，特殊处理：
-  /// - 首页：检查默认搜索和未读消息
-  /// - 动态页：清除未读角标
   void _handleNavTap(int index) {
     feedBack();
     final navState = ref.read(navigationConfigControllerProvider);
@@ -261,7 +247,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
         ],
       );
     }
-    // 如果没有导航项，直接显示内容（不加任何导航栏）
 
     child = Scaffold(
       extendBody: true,
@@ -339,52 +324,53 @@ class _ShellPageState extends ConsumerState<ShellPage>
   Widget _buildSideBar(NavigationConfig config, ThemeData theme, int dynCount) {
     final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
 
-    return Column(
-      children: [
-        const SizedBox(height: 25),
-        Expanded(
-          flex: 5,
-          child: SizedBox(
-            width: 60,
-            child: NavigationRail(
-              backgroundColor: Colors.transparent,
-              labelType: NavigationRailLabelType.all,
-              indicatorShape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+    return Container(
+      color: Colors.grey[200],
+      child: Column(
+        children: [
+          const SizedBox(height: 25),
+          Expanded(
+            flex: 5,
+            child: SizedBox(
+              width: 60,
+              child: NavigationRail(
+                backgroundColor: Colors.transparent,
+                labelType: NavigationRailLabelType.all,
+                onDestinationSelected: _handleNavTap,
+                selectedIndex: config.navigationBars.isEmpty
+                    ? 0
+                    : config.selectedIndex.clamp(
+                        0,
+                        config.navigationBars.length - 1,
+                      ),
+                destinations: config.navigationBars
+                    .map(
+                      (e) => NavigationRailDestination(
+                        label: Text(e.label),
+                        icon: _buildIcon(
+                          type: e,
+                          dynCount: dynCount,
+                        ),
+                        selectedIcon: _buildIcon(
+                          type: e,
+                          selected: true,
+                          dynCount: dynCount,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
-              onDestinationSelected: _handleNavTap,
-              selectedIndex: config.navigationBars.isEmpty
-                  ? 0
-                  : config.selectedIndex.clamp(
-                      0,
-                      config.navigationBars.length - 1,
-                    ),
-              destinations: config.navigationBars
-                  .map(
-                    (e) => NavigationRailDestination(
-                      label: Text(e.label),
-                      icon: _buildIcon(
-                        type: e,
-                        dynCount: dynCount,
-                      ),
-                      selectedIcon: _buildIcon(
-                        type: e,
-                        selected: true,
-                        dynCount: dynCount,
-                      ),
-                    ),
-                  )
-                  .toList(),
             ),
           ),
-        ),
-        const Spacer(flex: 2),
-        _buildUserAndSearchVertical(
-          theme,
-          dynCount,
-          dynamicBadgeMode,
-        ),
-      ],
+          const Spacer(flex: 2),
+          _buildUserAndSearchVertical(
+            theme,
+            dynCount,
+            dynamicBadgeMode,
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 

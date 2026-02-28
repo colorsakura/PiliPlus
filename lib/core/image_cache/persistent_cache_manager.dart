@@ -70,4 +70,4 @@ class PersistentCacheManager {
 /// 默认的持久化缓存管理器实例
 ///
 /// 如果还未初始化，会自动使用 DefaultCacheManager
-final persistentCacheManager = PersistentCacheManager.instance;
+CacheManager get persistentCacheManager => PersistentCacheManager.instance;

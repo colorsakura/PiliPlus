@@ -63,6 +63,7 @@ import 'package:flutter/material.dart' hide showBottomSheet;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -379,7 +380,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     introController.viewLater();
                   },
                   leading: const Icon(Icons.watch_later_outlined, size: 20),
@@ -389,7 +390,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       videoDetailCtr.showNoteList(context);
                     },
                     leading: const Icon(Icons.note_alt_outlined, size: 20),
@@ -399,7 +400,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       videoDetailCtr.onDownload(this.context);
                     },
                     leading: const Icon(
@@ -412,7 +413,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       ImageUtils.downloadImg([
                         widget.videoDetailCtr.cover.value,
                       ]);
@@ -423,7 +424,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     shutdownTimerService.showScheduleExitDialog(
                       this.context,
                       isFullScreen: isFullScreen,
@@ -436,7 +437,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       videoDetailCtr.editPlayUrl();
                     },
                     leading: const Icon(
@@ -448,7 +449,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       videoDetailCtr.queryVideoUrl(
                         defaultST: videoDetailCtr.playedTime,
                         fromReset: true,
@@ -488,7 +489,7 @@ class HeaderControlState extends State<HeaderControl>
                       style: subTitleStyle,
                     ),
                     onTap: () async {
-                      Get.back();
+                      context.pop();
                       final result = await showDialog<CDNService>(
                         context: context,
                         builder: (context) => CdnSelectDialog(
@@ -581,7 +582,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       showSetVideoQa();
                     },
                     leading: const Icon(Icons.play_circle_outline, size: 20),
@@ -595,7 +596,7 @@ class HeaderControlState extends State<HeaderControl>
                     ListTile(
                       dense: true,
                       onTap: () {
-                        Get.back();
+                        context.pop();
                         showSetAudioQa();
                       },
                       leading: const Icon(Icons.album_outlined, size: 20),
@@ -608,7 +609,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       showSetDecodeFormats();
                     },
                     leading: const Icon(Icons.av_timer_outlined, size: 20),
@@ -622,7 +623,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     showSetRepeat();
                   },
                   leading: const Icon(Icons.repeat, size: 20),
@@ -635,7 +636,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     showDanmakuPool();
                   },
                   leading: const Icon(CustomIcons.dm_on, size: 20),
@@ -644,7 +645,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     showSetDanmaku();
                   },
                   leading: const Icon(CustomIcons.dm_settings, size: 20),
@@ -653,7 +654,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () {
-                    Get.back();
+                    context.pop();
                     showSetSubtitle();
                   },
                   leading: const Icon(Icons.subtitles_outlined, size: 20),
@@ -662,7 +663,7 @@ class HeaderControlState extends State<HeaderControl>
                 ListTile(
                   dense: true,
                   onTap: () async {
-                    Get.back();
+                    context.pop();
                     try {
                       final result = await FilePicker.platform.pickFiles();
                       if (result != null) {
@@ -719,7 +720,7 @@ class HeaderControlState extends State<HeaderControl>
                   ListTile(
                     dense: true,
                     onTap: () {
-                      Get.back();
+                      context.pop();
                       onExportSubtitle();
                     },
                     leading: const Icon(Icons.download_outlined, size: 20),
@@ -741,7 +742,7 @@ class HeaderControlState extends State<HeaderControl>
                       SmartDialog.showToast('账号未登录');
                       return;
                     }
-                    Get.back();
+                    context.pop();
                     PageUtils.reportVideo(videoDetailCtr.aid);
                   },
                   leading: const Icon(Icons.error_outline, size: 20),
@@ -975,7 +976,7 @@ class HeaderControlState extends State<HeaderControl>
                         if (isCurr) {
                           return;
                         }
-                        Get.back();
+                        context.pop();
                         final int quality = item.quality!;
                         final newQa = VideoQuality.fromCode(quality);
                         videoDetailCtr
@@ -1055,7 +1056,7 @@ class HeaderControlState extends State<HeaderControl>
                         if (isCurr) {
                           return;
                         }
-                        Get.back();
+                        context.pop();
                         final int quality = item.id!;
                         final newQa = AudioQuality.fromCode(quality);
                         videoDetailCtr
@@ -1150,7 +1151,7 @@ class HeaderControlState extends State<HeaderControl>
                               if (isCurr) {
                                 return;
                               }
-                              Get.back();
+                              context.pop();
                               videoDetailCtr
                                 ..currentDecodeFormats = format
                                 ..updatePlayer();
@@ -1194,7 +1195,7 @@ class HeaderControlState extends State<HeaderControl>
                   (item) => ListTile(
                     dense: true,
                     onTap: () async {
-                      Get.back();
+                      context.pop();
                       final url = item.subtitleUrl;
                       if (url == null || url.isEmpty) return;
                       try {
@@ -1693,7 +1694,7 @@ class HeaderControlState extends State<HeaderControl>
                     return ListTile(
                       dense: true,
                       onTap: () {
-                        Get.back();
+                        context.pop();
                         plPlayerController.setPlayRepeat(i);
                       },
                       contentPadding: const EdgeInsets.symmetric(
@@ -1828,7 +1829,7 @@ class HeaderControlState extends State<HeaderControl>
                         !isPortrait) {
                       verticalScreenForTwoSeconds();
                     } else {
-                      Get.back();
+                      context.pop();
                     }
                   },
                 ),
@@ -1850,7 +1851,7 @@ class HeaderControlState extends State<HeaderControl>
                       videoDetailCtr.plPlayerController
                         ..isCloseAll = true
                         ..dispose();
-                      Get.until((route) => route.isFirst);
+                      context.go('/');
                     },
                   ),
                 ),
