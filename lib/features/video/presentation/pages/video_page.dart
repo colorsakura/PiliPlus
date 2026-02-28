@@ -263,7 +263,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           if (!videoDetailController.isExpanding &&
               videoDetailController.scrollCtr.offset != 0 &&
               !videoDetailController.animationController.isAnimating) {
-            videoDetailController.isExpanding = true;
+            ref.read(videoDetailProvider.notifier).setExpanding(true); // PHASE 7: Using Riverpod notifier
             videoDetailController.animationController.forward(
               from:
                   1 -
@@ -419,7 +419,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   // 离开当前页面时
   void didPushNext() {
     if (Get.routing.route is HeroDialogRoute) {
-      videoDetailController.imageview = true;
+      ref.read(videoDetailProvider.notifier).setImageview(true); // PHASE 7: Using Riverpod notifier
       return;
     }
 
@@ -451,7 +451,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   // 返回当前页面时
   void didPopNext() {
     if (videoDetailController.imageview) {
-      videoDetailController.imageview = false;
+      ref.read(videoDetailProvider.notifier).setImageview(false); // PHASE 7: Using Riverpod notifier
       return;
     }
 
@@ -640,14 +640,14 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                   : kToolbarHeight;
               if (videoDetailController.isExpanding &&
                   videoDetailController.animationController.value == 1) {
-                videoDetailController.isExpanding = false;
+                ref.read(videoDetailProvider.notifier).setExpanding(false); // PHASE 7: Using Riverpod notifier
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   videoDetailController.scrollRatio.value = 0;
                   refreshPage();
                 });
               } else if (videoDetailController.isCollapsing &&
                   videoDetailController.animationController.value == 1) {
-                videoDetailController.isCollapsing = false;
+                ref.read(videoDetailProvider.notifier).setCollapsing(false); // PHASE 7: Using Riverpod notifier
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   refreshPage();
                 });
