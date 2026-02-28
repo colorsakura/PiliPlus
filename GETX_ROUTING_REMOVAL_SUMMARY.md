@@ -2,7 +2,7 @@
 
 ## ✅ 迁移完成
 
-**Phase 26-27: 完全移除 GetX 路由基础设施**
+**Phase 13-28: 完全移除 GetX 路由基础设施**
 
 ### 核心成果
 
@@ -46,8 +46,32 @@ MaterialApp.router(
 | 路由映射表 | 50+ | ✅ 已配置 |
 | toDupNamed 重新实现 | 1 | ✅ 使用 go_router |
 | pushNamed/replaceNamed | 2 | ✅ 返回 Future |
+| 迁移阶段 | 16 | ✅ 完成 |
+| 总提交数 | 48 | ✅ 完成 |
 
-### 当前状态
+### 当前状态 (Phase 28)
+
+#### 直接使用 go_router
+```
+✅ pushNamed(AppRoutes.xxx): 89 个
+✅ replaceNamed(AppRoutes.xxx): 6 个
+✅ toMemberPage(): 55 个
+总计: 150 个
+```
+
+#### 通过 toDupNamed 映射
+```
+🔄 toDupNamed 调用: 33 个
+   - 底层使用 go_router
+   - 保持向后兼容
+```
+
+#### 剩余 GetX 依赖
+```
+⚠️  Get.back(): 222 个
+   - 可选：逐步替换为 PageUtils.pop()
+   - 功能正常，不影响使用
+```
 
 #### 已迁移路由
 - **pushNamed 调用**: 87 个
