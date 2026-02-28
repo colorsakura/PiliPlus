@@ -337,7 +337,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
   /// 未开启自动播放时触发播放
   Future<void> handlePlay() async {
-    if (!videoDetailController.isFileSource) {
+    if (!isFileSource) { // PHASE 6: Using Riverpod state
       if (videoDetailController.isQuerying) {
         if (kDebugMode) debugPrint('handlePlay: querying');
         return;
@@ -384,8 +384,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       PlPlayerController.setPlayCallBack(null);
     }
 
-    if (!videoDetailController.isFileSource) {
-      if (videoDetailController.isUgc) {
+    if (!isFileSource) { // PHASE 6: Using Riverpod state
+      if (isUgc) { // PHASE 6: Using Riverpod state
         ugcIntroController
           ..cancelTimer()
           ..videoDetail.close();
@@ -867,7 +867,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     }
     final introHeight = maxHeight - height - padding.top;
     final showIntro =
-        videoDetailController.isUgc && videoDetailController.showRelatedVideo;
+        isUgc && videoDetailController.showRelatedVideo; // PHASE 6: Using Riverpod state
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -882,7 +882,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 height: videoHeight,
               ),
             ),
-            if (!videoDetailController.isFileSource)
+            if (!isFileSource) // PHASE 6: Using Riverpod state
               Offstage(
                 offstage: isFullScreen,
                 child: SizedBox(
@@ -912,7 +912,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 children: [
                   buildTabBar(
                     introText: '相关视频',
-                    showIntro: videoDetailController.isFileSource
+                    showIntro: isFileSource // PHASE 6: Using Riverpod state
                         ? true
                         : showIntro,
                   ),
@@ -920,7 +920,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                     child: videoTabBarView(
                       controller: videoDetailController.tabCtr,
                       children: [
-                        if (videoDetailController.isFileSource)
+                        if (isFileSource) // PHASE 6: Using Riverpod state
                           localIntroPanel()
                         else if (showIntro)
                           KeepAliveWrapper(
@@ -1069,7 +1069,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           onTap: () => videoDetailController.showNoteList(context),
           child: const Text('查看笔记'),
         ),
-      if (!videoDetailController.isFileSource)
+      if (!isFileSource) // PHASE 6: Using Riverpod state
         PopupMenuItem(
           onTap: () => videoDetailController.onDownload(this.context),
           child: const Text('缓存视频'),
@@ -1080,7 +1080,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
               ImageUtils.downloadImg([videoDetailController.cover.value]),
           child: const Text('保存封面'),
         ),
-      if (!videoDetailController.isFileSource && videoDetailController.isUgc)
+      if (!isFileSource && isUgc) // PHASE 6: Using Riverpod state
         PopupMenuItem(
           onTap: videoDetailController.toAudioPage,
           child: const Text('听音频'),
@@ -1090,7 +1090,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           if (!Accounts.main.isLogin) {
             SmartDialog.showToast('账号未登录');
           } else {
-            PageUtils.reportVideo(videoDetailController.aid);
+            PageUtils.reportVideo(aid); // PHASE 6: Using Riverpod state
           }
         },
         child: const Text('举报'),
@@ -1176,7 +1176,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   }) {
     List<String> tabs = [
       if (showIntro)
-        videoDetailController.isFileSource ? '离线视频' : introText ?? '简介',
+        isFileSource ? '离线视频' : introText ?? '简介', // PHASE 6: Using Riverpod state
       if (videoDetailController.showReply) '评论',
       if (_shouldShowSeasonPanel) '播放列表',
     ];
@@ -1210,7 +1210,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             return;
           }
           String text = tabs[value];
-          if (videoDetailController.isFileSource ||
+          if (isFileSource || // PHASE 6: Using Riverpod state
               text == '简介' ||
               text == '相关视频') {
             videoDetailController.introScrollCtr?.animToTop();
@@ -1333,7 +1333,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         // ORIGINAL: Line 1561-1580 Obx()
         // PATTERN: Single field watch (autoPlay) + reverse conditional rendering
         _AutoPlayCoverWidget(
-          aid: videoDetailController.aid,
+          aid: aid, // PHASE 6: Using Riverpod state
           width: width,
           height: height,
           videoDetailController: videoDetailController,
@@ -1438,7 +1438,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     bool needCtr = true,
     bool isNested = false,
   }) {
-    if (videoDetailController.isFileSource) {
+    if (isFileSource) { // PHASE 6: Using Riverpod state
       return localIntroPanel(needCtr: needCtr);
     }
     Widget introPanel() => KeepAliveWrapper(
@@ -1454,7 +1454,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 )
               : null,
           slivers: [
-            if (videoDetailController.isUgc) ...[
+            if (isUgc) ...[ // PHASE 6: Using Riverpod state
               UgcIntroPanel(
                 key: videoIntroKey,
                 heroTag: heroTag,
@@ -1674,7 +1674,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     }
     Widget listSheetContent({bool enableSlide = true}) => EpisodePanel(
       heroTag: heroTag,
-      ugcIntroController: videoDetailController.isUgc
+      ugcIntroController: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController
           : null,
       type: season != null
@@ -1690,7 +1690,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       cid: cid,
       seasonId: season?.id,
       list: season != null ? season.sections! : [episodes],
-      isReversed: !videoDetailController.isUgc
+      isReversed: !isUgc // PHASE 6: Using Riverpod state
           ? null
           : season != null
           ? ugcIntroController
@@ -1700,8 +1700,8 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 .sections![videoDetailController.seasonIndex.value]
                 .isReversed
           : ugcIntroController.videoDetail.value.isPageReversed,
-      isSupportReverse: videoDetailController.isUgc,
-      onChangeEpisode: videoDetailController.isUgc
+      isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
+      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController.onChangeEpisode
           : pgcIntroController.onChangeEpisode,
       onClose: Get.back,
@@ -1992,7 +1992,7 @@ class _PlDanmakuWidget extends ConsumerWidget {
       cid: cid,
       playerController: plPlayerController,
       isFullScreen: isFullScreen,
-      isFileSource: videoDetailController.isFileSource,
+      isFileSource: isFileSource, // PHASE 6: Using Riverpod state
       size: Size(width, height),
     );
   }
@@ -2147,7 +2147,7 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
     return EpisodePanel(
       heroTag: heroTag,
       enableSlide: false,
-      ugcIntroController: videoDetailController.isUgc
+      ugcIntroController: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController
           : null,
       type: EpisodeType.season,
@@ -2155,8 +2155,8 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
       cover: cover,
       seasonId: videoDetail.ugcSeason!.id,
       list: videoDetail.ugcSeason!.sections!,
-      bvid: videoDetailController.bvid,
-      aid: videoDetailController.aid,
+      bvid: bvid, // PHASE 6: Using Riverpod state
+      aid: aid, // PHASE 6: Using Riverpod state
       cid: videoDetailController.seasonCid ?? 0,
       isReversed: ugcIntroController
           .videoDetail
@@ -2164,11 +2164,11 @@ class _SeasonEpisodePanelWidget2 extends ConsumerWidget {
           .ugcSeason!
           .sections![seasonIndex]
           .isReversed,
-      onChangeEpisode: videoDetailController.isUgc
+      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController.onChangeEpisode
           : pgcIntroController.onChangeEpisode,
       showTitle: false,
-      isSupportReverse: videoDetailController.isUgc,
+      isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
       onReverse: () => onReversePlay(),
     );
   }
@@ -2208,21 +2208,21 @@ class _PartEpisodePanelWidget2 extends ConsumerWidget {
     return EpisodePanel(
       heroTag: heroTag,
       enableSlide: false,
-      ugcIntroController: videoDetailController.isUgc
+      ugcIntroController: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController
           : null,
       type: EpisodeType.part,
       list: [videoDetail.pages!],
       cover: cover,
-      bvid: videoDetailController.bvid,
-      aid: videoDetailController.aid,
+      bvid: bvid, // PHASE 6: Using Riverpod state
+      aid: aid, // PHASE 6: Using Riverpod state
       cid: cid,
       isReversed: videoDetail.isPageReversed,
-      onChangeEpisode: videoDetailController.isUgc
+      onChangeEpisode: isUgc // PHASE 6: Using Riverpod state
           ? ugcIntroController.onChangeEpisode
           : pgcIntroController.onChangeEpisode,
       showTitle: false,
-      isSupportReverse: videoDetailController.isUgc,
+      isSupportReverse: isUgc, // PHASE 6: Using Riverpod state
       onReverse: () => onReversePlay(),
     );
   }
@@ -2579,7 +2579,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
       bottom: -2,
       child: GestureDetector(
         onTap: () async {
-          if (!videoDetailController.isFileSource) {
+          if (!isFileSource) { // PHASE 6: Using Riverpod state
             if (videoDetailController.isQuerying) {
               if (kDebugMode) {
                 debugPrint('handlePlay: querying');
