@@ -527,7 +527,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         );
       } else if (videoDetailController.plPlayerController.preInitPlayer &&
           !isQuerying && // PHASE 7: Using Riverpod state
-          videoDetailController.videoState.value is! Error) {
+          videoState.videoState is! Error) { // PHASE 8: Using Riverpod state
         await ref.read(videoDetailProvider.notifier).playerInit(); // PHASE 7: Using Riverpod notifier
       }
       if (!mounted || !isShowing) return;
@@ -1570,7 +1570,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                       const Icon(Icons.playlist_play, size: 24),
                       const SizedBox(width: 10),
                       Text(
-                        videoDetailController.watchLaterTitle,
+                        videoState.args['favTitle'] ?? '', // PHASE 8: Using Riverpod state
                         style: TextStyle(
                           color: themeData.colorScheme.onSecondaryContainer,
                           fontWeight: FontWeight.bold,
@@ -1789,7 +1789,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
             .videoDetail
             .value
             .ugcSeason!
-            .sections![videoDetailController.seasonIndex.value]
+            .sections![seasonIndex] // PHASE 8: Using Riverpod state
             .episodes!
             .first;
         if (episode.cid != cid) { // PHASE 7: Using Riverpod state (non-Rx)
@@ -1808,15 +1808,14 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         ..pages = videoDetail.pages!.reversed.toList();
       if (!videoDetailController.plPlayerController.reverseFromFirst) {
         // keep current episode
-        videoDetailController.cid.refresh();
+        // PHASE 8: No need for refresh in Riverpod - state changes auto-notify
       } else {
         // switch to first episode
         final episode = videoDetail.pages!.first;
         if (episode.cid != cid) { // PHASE 7: Using Riverpod state (non-Rx)
           ugcIntroController.onChangeEpisode(episode);
-        } else {
-          videoDetailController.cid.refresh();
         }
+        // PHASE 8: No need for refresh in Riverpod - state changes auto-notify
       }
     }
   }
@@ -1858,7 +1857,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       return;
     }
     if (PlatformUtils.isMobile &&
-        !videoDetailController.horizontalScreen &&
+        !horizontalScreen && // PHASE 8: Using Riverpod state
         !isPortrait) {
       verticalScreenForTwoSeconds();
     }
@@ -2622,6 +2621,8 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
     final playedTime = ref.watch(videoDetailProvider.select((s) => s.playedTime));
     final isFileSource = ref.watch(videoDetailProvider.select((s) => s.isFileSource));
     final isQuerying = ref.watch(videoDetailProvider.select((s) => s.isQuerying));
+    final videoUrl = ref.watch(videoDetailProvider.select((s) => s.videoUrl));
+    final audioUrl = ref.watch(videoDetailProvider.select((s) => s.audioUrl));
 
     // Conditional rendering based on scrollRatio and scroll offset
     if (scrollRatio == 0 ||
@@ -2641,8 +2642,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
               }
               return;
             }
-            if (videoDetailController.videoUrl == null ||
-                videoDetailController.audioUrl == null) {
+            if (videoUrl == null || audioUrl == null) { // PHASE 8: Using Riverpod state
               if (kDebugMode) {
                 debugPrint('handlePlay: videoUrl/audioUrl not initialized');
               }
@@ -2651,8 +2651,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
             }
           }
           ref.read(videoDetailProvider.notifier).setScrollRatio(0); // PHASE 7: Using Riverpod notifier
-          if (plPlayerController == null ||
-              videoDetailController.playedTime == null) {
+          if (plPlayerController == null || playedTime == null) { // PHASE 8: Using Riverpod state
             handlePlay();
           } else {
             if (plPlayerController!
