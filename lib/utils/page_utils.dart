@@ -567,6 +567,18 @@ abstract final class PageUtils {
     }
   }
 
+  static void toMemberPage(
+    int mid, {
+    bool off = false,
+  }) {
+    // Use go_router navigation
+    if (off) {
+      replaceNamed(AppRoutes.member, parameters: {'mid': mid.toString()});
+    } else {
+      pushNamed(AppRoutes.member, parameters: {'mid': mid.toString()});
+    }
+  }
+
   static Future<void>? toVideoPage({
     VideoType videoType = VideoType.ugc,
     int? aid,
