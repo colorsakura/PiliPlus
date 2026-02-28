@@ -249,7 +249,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         if (isFullScreen && Platform.isIOS) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             // 根据视频方向重新设置屏幕方向
-            final isVertical = videoDetailController.isVertical.value;
+            final isVertical = isVerticalState; // PHASE 7: Using Riverpod state (non-Rx)
             final mode = ctr.mode;
 
             if (!(mode == FullScreenMode.vertical ||
@@ -308,7 +308,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                 ?.choices
                 ?.isNotEmpty ==
             true) {
-          videoDetailController.showSteinEdgeInfo.value = true;
+          ref.read(videoDetailProvider.notifier).setShowSteinEdgeInfo(true); // PHASE 7: Using Riverpod notifier
           return;
         }
       } catch (_) {}
@@ -547,7 +547,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       ..isPortrait = isPortrait = maxHeight >= maxWidth
       ..minVideoHeight = minVideoHeight
       ..maxVideoHeight = maxVideoHeight
-      ..videoHeight = videoDetailController.isVertical.value
+      ..videoHeight = isVerticalState // PHASE 7: Using Riverpod state (non-Rx)
           ? maxVideoHeight
           : minVideoHeight;
 
@@ -813,7 +813,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     bool isFullScreen,
     EdgeInsets padding,
   ) => Obx(() {
-    if (videoDetailController.isVertical.value &&
+    if (isVerticalState && // PHASE 7: Using Riverpod state (non-Rx)
         enableVerticalExpand &&
         !isPortrait) {
       final double videoHeight = maxHeight - padding.vertical;
@@ -989,7 +989,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
   ) => Obx(
     () {
       final isFullScreen = this.isFullScreen;
-      if (videoDetailController.isVertical.value &&
+      if (isVerticalState && // PHASE 7: Using Riverpod state (non-Rx)
           enableVerticalExpand &&
           !isPortrait) {
         return childSplit(9 / 16);
@@ -1760,7 +1760,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       // reverse season
       final item = videoDetail
           .ugcSeason!
-          .sections![videoDetailController.seasonIndex.value];
+          .sections![seasonIndex]; // PHASE 7: Using Riverpod state (non-Rx)
       item
         ..isReversed = !item.isReversed
         ..episodes = item.episodes!.reversed.toList();
@@ -2614,7 +2614,7 @@ class _VideoToolbarOverlayWidget extends ConsumerWidget {
               return;
             }
           }
-          videoDetailController.scrollRatio.value = 0;
+          ref.read(videoDetailProvider.notifier).setScrollRatio(0); // PHASE 7: Using Riverpod notifier
           if (plPlayerController == null ||
               videoDetailController.playedTime == null) {
             handlePlay();
