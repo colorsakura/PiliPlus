@@ -50,10 +50,13 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class LiveRoomController extends GetxController {
-  LiveRoomController(this.heroTag);
+  LiveRoomController(this.heroTag, {this.roomId}) {
+    // Fallback to Get.arguments if roomId not provided
+    roomId ??= Get.arguments;
+  }
   final String heroTag;
 
-  int roomId = Get.arguments;
+  int? roomId; // Passed via constructor or Get.arguments (fallback)
   int? ruid;
   DanmakuController<DanmakuExtra>? danmakuController;
   PlPlayerController plPlayerController = PlPlayerController.getInstance(
@@ -153,7 +156,7 @@ class LiveRoomController extends GetxController {
   );
 
   void _showRank() {
-    if (ruid case final ruid?) {
+    if (ruid case final ruid? when roomId != null) {
       final heightFactor =
           PlatformUtils.isMobile && !Get.mediaQuery.size.isPortrait ? 1.0 : 0.7;
       showModalBottomSheet(
@@ -165,7 +168,7 @@ class LiveRoomController extends GetxController {
         builder: (context) => FractionallySizedBox(
           widthFactor: 1.0,
           heightFactor: heightFactor,
-          child: ContributionRankPanel(ruid: ruid, roomId: roomId),
+          child: ContributionRankPanel(ruid: ruid, roomId: roomId!),
         ),
       );
     }
@@ -197,8 +200,8 @@ class LiveRoomController extends GetxController {
     mid = account.mid;
     queryLiveUrl();
     queryLiveInfoH5();
-    if (isLogin && !Pref.historyPause) {
-      VideoHttp.roomEntryAction(roomId: roomId);
+    if (isLogin && !Pref.historyPause && roomId != null) {
+      VideoHttp.roomEntryAction(roomId: roomId!);
     }
     if (showSuperChat) {
       pageController = PageController();
@@ -221,11 +224,15 @@ class LiveRoomController extends GetxController {
   }
 
   Future<void> queryLiveUrl() async {
+    if (roomId == null) {
+      _showDialog('直播间ID不存在');
+      return;
+    }
     currentQn ??= await Utils.isWiFi
         ? Pref.liveQuality
         : Pref.liveQualityCellular;
     final res = await LiveHttp.liveRoomInfo(
-      roomId: roomId,
+      roomId: roomId!,
       qn: currentQn,
       onlyAudio: plPlayerController.onlyPlayAudio.value,
     );
@@ -267,12 +274,13 @@ class LiveRoomController extends GetxController {
   }
 
   Future<void> queryLiveInfoH5() async {
-    final res = await LiveHttp.liveRoomInfoH5(roomId: roomId);
+    if (roomId == null) return;
+    final res = await LiveHttp.liveRoomInfoH5(roomId: roomId!);
     if (res case Success(:final response)) {
       roomInfoH5.value = response;
       title.value = response.roomInfo?.title ?? '';
       watchedShow.value = response.watchedShow?.textLarge;
-      videoPlayerServiceHandler?.onVideoDetailChange(response, roomId, heroTag);
+      videoPlayerServiceHandler?.onVideoDetailChange(response, roomId!, heroTag);
     } else {
       res.toast();
     }
@@ -337,7 +345,8 @@ class LiveRoomController extends GetxController {
 
   @pragma('vm:notify-debugger-on-exception')
   Future<void> prefetch() async {
-    final res = await LiveHttp.liveRoomDmPrefetch(roomId: roomId);
+    if (roomId == null) return;
+    final res = await LiveHttp.liveRoomDmPrefetch(roomId: roomId!);
     if (res case Success(:final response)) {
       if (response != null && response.isNotEmpty) {
         messages.addAll(response);
@@ -347,7 +356,8 @@ class LiveRoomController extends GetxController {
   }
 
   Future<void> getSuperChatMsg() async {
-    final res = await LiveHttp.superChatMsg(roomId);
+    if (roomId == null) return;
+    final res = await LiveHttp.superChatMsg(roomId!);
     if (res.dataOrNull?.list case final list?) {
       superChatMsg.addAll(list);
     }
@@ -371,7 +381,8 @@ class LiveRoomController extends GetxController {
       initDm(dmInfo!);
       return;
     }
-    LiveHttp.liveRoomGetDanmakuToken(roomId: roomId).then((res) {
+    if (roomId == null) return;
+    LiveHttp.liveRoomGetDanmakuToken(roomId: roomId!).then((res) {
       if (res case Success(:final response)) {
         initDm(dmInfo = response);
       }
@@ -422,12 +433,12 @@ class LiveRoomController extends GetxController {
   }
 
   void initDm(LiveDmInfoData info) {
-    if (info.hostList.isNullOrEmpty) {
+    if (info.hostList.isNullOrEmpty || roomId == null) {
       return;
     }
 
     final config = LiveStreamConnectionConfig(
-      roomId: roomId,
+      roomId: roomId!,
       uid: mid,
       streamToken: info.token!,
       servers: info.hostList!
@@ -592,9 +603,10 @@ class LiveRoomController extends GetxController {
       likeClickTime.value = 0;
       return;
     }
+    if (roomId == null) return;
     final res = await LiveHttp.liveLikeReport(
       clickTime: likeClickTime.value,
-      roomId: roomId,
+      roomId: roomId!,
       uid: mid,
       anchorId: roomInfoH5.value?.roomInfo?.uid,
     );
@@ -646,9 +658,10 @@ class LiveRoomController extends GetxController {
       ban: false,
       ReportOptions.liveDanmakuReport,
       (reasonType, reasonDesc, banUid) {
+        if (roomId == null) return Future.value(null);
         return LiveHttp.superChatReport(
           id: item.id,
-          roomId: roomId,
+          roomId: roomId!,
           uid: item.uid,
           msg: item.message,
           reason: ReportOptions.liveDanmakuReport['']![reasonType]!,

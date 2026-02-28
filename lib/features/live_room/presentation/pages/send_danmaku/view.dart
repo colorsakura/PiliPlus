@@ -69,17 +69,21 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
   }
 
   @override
-  Widget? get customPanel => LiveEmotePanelV2(
-    onChoose: onChooseEmote,
-    roomId: liveRoomController.roomId,
-    onSendEmoticonUnique: (emote) {
-      onCustomPublish(
-        message: emote.emoticonUnique!,
-        dmType: 1,
-        emoticonOptions: '[object Object]',
-      );
-    },
-  );
+  Widget? get customPanel {
+    final roomId = liveRoomController.roomId;
+    if (roomId == null) return null;
+    return LiveEmotePanelV2(
+      onChoose: onChooseEmote,
+      roomId: roomId,
+      onSendEmoticonUnique: (emote) {
+        onCustomPublish(
+          message: emote.emoticonUnique!,
+          dmType: 1,
+          emoticonOptions: '[object Object]',
+        );
+      },
+    );
+  }
 
   List<Widget> buildInputView(ThemeData theme) {
     return [
@@ -166,8 +170,13 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
       }
       message = buffer.toString();
     }
+    final roomId = liveRoomController.roomId;
+    if (roomId == null) {
+      SmartDialog.showToast('直播间ID不存在');
+      return;
+    }
     final res = await LiveHttp.sendLiveMsg(
-      roomId: liveRoomController.roomId,
+      roomId: roomId,
       msg: message,
       dmType: dmType,
       emoticonOptions: emoticonOptions,

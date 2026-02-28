@@ -2386,14 +2386,18 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                   CustomIcons.player_dm_tip_back,
                   color: Colors.white,
                 ),
-                onTap: () => HeaderControl.reportLiveDanmaku(
-                  context,
-                  roomId: (widget.bottomControl as live_bottom.BottomControl)
+                onTap: () {
+                  final roomId = (widget.bottomControl as live_bottom.BottomControl)
                       .liveRoomCtr
-                      .roomId,
-                  msg: item.content.text,
-                  extra: extra,
-                ),
+                      .roomId;
+                  if (roomId == null) return;
+                  HeaderControl.reportLiveDanmaku(
+                    context,
+                    roomId: roomId,
+                    msg: item.content.text,
+                    extra: extra,
+                  );
+                },
               ),
             ],
           },

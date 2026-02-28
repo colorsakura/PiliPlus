@@ -49,7 +49,9 @@ import 'package:get/get.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
 
 class LiveRoomPage extends StatefulWidget {
-  const LiveRoomPage({super.key});
+  const LiveRoomPage({super.key, this.roomId});
+
+  final int? roomId;
 
   @override
   State<LiveRoomPage> createState() => _LiveRoomPageState();
@@ -72,7 +74,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _liveRoomController = Get.put(
-      LiveRoomController(heroTag),
+      LiveRoomController(heroTag, roomId: widget.roomId),
       tag: heroTag,
     );
     plPlayerController = _liveRoomController.plPlayerController;
@@ -705,10 +707,14 @@ class _LiveRoomPageState extends State<LiveRoomPage>
   );
 
   Widget _buildChatWidget([bool isPP = false]) {
+    final roomId = _liveRoomController.roomId;
+    if (roomId == null) {
+      return const SizedBox.shrink();
+    }
     Widget chat() => LiveRoomChatPanel(
       key: chatKey,
       isPP: isPP,
-      roomId: _liveRoomController.roomId,
+      roomId: roomId,
       liveRoomController: _liveRoomController,
       onAtUser: (item) => _liveRoomController
         ..savedDanmaku = [

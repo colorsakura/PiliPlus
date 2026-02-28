@@ -211,9 +211,12 @@ GoRouter goRouter() {
 
       GoRoute(
         path: AppRoutes.liveRoom,
-        pageBuilder: (context, state) => const MaterialPage(
-          child: LiveRoomPage(),
-        ),
+        pageBuilder: (context, state) {
+          final roomId = state.extra as int?;
+          return MaterialPage(
+            child: LiveRoomPage(roomId: roomId),
+          );
+        },
       ),
 
       GoRoute(

@@ -546,7 +546,12 @@ abstract final class PageUtils {
     if (roomId == null) {
       return;
     }
-    toDupNamed('/liveRoom', arguments: roomId, off: off);
+    // Use go_router navigation
+    if (off) {
+      replaceNamed(AppRoutes.liveRoom, extra: roomId);
+    } else {
+      pushNamed(AppRoutes.liveRoom, extra: roomId);
+    }
   }
 
   static Future<void>? toVideoPage({
