@@ -1,12 +1,15 @@
-import 'package:PiliPlus/models/common/member/contribute_type.dart';
-import 'package:PiliPlus/models/space/space/tab2.dart';
+import 'dart:math';
+
 import 'package:PiliPlus/features/member_article/member_article.dart';
 import 'package:PiliPlus/features/member_audio/member_audio.dart';
 import 'package:PiliPlus/features/member_comic/member_comic.dart';
-import 'package:PiliPlus/features/member_contribute/presentation/providers/member_contribute_controller.dart';
+import 'package:PiliPlus/features/member_contribute/presentation/providers/member_contribute_controller_v2.dart';
+import 'package:PiliPlus/features/member_contribute/presentation/providers/member_contribute_state.dart';
 import 'package:PiliPlus/features/member_opus/member_opus.dart';
 import 'package:PiliPlus/features/member_season_series/member_season_series.dart';
 import 'package:PiliPlus/features/member_video/member_video.dart';
+import 'package:PiliPlus/models/common/member/contribute_type.dart';
+import 'package:PiliPlus/models/space/space/tab2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,8 +39,10 @@ class MemberContributePageV2 extends ConsumerStatefulWidget {
 }
 
 class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  MemberContributeController? _controller;
+    with
+        AutomaticKeepAliveClientMixin,
+        SingleTickerProviderStateMixin {
+  TabController? _tabController;
 
   @override
   bool get wantKeepAlive => true;
@@ -46,25 +51,31 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
   void initState() {
     super.initState();
 
-    // Create controller
-    final contributeTab = widget.contributeTab as SpaceTab2?;
-    if (contributeTab == null) {
-      return;
-    }
-
-    _controller = MemberContributeController(
-      contributeTab: contributeTab,
-      hasSeasonOrSeries: widget.hasSeasonOrSeries,
-      initialIndex: widget.initialIndex,
-    );
-
     // Initialize TabController after first frame when TickerProvider is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _controller != null) {
-        _controller!.initTabController(this, widget.initialIndex);
-        setState(() {}); // Rebuild to show tabs
-      }
+      _initTabController();
     });
+  }
+
+  void _initTabController() {
+    final contributeTab = widget.contributeTab as SpaceTab2?;
+    if (contributeTab == null) return;
+
+    final state = ref.read(memberContributeControllerProvider(
+      contributeTab,
+      widget.hasSeasonOrSeries,
+      widget.initialIndex,
+    ));
+
+    final tabs = state.tabs;
+    if (tabs != null && tabs.length > 1) {
+      _tabController = TabController(
+        vsync: this,
+        length: tabs.length,
+        initialIndex: max(0, widget.initialIndex ?? 0),
+      );
+      setState(() {}); // Rebuild to show tabs
+    }
   }
 
   @override
@@ -72,19 +83,30 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
     super.build(context);
     final theme = Theme.of(context);
 
-    if (_controller == null) {
+    final contributeTab = widget.contributeTab as SpaceTab2?;
+    if (contributeTab == null) {
       return const SizedBox.shrink();
     }
 
-    final state = _controller!.state;
+    final state = ref.watch(memberContributeControllerProvider(
+      contributeTab,
+      widget.hasSeasonOrSeries,
+      widget.initialIndex,
+    ));
+
     final tabs = state.tabs;
     final items = state.items;
 
     // Single item or no items - show directly
     if (tabs == null || tabs.isEmpty) {
       if (items.isNotEmpty) {
-        return _getPageFromType(items.first);
+        return _getPageFromType(items.first, state);
       }
+      return const SizedBox.shrink();
+    }
+
+    // Multiple tabs - wait for TabController initialization
+    if (_tabController == null) {
       return const SizedBox.shrink();
     }
 
@@ -99,7 +121,7 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
           isScrollable: true,
           tabs: tabs,
           tabAlignment: TabAlignment.start,
-          controller: _controller!.tabController,
+          controller: _tabController,
           dividerHeight: 0,
           indicatorWeight: 0,
           indicatorPadding: const EdgeInsets.symmetric(
@@ -113,22 +135,22 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
           indicatorSize: TabBarIndicatorSize.tab,
           labelStyle:
               TabBarTheme.of(context).labelStyle?.copyWith(fontSize: 14) ??
-              const TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 14),
           labelColor: theme.colorScheme.onSecondaryContainer,
           unselectedLabelColor: theme.colorScheme.outline,
         ),
         Expanded(
           child: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
-            controller: _controller!.tabController,
-            children: items.map(_getPageFromType).toList(),
+            controller: _tabController,
+            children: items.map((item) => _getPageFromType(item, state)).toList(),
           ),
         ),
       ],
     );
   }
 
-  Widget _getPageFromType(dynamic item) {
+  Widget _getPageFromType(dynamic item, MemberContributeState state) {
     // Handle both SpaceTab2Item and Map types
     final param = item is SpaceTab2Item ? item.param : item['param'] as String?;
     final title = item is SpaceTab2Item ? item.title : item['title'] as String?;
@@ -145,7 +167,7 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
         heroTag: widget.heroTag,
         mid: widget.mid,
         title: title,
-        isSingle: _controller!.state.tabs == null,
+        isSingle: state.tabs == null,
       ),
       'charging_video' => MemberVideo(
         type: ContributeType.charging,
@@ -157,7 +179,7 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
         mid: widget.mid,
       ),
       'opus' => MemberOpus(
-        isSingle: _controller!.state.tabs == null,
+        isSingle: state.tabs == null,
         heroTag: widget.heroTag,
         mid: widget.mid,
       ),
@@ -195,7 +217,7 @@ class _MemberContributePageV2State extends ConsumerState<MemberContributePageV2>
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 }
