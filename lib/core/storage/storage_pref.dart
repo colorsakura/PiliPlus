@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' show pow, sqrt;
 
@@ -42,54 +43,78 @@ import 'package:flex_seed_scheme/flex_seed_scheme.dart' show FlexSchemeVariant;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 abstract final class Pref {
-  static final Box _setting = GStorage.setting;
-  static final Box _video = GStorage.video;
-  static final Box _localCache = GStorage.localCache;
-
   static UserInfoData? get userInfoCache =>
-      GStorage.userInfo.get('userInfoCache');
+      GStorage.userInfoRepository.get('userInfoCache');
 
-  static List<double> get dynamicDetailRatio => List<double>.from(
-    _setting.get(
+  static List<double> get dynamicDetailRatio {
+    final strList = GStorage.settingRepository.getStringList(
       SettingBoxKey.dynamicDetailRatio,
-      defaultValue: const [60.0, 40.0],
-    ),
-  );
+    );
+    if (strList != null) {
+      return List<double>.from(
+        strList.map((e) => double.tryParse(e) ?? 0.0),
+      );
+    }
+    return const [60.0, 40.0];
+  }
 
-  static Set<int> get blackMids =>
-      _localCache.get(LocalCacheKey.blackMids, defaultValue: <int>{});
+  static Set<int> get blackMids {
+    final strList = GStorage.localCacheRepository.getStringList(
+      LocalCacheKey.blackMids,
+    );
+    if (strList != null) {
+      return strList.map((e) => int.tryParse(e) ?? 0).toSet();
+    }
+    return <int>{};
+  }
 
-  static set blackMids(Set<int> blackMidsSet) =>
-      _localCache.put(LocalCacheKey.blackMids, blackMidsSet);
+  static set blackMids(Set<int> blackMidsSet) {
+    GStorage.localCacheRepository.setStringList(
+      LocalCacheKey.blackMids,
+      blackMidsSet.map((e) => e.toString()).toList(),
+    );
+  }
 
-  static RuleFilter get danmakuFilterRule => _localCache.get(
-    LocalCacheKey.danmakuFilterRules,
-    defaultValue: RuleFilter.empty(),
-  );
+  static RuleFilter get danmakuFilterRule {
+    final jsonStr = GStorage.localCacheRepository.getString(
+      LocalCacheKey.danmakuFilterRules,
+    );
+    if (jsonStr != null) {
+      try {
+        return RuleFilter.fromJson(jsonDecode(jsonStr));
+      } catch (_) {
+        return RuleFilter.empty();
+      }
+    }
+    return RuleFilter.empty();
+  }
 
-  static void setBlackMid(int mid) => _localCache.put(
-    LocalCacheKey.blackMids,
-    GlobalData().blackMids..add(mid),
-  );
+  static void setBlackMid(int mid) {
+    final updatedSet = GlobalData().blackMids..add(mid);
+    GStorage.localCacheRepository.setStringList(
+      LocalCacheKey.blackMids,
+      updatedSet.map((e) => e.toString()).toList(),
+    );
+  }
 
-  static void removeBlackMid(int mid) => _localCache.put(
-    LocalCacheKey.blackMids,
-    GlobalData().blackMids..remove(mid),
-  );
+  static void removeBlackMid(int mid) {
+    final updatedSet = GlobalData().blackMids..remove(mid);
+    GStorage.localCacheRepository.setStringList(
+      LocalCacheKey.blackMids,
+      updatedSet.map((e) => e.toString()).toList(),
+    );
+  }
 
   static MemberTabType get memberTab =>
-      MemberTabType.values[_setting.get(
+      MemberTabType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.memberTab,
-        defaultValue: 0,
-      )];
+      ) ?? 0];
 
-  static int get _themeTypeInt => _setting.get(
+  static int get _themeTypeInt => GStorage.settingRepository.getInt(
     SettingBoxKey.themeMode,
-    defaultValue: ThemeType.system.index,
-  );
+  ) ?? ThemeType.system.index;
 
   static ThemeType get themeType => ThemeType.values[_themeTypeInt];
 
@@ -99,21 +124,35 @@ abstract final class Pref {
     _ => ThemeMode.system,
   };
 
-  static List<double> get springDescription => List<double>.from(
-    _setting.get(SettingBoxKey.springDescription) ??
-        [0.5, 100.0, 2.2 * sqrt(50)], // [mass, stiffness, damping]
-  );
+  static List<double> get springDescription {
+    final strList = GStorage.settingRepository.getStringList(
+      SettingBoxKey.springDescription,
+    );
+    if (strList != null) {
+      return List<double>.from(
+        strList.map((e) => double.tryParse(e) ?? 0.0),
+      );
+    }
+    return [0.5, 100.0, 2.2 * sqrt(50)]; // [mass, stiffness, damping]
+  }
 
-  static List<double> get speedList => List<double>.from(
-    _video.get(
+  static List<double> get speedList {
+    final strList = GStorage.videoRepository.getStringList(
       VideoBoxKey.speedsList,
-      defaultValue: const [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0],
-    ),
-  );
+    );
+    if (strList != null) {
+      return List<double>.from(
+        strList.map((e) => double.tryParse(e) ?? 0.0),
+      );
+    }
+    return const [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 3.0];
+  }
 
   static List<Pair<SegmentType, SkipType>> get blockSettings {
-    final list = _setting.get(SettingBoxKey.blockSettings) as List?;
-    if (list == null || list.length != SegmentType.values.length) {
+    final strList = GStorage.settingRepository.getStringList(
+      SettingBoxKey.blockSettings,
+    );
+    if (strList == null || strList.length != SegmentType.values.length) {
       return SegmentType.values
           .map((i) => Pair(first: i, second: SkipType.skipOnce))
           .toList();
@@ -122,20 +161,22 @@ abstract final class Pref {
         .map(
           (item) => Pair(
             first: item,
-            second: SkipType.values[list[item.index]],
+            second: SkipType.values[int.tryParse(strList[item.index]) ?? 0],
           ),
         )
         .toList();
   }
 
   static List<Color> get blockColor {
-    final list = _setting.get(SettingBoxKey.blockColor) as List?;
-    if (list == null || list.length != SegmentType.values.length) {
+    final strList = GStorage.settingRepository.getStringList(
+      SettingBoxKey.blockColor,
+    );
+    if (strList == null || strList.length != SegmentType.values.length) {
       return SegmentType.values.map((i) => i.color).toList();
     }
     return SegmentType.values.map(
       (item) {
-        final String e = list[item.index];
+        final String e = strList[item.index];
         final color = e.isNotEmpty ? int.tryParse('FF$e', radix: 16) : null;
         return color != null ? Color(color) : item.color;
       },
@@ -143,252 +184,237 @@ abstract final class Pref {
   }
 
   static bool get feedBackEnable =>
-      _setting.get(SettingBoxKey.feedBackEnable, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.feedBackEnable) ?? false;
 
   static int get picQuality =>
-      _setting.get(SettingBoxKey.defaultPicQa, defaultValue: 10);
+      GStorage.settingRepository.getInt(SettingBoxKey.defaultPicQa) ?? 10;
 
   static DynamicBadgeMode get dynamicBadgeType =>
-      DynamicBadgeMode.values[_setting.get(
+      DynamicBadgeMode.values[GStorage.settingRepository.getInt(
         SettingBoxKey.dynamicBadgeMode,
-        defaultValue: DynamicBadgeMode.number.index,
-      )];
+      ) ?? DynamicBadgeMode.number.index];
 
   static DynamicBadgeMode get msgBadgeMode =>
-      DynamicBadgeMode.values[_setting.get(
+      DynamicBadgeMode.values[GStorage.settingRepository.getInt(
         SettingBoxKey.msgBadgeMode,
-        defaultValue: DynamicBadgeMode.number.index,
-      )];
+      ) ?? DynamicBadgeMode.number.index];
 
-  static Set<MsgUnReadType> get msgUnReadTypeV2 =>
-      (_setting.get(SettingBoxKey.msgUnReadTypeV2) as List?)
-          ?.map((index) => MsgUnReadType.values[index])
-          .toSet() ??
-      MsgUnReadType.values.toSet();
+  static Set<MsgUnReadType> get msgUnReadTypeV2 {
+    final strList = GStorage.settingRepository.getStringList(
+      SettingBoxKey.msgUnReadTypeV2,
+    );
+    if (strList != null) {
+      return strList
+          .map((index) => MsgUnReadType.values[int.tryParse(index) ?? 0])
+          .toSet();
+    }
+    return MsgUnReadType.values.toSet();
+  }
 
   static NavigationBarType get defaultHomePage =>
       NavigationBarType.values[defaultHomePageIndex];
 
-  static int get defaultHomePageIndex => _setting.get(
+  static int get defaultHomePageIndex => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultHomePage,
-    defaultValue: NavigationBarType.home.index,
-  );
+  ) ?? NavigationBarType.home.index;
 
   static int get previewQ =>
-      _setting.get(SettingBoxKey.previewQuality, defaultValue: 100);
+      GStorage.settingRepository.getInt(SettingBoxKey.previewQuality) ?? 100;
 
   static double get smallCardWidth =>
-      _setting.get(SettingBoxKey.smallCardWidth, defaultValue: 240.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.smallCardWidth) ?? 240.0;
 
   static double get recommendCardWidth =>
-      _setting.get(SettingBoxKey.recommendCardWidth, defaultValue: 240.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.recommendCardWidth) ?? 240.0;
 
   static UpPanelPosition get upPanelPosition =>
-      UpPanelPosition.values[_setting.get(
+      UpPanelPosition.values[GStorage.settingRepository.getInt(
         SettingBoxKey.upPanelPosition,
-        defaultValue: UpPanelPosition.leftFixed.index,
-      )];
+      ) ?? UpPanelPosition.leftFixed.index];
 
   static FullScreenMode get fullScreenMode =>
-      FullScreenMode.values[_setting.get(
+      FullScreenMode.values[GStorage.settingRepository.getInt(
         SettingBoxKey.fullScreenMode,
-        defaultValue: FullScreenMode.auto.index,
-      )];
+      ) ?? FullScreenMode.auto.index];
 
   static BtmProgressBehavior get btmProgressBehavior =>
-      BtmProgressBehavior.values[_setting.get(
+      BtmProgressBehavior.values[GStorage.settingRepository.getInt(
         SettingBoxKey.btmProgressBehavior,
-        defaultValue: BtmProgressBehavior.alwaysShow.index,
-      )];
+      ) ?? BtmProgressBehavior.alwaysShow.index];
 
   static SubtitlePrefType get subtitlePreferenceV2 =>
-      SubtitlePrefType.values[_setting.get(
+      SubtitlePrefType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.subtitlePreferenceV2,
-        defaultValue: SubtitlePrefType.off.index,
-      )];
+      ) ?? SubtitlePrefType.off.index];
 
   static bool get useRelativeSlide =>
-      _setting.get(SettingBoxKey.useRelativeSlide, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.useRelativeSlide) ?? false;
 
   static int get sliderDuration =>
-      _setting.get(SettingBoxKey.sliderDuration, defaultValue: 90);
+      GStorage.settingRepository.getInt(SettingBoxKey.sliderDuration) ?? 90;
 
-  static int get defaultVideoQa => _setting.get(
+  static int get defaultVideoQa => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultVideoQa,
-    defaultValue: VideoQuality.super8k.code,
-  );
+  ) ?? VideoQuality.super8k.code;
 
-  static int get defaultVideoQaCellular => _setting.get(
+  static int get defaultVideoQaCellular => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultVideoQaCellular,
-    defaultValue: VideoQuality.high1080.code,
-  );
+  ) ?? VideoQuality.high1080.code;
 
-  static int get defaultAudioQa => _setting.get(
+  static int get defaultAudioQa => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultAudioQa,
-    defaultValue: AudioQuality.hiRes.code,
-  );
+  ) ?? AudioQuality.hiRes.code;
 
-  static int get defaultAudioQaCellular => _setting.get(
+  static int get defaultAudioQaCellular => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultAudioQaCellular,
-    defaultValue: AudioQuality.k192.code,
-  );
+  ) ?? AudioQuality.k192.code;
 
-  static String get defaultDecode => _setting.get(
+  static String get defaultDecode => GStorage.settingRepository.getString(
     SettingBoxKey.defaultDecode,
-    defaultValue: VideoDecodeFormatType.AVC.codes.first,
-  );
+  ) ?? VideoDecodeFormatType.AVC.codes.first;
 
-  static String get secondDecode => _setting.get(
+  static String get secondDecode => GStorage.settingRepository.getString(
     SettingBoxKey.secondDecode,
-    defaultValue: VideoDecodeFormatType.AV1.codes.first,
-  );
+  ) ?? VideoDecodeFormatType.AV1.codes.first;
 
-  static String get hardwareDecoding => _setting.get(
+  static String get hardwareDecoding => GStorage.settingRepository.getString(
     SettingBoxKey.hardwareDecoding,
-    defaultValue: Platform.isAndroid
+  ) ?? (Platform.isAndroid
         ? HwDecType.autoSafe.hwdec
-        : HwDecType.auto.hwdec,
-  );
+        : HwDecType.auto.hwdec);
 
   static String get videoSync =>
-      _setting.get(SettingBoxKey.videoSync, defaultValue: 'display-resample');
+      GStorage.settingRepository.getString(SettingBoxKey.videoSync) ?? 'display-resample';
 
-  static String get autosync => _setting.get(
+  static String get autosync => GStorage.settingRepository.getString(
     SettingBoxKey.autosync,
-    defaultValue: Platform.isAndroid ? '30' : '0',
-  );
+  ) ?? (Platform.isAndroid ? '30' : '0');
 
   static CDNService get defaultCDNService {
-    if (_setting.get(SettingBoxKey.CDNService) case final String cdnName) {
+    final cdnName = GStorage.settingRepository.getString(SettingBoxKey.CDNService);
+    if (cdnName != null) {
       return CDNService.values.byName(cdnName);
     }
     return CDNService.backupUrl;
   }
 
   static String get banWordForRecommend =>
-      _setting.get(SettingBoxKey.banWordForRecommend, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.banWordForRecommend) ?? '';
 
   static String get banWordForReply =>
-      _setting.get(SettingBoxKey.banWordForReply, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.banWordForReply) ?? '';
 
   static String get banWordForZone =>
-      _setting.get(SettingBoxKey.banWordForZone, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.banWordForZone) ?? '';
 
   static bool get appRcmd =>
-      _setting.get(SettingBoxKey.appRcmd, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.appRcmd) ?? true;
 
   static String get systemProxyHost =>
-      _setting.get(SettingBoxKey.systemProxyHost, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.systemProxyHost) ?? '';
 
   static String get systemProxyPort =>
-      _setting.get(SettingBoxKey.systemProxyPort, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.systemProxyPort) ?? '';
 
   static DynamicsTabType get defaultDynamicType =>
       DynamicsTabType.values[defaultDynamicTypeIndex];
 
-  static int get defaultDynamicTypeIndex => _setting.get(
+  static int get defaultDynamicTypeIndex => GStorage.settingRepository.getInt(
     SettingBoxKey.defaultDynamicType,
-    defaultValue: DynamicsTabType.all.index,
-  );
+  ) ?? DynamicsTabType.all.index;
 
   static bool get showDynInteraction =>
-      _setting.get(SettingBoxKey.showDynInteraction, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showDynInteraction) ?? true;
 
   static double get blockLimit =>
-      _setting.get(SettingBoxKey.blockLimit, defaultValue: 0.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.blockLimit) ?? 0.0;
 
   static double get refreshDragPercentage =>
-      _setting.get(SettingBoxKey.refreshDragPercentage, defaultValue: 0.25);
+      GStorage.settingRepository.getDouble(SettingBoxKey.refreshDragPercentage) ?? 0.25;
 
-  static double get refreshDisplacement => _setting.get(
+  static double get refreshDisplacement => GStorage.settingRepository.getDouble(
     SettingBoxKey.refreshDisplacement,
-    defaultValue: PlatformUtils.isMobile ? 20.0 : 40.0,
-  );
+  ) ?? (PlatformUtils.isMobile ? 20.0 : 40.0);
 
   static String get blockUserID {
-    String? blockUserID = _setting.get(SettingBoxKey.blockUserID);
+    String? blockUserID = GStorage.settingRepository.getString(SettingBoxKey.blockUserID);
     if (blockUserID == null || blockUserID.isEmpty) {
       blockUserID = Digest(
         List.generate(16, (_) => Utils.random.nextInt(256)),
       ).toString();
-      _setting.put(SettingBoxKey.blockUserID, blockUserID);
+      GStorage.settingRepository.setString(SettingBoxKey.blockUserID, blockUserID);
     }
     return blockUserID;
   }
 
   static bool get blockToast =>
-      _setting.get(SettingBoxKey.blockToast, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.blockToast) ?? true;
 
-  static String get blockServer => _setting.get(
+  static String get blockServer => GStorage.settingRepository.getString(
     SettingBoxKey.blockServer,
-    defaultValue: HttpString.sponsorBlockBaseUrl,
-  );
+  ) ?? HttpString.sponsorBlockBaseUrl;
 
   static bool get blockTrack =>
-      _setting.get(SettingBoxKey.blockTrack, defaultValue: !kDebugMode);
+      GStorage.settingRepository.getBool(SettingBoxKey.blockTrack) ?? !kDebugMode;
 
   static bool get checkDynamic =>
-      _setting.get(SettingBoxKey.checkDynamic, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.checkDynamic) ?? true;
 
   static int get dynamicPeriod =>
-      _setting.get(SettingBoxKey.dynamicPeriod, defaultValue: 5);
+      GStorage.settingRepository.getInt(SettingBoxKey.dynamicPeriod) ?? 5;
 
   static FlexSchemeVariant get schemeVariant =>
-      FlexSchemeVariant.values[_setting.get(
+      FlexSchemeVariant.values[GStorage.settingRepository.getInt(
         SettingBoxKey.schemeVariant,
-        defaultValue: FlexSchemeVariant.material3Legacy.index,
-      )];
+      ) ?? FlexSchemeVariant.material3Legacy.index];
 
-  static double get danmakuFontScaleFS => _setting.get(
+  static double get danmakuFontScaleFS => GStorage.settingRepository.getDouble(
     SettingBoxKey.danmakuFontScaleFS,
-    defaultValue: PlatformUtils.isMobile ? 1.2 : 1.7,
-  );
+  ) ?? (PlatformUtils.isMobile ? 1.2 : 1.7);
 
   static bool get danmakuMassiveMode =>
-      _setting.get(SettingBoxKey.danmakuMassiveMode, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.danmakuMassiveMode) ?? false;
 
   static bool get danmakuFixedV =>
-      _setting.get(SettingBoxKey.danmakuFixedV, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.danmakuFixedV) ?? false;
 
   static bool get danmakuStatic2Scroll =>
-      _setting.get(SettingBoxKey.danmakuStatic2Scroll, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.danmakuStatic2Scroll) ?? false;
 
   static double get subtitleFontScale =>
-      _setting.get(SettingBoxKey.subtitleFontScale, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.subtitleFontScale) ?? 1.0;
 
   static double get subtitleFontScaleFS =>
-      _setting.get(SettingBoxKey.subtitleFontScaleFS, defaultValue: 1.5);
+      GStorage.settingRepository.getDouble(SettingBoxKey.subtitleFontScaleFS) ?? 1.5;
 
   static bool get showViewPoints =>
-      _setting.get(SettingBoxKey.showViewPoints, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showViewPoints) ?? true;
 
   static bool get showRelatedVideo =>
-      _setting.get(SettingBoxKey.showRelatedVideo, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showRelatedVideo) ?? true;
 
   static bool get showVideoReply =>
-      _setting.get(SettingBoxKey.showVideoReply, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showVideoReply) ?? true;
 
   static bool get showBangumiReply =>
-      _setting.get(SettingBoxKey.showBangumiReply, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showBangumiReply) ?? true;
 
   static bool get alwaysExpandIntroPanel =>
-      _setting.get(SettingBoxKey.alwaysExpandIntroPanel, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.alwaysExpandIntroPanel) ?? false;
 
   static bool get expandIntroPanelH =>
-      _setting.get(SettingBoxKey.expandIntroPanelH, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.expandIntroPanelH) ?? false;
 
-  static bool get horizontalSeasonPanel => _setting.get(
+  static bool get horizontalSeasonPanel => GStorage.settingRepository.getBool(
     SettingBoxKey.horizontalSeasonPanel,
-    defaultValue: PlatformUtils.isDesktop,
-  );
+  ) ?? PlatformUtils.isDesktop;
 
-  static bool get horizontalMemberPage => _setting.get(
+  static bool get horizontalMemberPage => GStorage.settingRepository.getBool(
     SettingBoxKey.horizontalMemberPage,
-    defaultValue: PlatformUtils.isDesktop,
-  );
+  ) ?? PlatformUtils.isDesktop;
 
   static int? get replyLengthLimit {
-    int length = _setting.get(SettingBoxKey.replyLengthLimit, defaultValue: 6);
+    int length = GStorage.settingRepository.getInt(SettingBoxKey.replyLengthLimit) ?? 6;
     if (length <= 0) {
       return null;
     }
@@ -396,196 +422,194 @@ abstract final class Pref {
   }
 
   static int get defaultPicQa =>
-      _setting.get(SettingBoxKey.defaultPicQa, defaultValue: 10);
+      GStorage.settingRepository.getInt(SettingBoxKey.defaultPicQa) ?? 10;
 
   static double get danmakuLineHeight =>
-      _setting.get(SettingBoxKey.danmakuLineHeight, defaultValue: 1.6);
+      GStorage.settingRepository.getDouble(SettingBoxKey.danmakuLineHeight) ?? 1.6;
 
   static bool get showArgueMsg =>
-      _setting.get(SettingBoxKey.showArgueMsg, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showArgueMsg) ?? true;
 
   static bool get reverseFromFirst =>
-      _setting.get(SettingBoxKey.reverseFromFirst, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.reverseFromFirst) ?? true;
 
   static int get subtitlePaddingH =>
-      _setting.get(SettingBoxKey.subtitlePaddingH, defaultValue: 24);
+      GStorage.settingRepository.getInt(SettingBoxKey.subtitlePaddingH) ?? 24;
 
   static int get subtitlePaddingB =>
-      _setting.get(SettingBoxKey.subtitlePaddingB, defaultValue: 24);
+      GStorage.settingRepository.getInt(SettingBoxKey.subtitlePaddingB) ?? 24;
 
   static double get subtitleBgOpacity =>
-      _setting.get(SettingBoxKey.subtitleBgOpacity, defaultValue: 0.67);
+      GStorage.settingRepository.getDouble(SettingBoxKey.subtitleBgOpacity) ?? 0.67;
 
   static double get subtitleStrokeWidth =>
-      _setting.get(SettingBoxKey.subtitleStrokeWidth, defaultValue: 2.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.subtitleStrokeWidth) ?? 2.0;
 
   static int get subtitleFontWeight =>
-      _setting.get(SettingBoxKey.subtitleFontWeight, defaultValue: 5);
+      GStorage.settingRepository.getInt(SettingBoxKey.subtitleFontWeight) ?? 5;
 
   static bool get badCertificateCallback =>
-      _setting.get(SettingBoxKey.badCertificateCallback, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.badCertificateCallback) ?? false;
 
   static bool get continuePlayingPart =>
-      _setting.get(SettingBoxKey.continuePlayingPart, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.continuePlayingPart) ?? true;
 
   static bool get cdnSpeedTest =>
-      _setting.get(SettingBoxKey.cdnSpeedTest, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.cdnSpeedTest) ?? true;
 
   static bool get autoUpdate =>
-      _setting.get(SettingBoxKey.autoUpdate, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.autoUpdate) ?? true;
 
   static bool get horizontalPreview =>
-      _setting.get(SettingBoxKey.horizontalPreview, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.horizontalPreview) ?? false;
 
   static bool get openInBrowser =>
-      _setting.get(SettingBoxKey.openInBrowser, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.openInBrowser) ?? false;
 
   static bool get savedRcmdTip =>
-      _setting.get(SettingBoxKey.savedRcmdTip, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.savedRcmdTip) ?? true;
 
   static bool get showVipDanmaku =>
-      _setting.get(SettingBoxKey.showVipDanmaku, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showVipDanmaku) ?? true;
 
   static bool get mergeDanmaku =>
-      _setting.get(SettingBoxKey.mergeDanmaku, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.mergeDanmaku) ?? false;
 
   static bool get showHotRcmd =>
-      _setting.get(SettingBoxKey.showHotRcmd, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.showHotRcmd) ?? false;
 
   static String get audioNormalization =>
-      _setting.get(SettingBoxKey.audioNormalization, defaultValue: '0');
+      GStorage.settingRepository.getString(SettingBoxKey.audioNormalization) ?? '0';
 
   static String get fallbackNormalization =>
-      _setting.get(SettingBoxKey.fallbackNormalization, defaultValue: '0');
+      GStorage.settingRepository.getString(SettingBoxKey.fallbackNormalization) ?? '0';
 
   static SuperResolutionType get superResolutionType {
-    SuperResolutionType? superResolutionType;
-    final index = _setting.get(SettingBoxKey.superResolutionType);
+    final index = GStorage.settingRepository.getInt(SettingBoxKey.superResolutionType);
     if (index != null) {
-      superResolutionType = SuperResolutionType.values.elementAtOrNull(index);
+      final superResolutionType = SuperResolutionType.values.elementAtOrNull(index);
+      if (superResolutionType != null) {
+        return superResolutionType;
+      }
     }
-    return superResolutionType ?? SuperResolutionType.disable;
+    return SuperResolutionType.disable;
   }
 
   static bool get preInitPlayer =>
-      _setting.get(SettingBoxKey.preInitPlayer, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.preInitPlayer) ?? false;
 
   static bool get searchSuggestion =>
-      _setting.get(SettingBoxKey.searchSuggestion, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.searchSuggestion) ?? true;
 
   static bool get showDynDecorate =>
-      _setting.get(SettingBoxKey.showDynDecorate, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showDynDecorate) ?? true;
 
   static bool get enableLivePhoto =>
-      _setting.get(SettingBoxKey.enableLivePhoto, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableLivePhoto) ?? true;
 
   static bool get showSeekPreview =>
-      _setting.get(SettingBoxKey.showSeekPreview, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showSeekPreview) ?? true;
 
   static bool get showDmChart =>
-      _setting.get(SettingBoxKey.showDmChart, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.showDmChart) ?? false;
 
   static bool get enableCommAntifraud =>
-      _setting.get(SettingBoxKey.enableCommAntifraud, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableCommAntifraud) ?? false;
 
   static bool get biliSendCommAntifraud =>
       Platform.isAndroid &&
-      _setting.get(SettingBoxKey.biliSendCommAntifraud, defaultValue: false);
+      (GStorage.settingRepository.getBool(SettingBoxKey.biliSendCommAntifraud) ?? false);
 
   static bool get enableCreateDynAntifraud =>
-      _setting.get(SettingBoxKey.enableCreateDynAntifraud, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableCreateDynAntifraud) ?? false;
 
   static bool get coinWithLike =>
-      _setting.get(SettingBoxKey.coinWithLike, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.coinWithLike) ?? false;
 
   static bool get isPureBlackTheme =>
-      _setting.get(SettingBoxKey.isPureBlackTheme, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.isPureBlackTheme) ?? false;
 
   static bool get antiGoodsDyn =>
-      _setting.get(SettingBoxKey.antiGoodsDyn, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.antiGoodsDyn) ?? false;
 
   static bool get antiGoodsReply =>
-      _setting.get(SettingBoxKey.antiGoodsReply, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.antiGoodsReply) ?? false;
 
   static bool get expandDynLivePanel =>
-      _setting.get(SettingBoxKey.expandDynLivePanel, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.expandDynLivePanel) ?? false;
 
-  static bool get slideDismissReplyPage => _setting.get(
+  static bool get slideDismissReplyPage => GStorage.settingRepository.getBool(
     SettingBoxKey.slideDismissReplyPage,
-    defaultValue: Platform.isIOS,
-  );
+  ) ?? Platform.isIOS;
 
   static bool get showFSActionItem =>
-      _setting.get(SettingBoxKey.showFSActionItem, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showFSActionItem) ?? true;
 
   static bool get enableShrinkVideoSize =>
-      _setting.get(SettingBoxKey.enableShrinkVideoSize, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableShrinkVideoSize) ?? true;
 
   static bool get showDynActionBar =>
-      _setting.get(SettingBoxKey.showDynActionBar, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showDynActionBar) ?? true;
 
   static bool get darkVideoPage =>
-      _setting.get(SettingBoxKey.darkVideoPage, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.darkVideoPage) ?? false;
 
-  static bool get enableSlideVolumeBrightness => _setting.get(
+  static bool get enableSlideVolumeBrightness => GStorage.settingRepository.getBool(
     SettingBoxKey.enableSlideVolumeBrightness,
-    defaultValue: true,
-  );
+  ) ?? true;
 
   static bool get enableSlideFS =>
-      _setting.get(SettingBoxKey.enableSlideFS, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSlideFS) ?? true;
 
   static int get retryCount =>
-      _setting.get(SettingBoxKey.retryCount, defaultValue: 2);
+      GStorage.settingRepository.getInt(SettingBoxKey.retryCount) ?? 2;
 
   static int get retryDelay =>
-      _setting.get(SettingBoxKey.retryDelay, defaultValue: 500);
+      GStorage.settingRepository.getInt(SettingBoxKey.retryDelay) ?? 500;
 
-  static int get liveQuality => _setting.get(
+  static int get liveQuality => GStorage.settingRepository.getInt(
     SettingBoxKey.liveQuality,
-    defaultValue: LiveQuality.origin.code,
-  );
+  ) ?? LiveQuality.origin.code;
 
-  static int get liveQualityCellular => _setting.get(
+  static int get liveQualityCellular => GStorage.settingRepository.getInt(
     SettingBoxKey.liveQualityCellular,
-    defaultValue: LiveQuality.superHD.code,
-  );
+  ) ?? LiveQuality.superHD.code;
 
   static int get appFontWeight =>
-      _setting.get(SettingBoxKey.appFontWeight, defaultValue: -1);
+      GStorage.settingRepository.getInt(SettingBoxKey.appFontWeight) ?? -1;
 
   static bool get enableDragSubtitle =>
-      _setting.get(SettingBoxKey.enableDragSubtitle, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableDragSubtitle) ?? false;
 
   static int get fastForBackwardDuration =>
-      _setting.get(SettingBoxKey.fastForBackwardDuration, defaultValue: 10);
+      GStorage.settingRepository.getInt(SettingBoxKey.fastForBackwardDuration) ?? 10;
 
   static bool get recordSearchHistory =>
-      _setting.get(SettingBoxKey.recordSearchHistory, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.recordSearchHistory) ?? true;
 
   static String get webdavUri =>
-      _setting.get(SettingBoxKey.webdavUri, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.webdavUri) ?? '';
 
   static String get webdavUsername =>
-      _setting.get(SettingBoxKey.webdavUsername, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.webdavUsername) ?? '';
 
   static String get webdavPassword =>
-      _setting.get(SettingBoxKey.webdavPassword, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.webdavPassword) ?? '';
 
   static String get webdavDirectory =>
-      _setting.get(SettingBoxKey.webdavDirectory, defaultValue: '/');
+      GStorage.settingRepository.getString(SettingBoxKey.webdavDirectory) ?? '/';
 
   static bool get showPgcTimeline =>
-      _setting.get(SettingBoxKey.showPgcTimeline, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showPgcTimeline) ?? true;
 
   static num get maxCacheSize =>
-      _setting.get(SettingBoxKey.maxCacheSize) ?? pow(1024, 3);
+      GStorage.settingRepository.getInt(SettingBoxKey.maxCacheSize) ?? pow(1024, 3).toInt();
 
   static bool get optTabletNav =>
-      _setting.get(SettingBoxKey.optTabletNav, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.optTabletNav) ?? true;
 
   static bool get horizontalScreen =>
-      _setting.get(SettingBoxKey.horizontalScreen) ?? isTablet;
+      GStorage.settingRepository.getBool(SettingBoxKey.horizontalScreen) ?? isTablet;
 
   static bool get isTablet {
     bool isTablet;
@@ -596,257 +620,250 @@ abstract final class Pref {
       final screenSize = view.physicalSize / view.devicePixelRatio;
       isTablet = screenSize.shortestSide >= 600;
     }
-    _setting.put(SettingBoxKey.horizontalScreen, isTablet);
+    GStorage.settingRepository.setBool(SettingBoxKey.horizontalScreen, isTablet);
     return isTablet;
   }
 
   static String get banWordForDyn =>
-      _setting.get(SettingBoxKey.banWordForDyn, defaultValue: '');
+      GStorage.settingRepository.getString(SettingBoxKey.banWordForDyn) ?? '';
 
   static bool get enableLog =>
-      _setting.get(SettingBoxKey.enableLog, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableLog) ?? true;
 
   static bool get disableAudioCDN =>
-      _setting.get(SettingBoxKey.disableAudioCDN, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.disableAudioCDN) ?? false;
 
   static int get minDurationForRcmd =>
-      _setting.get(SettingBoxKey.minDurationForRcmd, defaultValue: 0);
+      GStorage.settingRepository.getInt(SettingBoxKey.minDurationForRcmd) ?? 0;
 
   static int get minPlayForRcmd =>
-      _setting.get(SettingBoxKey.minPlayForRcmd, defaultValue: 0);
+      GStorage.settingRepository.getInt(SettingBoxKey.minPlayForRcmd) ?? 0;
 
   static int get minLikeRatioForRecommend =>
-      _setting.get(SettingBoxKey.minLikeRatioForRecommend, defaultValue: 0);
+      GStorage.settingRepository.getInt(SettingBoxKey.minLikeRatioForRecommend) ?? 0;
 
   static bool get exemptFilterForFollowed =>
-      _setting.get(SettingBoxKey.exemptFilterForFollowed, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.exemptFilterForFollowed) ?? true;
 
-  static bool get applyFilterToRelatedVideos => _setting.get(
+  static bool get applyFilterToRelatedVideos => GStorage.settingRepository.getBool(
     SettingBoxKey.applyFilterToRelatedVideos,
-    defaultValue: true,
-  );
+  ) ?? true;
 
   static bool get enableBackgroundPlay =>
-      _setting.get(SettingBoxKey.enableBackgroundPlay, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableBackgroundPlay) ?? true;
 
   static bool get allowRotateScreen =>
-      _setting.get(SettingBoxKey.allowRotateScreen, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.allowRotateScreen) ?? true;
 
   static bool get disableLikeMsg =>
-      _setting.get(SettingBoxKey.disableLikeMsg, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.disableLikeMsg) ?? false;
 
   static bool get enableWordRe =>
-      _setting.get(SettingBoxKey.enableWordRe, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableWordRe) ?? false;
 
   static bool get autoExitFullscreen =>
-      _setting.get(SettingBoxKey.enableAutoExit, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableAutoExit) ?? true;
 
   static bool get autoPlayEnable =>
-      _setting.get(SettingBoxKey.autoPlayEnable, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.autoPlayEnable) ?? false;
 
   static bool get pipNoDanmaku =>
-      _setting.get(SettingBoxKey.pipNoDanmaku, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.pipNoDanmaku) ?? false;
 
   static bool get enableVerticalExpand =>
-      _setting.get(SettingBoxKey.enableVerticalExpand, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableVerticalExpand) ?? false;
 
   static double get defaultTextScale =>
-      _setting.get(SettingBoxKey.defaultTextScale, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.defaultTextScale) ?? 1.0;
 
   static double get uiScale =>
-      _setting.get(SettingBoxKey.uiScale, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.uiScale) ?? 1.0;
 
   static bool get dynamicsWaterfallFlow =>
-      _setting.get(SettingBoxKey.dynamicsWaterfallFlow, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.dynamicsWaterfallFlow) ?? true;
 
-  static bool get hideTopBar => _setting.get(
+  static bool get hideTopBar => GStorage.settingRepository.getBool(
     SettingBoxKey.hideTopBar,
-    defaultValue: PlatformUtils.isMobile,
-  );
+  ) ?? PlatformUtils.isMobile;
 
-  static bool get hideBottomBar => _setting.get(
+  static bool get hideBottomBar => GStorage.settingRepository.getBool(
     SettingBoxKey.hideBottomBar,
-    defaultValue: PlatformUtils.isMobile,
-  );
+  ) ?? PlatformUtils.isMobile;
 
   static BarHideType get barHideType =>
-      BarHideType.values[_setting.get(
+      BarHideType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.barHideType,
-        defaultValue: BarHideType.sync.index,
-      )];
+      ) ?? BarHideType.sync.index];
 
   static bool get enableSearchWord =>
-      _setting.get(SettingBoxKey.enableSearchWord, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSearchWord) ?? false;
 
-  static bool get dynamicsShowAllFollowedUp => _setting.get(
+  static bool get dynamicsShowAllFollowedUp => GStorage.settingRepository.getBool(
     SettingBoxKey.dynamicsShowAllFollowedUp,
-    defaultValue: false,
-  );
+  ) ?? false;
 
   static bool get enableShowDanmaku =>
-      _setting.get(SettingBoxKey.enableShowDanmaku, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableShowDanmaku) ?? true;
 
   static bool get enableShowLiveDanmaku =>
-      _setting.get(SettingBoxKey.enableShowLiveDanmaku, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableShowLiveDanmaku) ?? true;
 
   static bool get enableQuickFav =>
-      _setting.get(SettingBoxKey.enableQuickFav, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableQuickFav) ?? false;
 
   static bool get p1080 =>
-      _setting.get(SettingBoxKey.p1080, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.p1080) ?? true;
 
   static int get customColor =>
-      _setting.get(SettingBoxKey.customColor, defaultValue: 0);
+      GStorage.settingRepository.getInt(SettingBoxKey.customColor) ?? 0;
 
   static bool get dynamicColor =>
       !Platform.isIOS &&
-      _setting.get(SettingBoxKey.dynamicColor, defaultValue: true);
+      (GStorage.settingRepository.getBool(SettingBoxKey.dynamicColor) ?? true);
 
   static bool get autoClearCache =>
-      _setting.get(SettingBoxKey.autoClearCache, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.autoClearCache) ?? false;
 
   static bool get enableSystemProxy =>
-      _setting.get(SettingBoxKey.enableSystemProxy, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSystemProxy) ?? false;
 
   static bool get enableHttp2 =>
-      _setting.get(SettingBoxKey.enableHttp2, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableHttp2) ?? false;
 
   static ReplySortType get replySortType =>
-      ReplySortType.values[_setting.get(
+      ReplySortType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.replySortType,
-        defaultValue: ReplySortType.hot.index,
-      )];
+      ) ?? ReplySortType.hot.index];
 
   static DynamicBadgeMode get dynamicBadgeMode =>
-      DynamicBadgeMode.values[_setting.get(
+      DynamicBadgeMode.values[GStorage.settingRepository.getInt(
         SettingBoxKey.dynamicBadgeMode,
-        defaultValue: DynamicBadgeMode.number.index,
-      )];
+      ) ?? DynamicBadgeMode.number.index];
 
   static Transition get pageTransition =>
-      Transition.values[_setting.get(
+      Transition.values[GStorage.settingRepository.getInt(
         SettingBoxKey.pageTransition,
-        defaultValue: Transition.native.index,
-      )];
+      ) ?? Transition.native.index];
 
   static bool get enableQuickDouble =>
-      _setting.get(SettingBoxKey.enableQuickDouble, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableQuickDouble) ?? true;
 
   static bool get fullScreenGestureReverse =>
-      _setting.get(SettingBoxKey.fullScreenGestureReverse, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.fullScreenGestureReverse) ?? false;
 
   static bool get autoPiP =>
-      _setting.get(SettingBoxKey.autoPiP, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.autoPiP) ?? false;
 
   static bool get enableSponsorBlock =>
-      _setting.get(SettingBoxKey.enableSponsorBlock, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSponsorBlock) ?? false;
 
   static bool get enableHA =>
-      _setting.get(SettingBoxKey.enableHA, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableHA) ?? true;
 
-  static Set<int> get danmakuBlockType => Set<int>.from(
-    _setting.get(SettingBoxKey.danmakuBlockType, defaultValue: const <int>{}),
-  );
+  static Set<int> get danmakuBlockType {
+    final strList = GStorage.settingRepository.getStringList(
+      SettingBoxKey.danmakuBlockType,
+    );
+    if (strList != null) {
+      return strList.map((e) => int.tryParse(e) ?? 0).toSet();
+    }
+    return <int>{};
+  }
 
   static int get danmakuWeight =>
-      _setting.get(SettingBoxKey.danmakuWeight, defaultValue: 0);
+      GStorage.settingRepository.getInt(SettingBoxKey.danmakuWeight) ?? 0;
 
   static double get danmakuShowArea =>
-      _setting.get(SettingBoxKey.danmakuShowArea, defaultValue: 0.5);
+      GStorage.settingRepository.getDouble(SettingBoxKey.danmakuShowArea) ?? 0.5;
 
   static double get danmakuOpacity =>
-      _setting.get(SettingBoxKey.danmakuOpacity, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.danmakuOpacity) ?? 1.0;
 
-  static double get danmakuFontScale => _setting.get(
+  static double get danmakuFontScale => GStorage.settingRepository.getDouble(
     SettingBoxKey.danmakuFontScale,
-    defaultValue: PlatformUtils.isMobile ? 1.0 : 1.4,
-  );
+  ) ?? (PlatformUtils.isMobile ? 1.0 : 1.4);
 
   static double get danmakuDuration =>
-      _setting.get(SettingBoxKey.danmakuDuration, defaultValue: 7.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.danmakuDuration) ?? 7.0;
 
   static double get danmakuStaticDuration =>
-      _setting.get(SettingBoxKey.danmakuStaticDuration, defaultValue: 4.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.danmakuStaticDuration) ?? 4.0;
 
-  static double get danmakuStrokeWidth => _setting.get(
+  static double get danmakuStrokeWidth => GStorage.settingRepository.getDouble(
     SettingBoxKey.danmakuStrokeWidth,
-    defaultValue: PlatformUtils.isMobile ? 1.5 : 2.5,
-  );
+  ) ?? (PlatformUtils.isMobile ? 1.5 : 2.5);
 
-  static int get danmakuFontWeight => _setting.get(
+  static int get danmakuFontWeight => GStorage.settingRepository.getInt(
     SettingBoxKey.danmakuFontWeight,
-    defaultValue: PlatformUtils.isMobile ? 5 : 6,
-  );
+  ) ?? (PlatformUtils.isMobile ? 5 : 6);
 
   static bool get enableLongShowControl =>
-      _setting.get(SettingBoxKey.enableLongShowControl, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableLongShowControl) ?? false;
 
   static bool get expandBuffer =>
-      _setting.get(SettingBoxKey.expandBuffer, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.expandBuffer) ?? false;
 
-  static String get audioOutput => _setting.get(
+  static String get audioOutput => GStorage.settingRepository.getString(
     SettingBoxKey.audioOutput,
-    defaultValue: AudioOutput.defaultValue,
-  );
+  ) ?? AudioOutput.defaultValue;
 
   static bool get enableAi =>
-      _setting.get(SettingBoxKey.enableAi, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableAi) ?? false;
 
   static bool get enableOnlineTotal =>
-      _setting.get(SettingBoxKey.enableOnlineTotal, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableOnlineTotal) ?? false;
 
   static bool get enableAutoEnter =>
-      _setting.get(SettingBoxKey.enableAutoEnter, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableAutoEnter) ?? false;
 
   static bool get enableAutoLongPressSpeed =>
-      _setting.get(SettingBoxKey.enableAutoLongPressSpeed, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableAutoLongPressSpeed) ?? false;
 
   static double get playSpeedDefault =>
-      _video.get(VideoBoxKey.playSpeedDefault, defaultValue: 1.0);
+      GStorage.videoRepository.getDouble(VideoBoxKey.playSpeedDefault) ?? 1.0;
 
   static double get longPressSpeedDefault =>
-      _video.get(VideoBoxKey.longPressSpeedDefault, defaultValue: 3.0);
+      GStorage.videoRepository.getDouble(VideoBoxKey.longPressSpeedDefault) ?? 3.0;
 
   static bool get defaultShowComment =>
-      _setting.get(SettingBoxKey.defaultShowComment, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.defaultShowComment) ?? false;
 
   static bool get enableTrending =>
-      _setting.get(SettingBoxKey.enableHotKey, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableHotKey) ?? true;
 
   static bool get enableSearchRcmd =>
-      _setting.get(SettingBoxKey.enableSearchRcmd, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSearchRcmd) ?? true;
 
   static bool get enableSaveLastData =>
-      _setting.get(SettingBoxKey.enableSaveLastData, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableSaveLastData) ?? true;
 
   static double get defaultToastOp =>
-      _setting.get(SettingBoxKey.defaultToastOp, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.defaultToastOp) ?? 1.0;
 
   static PlayRepeat get playRepeat =>
-      PlayRepeat.values[_video.get(
+      PlayRepeat.values[GStorage.videoRepository.getInt(
         VideoBoxKey.playRepeat,
-        defaultValue: PlayRepeat.pause.index,
-      )];
+      ) ?? PlayRepeat.pause.index];
 
   static int get cacheVideoFit =>
-      _video.get(VideoBoxKey.cacheVideoFit, defaultValue: 1);
+      GStorage.videoRepository.getInt(VideoBoxKey.cacheVideoFit) ?? 1;
 
   static bool get continuePlayInBackground =>
-      _setting.get(SettingBoxKey.continuePlayInBackground, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.continuePlayInBackground) ?? false;
 
   static bool get directExitOnBack =>
-      _setting.get(SettingBoxKey.directExitOnBack, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.directExitOnBack) ?? false;
 
   static bool get historyPause =>
-      _localCache.get(LocalCacheKey.historyPause, defaultValue: false);
+      GStorage.localCacheRepository.getBool(LocalCacheKey.historyPause) ?? false;
 
-  static int? get quickFavId => _setting.get(SettingBoxKey.quickFavId);
+  static int? get quickFavId => GStorage.settingRepository.getInt(SettingBoxKey.quickFavId);
 
   static bool get tempPlayerConf =>
-      _setting.get(SettingBoxKey.tempPlayerConf, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.tempPlayerConf) ?? false;
 
   static Color? get reduceLuxColor {
-    final int? color = _setting.get(SettingBoxKey.reduceLuxColor);
+    final color = GStorage.settingRepository.getInt(SettingBoxKey.reduceLuxColor);
     if (color != null && color != 0xFFFFFFFF) {
       return Color(color);
     }
@@ -854,79 +871,78 @@ abstract final class Pref {
   }
 
   static bool get showFsScreenshotBtn =>
-      _setting.get(SettingBoxKey.showFsScreenshotBtn, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showFsScreenshotBtn) ?? true;
 
   static bool get showFsLockBtn =>
-      _setting.get(SettingBoxKey.showFsLockBtn, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.showFsLockBtn) ?? true;
 
   static bool get silentDownImg =>
-      _setting.get(SettingBoxKey.silentDownImg, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.silentDownImg) ?? false;
 
   static String get buvid {
-    String? buvid = _localCache.get(LocalCacheKey.buvid);
+    String? buvid = GStorage.localCacheRepository.getString(LocalCacheKey.buvid);
     if (buvid == null) {
       buvid = LoginUtils.generateBuvid();
-      _localCache.put(LocalCacheKey.buvid, buvid);
+      GStorage.localCacheRepository.setString(LocalCacheKey.buvid, buvid);
     }
     return buvid;
   }
 
   static bool get showMemberShop =>
-      _setting.get(SettingBoxKey.showMemberShop, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.showMemberShop) ?? false;
 
   static SuperChatType get superChatType =>
-      SuperChatType.values[_setting.get(
+      SuperChatType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.superChatType,
-        defaultValue: SuperChatType.valid.index,
-      )];
+      ) ?? SuperChatType.valid.index];
 
   static bool get keyboardControl =>
-      _setting.get(SettingBoxKey.keyboardControl, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.keyboardControl) ?? true;
 
   static bool get useSSD =>
-      _setting.get(SettingBoxKey.useSSD, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.useSSD) ?? false;
 
   static double get desktopVolume =>
-      _setting.get(SettingBoxKey.desktopVolume, defaultValue: 1.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.desktopVolume) ?? 1.0;
 
-  static SkipType get pgcSkipType =>
-      SkipType.values[_setting.get(SettingBoxKey.pgcSkipType) ??
-          SkipType.skipOnce.index];
+  static SkipType get pgcSkipType {
+    final index = GStorage.settingRepository.getInt(SettingBoxKey.pgcSkipType);
+    return SkipType.values[index ?? SkipType.skipOnce.index];
+  }
 
-  static PlayRepeat get audioPlayMode =>
-      PlayRepeat.values[_setting.get(SettingBoxKey.audioPlayMode) ??
-          PlayRepeat.listOrder.index];
+  static PlayRepeat get audioPlayMode {
+    final index = GStorage.settingRepository.getInt(SettingBoxKey.audioPlayMode);
+    return PlayRepeat.values[index ?? PlayRepeat.listOrder.index];
+  }
 
   static bool get enablePlayAll =>
-      _setting.get(SettingBoxKey.enablePlayAll, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enablePlayAll) ?? true;
 
   static bool get enableTapDm =>
-      _setting.get(SettingBoxKey.enableTapDm, defaultValue: true);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableTapDm) ?? true;
 
   static bool get setSystemBrightness =>
-      _setting.get(SettingBoxKey.setSystemBrightness, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.setSystemBrightness) ?? false;
 
-  static String? get downloadPath => _setting.get(SettingBoxKey.downloadPath);
+  static String? get downloadPath => GStorage.settingRepository.getString(SettingBoxKey.downloadPath);
 
-  static String? get liveCdnUrl => _setting.get(SettingBoxKey.liveCdnUrl);
+  static String? get liveCdnUrl => GStorage.settingRepository.getString(SettingBoxKey.liveCdnUrl);
 
-  static bool get showBatteryLevel => _setting.get(
+  static bool get showBatteryLevel => GStorage.settingRepository.getBool(
     SettingBoxKey.showBatteryLevel,
-    defaultValue: PlatformUtils.isMobile,
-  );
+  ) ?? PlatformUtils.isMobile;
 
   static FollowOrderType get followOrderType =>
-      FollowOrderType.values[_setting.get(
+      FollowOrderType.values[GStorage.settingRepository.getInt(
         SettingBoxKey.followOrderType,
-        defaultValue: FollowOrderType.def.index,
-      )];
+      ) ?? FollowOrderType.def.index];
 
   static bool get enableImgMenu =>
-      _setting.get(SettingBoxKey.enableImgMenu, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.enableImgMenu) ?? false;
 
   static bool get showDynDispute =>
-      _setting.get(SettingBoxKey.showDynDispute, defaultValue: false);
+      GStorage.settingRepository.getBool(SettingBoxKey.showDynDispute) ?? false;
 
   static double get touchSlopH =>
-      _setting.get(SettingBoxKey.touchSlopH, defaultValue: 24.0);
+      GStorage.settingRepository.getDouble(SettingBoxKey.touchSlopH) ?? 24.0;
 }
