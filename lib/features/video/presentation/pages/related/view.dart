@@ -4,6 +4,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/features/video/presentation/pages/related/controller.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +16,19 @@ class RelatedVideoPanel extends StatefulWidget {
   State<RelatedVideoPanel> createState() => _RelatedVideoPanelState();
 }
 
-class _RelatedVideoPanelState extends State<RelatedVideoPanel> with GridMixin {
+class _RelatedVideoPanelState extends State<RelatedVideoPanel> {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   late final RelatedController _relatedController;
 
   @override

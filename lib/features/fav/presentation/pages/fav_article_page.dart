@@ -5,6 +5,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_article/item.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_article_controller.dart';
 import 'package:PiliPlus/features/fav/fav_article/presentation/widgets/fav_article_item.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +18,19 @@ class FavArticlePage extends StatefulWidget {
 }
 
 class _FavArticlePageState extends State<FavArticlePage>
-    with AutomaticKeepAliveClientMixin, GridMixin {
+    with AutomaticKeepAliveClientMixin {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   final FavArticleController _favArticleController = Get.put(
     FavArticleController(),
   );

@@ -8,6 +8,8 @@ import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
 import 'package:PiliPlus/features/member_video/presentation/pages/member_video_controller.dart';
 import 'package:PiliPlus/features/member_video/presentation/widgets/video_card_h_member_video.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
@@ -38,8 +40,20 @@ class MemberVideo extends StatefulWidget {
   State<MemberVideo> createState() => _MemberVideoState();
 }
 
-class _MemberVideoState extends State<MemberVideo>
-    with AutomaticKeepAliveClientMixin, GridMixin {
+class _MemberVideoState extends Widget<MemberVideo>
+    with AutomaticKeepAliveClientMixin {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   @override
   bool get wantKeepAlive => true;
 

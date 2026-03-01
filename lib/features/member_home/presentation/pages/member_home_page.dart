@@ -18,6 +18,8 @@ import 'package:PiliPlus/features/member_home/presentation/widgets/video_card_v_
 import 'package:PiliPlus/features/member_like_arc/member_like_arc.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_member_pgc.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +33,19 @@ class MemberHome extends StatefulWidget {
 }
 
 class _MemberHomeState extends State<MemberHome>
-    with AutomaticKeepAliveClientMixin, GridMixin {
+    with AutomaticKeepAliveClientMixin {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   @override
   bool get wantKeepAlive => true;
 

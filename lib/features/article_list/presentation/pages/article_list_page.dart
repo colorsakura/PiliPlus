@@ -3,6 +3,9 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/article_list/presentation/providers/article_list_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/article_list/presentation/widgets/item.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/models/common/item_type.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,8 +19,19 @@ class ArticleListPage extends ConsumerStatefulWidget {
   ConsumerState<ArticleListPage> createState() => _ArticleListPageState();
 }
 
-class _ArticleListPageState extends ConsumerState<ArticleListPage>
-    with GridMixin {
+class _ArticleListPageState extends ConsumerState<ArticleListPage> {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   late final String _id;
   late EdgeInsets padding;
 

@@ -3,6 +3,8 @@ import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/article/controller.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/article/item.dart';
 import 'package:PiliPlus/features/search_panel/search_panel.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,8 +26,19 @@ class _SearchArticlePanelState
           SearchArticlePanel,
           SearchArticleData,
           SearchArticleItemModel
-        >
-    with GridMixin {
+        > {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   @override
   late final SearchArticleController controller;
 

@@ -7,6 +7,8 @@ import 'package:PiliPlus/models/music/bgm_recommend_list.dart';
 import 'package:PiliPlus/features/music/presentation/providers/music_recommend_controller.dart';
 import 'package:PiliPlus/features/music/presentation/widgets/music_video_card_h.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,8 +19,19 @@ class MusicRecommendPage extends StatefulWidget {
   State<MusicRecommendPage> createState() => _MusicRecommendPageState();
 }
 
-class _MusicRecommendPageState extends State<MusicRecommendPage>
-    with GridMixin {
+class _MusicRecommendPageState extends State<MusicRecommendPage> {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   final MusicRecommendController _controller = Get.putOrFind(
     MusicRecommendController.new,
     tag: (Get.arguments as MusicRecommendArgs).id,

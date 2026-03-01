@@ -16,6 +16,8 @@ import 'package:PiliPlus/features/fav_detail/presentation/pages/widget/fav_video
 import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/toast_utils.dart';
@@ -34,7 +36,19 @@ class FavDetailPage extends StatefulWidget {
   State<FavDetailPage> createState() => _FavDetailPageState();
 }
 
-class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
+class _FavDetailPageState extends State<FavDetailPage> {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   late final FavDetailController _favDetailController;
   late String mediaId;
 

@@ -7,6 +7,8 @@ import 'package:PiliPlus/features/subscription/presentation/providers/subscripti
 import 'package:PiliPlus/features/subscription/presentation/providers/subscription_controller.dart';
 import 'package:PiliPlus/features/subscription/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +20,19 @@ class SubscriptionPageV2 extends ConsumerStatefulWidget {
   ConsumerState<SubscriptionPageV2> createState() => _SubscriptionPageV2State();
 }
 
-class _SubscriptionPageV2State extends ConsumerState<SubscriptionPageV2>
-    with GridMixin {
+class _SubscriptionPageV2State extends ConsumerState<SubscriptionPageV2> {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   late final SubscriptionController _controller;
   final _account = Accounts.main;
 

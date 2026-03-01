@@ -7,6 +7,8 @@ import 'package:PiliPlus/features/dynamics/presentation/widgets/dynamic_panel.da
 import 'package:PiliPlus/features/member_search/presentation/controllers/member_search_controller_v2.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/utils/styles/constants.dart';
+import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:waterfall_flow/waterfall_flow.dart'
     hide SliverWaterfallFlowDelegateWithMaxCrossAxisExtent;
@@ -28,7 +30,19 @@ class MemberSearchChildPageV2 extends StatefulWidget {
 }
 
 class _MemberSearchChildPageV2State extends State<MemberSearchChildPageV2>
-    with AutomaticKeepAliveClientMixin, DynMixin, GridMixin {
+    with AutomaticKeepAliveClientMixin, DynMixin {
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
+
+  Widget get gridSkeleton => SliverGrid.builder(
+    gridDelegate: gridDelegate,
+    itemBuilder: (_, _) => const VideoCardHSkeleton(),
+    itemCount: 10,
+  );
   MemberSearchChildControllerV2 get _controller => widget.controller;
 
   @override
