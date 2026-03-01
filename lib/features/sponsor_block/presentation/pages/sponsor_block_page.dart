@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/http/constants.dart';
@@ -17,7 +18,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -124,7 +124,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                       );
                       (context as Element).markNeedsBuild();
                     } catch (e) {
-                      SmartDialog.showToast(e.toString());
+                      ToastUtils.showToast(e.toString());
                     }
                   },
                   child: const Text('确定'),

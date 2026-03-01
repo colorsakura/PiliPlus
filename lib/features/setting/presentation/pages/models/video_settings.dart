@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/models/common/video/audio_quality.dart';
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
@@ -17,7 +18,6 @@ import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -486,7 +486,7 @@ void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {
               await GStorage.settingRepository.setInt(SettingBoxKey.autosync, int.parse(autosync));
               setState();
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),

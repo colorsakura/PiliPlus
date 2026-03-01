@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' show Random;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -9,7 +10,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -49,15 +49,15 @@ abstract final class Utils {
         bytes: PlatformUtils.isDesktop ? null : bytes,
       );
       if (path == null) {
-        SmartDialog.showToast("取消保存");
+        ToastUtils.showToast("取消保存");
         return;
       }
       if (PlatformUtils.isDesktop) {
         await File(path).writeAsBytes(bytes);
       }
-      SmartDialog.showToast("已保存");
+      ToastUtils.showToast("已保存");
     } catch (e) {
-      SmartDialog.showToast("保存失败: $e");
+      ToastUtils.showToast("保存失败: $e");
     }
   }
 
@@ -113,7 +113,7 @@ abstract final class Utils {
         ShareParams(text: text, sharePositionOrigin: await sharePositionOrigin),
       );
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 
@@ -139,7 +139,7 @@ abstract final class Utils {
     String? toastText,
   }) {
     if (needToast) {
-      SmartDialog.showToast(toastText ?? '已复制');
+      ToastUtils.showToast(toastText ?? '已复制');
     }
     return Clipboard.setData(ClipboardData(text: text));
   }

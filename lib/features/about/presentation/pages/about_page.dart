@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/build_config.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
@@ -21,7 +22,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:re_highlight/languages/json.dart';
@@ -192,14 +192,14 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                   title: '提示',
                   content: '该操作将清除图片及网络请求缓存数据，确认清除？',
                   onConfirm: () async {
-                    SmartDialog.showLoading(msg: '正在清除...');
+                    ToastUtils.showLoading(msg: '正在清除...');
                     try {
                       await controller.clearCache();
-                      SmartDialog.showToast('清除成功');
+                      ToastUtils.showToast('清除成功');
                     } catch (err) {
-                      SmartDialog.showToast(err.toString());
+                      ToastUtils.showToast(err.toString());
                     } finally {
-                      SmartDialog.dismiss();
+                      ToastUtils.dismiss();
                     }
                   },
                 );
@@ -263,7 +263,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                           GStorage.settingRepository.clear(),
                           GStorage.videoRepository.clear(),
                         ]);
-                        SmartDialog.showToast('重置成功');
+                        ToastUtils.showToast('重置成功');
                       },
                       title: const Text('重置可导出的设置', style: style),
                     ),
@@ -280,7 +280,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                           Accounts.clear(),
                           GStorage.watchProgressRepository.clear(),
                         ]);
-                        SmartDialog.showToast('重置成功');
+                        ToastUtils.showToast('重置成功');
                       },
                       title: const Text('重置所有数据（含登录信息）', style: style),
                     ),
@@ -343,7 +343,7 @@ Future<void> showImportExportDialog<T>(
               'text/plain',
             );
             if (data?.text?.isNotEmpty != true) {
-              SmartDialog.showToast('剪贴板无数据');
+              ToastUtils.showToast('剪贴板无数据');
               return;
             }
             if (!context.mounted) return;
@@ -354,7 +354,7 @@ Future<void> showImportExportDialog<T>(
               json = jsonDecode(text);
               formatText = Utils.jsonEncoder.convert(json);
             } catch (e) {
-              SmartDialog.showToast('解析json失败：$e');
+              ToastUtils.showToast('解析json失败：$e');
               return;
             }
             final highlight = Highlight()..registerLanguage('json', langJson);
@@ -396,10 +396,10 @@ Future<void> showImportExportDialog<T>(
                         PageUtils.pop();
                         try {
                           if (await fromJson(json)) {
-                            SmartDialog.showToast('导入成功');
+                            ToastUtils.showToast('导入成功');
                           }
                         } catch (e) {
-                          SmartDialog.showToast('导入失败：$e');
+                          ToastUtils.showToast('导入失败：$e');
                         }
                       },
                       child: const Text('确定'),
@@ -460,7 +460,7 @@ Future<void> showImportExportDialog<T>(
                         try {
                           if (await fromJson(json)) {
                             PageUtils.pop();
-                            SmartDialog.showToast('导入成功');
+                            ToastUtils.showToast('导入成功');
                             return;
                           }
                         } catch (e) {

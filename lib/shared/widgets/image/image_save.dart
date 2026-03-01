@@ -4,8 +4,8 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 void imageSaveDialog({
@@ -15,8 +15,8 @@ void imageSaveDialog({
   String? bvid,
 }) {
   final double imgWidth = MediaQuery.sizeOf(Get.context!).shortestSide - 16;
-  SmartDialog.show(
-    animationType: SmartAnimationType.centerScale_otherSlide,
+  showDialog(
+    context: Get.context!,
     builder: (context) {
       const iconSize = 20.0;
       final theme = Theme.of(context);
@@ -34,7 +34,7 @@ void imageSaveDialog({
               clipBehavior: Clip.none,
               children: [
                 GestureDetector(
-                  onTap: SmartDialog.dismiss,
+                  onTap: () => Navigator.of(context).pop(),
                   child: NetworkImgLayer(
                     src: cover,
                     quality: 100,
@@ -54,7 +54,7 @@ void imageSaveDialog({
                       padding: .zero,
                       backgroundColor: Colors.black.withValues(alpha: 0.3),
                     ),
-                    onPressed: SmartDialog.dismiss,
+                    onPressed: () => Navigator.of(context).pop(),
                     icon: const Icon(
                       Icons.close,
                       size: 18,
@@ -82,7 +82,7 @@ void imageSaveDialog({
                       iconSize: iconSize,
                       tooltip: '稍后再看',
                       onPressed: () => {
-                        SmartDialog.dismiss(),
+                        Navigator.of(context).pop(),
                         UserHttp.toViewLater(aid: aid, bvid: bvid),
                       },
                       icon: const Icon(Icons.watch_later_outlined),
@@ -93,7 +93,7 @@ void imageSaveDialog({
                         iconSize: iconSize,
                         tooltip: '分享',
                         onPressed: () {
-                          SmartDialog.dismiss();
+                          Navigator.of(context).pop();
                           ImageUtils.onShareImg(cover);
                         },
                         icon: const Icon(Icons.share),
@@ -104,7 +104,7 @@ void imageSaveDialog({
                       onPressed: () async {
                         bool saveStatus = await ImageUtils.downloadImg([cover]);
                         if (saveStatus) {
-                          SmartDialog.dismiss();
+                          Navigator.of(context).pop();
                         }
                       },
                       icon: const Icon(Icons.download),

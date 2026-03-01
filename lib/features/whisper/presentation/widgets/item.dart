@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
@@ -16,7 +17,6 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart' hide ListTile;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class WhisperSessionItem extends StatelessWidget {
@@ -183,7 +183,7 @@ class WhisperSessionItem extends StatelessWidget {
               ),
             );
           } else {
-            SmartDialog.showToast(item.id.foldId.type.name);
+            ToastUtils.showToast(item.id.foldId.type.name);
           }
         }
       },

@@ -1,6 +1,7 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math' show pi, max;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
@@ -44,7 +45,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -783,7 +783,7 @@ void _showDynDialog(BuildContext context) {
               GStorage.settingRepository.setInt(SettingBoxKey.dynamicPeriod, val);
               // dynamicPeriod is now read directly from storage by providers
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),
@@ -824,7 +824,7 @@ void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
               await GStorage.settingRepository.setInt(SettingBoxKey.replyLengthLimit, val);
               setState();
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),
@@ -868,7 +868,7 @@ void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
               await GStorage.settingRepository.setDouble(SettingBoxKey.danmakuLineHeight, val);
               setState();
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),
@@ -910,7 +910,7 @@ void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
               await GStorage.settingRepository.setDouble(SettingBoxKey.touchSlopH, val);
               setState();
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),
@@ -1006,7 +1006,7 @@ Future<void> _showFavDialog(BuildContext context) async {
               onChanged: (value) {
                 PageUtils.pop();
                 GStorage.settingRepository.setInt(SettingBoxKey.quickFavId, value);
-                SmartDialog.showToast('设置成功');
+                ToastUtils.showToast('设置成功');
               },
               groupValue: quickFavId,
               child: Column(
@@ -1049,7 +1049,7 @@ Future<void> _showReplyCountDialog(
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.retryCount, res.toInt());
     setState();
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
   }
 }
 
@@ -1072,7 +1072,7 @@ Future<void> _showReplyDelayDialog(
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.retryDelay, res.toInt());
     setState();
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
   }
 }
 
@@ -1233,7 +1233,7 @@ void _showCacheDialog(BuildContext context, VoidCallback setState) {
               );
               setState();
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),

@@ -16,8 +16,8 @@ import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class NoteListPage extends CommonSlidePage {
   const NoteListPage({
@@ -161,7 +161,7 @@ class _NoteListPageState extends State<NoteListPage>
               ),
               onPressed: () {
                 if (!Accounts.main.isLogin) {
-                  SmartDialog.showToast('账号未登录');
+                  ToastUtils.showToast('账号未登录');
                   return;
                 }
                 Scaffold.of(context).showBottomSheet(

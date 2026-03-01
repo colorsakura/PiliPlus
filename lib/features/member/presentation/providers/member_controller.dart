@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
@@ -17,7 +18,6 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     show ExtendedNestedScrollViewState;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 part 'member_state.dart';
 
@@ -182,7 +182,7 @@ class MemberController extends ChangeNotifier {
 
   void blockUser(BuildContext context) {
     if (!account.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     showDialog(
@@ -233,7 +233,7 @@ class MemberController extends ChangeNotifier {
       _onBlock();
     } else {
       if (!account.isLogin) {
-        SmartDialog.showToast('账号未登录');
+        ToastUtils.showToast('账号未登录');
         return;
       }
       RequestUtils.actionRelationMod(
@@ -254,7 +254,7 @@ class MemberController extends ChangeNotifier {
       _updateState(
         _state.copyWith(isFollowed: null, relation: newRelation),
       );
-      SmartDialog.showToast('移除成功');
+      ToastUtils.showToast('移除成功');
     } else {
       res.toast();
     }
@@ -273,7 +273,7 @@ class MemberController extends ChangeNotifier {
   Future<void> vipExpAdd() async {
     final res = await UserHttp.vipExpAdd();
     if (res.isSuccess) {
-      SmartDialog.showToast('领取成功');
+      ToastUtils.showToast('领取成功');
     } else {
       res.toast();
     }

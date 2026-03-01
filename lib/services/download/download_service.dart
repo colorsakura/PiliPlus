@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert' show jsonDecode, jsonEncode;
 import 'dart:io' show Directory, File;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/grpc/dm.dart';
 import 'package:PiliPlus/http/download.dart';
@@ -23,7 +24,6 @@ import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:synchronized/synchronized.dart';
@@ -336,7 +336,7 @@ class DownloadService extends GetxService {
         if (!isUpdate) {
           _updateCurStatus(DownloadStatus.failDanmaku);
         }
-        if (kDebugMode) SmartDialog.showToast(e.toString());
+        if (kDebugMode) ToastUtils.showToast(e.toString());
         return false;
       }
     }

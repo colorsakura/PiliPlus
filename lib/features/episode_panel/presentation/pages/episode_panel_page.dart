@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
@@ -31,7 +32,6 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' hide TabBarView;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -430,10 +430,10 @@ class _EpisodePanelState extends State<EpisodePanel>
           child: InkWell(
             onTap: () {
               if (episode.badge == "会员" && vipStatus != 1) {
-                SmartDialog.showToast('需要大会员');
+                ToastUtils.showToast('需要大会员');
                 // return;
               }
-              SmartDialog.showToast('切换到：$title');
+              ToastUtils.showToast('切换到：$title');
               widget.onClose?.call();
 
               widget.onChangeEpisode(episode).then((res) {
@@ -584,7 +584,7 @@ class _EpisodePanelState extends State<EpisodePanel>
             seasonId: widget.seasonId,
           );
           if (res.isSuccess) {
-            SmartDialog.showToast('${response ? '取消' : ''}订阅成功');
+            ToastUtils.showToast('${response ? '取消' : ''}订阅成功');
             _favState!.value = Success(!response);
             widget.ugcIntroController?.seasonFavState[widget.seasonId] =
                 !response;

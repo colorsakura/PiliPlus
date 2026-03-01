@@ -14,8 +14,8 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Base controller for reply/comment functionality
 ///
@@ -125,7 +125,7 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
         if (subjectControl.hasRootText()) {
           final rootText = subjectControl.rootText;
           if (inputDisable) {
-            SmartDialog.showToast(rootText);
+            ToastUtils.showToast(rootText);
           }
           if (rootText.contains('可发') || rootText.contains('可见')) {
             hint = rootText;
@@ -144,7 +144,7 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
   }) {
     if (loadingState.value case Error(:final errMsg, :final code)) {
       if (errMsg != null && (code == 12061 || code == 12002)) {
-        SmartDialog.showToast(errMsg);
+        ToastUtils.showToast(errMsg);
         return;
       }
     }
@@ -262,7 +262,7 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
           ..insert(0, list.removeAt(index));
       }
       loadingState.refresh();
-      SmartDialog.showToast('${isUpTop ? '取消' : ''}置顶成功');
+      ToastUtils.showToast('${isUpTop ? '取消' : ''}置顶成功');
     } else {
       res.toast();
     }

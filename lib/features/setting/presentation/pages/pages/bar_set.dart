@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -47,13 +47,13 @@ class _BarSetPageState extends State<BarSetPage> {
       key,
       jsonEncode(list.where((e) => e.second).map((e) => e.first.index).toList()),
     );
-    SmartDialog.showToast('保存成功，下次启动时生效');
+    ToastUtils.showToast('保存成功，下次启动时生效');
   }
 
   void onReset() {
     PageUtils.pop();
     GStorage.settingRepository.remove(key);
-    SmartDialog.showToast('重置成功，下次启动时生效');
+    ToastUtils.showToast('重置成功，下次启动时生效');
   }
 
   void onReorder(int oldIndex, int newIndex) {

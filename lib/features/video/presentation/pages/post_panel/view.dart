@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -17,7 +18,6 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -313,14 +313,14 @@ class _PostPanelState extends State<PostPanel>
         segments: list,
       );
       PageUtils.pop();
-      SmartDialog.showToast('提交成功');
+      ToastUtils.showToast('提交成功');
       list.clear();
       videoDetailController.handleSBData(response);
       if (videoDetailController.blockListener == null) {
         videoDetailController.initSkip();
       }
     } catch (e) {
-      SmartDialog.showToast('提交失败: $e');
+      ToastUtils.showToast('提交失败: $e');
     }
   }
 

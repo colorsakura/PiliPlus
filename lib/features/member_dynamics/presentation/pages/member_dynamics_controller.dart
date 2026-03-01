@@ -4,7 +4,7 @@ import 'package:PiliPlus/http/member.dart';
 import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class MemberDynamicsController
     extends CommonListController<DynamicsDataModel, DynamicItemModel> {
@@ -54,7 +54,7 @@ class MemberDynamicsController
       loadingState
         ..value.data!.removeWhere((item) => item.idStr == dynamicId)
         ..refresh();
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }
@@ -71,7 +71,7 @@ class MemberDynamicsController
         ..moduleAuthor?.isTop = false;
       if (isTop) {
         loadingState.refresh();
-        SmartDialog.showToast('取消置顶成功');
+        ToastUtils.showToast('取消置顶成功');
       } else {
         final item = list.firstWhere((item) => item.idStr == dynamicId);
         item.modules
@@ -81,7 +81,7 @@ class MemberDynamicsController
           ..remove(item)
           ..insert(0, item);
         loadingState.refresh();
-        SmartDialog.showToast('置顶成功');
+        ToastUtils.showToast('置顶成功');
       }
     } else {
       res.toast();

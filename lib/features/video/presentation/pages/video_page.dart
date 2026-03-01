@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
@@ -64,7 +65,6 @@ import 'package:floating/floating.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
@@ -1107,7 +1107,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       PopupMenuItem(
         onTap: () {
           if (!Accounts.main.isLogin) {
-            SmartDialog.showToast('账号未登录');
+            ToastUtils.showToast('账号未登录');
           } else {
             PageUtils.reportVideo(aid); // PHASE 6: Using Riverpod state
           }
@@ -1751,7 +1751,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
 
   void onReversePlay({required bool isSeason}) {
     if (isSeason && isPlayAll) { // PHASE 7: Using Riverpod state
-      SmartDialog.showToast('当前为播放全部，合集不支持倒序');
+      ToastUtils.showToast('当前为播放全部，合集不支持倒序');
       return;
     }
 

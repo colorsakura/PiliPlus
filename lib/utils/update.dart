@@ -1,4 +1,6 @@
 import 'dart:io' show Platform;
+import 'package:PiliPlus/utils/toast_utils.dart';
+import 'package:PiliPlus/utils/overlay_entry_manager.dart';
 
 import 'package:PiliPlus/build_config.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
@@ -13,13 +15,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 abstract final class Update {
   // 检查更新
   static Future<void> checkUpdate([bool isAuto = true]) async {
     if (kDebugMode) return;
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     try {
       final res = await Request().get(
         Api.latestApp,
@@ -30,7 +31,7 @@ abstract final class Update {
       );
       if (res.data is Map || res.data.isEmpty) {
         if (!isAuto) {
-          SmartDialog.showToast('检查更新失败，GitHub接口未返回数据，请检查网络');
+          ToastUtils.showToast('检查更新失败，GitHub接口未返回数据，请检查网络');
         }
         return;
       }
@@ -39,12 +40,14 @@ abstract final class Update {
           DateTime.parse(data['created_at']).millisecondsSinceEpoch ~/ 1000;
       if (BuildConfig.buildTime >= latest) {
         if (!isAuto) {
-          SmartDialog.showToast('已是最新版本');
+          ToastUtils.showToast('已是最新版本');
         }
       } else {
-        SmartDialog.show(
-          animationType: SmartAnimationType.centerFade_otherSlide,
-          builder: (context) {
+        final context = OverlayEntryManager.context;
+        if (context != null) {
+          showDialog(
+            context: context,
+            builder: (context) {
             final ThemeData theme = Theme.of(context);
             Widget downloadBtn(String text, {String? ext}) => TextButton(
               onPressed: () => onDownload(data, ext: ext),
@@ -83,7 +86,7 @@ abstract final class Update {
                 if (isAuto)
                   TextButton(
                     onPressed: () {
-                      SmartDialog.dismiss();
+                      ToastUtils.dismiss();
                       GStorage.settingRepository.setBool(SettingBoxKey.autoUpdate, false);
                     },
                     child: Text(
@@ -94,7 +97,7 @@ abstract final class Update {
                     ),
                   ),
                 TextButton(
-                  onPressed: SmartDialog.dismiss,
+                  onPressed: () => Navigator.of(context).pop(),
                   child: Text(
                     '取消',
                     style: TextStyle(
@@ -114,7 +117,8 @@ abstract final class Update {
               ],
             );
           },
-        );
+          );
+        }
       }
     } catch (e) {
       if (kDebugMode) debugPrint('failed to check update: $e');
@@ -123,7 +127,7 @@ abstract final class Update {
 
   // 下载适用于当前系统的安装包
   static Future<void> onDownload(Map data, {String? ext}) async {
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     try {
       void download(String plat) {
         if (data['assets'].isNotEmpty) {

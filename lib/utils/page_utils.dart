@@ -1,5 +1,7 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
+import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/app/router/app_router.dart';
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
@@ -34,7 +36,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:floating/floating.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,7 +53,7 @@ abstract final class PageUtils {
     required List<SourceModel> imgList,
     int? quality,
   }) {
-    final navigatorState = rootNavigatorKey.currentState;
+    final navigatorState = MyApp.rootNavigatorKey.currentState;
     if (navigatorState == null) {
       return Future.value();
     }
@@ -119,13 +120,13 @@ abstract final class PageUtils {
     bool off = false,
   }) async {
     assert(id != null || rid != null);
-    SmartDialog.showLoading();
+    ToastUtils.showLoading();
     final res = await DynamicsHttp.dynamicDetail(
       id: id,
       rid: rid,
       type: rid != null ? 2 : null,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       if (response.basic?.commentType == 12) {
         // Use go_router navigation
@@ -294,7 +295,7 @@ abstract final class PageUtils {
             );
           }
         } catch (err) {
-          SmartDialog.showToast(err.toString());
+          ToastUtils.showToast(err.toString());
         }
         break;
 
@@ -311,7 +312,7 @@ abstract final class PageUtils {
 
       case 'DYNAMIC_TYPE_PGC':
         // if (kDebugMode) debugPrint('番剧');
-        SmartDialog.showToast('暂未支持的类型，请联系开发者');
+        ToastUtils.showToast('暂未支持的类型，请联系开发者');
         break;
 
       case 'DYNAMIC_TYPE_LIVE':
@@ -458,10 +459,10 @@ abstract final class PageUtils {
     try {
       final Uri uri = Uri.parse(url);
       if (!await launchUrl(uri, mode: mode)) {
-        SmartDialog.showToast('Could not launch $url');
+        ToastUtils.showToast('Could not launch $url');
       }
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 
@@ -482,7 +483,7 @@ abstract final class PageUtils {
           'url': url,
           ...?parameters,
         });
-        final context = rootNavigatorKey.currentContext;
+        final context = MyApp.rootNavigatorKey.currentContext;
         if (context != null) {
           context.pushReplacement(
             uri.toString(),
@@ -504,7 +505,7 @@ abstract final class PageUtils {
     if (!context.mounted) {
       return null;
     }
-    final navigatorState = rootNavigatorKey.currentState;
+    final navigatorState = MyApp.rootNavigatorKey.currentState;
     if (navigatorState == null) {
       return null;
     }
@@ -670,9 +671,9 @@ abstract final class PageUtils {
     int? progress, // milliseconds
   }) async {
     try {
-      SmartDialog.showLoading(msg: '资源获取中');
+      ToastUtils.showLoading(msg: '资源获取中');
       final res = await SearchHttp.pgcInfo(seasonId: seasonId, epId: epId);
-      SmartDialog.dismiss();
+      ToastUtils.dismiss();
       if (res case Success(:final response)) {
         final episodes = response.episodes;
         final hasEpisode = episodes != null && episodes.isNotEmpty;
@@ -750,13 +751,13 @@ abstract final class PageUtils {
           }
         }
 
-        SmartDialog.showToast('资源加载失败');
+        ToastUtils.showToast('资源加载失败');
       } else {
         res.toast();
       }
     } catch (e) {
-      SmartDialog.dismiss();
-      SmartDialog.showToast('$e');
+      ToastUtils.dismiss();
+      ToastUtils.showToast('$e');
       if (kDebugMode) debugPrint('$e');
     }
   }
@@ -767,9 +768,9 @@ abstract final class PageUtils {
     int? aid,
   }) async {
     try {
-      SmartDialog.showLoading(msg: '资源获取中');
+      ToastUtils.showLoading(msg: '资源获取中');
       final res = await SearchHttp.pugvInfo(seasonId: seasonId, epId: epId);
-      SmartDialog.dismiss();
+      ToastUtils.dismiss();
       if (res case Success(:final response)) {
         final episodes = response.episodes;
         if (episodes != null && episodes.isNotEmpty) {
@@ -794,14 +795,14 @@ abstract final class PageUtils {
             },
           );
         } else {
-          SmartDialog.showToast('资源加载失败');
+          ToastUtils.showToast('资源加载失败');
         }
       } else {
         res.toast();
       }
     } catch (e) {
-      SmartDialog.dismiss();
-      SmartDialog.showToast(e.toString());
+      ToastUtils.dismiss();
+      ToastUtils.showToast(e.toString());
     }
   }
 
@@ -907,7 +908,7 @@ abstract final class PageUtils {
     Object? extra,
     Map<String, String>? parameters,
   }) {
-    final context = rootNavigatorKey.currentContext;
+    final context = MyApp.rootNavigatorKey.currentContext;
     if (context == null) return;
 
     final uri = _buildUri(path, parameters);
@@ -920,7 +921,7 @@ abstract final class PageUtils {
     Object? extra,
     Map<String, String>? parameters,
   }) {
-    final context = rootNavigatorKey.currentContext;
+    final context = MyApp.rootNavigatorKey.currentContext;
     if (context == null) return Future.value(false);
 
     final uri = _buildUri(path, parameters);
@@ -933,7 +934,7 @@ abstract final class PageUtils {
     Object? extra,
     Map<String, String>? parameters,
   }) {
-    final context = rootNavigatorKey.currentContext;
+    final context = MyApp.rootNavigatorKey.currentContext;
     if (context == null) return Future.value(false);
 
     final uri = _buildUri(path, parameters);
@@ -943,14 +944,14 @@ abstract final class PageUtils {
 
   /// Check if router can pop
   static bool canPop() {
-    final context = rootNavigatorKey.currentContext;
+    final context = MyApp.rootNavigatorKey.currentContext;
     if (context == null) return false;
     return context.canPop();
   }
 
   /// Pop the current route
   static void pop<T extends Object?>([T? result]) {
-    final context = rootNavigatorKey.currentContext;
+    final context = MyApp.rootNavigatorKey.currentContext;
     if (context == null) return;
     context.pop(result);
   }

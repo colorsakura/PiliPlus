@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -24,7 +25,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -291,7 +291,7 @@ class _SavePanelState extends State<SavePanel> {
         !await ImageUtils.checkPermissionDependOnSdkInt()) {
       return;
     }
-    SmartDialog.showLoading();
+    ToastUtils.showLoading();
     try {
       RenderRepaintBoundary boundary =
           boundaryKey.currentContext!.findRenderObject()
@@ -303,7 +303,7 @@ class _SavePanelState extends State<SavePanel> {
           "${Constants.appName}_${DateFormat('yyyyMMddHHmmss').format(DateTime.now())}";
       if (isShare) {
         PageUtils.pop();
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
         SharePlus.instance.share(
           ShareParams(
             files: [
@@ -329,7 +329,7 @@ class _SavePanelState extends State<SavePanel> {
       }
     } catch (e) {
       if (kDebugMode) debugPrint('on save/share reply: $e');
-      SmartDialog.dismiss();
+      ToastUtils.dismiss();
     }
   }
 

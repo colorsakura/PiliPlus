@@ -1,12 +1,12 @@
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show SessionPageType, SessionId, Session;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/grpc/im.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:fixnum/fixnum.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 abstract class CommonWhisperController<R>
     extends CommonListController<R, Session> {
@@ -18,7 +18,7 @@ abstract class CommonWhisperController<R>
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }
@@ -41,7 +41,7 @@ abstract class CommonWhisperController<R>
         list.insert(0, list.removeAt(index));
       }
       loadingState.refresh();
-      SmartDialog.showToast('${isTop ? '移除' : ''}置顶成功');
+      ToastUtils.showToast('${isTop ? '移除' : ''}置顶成功');
     } else {
       res.toast();
     }
@@ -56,7 +56,7 @@ abstract class CommonWhisperController<R>
     if (res.isSuccess) {
       item.isMuted = !isMuted;
       loadingState.refresh();
-      SmartDialog.showToast('操作成功');
+      ToastUtils.showToast('操作成功');
     } else {
       res.toast();
     }
@@ -75,7 +75,7 @@ abstract class CommonWhisperController<R>
           loadingState.refresh();
         }
       }
-      SmartDialog.showToast('已标记为已读');
+      ToastUtils.showToast('已标记为已读');
     } else {
       res.toast();
     }

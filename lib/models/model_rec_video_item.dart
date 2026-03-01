@@ -31,6 +31,24 @@ class RecVideoItemModel extends BaseRecVideoItemModel {
     rcmdReason = json["rcmd_reason"]?['content'];
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': aid,
+      'bvid': bvid,
+      'cid': cid,
+      'goto': goto,
+      'uri': uri,
+      'pic': cover,
+      'title': title,
+      'duration': duration,
+      'pubdate': pubdate,
+      'owner': (owner as Owner).toJson(),
+      'stat': (stat as Stat).toJson(),
+      'is_followed': isFollowed ? 1 : 0,
+      if (rcmdReason != null) 'rcmd_reason': {'content': rcmdReason},
+    };
+  }
+
   // @override
   // String? get desc => null;
 }

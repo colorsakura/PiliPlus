@@ -1,5 +1,6 @@
 import 'dart:async' show FutureOr;
 import 'dart:io' show Platform;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/user.dart';
@@ -14,7 +15,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart' show Digest;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart' as web;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 abstract final class LoginUtils {
@@ -60,7 +60,7 @@ abstract final class LoginUtils {
           accountService.isLogin.value = true;
         }
 
-        SmartDialog.showToast('main登录成功');
+        ToastUtils.showToast('main登录成功');
         if (response != Pref.userInfoCache) {
           await GStorage.userInfoRepository.set('userInfoCache', response);
         }
@@ -68,9 +68,8 @@ abstract final class LoginUtils {
     } else {
       // 获取用户信息失败
       await Accounts.deleteAll({account});
-      SmartDialog.showNotify(
-        msg: '登录失败，请检查cookie是否正确，${res.toString()}',
-        notifyType: NotifyType.warning,
+      ToastUtils.showToast(
+        '登录失败，请检查cookie是否正确，${res.toString()}',
       );
     }
   }

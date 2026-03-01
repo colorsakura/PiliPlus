@@ -6,9 +6,9 @@ import 'package:PiliPlus/models/sub/sub/list.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class SubController extends CommonListController<SubData, SubItemModel> {
   late final account = Accounts.main;
@@ -53,7 +53,7 @@ class SubController extends CommonListController<SubData, SubItemModel> {
                 loadingState
                   ..value.data!.remove(subFolderItem)
                   ..refresh();
-                SmartDialog.showToast('取消订阅成功');
+                ToastUtils.showToast('取消订阅成功');
               } else {
                 res.toast();
               }

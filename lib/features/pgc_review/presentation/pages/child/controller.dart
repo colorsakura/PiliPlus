@@ -4,8 +4,8 @@ import 'package:PiliPlus/models/common/pgc_review_type.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/data.dart';
 import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class PgcReviewController
     extends CommonListController<PgcReviewData, PgcReviewItemModel> {
@@ -112,7 +112,7 @@ class PgcReviewController
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }

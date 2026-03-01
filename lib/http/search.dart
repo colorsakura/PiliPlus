@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/init.dart';
@@ -14,7 +15,6 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 abstract final class SearchHttp {
   // 获取搜索建议
@@ -189,7 +189,7 @@ abstract final class SearchHttp {
         return null;
       }
     } else {
-      SmartDialog.showToast("ab2c error: ${res.data['message']}");
+      ToastUtils.showToast("ab2c error: ${res.data['message']}");
       return null;
     }
   }

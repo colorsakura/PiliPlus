@@ -6,14 +6,14 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/api_type.dart';
 import 'package:flutter/material.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 List<SettingsModel> get privacySettings => [
   NormalModel(
     onTap: (context, setState) {
       if (!Accounts.main.isLogin) {
-        SmartDialog.showToast('登录后查看');
+        ToastUtils.showToast('登录后查看');
         return;
       }
       PageUtils.pushNamed(AppRoutes.blackListPage);

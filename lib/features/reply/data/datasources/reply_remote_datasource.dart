@@ -16,7 +16,7 @@ import 'package:PiliPlus/models/reply_interaction/data.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// 评论远程数据源
 class ReplyRemoteDataSource {
@@ -307,11 +307,11 @@ class ReplyRemoteDataSource {
 
       if (response.data['code'] == 0) {
         if (response.data['data']?['action_toast'] case final String toast) {
-          SmartDialog.showToast(toast);
+          ToastUtils.showToast(toast);
         }
         return const Success(null);
       } else {
-        SmartDialog.showToast(response.data['message'].toString());
+        ToastUtils.showToast(response.data['message'].toString());
         return const Error(null);
       }
     } on DioException catch (e) {

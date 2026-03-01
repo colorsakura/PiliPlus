@@ -1,3 +1,4 @@
+import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/app/router/route_guards.dart';
 import 'package:PiliPlus/features/about/presentation/pages/about_page.dart';
@@ -70,22 +71,19 @@ import 'package:PiliPlus/features/whisper_detail/whisper_detail.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 /// Global navigator key for accessing navigator state outside of build context
-final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 /// Create and configure the go_router instance
 GoRouter goRouter() {
   return GoRouter(
-    navigatorKey: rootNavigatorKey,
+    navigatorKey: MyApp.rootNavigatorKey,
     initialLocation: AppRoutes.home,
     redirect: RouteGuard.redirect,
     observers: [
       PageUtils.routeObserver,
-      FlutterSmartDialog.observer,
     ],
     routes: [
       StatefulShellRoute.indexedStack(

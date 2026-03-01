@@ -6,9 +6,9 @@ import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class GroupPanel extends StatefulWidget {
   final int mid;
@@ -60,7 +60,7 @@ class _GroupPanelState extends State<GroupPanel> {
       tags.isEmpty ? '0' : tags.join(','),
     );
     if (res.isSuccess) {
-      SmartDialog.showToast('操作成功');
+      ToastUtils.showToast('操作成功');
       PageUtils.pop(tags);
     } else {
       res.toast();

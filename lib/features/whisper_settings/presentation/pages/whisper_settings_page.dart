@@ -2,13 +2,13 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show IMSettingType, Setting;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/whisper_block/whisper_block.dart';
 import 'package:PiliPlus/features/whisper_settings/presentation/pages/whisper_settings_controller.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/whisper_settings/presentation/widgets/item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:protobuf/protobuf.dart' show PbMap;
 
@@ -136,7 +136,7 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
         PageUtils.pushNamed(AppRoutes.webview, parameters: {'url': item.redirect.otherPage.url},
         );
       } else {
-        SmartDialog.showToast(item.redirect.otherPage.url);
+        ToastUtils.showToast(item.redirect.otherPage.url);
       }
     } else if (item.redirect.settingPage.hasUrl()) {
       if (item.redirect.title == '消息屏蔽词') {
@@ -145,7 +145,7 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
         PageUtils.pushNamed(AppRoutes.webview, parameters: {'url': item.redirect.settingPage.url},
         );
       } else {
-        SmartDialog.showToast(item.redirect.settingPage.url);
+        ToastUtils.showToast(item.redirect.settingPage.url);
       }
     }
   }

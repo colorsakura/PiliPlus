@@ -2,9 +2,9 @@ import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/features/pgc_review/data/datasources/pgc_review_remote_datasource.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class PgcReviewPostPanel extends StatefulWidget {
   const PgcReviewPostPanel({
@@ -232,14 +232,14 @@ class _PgcReviewPostPanelState extends State<PgcReviewPostPanel> {
       );
       if (res.isSuccess) {
         PageUtils.pop();
-        SmartDialog.showToast('编辑成功');
+        ToastUtils.showToast('编辑成功');
       } else {
         res.toast();
       }
       return;
     }
     if (!Accounts.main.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final res = await _dataSource.postReview(
@@ -250,7 +250,7 @@ class _PgcReviewPostPanelState extends State<PgcReviewPostPanel> {
     );
     if (res.isSuccess) {
       PageUtils.pop();
-      SmartDialog.showToast('点评成功');
+      ToastUtils.showToast('点评成功');
     } else {
       res.toast();
     }

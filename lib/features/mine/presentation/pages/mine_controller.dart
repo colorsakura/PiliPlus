@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/http/fav.dart';
@@ -19,7 +20,6 @@ import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -99,7 +99,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
 
   bool get isLogin {
     if (!accountService.isLogin.value) {
-      // SmartDialog.showToast('账号未登录');
+      // ToastUtils.showToast('账号未登录');
       return false;
     }
     return true;
@@ -122,7 +122,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
       }
     } else {
       final errMsg = res.toString();
-      SmartDialog.showToast(errMsg);
+      ToastUtils.showToast(errMsg);
       if (errMsg == '账号未登录') {
         LoginUtils.onLogoutMain();
         return;
@@ -156,7 +156,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
 
   static void onChangeAnonymity() {
     if (Accounts.account.isEmpty) {
-      SmartDialog.showToast('请先登录');
+      ToastUtils.showToast('请先登录');
       return;
     }
     if (anonymity == null) {
@@ -165,12 +165,10 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
     final newVal = !anonymity!.value;
     anonymity!.value = newVal;
     if (newVal) {
-      SmartDialog.dismiss();
-      SmartDialog.show<bool>(
-        clickMaskDismiss: false,
-        usePenetrate: true,
-        displayTime: const Duration(seconds: 2),
-        alignment: Alignment.bottomCenter,
+      ToastUtils.dismiss();
+      showModalBottomSheet<bool>(
+        context: Get.context!,
+        useSafeArea: true,
         builder: (context) {
           final theme = Theme.of(context);
           final style = TextStyle(
@@ -209,16 +207,16 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
                     children: [
                       TextButton(
                         onPressed: () {
-                          SmartDialog.dismiss(result: true);
-                          SmartDialog.showToast('已设为永久无痕模式');
+                          Navigator.of(context).pop(true);
+                          ToastUtils.showToast('已设为永久无痕模式');
                         },
                         child: Text('保存为永久', style: style),
                       ),
                       const SizedBox(width: 10),
                       TextButton(
                         onPressed: () {
-                          SmartDialog.dismiss();
-                          SmartDialog.showToast('已设为临时无痕模式');
+                          Navigator.of(context).pop();
+                          ToastUtils.showToast('已设为临时无痕模式');
                         },
                         child: Text('仅本次（默认）', style: style),
                       ),
@@ -240,34 +238,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
       });
     } else {
       Accounts.set(AccountType.heartbeat, Accounts.main);
-      SmartDialog.dismiss(result: false);
-      SmartDialog.show(
-        clickMaskDismiss: false,
-        usePenetrate: true,
-        displayTime: const Duration(seconds: 1),
-        alignment: Alignment.bottomCenter,
-        builder: (context) {
-          final theme = Theme.of(context);
-          return ColoredBox(
-            color: theme.colorScheme.secondaryContainer,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.viewPaddingOf(context).bottom + 15,
-              ),
-              child: Row(
-                children: [
-                  const Icon(MdiIcons.incognitoOff, size: 20),
-                  const SizedBox(width: 10),
-                  Text('已退出无痕模式', style: theme.textTheme.titleMedium),
-                ],
-              ),
-            ),
-          );
-        },
-      );
+      Navigator.of(Get.context!).pop(false);
+      ToastUtils.showToast('已退出无痕模式');
     }
   }
 

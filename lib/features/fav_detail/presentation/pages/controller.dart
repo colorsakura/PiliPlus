@@ -17,8 +17,8 @@ import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/services.dart' show ValueChanged;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 mixin BaseFavController
     on
@@ -41,7 +41,7 @@ mixin BaseFavController
         ..value.data!.removeAt(index)
         ..refresh();
       updateCount?.call(1);
-      SmartDialog.showToast('取消收藏');
+      ToastUtils.showToast('取消收藏');
     } else {
       res.toast();
     }
@@ -64,7 +64,7 @@ mixin BaseFavController
         if (res.isSuccess) {
           updateCount?.call(removeList.length);
           afterDelete(removeList);
-          SmartDialog.showToast('取消收藏');
+          ToastUtils.showToast('取消收藏');
         } else {
           res.toast();
         }
@@ -185,7 +185,7 @@ class FavDetailController
 
   Future<void> onFav(bool isFav) async {
     if (!account.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final res = isFav
@@ -203,7 +203,7 @@ class FavDetailController
   Future<void> cleanFav() async {
     final res = await FavHttp.cleanFav(mediaId: mediaId);
     if (res.isSuccess) {
-      SmartDialog.showToast('清除成功');
+      ToastUtils.showToast('清除成功');
       Future.delayed(const Duration(milliseconds: 200), onReload);
     } else {
       res.toast();
@@ -214,7 +214,7 @@ class FavDetailController
     if (loadingState.value case Success(:final response)) {
       if (response != null && response.isNotEmpty) {
         if (folderInfo.value.mediaCount > 1000) {
-          SmartDialog.showToast('内容太多啦！超过1000不支持排序');
+          ToastUtils.showToast('内容太多啦！超过1000不支持排序');
           return;
         }
         Get.to(FavSortPage(favDetailController: this));

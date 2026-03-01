@@ -1,5 +1,6 @@
 import 'dart:convert' show jsonEncode;
 import 'dart:io' show Platform;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
@@ -13,7 +14,6 @@ import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -45,7 +45,7 @@ abstract final class ReplyUtils {
         sourceId: sourceId,
       );
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 
@@ -158,7 +158,7 @@ abstract final class ReplyUtils {
       );
 
       if (res case Error(:final errMsg)) {
-        SmartDialog.showToast('获取评论主列表时发生错误：$errMsg');
+        ToastUtils.showToast('获取评论主列表时发生错误：$errMsg');
         return;
       } else if (res case Success(:final response)) {
         final index =

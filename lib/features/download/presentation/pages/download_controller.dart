@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/models/download/download_info.dart';
@@ -7,7 +8,6 @@ import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.da
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class DownloadPageController extends GetxController
@@ -78,7 +78,7 @@ class DownloadPageController extends GetxController
       context: Get.context!,
       title: '确定删除选中视频？',
       onConfirm: () async {
-        SmartDialog.showLoading();
+        ToastUtils.showLoading();
         for (final page in allChecked) {
           for (final entry in page.entries) {
             await GStorage.watchProgressRepository.remove(entry.cid.toString());
@@ -93,7 +93,7 @@ class DownloadPageController extends GetxController
           rxCount.value = 0;
           enableMultiSelect.value = false;
         }
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/badge.dart';
@@ -37,7 +38,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class ReplyItemGrpc extends StatelessWidget {
@@ -726,7 +726,7 @@ class ReplyItemGrpc extends StatelessWidget {
                       ..onTap = () {
                         // 跳转到指定位置
                         try {
-                          SmartDialog.showToast('跳转至：$matchStr');
+                          ToastUtils.showToast('跳转至：$matchStr');
                           Get.find<VideoDetailController>(
                             tag: Get.arguments['heroTag'],
                           ).plPlayerController.seekTo(
@@ -736,7 +736,7 @@ class ReplyItemGrpc extends StatelessWidget {
                             isSeek: false,
                           );
                         } catch (e) {
-                          SmartDialog.showToast('跳转失败: $e');
+                          ToastUtils.showToast('跳转失败: $e');
                         }
                       })
                   : null,
@@ -909,18 +909,18 @@ class ReplyItemGrpc extends StatelessWidget {
                 if (isDelete == null || !isDelete) {
                   return;
                 }
-                SmartDialog.showLoading(msg: '删除中...');
+                ToastUtils.showLoading(msg: '删除中...');
                 final res = await VideoHttp.replyDel(
                   type: item.type.toInt(),
                   oid: item.oid.toInt(),
                   rpid: item.id.toInt(),
                 );
-                SmartDialog.dismiss();
+                ToastUtils.dismiss();
                 if (res.isSuccess) {
-                  SmartDialog.showToast('删除成功');
+                  ToastUtils.showToast('删除成功');
                   onDelete();
                 } else {
-                  SmartDialog.showToast('删除失败, $res');
+                  ToastUtils.showToast('删除失败, $res');
                 }
               },
               minLeadingWidth: 0,

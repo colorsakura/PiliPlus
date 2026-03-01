@@ -8,7 +8,7 @@ import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:get/get.dart';
 
 class DownloadSearchPage extends StatefulWidget {
@@ -68,9 +68,9 @@ class _DownloadSearchPageState
           ),
         );
         if (res.every((e) => e)) {
-          SmartDialog.showToast('更新成功');
+          ToastUtils.showToast('更新成功');
         } else {
-          SmartDialog.showToast('更新失败');
+          ToastUtils.showToast('更新失败');
         }
       },
       child: Text(

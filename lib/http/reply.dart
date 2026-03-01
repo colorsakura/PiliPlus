@@ -10,7 +10,7 @@ import 'package:PiliPlus/models/reply_interaction/data.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 abstract final class ReplyHttp {
   static final Options options = Options(
@@ -249,11 +249,11 @@ abstract final class ReplyHttp {
     );
     if (res.data['code'] == 0) {
       if (res.data['data']?['action_toast'] case final String toast) {
-        SmartDialog.showToast(toast);
+        ToastUtils.showToast(toast);
       }
       return const Success(null);
     } else {
-      SmartDialog.showToast(res.data['message'].toString());
+      ToastUtils.showToast(res.data['message'].toString());
       return const Error(null);
     }
   }

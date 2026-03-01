@@ -8,9 +8,9 @@ import 'package:PiliPlus/features/share/share.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class SharePanel extends StatefulWidget {
   const SharePanel({
@@ -252,29 +252,29 @@ class _SharePanelState extends State<SharePanel> {
   Future<void> _onSend() async {
     final selectedUsers = _userList.where((user) => user.selected).toList();
     if (selectedUsers.isEmpty) {
-      SmartDialog.showToast('请选择分享的用户');
+      ToastUtils.showToast('请选择分享的用户');
       return;
     }
-    SmartDialog.showLoading();
+    ToastUtils.showLoading();
     final result = await _sendShare(
       users: selectedUsers,
       content: widget.content,
       message: _controller.text.isNotEmpty ? _controller.text : null,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
 
     if (result case Success(:final data)) {
       final successCount = data.values.where((success) => success).length;
       if (successCount == data.length) {
         PageUtils.pop();
-        SmartDialog.showToast('分享成功');
+        ToastUtils.showToast('分享成功');
       } else if (successCount == 0) {
-        SmartDialog.showToast('分享失败');
+        ToastUtils.showToast('分享失败');
       } else {
-        SmartDialog.showToast('部分分享失败');
+        ToastUtils.showToast('部分分享失败');
       }
     } else {
-      SmartDialog.showToast('分享失败');
+      ToastUtils.showToast('分享失败');
     }
   }
 }

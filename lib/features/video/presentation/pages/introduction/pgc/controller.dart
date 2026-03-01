@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' show max;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/fav.dart';
@@ -29,7 +30,6 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class PgcIntroController extends CommonIntroController {
@@ -102,13 +102,13 @@ class PgcIntroController extends CommonIntroController {
   @override
   Future<void> actionLikeVideo() async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final newVal = !hasLike.value;
     final result = await VideoHttp.likeVideo(bvid: bvid, type: newVal);
     if (result case Success(:final response)) {
-      SmartDialog.showToast(newVal ? response : '取消赞');
+      ToastUtils.showToast(newVal ? response : '取消赞');
       pgcItem.stat?.like += newVal ? 1 : -1;
       hasLike.value = newVal;
     } else {
@@ -120,17 +120,17 @@ class PgcIntroController extends CommonIntroController {
   @override
   void actionCoinVideo() {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
 
     if (coinNum.value >= 2) {
-      SmartDialog.showToast('达到投币上限啦~');
+      ToastUtils.showToast('达到投币上限啦~');
       return;
     }
 
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
-      SmartDialog.showToast('硬币不足');
+      ToastUtils.showToast('硬币不足');
       // return;
     }
 
@@ -266,7 +266,7 @@ class PgcIntroController extends CommonIntroController {
                     },
                   );
                 } catch (e) {
-                  SmartDialog.showToast(e.toString());
+                  ToastUtils.showToast(e.toString());
                 }
               },
             ),
@@ -338,7 +338,7 @@ class PgcIntroController extends CommonIntroController {
     if (result case Success(:final response)) {
       isFollowed.value = true;
       followStatus.value = 2;
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       result.toast();
     }
@@ -349,7 +349,7 @@ class PgcIntroController extends CommonIntroController {
     final result = await VideoHttp.pgcDel(seasonId: pgcItem.seasonId);
     if (result case Success(:final response)) {
       isFollowed.value = false;
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       result.toast();
     }
@@ -362,7 +362,7 @@ class PgcIntroController extends CommonIntroController {
     );
     if (result case Success(:final response)) {
       followStatus.value = status;
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       result.toast();
     }
@@ -421,12 +421,12 @@ class PgcIntroController extends CommonIntroController {
   Future<void> actionTriple() async {
     feedBack();
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     if (hasLike.value && hasCoin && hasFav.value) {
       // 已点赞、投币、收藏
-      SmartDialog.showToast('已三连');
+      ToastUtils.showToast('已三连');
       return;
     }
     final result = await VideoHttp.pgcTriple(epId: epId!, seasonId: seasonId);
@@ -446,9 +446,9 @@ class PgcIntroController extends CommonIntroController {
         hasFav.value = true;
       }
       if (!hasCoin) {
-        SmartDialog.showToast('投币失败');
+        ToastUtils.showToast('投币失败');
       } else {
-        SmartDialog.showToast('三连成功');
+        ToastUtils.showToast('三连成功');
       }
     } else {
       result.toast();
@@ -508,7 +508,7 @@ class PgcIntroController extends CommonIntroController {
         : await FavHttp.addFavPugv(seasonId!);
     if (res.isSuccess) {
       this.isFav.value = !isFav;
-      SmartDialog.showToast('${isFav ? '取消' : ''}收藏成功');
+      ToastUtils.showToast('${isFav ? '取消' : ''}收藏成功');
     } else {
       res.toast();
     }

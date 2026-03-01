@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 sealed class LoadingState<T> {
   const LoadingState();
@@ -18,7 +18,7 @@ sealed class LoadingState<T> {
     _ => null,
   };
 
-  Future<void> toast() => SmartDialog.showToast(toString());
+  Future<void> toast() async => await ToastUtils.showToast(toString());
 }
 
 class Loading extends LoadingState<Never> {

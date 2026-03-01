@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/models/pgc/pgc_info_model/episode.dart';
 import 'package:PiliPlus/models/pgc/pgc_info_model/new_ep.dart';
@@ -10,7 +11,6 @@ import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class PgcPanel extends StatefulWidget {
@@ -166,7 +166,7 @@ class _PgcPanelState extends State<PgcPanel> {
           borderRadius: const BorderRadius.all(Radius.circular(6)),
           onTap: () {
             if (item.badge == '会员' && vipStatus) {
-              SmartDialog.showToast('需要大会员');
+              ToastUtils.showToast('需要大会员');
             }
             widget.onChangeEpisode(item);
           },

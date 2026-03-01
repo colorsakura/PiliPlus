@@ -1,6 +1,7 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:convert';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
@@ -22,7 +23,6 @@ import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class ChatItem extends StatelessWidget {
@@ -323,9 +323,9 @@ class ChatItem extends StatelessWidget {
                       ?.group(0);
                   if (bvid != null) {
                     try {
-                      SmartDialog.showLoading();
+                      ToastUtils.showLoading();
                       final int? cid = await SearchHttp.ab2c(bvid: bvid);
-                      SmartDialog.dismiss();
+                      ToastUtils.dismiss();
                       if (cid != null) {
                         PageUtils.toVideoPage(
                           bvid: bvid,
@@ -334,11 +334,11 @@ class ChatItem extends StatelessWidget {
                         );
                       }
                     } catch (err) {
-                      SmartDialog.dismiss();
-                      SmartDialog.showToast(err.toString());
+                      ToastUtils.dismiss();
+                      ToastUtils.showToast(err.toString());
                     }
                   } else {
-                    SmartDialog.showToast('未匹配到 BV 号');
+                    ToastUtils.showToast('未匹配到 BV 号');
                     PageUtils.handleWebview(i['jump_url']);
                   }
                 },
@@ -409,10 +409,10 @@ class ChatItem extends StatelessWidget {
               behavior: HitTestBehavior.opaque,
               onTap: () async {
                 try {
-                  SmartDialog.showLoading();
+                  ToastUtils.showLoading();
                   final bvid = content["bvid"];
                   final int? cid = await SearchHttp.ab2c(bvid: bvid);
-                  SmartDialog.dismiss();
+                  ToastUtils.dismiss();
                   if (cid != null) {
                     PageUtils.toVideoPage(
                       bvid: bvid,
@@ -421,8 +421,8 @@ class ChatItem extends StatelessWidget {
                     );
                   }
                 } catch (err) {
-                  SmartDialog.dismiss();
-                  SmartDialog.showToast(err.toString());
+                  ToastUtils.dismiss();
+                  ToastUtils.showToast(err.toString());
                 }
               },
               child: Column(
@@ -492,12 +492,12 @@ class ChatItem extends StatelessWidget {
           }
           dynamic bvid = content["bvid"];
           if (aid == null && bvid == null) {
-            SmartDialog.showToast('null');
+            ToastUtils.showToast('null');
           }
           bvid ??= IdUtils.av2bv(aid);
-          SmartDialog.showLoading();
+          ToastUtils.showLoading();
           final int? cid = await SearchHttp.ab2c(bvid: bvid);
-          SmartDialog.dismiss();
+          ToastUtils.dismiss();
           if (cid != null) {
             PageUtils.toVideoPage(
               aid: aid,
@@ -531,7 +531,7 @@ class ChatItem extends StatelessWidget {
         break;
 
       default:
-        onTap = () => SmartDialog.showToast(
+        onTap = () => ToastUtils.showToast(
           'unsupported source type: ${content['source']}',
         );
     }

@@ -4,7 +4,7 @@
 library;
 
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// 统一响应状态
 ///
@@ -31,7 +31,7 @@ sealed class LoadingState<T> {
   };
 
   /// 显示 Toast 提示
-  Future<void> toast() => SmartDialog.showToast(toString());
+  Future<void> toast() => ToastUtils.showToast(toString());
 
   /// 映射数据类型
   LoadingState<R> map<R>(R Function(T data) mapper) {

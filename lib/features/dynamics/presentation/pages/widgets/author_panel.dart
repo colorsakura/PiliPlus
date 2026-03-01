@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/dialog/report.dart';
@@ -25,7 +26,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' hide InkWell;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class AuthorPanel extends StatelessWidget {
@@ -372,7 +372,7 @@ class AuthorPanel extends StatelessWidget {
                         },
                       );
                     } catch (e) {
-                      SmartDialog.showToast(e.toString());
+                      ToastUtils.showToast(e.toString());
                     }
                   },
                   minLeadingWidth: 0,
@@ -390,7 +390,7 @@ class AuthorPanel extends StatelessWidget {
                     Get.find<DynamicsController>().tempBannedList.add(
                       moduleAuthor.mid!,
                     );
-                    SmartDialog.showToast(
+                    ToastUtils.showToast(
                       '已临时屏蔽${moduleAuthor.name}(${moduleAuthor.mid!})，重启恢复',
                     );
                   } catch (_) {}

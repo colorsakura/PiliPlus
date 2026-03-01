@@ -4,7 +4,7 @@ import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller_v2.dart';
 import 'package:PiliPlus/features/fan/domain/repositories/fan_repository.dart';
 import 'package:PiliPlus/http/member.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Controller for fan/follower page (Clean Architecture with Riverpod)
 ///
@@ -78,7 +78,7 @@ class FanController
           total = total! - 1;
         }
       }
-      SmartDialog.showToast('移除成功');
+      ToastUtils.showToast('移除成功');
     } else {
       res.toast();
     }

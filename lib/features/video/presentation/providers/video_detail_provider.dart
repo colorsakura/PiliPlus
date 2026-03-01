@@ -18,9 +18,9 @@ import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'video_states.dart';
 
@@ -137,7 +137,7 @@ class VideoDetailNotifier extends Notifier<VideoDetailState> {
     if (result case Success(:final response)) {
       final videoList = response.dash?.video ?? [];
       if (videoList.isEmpty) {
-        SmartDialog.showToast('视频资源不存在');
+        ToastUtils.showToast('视频资源不存在');
         state = state.copyWith(
           autoPlay: false,
           videoState: const Error('视频资源不存在'),

@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 mixin TripleMixin on GetxController, TickerProvider {
@@ -50,7 +50,7 @@ mixin TripleMixin on GetxController, TickerProvider {
     _timer ??= Timer(_duration, () {
       HapticFeedback.lightImpact();
       if (hasTriple) {
-        SmartDialog.showToast('已完成三连');
+        ToastUtils.showToast('已完成三连');
       } else {
         tripleAnimCtr.forward().whenComplete(() {
           tripleAnimCtr.reset();

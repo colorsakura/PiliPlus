@@ -2,6 +2,7 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:async';
 import 'dart:math' show min;
 import 'dart:ui';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/pair.dart';
@@ -68,7 +69,6 @@ import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart' as media_kit;
@@ -454,7 +454,7 @@ class VideoDetailController extends GetxController
                   );
                   if (res.isSuccess) {
                     mediaList.removeAt(index);
-                    SmartDialog.showToast('取消收藏');
+                    ToastUtils.showToast('取消收藏');
                   } else {
                     res.toast();
                   }
@@ -552,10 +552,10 @@ class VideoDetailController extends GetxController
                     Part part =
                         ugcIntroController.videoDetail.value.pages![item];
                     ugcIntroController.onChangeEpisode(part);
-                    SmartDialog.showToast('已跳至第${item + 1}P');
+                    ToastUtils.showToast('已跳至第${item + 1}P');
                   } catch (e) {
                     if (kDebugMode) debugPrint('$e');
-                    SmartDialog.showToast('跳转失败');
+                    ToastUtils.showToast('跳转失败');
                   }
                   onRemoveItem(listData.indexOf(item), item);
                 } else if (item is SegmentModel) {
@@ -576,7 +576,7 @@ class VideoDetailController extends GetxController
   /// 发送弹幕
   Future<void> showShootDanmakuSheet() async {
     if (plPlayerController.dmState.contains(cid.value)) {
-      SmartDialog.showToast('UP主已关闭弹幕');
+      ToastUtils.showToast('UP主已关闭弹幕');
       return;
     }
     final isPlaying =
@@ -753,7 +753,7 @@ class VideoDetailController extends GetxController
   void setLanguage(String language) {
     if (currLang.value == language) return;
     if (!isLoginVideo) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     currLang.value = language;
@@ -821,10 +821,7 @@ class VideoDetailController extends GetxController
       }
 
       if (data.acceptDesc?.contains('试看') == true) {
-        SmartDialog.showToast(
-          '该视频为专属视频，仅提供试看',
-          displayTime: const Duration(seconds: 3),
-        );
+        ToastUtils.showToast('该视频为专属视频，仅提供试看');
       }
       if (data.dash == null && data.durl != null) {
         final first = data.durl!.first;
@@ -847,7 +844,7 @@ class VideoDetailController extends GetxController
         return;
       }
       if (data.dash == null) {
-        SmartDialog.showToast('视频资源不存在');
+        ToastUtils.showToast('视频资源不存在');
         _autoPlay.value = false;
         videoState.value = const Error('视频资源不存在');
         if (plPlayerController.isFullScreen.value) {
@@ -1516,18 +1513,18 @@ class VideoDetailController extends GetxController
 
   @pragma('vm:notify-debugger-on-exception')
   Future<void> onCast() async {
-    SmartDialog.showLoading();
+    ToastUtils.showLoading();
     final res = await VideoHttp.tvPlayUrl(
       cid: cid.value,
       objectId: epId ?? aid,
       playurlType: epId != null ? 2 : 1,
       qn: currentVideoQa.value?.code,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       final first = response.durl?.firstOrNull;
       if (first == null || first.playUrls.isEmpty) {
-        SmartDialog.showToast('不支持投屏');
+        ToastUtils.showToast('不支持投屏');
         return;
       }
       final url = VideoUtils.getCdnUrl(first.playUrls);

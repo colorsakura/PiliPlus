@@ -1,5 +1,6 @@
 import 'package:PiliPlus/shared/widgets/flutter/draggable_sheet/draggable_scrollable_sheet_dyn.dart'
     show DraggableScrollableSheet;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/http/dynamics.dart';
@@ -13,7 +14,6 @@ import 'package:PiliPlus/features/emote/emote.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart' hide DraggableScrollableSheet, TextField;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -412,7 +412,7 @@ class _RepostPanelState extends CommonRichTextPubPageState<RepostPanel> {
 
   @override
   Future<void> onCustomPublish({List? pictures}) async {
-    SmartDialog.showLoading();
+    ToastUtils.showLoading();
     List<Map<String, dynamic>>? richContent = getRichContent();
     final hasRichText = richContent != null;
     List<Map<String, dynamic>>? repostContent = widget.item?.orig != null
@@ -429,11 +429,11 @@ class _RepostPanelState extends CommonRichTextPubPageState<RepostPanel> {
       rawText: hasRichText ? null : editController.text,
       extraContent: richContent ?? repostContent,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
       PageUtils.pop();
-      SmartDialog.showToast('转发成功');
+      ToastUtils.showToast('转发成功');
       widget.onSuccess?.call();
       final id = response?['dyn_id'];
       RequestUtils.insertCreatedDyn(id);

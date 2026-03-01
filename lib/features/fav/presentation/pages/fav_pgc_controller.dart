@@ -6,8 +6,8 @@ import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/multi_select_controller.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavPgcController
     extends MultiSelectController<FavPgcData, FavPgcItemModel> {
@@ -57,7 +57,7 @@ class FavPgcController
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       result.toast();
     }
@@ -90,7 +90,7 @@ class FavPgcController
         if (kDebugMode) debugPrint('fav pgc onUpdate: $e');
       }
       afterDelete(removeList);
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       res.toast();
     }
@@ -116,7 +116,7 @@ class FavPgcController
       } catch (e) {
         if (kDebugMode) debugPrint('fav pgc pgcUpdate: $e');
       }
-      SmartDialog.showToast(response);
+      ToastUtils.showToast(response);
     } else {
       res.toast();
     }

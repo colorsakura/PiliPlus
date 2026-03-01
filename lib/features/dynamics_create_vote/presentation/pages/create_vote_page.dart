@@ -1,4 +1,5 @@
 import 'dart:io' show File;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -11,7 +12,6 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart' hide showTimePicker;
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -388,7 +388,7 @@ class _VoteOptionsList extends ConsumerWidget {
             });
           }
         } catch (e) {
-          SmartDialog.showToast(e.toString());
+          ToastUtils.showToast(e.toString());
         }
       },
     );
@@ -507,7 +507,7 @@ class _VoteEndTimePicker extends ConsumerWidget {
                       .read(voteControllerProvider(voteId))
                       .updateEndTime(newEndtime);
                 } else {
-                  SmartDialog.showToast('至少选择5分钟之后');
+                  ToastUtils.showToast('至少选择5分钟之后');
                 }
               }
             }

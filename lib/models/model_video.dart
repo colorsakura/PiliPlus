@@ -32,6 +32,12 @@ class Stat extends BaseStat {
     like = json["like"];
     danmu = json['danmaku'];
   }
+
+  Map<String, dynamic> toJson() => {
+    'view': view,
+    'like': like,
+    'danmaku': danmu,
+  };
 }
 
 class PlayStat extends BaseStat {

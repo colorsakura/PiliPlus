@@ -19,7 +19,7 @@ import 'package:PiliPlus/utils/app_sign.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 abstract final class UserHttp {
   // static Future<dynamic> userStat({required int mid}) async {
@@ -180,10 +180,10 @@ abstract final class UserHttp {
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
     if (res.data['code'] == 0) {
-      SmartDialog.showToast('yeah！稍后再看');
+      ToastUtils.showToast('yeah！稍后再看');
       return const Success(null);
     } else {
-      SmartDialog.showToast(res.data['message'].toString());
+      ToastUtils.showToast(res.data['message'].toString());
       return const Error(null);
     }
   }
@@ -200,10 +200,10 @@ abstract final class UserHttp {
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
     if (res.data['code'] == 0) {
-      SmartDialog.showToast('yeah！成功移除');
+      ToastUtils.showToast('yeah！成功移除');
       return const Success(null);
     } else {
-      SmartDialog.showToast(res.data['message'].toString());
+      ToastUtils.showToast(res.data['message'].toString());
       return const Error(null);
     }
   }

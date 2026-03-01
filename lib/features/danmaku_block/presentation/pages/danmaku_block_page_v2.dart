@@ -15,9 +15,9 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Danmaku block page (v2 - Riverpod)
 class DanmakuBlockPageV2 extends ConsumerStatefulWidget {
@@ -205,10 +205,10 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
                   type: type.index,
                 );
                 if (mounted) {
-                  SmartDialog.showToast('添加成功');
+                  ToastUtils.showToast('添加成功');
                 }
               } else {
-                SmartDialog.showToast(
+                ToastUtils.showToast(
                   '输入内容${filter.isEmpty ? "不能为空" : "与上次相同"}',
                 );
               }

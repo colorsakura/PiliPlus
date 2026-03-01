@@ -18,8 +18,8 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavDetailPage extends StatefulWidget {
   const FavDetailPage({
@@ -294,7 +294,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                     onConfirm: () =>
                         FavHttp.deleteFolder(mediaIds: mediaId).then((res) {
                           if (res.isSuccess) {
-                            SmartDialog.showToast('删除成功');
+                            ToastUtils.showToast('删除成功');
                             PageUtils.pop(true);
                           } else {
                             res.toast();

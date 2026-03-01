@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/dialog/report.dart';
 import 'package:PiliPlus/shared/widgets/flutter/text_field/controller.dart';
@@ -46,7 +47,6 @@ import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class LiveRoomController extends GetxController {
@@ -448,7 +448,7 @@ class LiveRoomController extends GetxController {
 
     _liveStreamRepository.connect(config).then((errorMessage) {
       if (errorMessage != null) {
-        SmartDialog.showToast('弹幕连接失败: $errorMessage');
+        ToastUtils.showToast('弹幕连接失败: $errorMessage');
       } else {
         _messageSubscription = _liveStreamRepository.messageStream.listen(
           _danmakuListener,
@@ -611,7 +611,7 @@ class LiveRoomController extends GetxController {
       anchorId: roomInfoH5.value?.roomInfo?.uid,
     );
     if (res.isSuccess) {
-      SmartDialog.showToast('点赞成功');
+      ToastUtils.showToast('点赞成功');
     } else {
       res.toast();
     }
@@ -620,7 +620,7 @@ class LiveRoomController extends GetxController {
 
   void onSendDanmaku([bool fromEmote = false]) {
     if (!Accounts.main.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     Get.key.currentState!.push(
@@ -650,7 +650,7 @@ class LiveRoomController extends GetxController {
 
   void reportSC(SuperChatItem item) {
     if (!Accounts.main.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     autoWrapReportDialog(

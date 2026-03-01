@@ -25,10 +25,10 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class DownloadPanel extends StatefulWidget {
   const DownloadPanel({
@@ -241,13 +241,13 @@ class _DownloadPanelState extends State<DownloadPanel> {
     final cid = episode.cid;
     // on download
     if (cid == null) {
-      SmartDialog.showToast('null cid');
+      ToastUtils.showToast('null cid');
       return false;
     }
 
     if (cidSet.contains(cid)) {
       if (kDebugMode) {
-        SmartDialog.showToast('downloaded');
+        ToastUtils.showToast('downloaded');
       }
       return false;
     }
@@ -255,7 +255,7 @@ class _DownloadPanelState extends State<DownloadPanel> {
     if (kReleaseMode && episode.badge == '会员') {
       if (vipStatus != 1) {
         if (!isDownloadAll) {
-          SmartDialog.showToast('需要大会员');
+          ToastUtils.showToast('需要大会员');
         }
         return false;
       }
@@ -265,7 +265,7 @@ class _DownloadPanelState extends State<DownloadPanel> {
       final pages = episode.pages!;
       if (pages.length > 1) {
         if (isFromList && kDebugMode) {
-          SmartDialog.showToast('hasParts');
+          ToastUtils.showToast('hasParts');
         }
         if (isDownloadAll) {
           for (int i = 0; i < pages.length; i++) {
@@ -311,7 +311,7 @@ class _DownloadPanelState extends State<DownloadPanel> {
       cidSet.add(cid);
       return true;
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
     return false;
   }

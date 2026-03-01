@@ -1,6 +1,7 @@
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show MainListReply, Mode;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/grpc/reply.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/reply/reply_sort_type.dart';
@@ -183,7 +184,7 @@ class VideoReplyNotifier extends Notifier<VideoReplyState> {
     if (subjectControl.hasRootText()) {
       final rootText = subjectControl.rootText;
       if (inputDisable) {
-        // SmartDialog.showToast(rootText);
+        // ToastUtils.showToast(rootText);
       }
       if (rootText.contains('可发') || rootText.contains('可见')) {
         hint = rootText;

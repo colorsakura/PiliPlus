@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
@@ -10,7 +11,6 @@ import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -92,7 +92,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
               try {
                 final val = double.parse(initialValue);
                 if (speedList.contains(val)) {
-                  SmartDialog.showToast('该倍速已存在');
+                  ToastUtils.showToast('该倍速已存在');
                 } else {
                   PageUtils.pop();
                   speedList
@@ -105,7 +105,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
                   setState(() {});
                 }
               } catch (e) {
-                SmartDialog.showToast(e.toString());
+                ToastUtils.showToast(e.toString());
               }
             },
             child: const Text('确认'),
@@ -179,7 +179,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
         playSpeedDefault,
         longPressSpeedDefault,
       ].contains(speed)) {
-        SmartDialog.showToast('不支持删除默认倍速');
+        ToastUtils.showToast('不支持删除默认倍速');
         return;
       }
       speedList.removeAt(index);

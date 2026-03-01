@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
@@ -14,7 +15,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:canvas_danmaku/models/danmaku_content_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -454,7 +454,7 @@ class _SendDanmakuPanelState extends CommonTextPubPageState<SendDanmakuPanel> {
 
   @override
   Future<void> onCustomPublish({List? pictures}) async {
-    SmartDialog.showLoading(msg: '发送中...');
+    ToastUtils.showLoading(msg: '发送中...');
     bool isColorful = _color.value == Colors.transparent;
     final res = await DanmakuHttp.shootDanmaku(
       oid: widget.cid,
@@ -466,11 +466,11 @@ class _SendDanmakuPanelState extends CommonTextPubPageState<SendDanmakuPanel> {
       color: isColorful ? null : _color.value.toARGB32() & 0xFFFFFF,
       colorful: isColorful,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
       PageUtils.pop();
-      SmartDialog.showToast('发送成功');
+      ToastUtils.showToast('发送成功');
       VideoDanmaku? extra;
       if (response.dmid case final dmid?) {
         extra = VideoDanmaku(

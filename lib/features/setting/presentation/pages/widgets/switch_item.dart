@@ -4,7 +4,7 @@ import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/material.dart' hide ListTile;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class SetSwitchItem extends StatefulWidget {
   final String title;
@@ -85,7 +85,7 @@ class _SetSwitchItemState extends State<SetSwitchItem> {
 
     widget.onChanged?.call(val);
     if (widget.needReboot) {
-      SmartDialog.showToast('重启生效');
+      ToastUtils.showToast('重启生效');
     }
     if (mounted) {
       setState(() {});

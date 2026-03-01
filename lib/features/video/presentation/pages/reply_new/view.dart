@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' show max;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/button/toolbar_icon_button.dart';
@@ -30,7 +31,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:media_kit/media_kit.dart' as media_kit;
 import 'package:flutter/material.dart' hide TextField;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -193,7 +193,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
                     : const Icon(Icons.image_not_supported, size: 22),
                 onPressed: widget.canUploadPic
                     ? onPickImage
-                    : () => SmartDialog.showToast('当前评论区不支持发送图片'),
+                    : () => ToastUtils.showToast('当前评论区不支持发送图片'),
               ),
             ],
             const SizedBox(width: 8),
@@ -374,7 +374,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
               item(
                 onTap: () async {
                   if (imageList.length >= limit) {
-                    SmartDialog.showToast('最多选择$limit张图片');
+                    ToastUtils.showToast('最多选择$limit张图片');
                     return;
                   }
                   try {
@@ -434,7 +434,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<ReplyPage> {
     );
     if (res case Success(:final response)) {
       hasPub = true;
-      SmartDialog.showToast(response['success_toast']);
+      ToastUtils.showToast(response['success_toast']);
       PageUtils.pop(response['reply']);
     } else {
       res.toast();

@@ -1,4 +1,5 @@
 import 'dart:async' show FutureOr, Timer;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -21,7 +22,6 @@ import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 abstract class CommonIntroController extends GetxController
@@ -135,7 +135,7 @@ abstract class CommonIntroController extends GetxController
       selectLike: selectLike ? 1 : 0,
     );
     if (res.isSuccess) {
-      SmartDialog.showToast('投币成功');
+      ToastUtils.showToast('投币成功');
       coinNum.value += coin;
       GlobalData().afterCoin(coin);
       stat.coin += coin;
@@ -207,7 +207,7 @@ mixin FavMixin on TripleMixin {
   // 收藏
   void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {
     if (!Accounts.main.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     // 快速收藏 &
@@ -230,7 +230,7 @@ mixin FavMixin on TripleMixin {
     final (rid, type) = getFavRidType;
     // 收藏至默认文件夹
     if (isQuick) {
-      SmartDialog.showLoading(msg: '请求中');
+      ToastUtils.showLoading(msg: '请求中');
       queryVideoInFolder().then((res) async {
         if (res.isSuccess) {
           final hasFav = this.hasFav.value;
@@ -240,16 +240,16 @@ mixin FavMixin on TripleMixin {
                   resources: '$rid:$type',
                   addIds: favFolderId.toString(),
                 );
-          SmartDialog.dismiss();
+          ToastUtils.dismiss();
           if (result.isSuccess) {
             updateFavCount(hasFav ? -1 : 1);
             this.hasFav.value = !hasFav;
-            SmartDialog.showToast('✅ 快速收藏/取消收藏成功');
+            ToastUtils.showToast('✅ 快速收藏/取消收藏成功');
           } else {
             res.toast();
           }
         } else {
-          SmartDialog.dismiss();
+          ToastUtils.dismiss();
         }
       });
       return;
@@ -273,13 +273,13 @@ mixin FavMixin on TripleMixin {
     } catch (e) {
       if (kDebugMode) debugPrint(e.toString());
     }
-    SmartDialog.showLoading(msg: '请求中');
+    ToastUtils.showLoading(msg: '请求中');
     final result = await FavHttp.favVideo(
       resources: '$rid:$type',
       addIds: addMediaIdsNew.join(','),
       delIds: delMediaIdsNew.join(','),
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (result.isSuccess) {
       PageUtils.pop();
       final newVal =
@@ -288,7 +288,7 @@ mixin FavMixin on TripleMixin {
         updateFavCount(newVal ? 1 : -1);
         hasFav.value = newVal;
       }
-      SmartDialog.showToast('操作成功');
+      ToastUtils.showToast('操作成功');
     } else {
       result.toast();
     }

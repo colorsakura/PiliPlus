@@ -1,5 +1,6 @@
 import 'dart:async' show StreamSubscription, Timer;
 import 'dart:math' as math;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/progress_bar/segment_progress_bar.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_model.dart';
@@ -12,7 +13,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:media_kit/media_kit.dart';
@@ -69,7 +69,7 @@ mixin BlockMixin on GetxController {
       handleSBData(result);
     } catch (e) {
       if (kDebugMode) {
-        SmartDialog.showToast(e.toString());
+        ToastUtils.showToast(e.toString());
       }
     }
   }
@@ -275,10 +275,7 @@ mixin BlockMixin on GetxController {
   }
 
   void _showBlockToast(String msg) {
-    SmartDialog.showToast(
-      msg,
-      alignment: isFullScreen ? const Alignment(0, 0.7) : null,
-    );
+    ToastUtils.showToast(msg);
   }
 
   void _showVoteDialog(SegmentModel segment) {
@@ -326,10 +323,10 @@ mixin BlockMixin on GetxController {
     _dataSource
         .voteOnSponsorTime(uuid: uuid, type: type)
         .then((_) {
-          SmartDialog.showToast('投票成功');
+          ToastUtils.showToast('投票成功');
         })
         .catchError((e) {
-          SmartDialog.showToast('投票失败: $e');
+          ToastUtils.showToast('投票失败: $e');
         });
   }
 
@@ -354,10 +351,10 @@ mixin BlockMixin on GetxController {
                             category: item,
                           )
                           .then((_) {
-                            SmartDialog.showToast('类别更改成功');
+                            ToastUtils.showToast('类别更改成功');
                           })
                           .catchError((e) {
-                            SmartDialog.showToast('类别更改失败: $e');
+                            ToastUtils.showToast('类别更改失败: $e');
                           });
                     },
                     title: Text.rich(

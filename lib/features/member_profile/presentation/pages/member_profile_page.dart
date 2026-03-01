@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io' show File;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -26,7 +27,6 @@ import 'package:dio/dio.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -165,7 +165,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             text: response.name,
             onTap: () {
               if (response.coins! < 6) {
-                SmartDialog.showToast('硬币不足');
+                ToastUtils.showToast('硬币不足');
               } else {
                 _editDialog(
                   type: ProfileType.uname,
@@ -334,7 +334,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             TextButton(
               onPressed: () {
                 if (_textController.text == text) {
-                  SmartDialog.showToast('与原$title相同');
+                  ToastUtils.showToast('与原$title相同');
                 } else {
                   _update(type: type);
                 }
@@ -353,7 +353,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }) async {
     final accessKey = Accounts.main.accessKey;
     if (accessKey == null || accessKey.isEmpty) {
-      SmartDialog.showToast('请退出账号后重新登录');
+      ToastUtils.showToast('请退出账号后重新登录');
       return;
     }
     final data = <String, String>{
@@ -410,7 +410,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             } else if (type == ProfileType.sex) {
               data.sex = datum;
             }
-            SmartDialog.showToast('修改成功');
+            ToastUtils.showToast('修改成功');
             if (mounted) {
               setState(() {});
             }
@@ -418,7 +418,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               PageUtils.pop();
             }
           } else {
-            SmartDialog.showToast(res.data['message']);
+            ToastUtils.showToast(res.data['message']);
           }
         });
   }
@@ -491,7 +491,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           pickedFile.path,
         )?.split('/').elementAtOrNull(1);
         if (mimeType == 'gif') {
-          SmartDialog.showToast('不能选GIF');
+          ToastUtils.showToast('不能选GIF');
           return;
         }
         String? imagePath = pickedFile.path;
@@ -538,14 +538,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
               )
               .then((res) {
                 if (res.data['code'] == 0) {
-                  SmartDialog.showToast('修改成功');
+                  ToastUtils.showToast('修改成功');
                   Future.delayed(const Duration(milliseconds: 500), () {
                     if (mounted) {
                       _getInfo();
                     }
                   });
                 } else {
-                  SmartDialog.showToast(res.data['message']);
+                  ToastUtils.showToast(res.data['message']);
                 }
                 if (PlatformUtils.isMobile && imagePath != null) {
                   File(imagePath).tryDel();
@@ -554,7 +554,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         }
       }
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 }

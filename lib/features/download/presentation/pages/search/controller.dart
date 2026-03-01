@@ -3,10 +3,10 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart'
     show BaseMultiSelectMixin;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/features/common/presentation/pages/search/common_search_controller.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class DownloadSearchController
@@ -54,7 +54,7 @@ class DownloadSearchController
       context: Get.context!,
       title: '确定删除选中视频？',
       onConfirm: () async {
-        SmartDialog.showLoading();
+        ToastUtils.showLoading();
         final allChecked = this.allChecked.toSet();
         for (final entry in allChecked) {
           await GStorage.watchProgressRepository.remove(entry.cid.toString());
@@ -72,7 +72,7 @@ class DownloadSearchController
           rxCount.value = 0;
           enableMultiSelect.value = false;
         }
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       },
     );
   }

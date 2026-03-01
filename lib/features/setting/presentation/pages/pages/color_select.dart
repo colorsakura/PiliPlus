@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart' show MyApp;
 import 'package:PiliPlus/shared/widgets/color_palette.dart';
@@ -16,7 +17,6 @@ import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flex_seed_scheme/flex_seed_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 // Providers for color selection state
@@ -40,7 +40,7 @@ class ColorSelectPage extends ConsumerWidget {
         if (await MyApp.initPlatformState()) {
           Get.forceAppUpdate();
         } else {
-          SmartDialog.showToast('该设备可能不支持动态取色');
+          ToastUtils.showToast('该设备可能不支持动态取色');
           return;
         }
       } else {

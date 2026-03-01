@@ -8,7 +8,7 @@ import 'package:PiliPlus/features/history/presentation/widgets/item_v2.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// 历史记录页面 V2 - Riverpod 版本
 class HistoryPageV2 extends ConsumerStatefulWidget {
@@ -59,7 +59,7 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
                     .read(historyControllerNotifierProvider(widget.type))
                     .deleteViewedHistory();
                 if (success && mounted) {
-                  SmartDialog.showToast('已删除');
+                  ToastUtils.showToast('已删除');
                 }
               },
               child: const Text('清除已看'),
@@ -159,7 +159,7 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
         .read(historyControllerNotifierProvider(type))
         .deleteHistory([item.deleteKey]);
     if (success && mounted) {
-      SmartDialog.showToast('已删除');
+      ToastUtils.showToast('已删除');
     }
   }
 }

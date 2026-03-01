@@ -2,6 +2,7 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/app.dart';
 import 'package:PiliPlus/shared/widgets/color_palette.dart';
@@ -39,7 +40,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart' hide StatefulBuilder;
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -352,7 +352,7 @@ void _showQualityDialog({
     ),
   ).then((result) {
     if (result != null) {
-      SmartDialog.showToast('设置成功');
+      ToastUtils.showToast('设置成功');
       onChanged(result.toInt());
     }
   });
@@ -516,7 +516,7 @@ void _showSpringDialog(BuildContext context, _) {
                 physicalMode = !physicalMode;
                 (context as Element).markNeedsBuild();
               } catch (e) {
-                SmartDialog.showToast(e.toString());
+                ToastUtils.showToast(e.toString());
               }
             },
             child: Text(physicalMode ? '滑动时间' : '物理参数'),
@@ -555,7 +555,7 @@ void _showSpringDialog(BuildContext context, _) {
           onPressed: () {
             PageUtils.pop();
             GStorage.settingRepository.remove(SettingBoxKey.springDescription);
-            SmartDialog.showToast('重置成功，重启生效');
+            ToastUtils.showToast('重置成功，重启生效');
           },
           child: const Text('重置'),
         ),
@@ -575,9 +575,9 @@ void _showSpringDialog(BuildContext context, _) {
               final res = springDescription.map(double.parse).toList();
               PageUtils.pop();
               GStorage.settingRepository.setString(SettingBoxKey.springDescription, jsonEncode(res));
-              SmartDialog.showToast('设置成功，重启生效');
+              ToastUtils.showToast('设置成功，重启生效');
             } catch (e) {
-              SmartDialog.showToast(e.toString());
+              ToastUtils.showToast(e.toString());
             }
           },
           child: const Text('确定'),
@@ -618,7 +618,7 @@ Future<void> _showTransitionDialog(
   );
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.pageTransition, res.index);
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
     setState();
   }
 }
@@ -650,7 +650,7 @@ Future<void> _showCardWidthDialog(
       SettingBoxKey.smallCardWidth,
       res.$2,
     );
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
     setState();
   }
 }
@@ -669,7 +669,7 @@ Future<void> _showUpPosDialog(
   );
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.upPanelPosition, res.index);
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
     setState();
   }
 }
@@ -693,7 +693,7 @@ Future<void> _showDynBadgeDialog(
     );
     // Refresh unread dynamic count via Riverpod provider
     // This is now handled by PeriodicCheckScheduler
-    SmartDialog.showToast('设置成功');
+    ToastUtils.showToast('设置成功');
     setState();
   }
 }
@@ -714,7 +714,7 @@ Future<void> _showMsgBadgeDialog(
     await GStorage.settingRepository.setInt(SettingBoxKey.msgBadgeMode, res.index);
     // Refresh unread message count via Riverpod provider
     // This is now handled by PeriodicCheckScheduler
-    SmartDialog.showToast('设置成功');
+    ToastUtils.showToast('设置成功');
     setState();
   }
 }
@@ -738,7 +738,7 @@ Future<void> _showMsgUnReadDialog(
     );
     // Refresh unread message count via Riverpod provider
     // This is now handled by PeriodicCheckScheduler
-    SmartDialog.showToast('设置成功');
+    ToastUtils.showToast('设置成功');
     setState();
   }
 }
@@ -761,7 +761,7 @@ void _showReduceColorDialog(
             if (color == Colors.white) {
               NetworkImgLayer.reduceLuxColor = null;
               GStorage.settingRepository.remove(SettingBoxKey.reduceLuxColor);
-              SmartDialog.showToast('设置成功');
+              ToastUtils.showToast('设置成功');
               setState();
             } else {
               void onConfirm() {
@@ -770,7 +770,7 @@ void _showReduceColorDialog(
                   SettingBoxKey.reduceLuxColor,
                   color.toARGB32(),
                 );
-                SmartDialog.showToast('设置成功');
+                ToastUtils.showToast('设置成功');
                 setState();
               }
 
@@ -810,7 +810,7 @@ Future<void> _showToastDialog(
   if (res != null) {
     CustomToast.toastOpacity = res;
     await GStorage.settingRepository.setDouble(SettingBoxKey.defaultToastOp, res);
-    SmartDialog.showToast('设置成功');
+    ToastUtils.showToast('设置成功');
     setState();
   }
 }
@@ -851,7 +851,7 @@ Future<void> _showDefHomeDialog(
   );
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.defaultHomePage, res.index);
-    SmartDialog.showToast('设置成功，重启生效');
+    ToastUtils.showToast('设置成功，重启生效');
     setState();
   }
 }
@@ -870,7 +870,7 @@ Future<void> _showBarHideTypeDialog(
   );
   if (res != null) {
     await GStorage.settingRepository.setInt(SettingBoxKey.barHideType, res.index);
-    SmartDialog.showToast('重启生效');
+    ToastUtils.showToast('重启生效');
     setState();
   }
 }

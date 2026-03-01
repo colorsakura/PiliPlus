@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -60,7 +61,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:floating/floating.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide showBottomSheet;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -191,7 +191,7 @@ class HeaderControl extends StatefulWidget {
 
   static Future<bool> likeDanmaku(VideoDanmaku extra, int cid) async {
     if (!Accounts.main.isLogin) {
-      SmartDialog.showToast('请先登录');
+      ToastUtils.showToast('请先登录');
       return false;
     }
     final isLike = !extra.isLike;
@@ -207,7 +207,7 @@ class HeaderControl extends StatefulWidget {
       } else {
         extra.like--;
       }
-      SmartDialog.showToast('${isLike ? '' : '取消'}点赞成功');
+      ToastUtils.showToast('${isLike ? '' : '取消'}点赞成功');
       return true;
     } else {
       res.toast();
@@ -231,7 +231,7 @@ class HeaderControl extends StatefulWidget {
       id: id,
     );
     if (res.isSuccess) {
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
       return true;
     } else {
       res.toast();
@@ -272,7 +272,7 @@ class HeaderControl extends StatefulWidget {
         },
       );
     } else {
-      return SmartDialog.showToast('请先登录');
+      return ToastUtils.showToast('请先登录');
     }
   }
 
@@ -316,7 +316,7 @@ class HeaderControl extends StatefulWidget {
         },
       );
     } else {
-      return SmartDialog.showToast('请先登录');
+      return ToastUtils.showToast('请先登录');
     }
   }
 }
@@ -497,7 +497,7 @@ class HeaderControlState extends State<HeaderControl>
                           SettingBoxKey.CDNService,
                           result.name,
                         );
-                        SmartDialog.showToast('已设置为 ${result.desc}，正在重载视频');
+                        ToastUtils.showToast('已设置为 ${result.desc}，正在重载视频');
                         videoDetailCtr.queryVideoUrl(
                           defaultST: videoDetailCtr.playedTime,
                           fromReset: true,
@@ -709,7 +709,7 @@ class HeaderControlState extends State<HeaderControl>
                         }
                       }
                     } catch (e) {
-                      SmartDialog.showToast('加载失败: $e');
+                      ToastUtils.showToast('加载失败: $e');
                     }
                   },
                   leading: const Icon(Icons.file_open_outlined, size: 20),
@@ -739,7 +739,7 @@ class HeaderControlState extends State<HeaderControl>
                   dense: true,
                   onTap: () {
                     if (!Accounts.main.isLogin) {
-                      SmartDialog.showToast('账号未登录');
+                      ToastUtils.showToast('账号未登录');
                       return;
                     }
                     context.pop();
@@ -762,7 +762,7 @@ class HeaderControlState extends State<HeaderControl>
   }) {
     final player = plPlayerController.videoPlayerController;
     if (player == null) {
-      SmartDialog.showToast('播放器未初始化');
+      ToastUtils.showToast('播放器未初始化');
       return;
     }
     final hwdec = player.getProperty(
@@ -897,7 +897,7 @@ class HeaderControlState extends State<HeaderControl>
   /// 选择画质
   void showSetVideoQa() {
     if (videoInfo.dash == null) {
-      SmartDialog.showToast('当前视频不支持选择画质');
+      ToastUtils.showToast('当前视频不支持选择画质');
       return;
     }
     final VideoQuality? currentVideoQa = videoDetailCtr.currentVideoQa.value;
@@ -935,7 +935,7 @@ class HeaderControlState extends State<HeaderControl>
                   child: SizedBox(
                     height: 45,
                     child: GestureDetector(
-                      onTap: () => SmartDialog.showToast(
+                      onTap: () => ToastUtils.showToast(
                         '标灰画质需要bilibili会员（已是会员？请关闭无痕模式）；4k和杜比视界播放效果可能不佳',
                       ),
                       child: Row(
@@ -972,7 +972,7 @@ class HeaderControlState extends State<HeaderControl>
                           ..currentVideoQa.value = newQa
                           ..updatePlayer();
 
-                        SmartDialog.showToast("画质已变为：${newQa.desc}");
+                        ToastUtils.showToast("画质已变为：${newQa.desc}");
 
                         // update
                         if (!plPlayerController.tempPlayerConf) {
@@ -1052,7 +1052,7 @@ class HeaderControlState extends State<HeaderControl>
                           ..currentAudioQa = newQa
                           ..updatePlayer();
 
-                        SmartDialog.showToast("音质已变为：${newQa.desc}");
+                        ToastUtils.showToast("音质已变为：${newQa.desc}");
 
                         // update
                         if (!plPlayerController.tempPlayerConf) {
@@ -1098,7 +1098,7 @@ class HeaderControlState extends State<HeaderControl>
         .firstWhere((FormatItem e) => e.quality == firstVideo.quality.code)
         .codecs;
     if (list == null) {
-      SmartDialog.showToast('当前视频不支持选择解码格式');
+      ToastUtils.showToast('当前视频不支持选择解码格式');
       return;
     }
 
@@ -1218,7 +1218,7 @@ class HeaderControlState extends State<HeaderControl>
                           );
                         }
                       } catch (e) {
-                        SmartDialog.showToast(e.toString());
+                        ToastUtils.showToast(e.toString());
                       }
                     },
                     title: Text(
@@ -2041,7 +2041,7 @@ class HeaderControlState extends State<HeaderControl>
                                           plPlayerController.setBackgroundPlay(
                                             true,
                                           );
-                                          SmartDialog.showToast("请重新载入本页面刷新");
+                                          ToastUtils.showToast("请重新载入本页面刷新");
                                         },
                                         child: const Text('启用后台音频服务'),
                                       ),

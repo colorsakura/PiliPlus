@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/app/router/app_router.dart';
 import 'package:PiliPlus/app/router/app_routes.dart';
+import 'package:PiliPlus/app/app.dart' show MyApp;
 import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/features/follow/follow.dart';
@@ -24,7 +26,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 abstract final class PiliScheme {
   static late AppLinks appLinks;
@@ -99,7 +100,7 @@ abstract final class PiliScheme {
       case 'bilibili':
         switch (host) {
           case 'root':
-            final navigatorState = rootNavigatorKey.currentState;
+            final navigatorState = MyApp.rootNavigatorKey.currentState;
             if (navigatorState != null) {
               navigatorState.popUntil((Route<dynamic> route) => route.isFirst);
             }
@@ -410,7 +411,7 @@ abstract final class PiliScheme {
             }
             return false;
           case 'livearea':
-            final context = rootNavigatorKey.currentContext;
+            final context = MyApp.rootNavigatorKey.currentContext;
             if (context != null) {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -424,7 +425,7 @@ abstract final class PiliScheme {
             }
             return true;
           case 'rank':
-            final context = rootNavigatorKey.currentContext;
+            final context = MyApp.rootNavigatorKey.currentContext;
             if (context != null) {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -458,7 +459,7 @@ abstract final class PiliScheme {
           default:
             if (!selfHandle) {
               // if (kDebugMode) debugPrint('$uri');
-              SmartDialog.showToast('未知路径:$uri，请截图反馈给开发者');
+              ToastUtils.showToast('未知路径:$uri，请截图反馈给开发者');
             }
             return false;
         }
@@ -482,7 +483,7 @@ abstract final class PiliScheme {
         }
         if (!selfHandle) {
           // if (kDebugMode) debugPrint('$uri');
-          SmartDialog.showToast('未知路径:$uri，请截图反馈给开发者');
+          ToastUtils.showToast('未知路径:$uri，请截图反馈给开发者');
         }
         return false;
     }
@@ -991,7 +992,7 @@ abstract final class PiliScheme {
       aid ??= IdUtils.bv2av(bvid!);
       bvid ??= IdUtils.av2bv(aid);
       if (showDialog) {
-        SmartDialog.showLoading<dynamic>(msg: '获取中...');
+        ToastUtils.showLoading(msg: '获取中...');
       }
       final int? cid = await SearchHttp.ab2c(
         bvid: bvid,
@@ -999,7 +1000,7 @@ abstract final class PiliScheme {
         part: part != null ? int.tryParse(part) : null,
       );
       if (showDialog) {
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       }
       if (cid != null) {
         PageUtils.toVideoPage(
@@ -1011,8 +1012,8 @@ abstract final class PiliScheme {
         );
       }
     } catch (e) {
-      SmartDialog.dismiss();
-      SmartDialog.showToast('video获取失败: $e');
+      ToastUtils.dismiss();
+      ToastUtils.showToast('video获取失败: $e');
     }
   }
 }

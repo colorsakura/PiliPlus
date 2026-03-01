@@ -5,8 +5,8 @@ import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/core/controllers/common_dyn_controller.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class DynamicDetailController extends CommonDynController {
   DynamicDetailController({DynamicItemModel? item}) {
@@ -66,7 +66,7 @@ class DynamicDetailController extends CommonDynController {
     );
     if (res.isSuccess) {
       dynItem.modules.moduleAuthor?.badgeText = isPrivate ? null : '仅自己可见';
-      SmartDialog.showToast('设置成功');
+      ToastUtils.showToast('设置成功');
     } else {
       res.toast();
     }

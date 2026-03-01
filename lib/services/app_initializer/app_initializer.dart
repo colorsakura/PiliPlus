@@ -64,6 +64,7 @@ class AppInitializer {
   /// - MediaKit
   /// - 应用路径
   /// - 完整存储初始化 (所有 Box，确保服务可用)
+  /// - 数据库初始化 (HomePage 等页面需要立即访问)
   /// - GetX 服务注册 (确保在 runApp 前可用)
   static Future<void> blockingPhase() async {
     if (_blockingPhaseCompleted) {
@@ -84,6 +85,10 @@ class AppInitializer {
       // 完整存储初始化（因为 AccountService.onInit 需要 userInfo）
       await _initFullStorage();
       AppLog.fine('Full storage initialized', name: 'AppInitializer');
+
+      // 数据库初始化（必须在 runApp 前完成，因为 HomePage 立即需要访问）
+      await _initDatabase();
+      AppLog.fine('Database initialized', name: 'AppInitializer');
 
       await _initGetXServices();
       AppLog.fine('GetX services registered', name: 'AppInitializer');
@@ -108,7 +113,6 @@ class AppInitializer {
   ///
   /// 初始化应用核心功能:
   /// - 下载路径初始化
-  /// - 数据库初始化
   /// - HTTP 客户端
   /// - 平台设置 (屏幕方向、系统 UI)
   static Future<void> corePhase() async {
@@ -126,9 +130,6 @@ class AppInitializer {
     try {
       await _initDownloadPaths();
       AppLog.fine('Download paths initialized', name: 'AppInitializer');
-
-      await _initDatabase();
-      AppLog.fine('Database initialized', name: 'AppInitializer');
 
       await _setupPlatform();
       AppLog.fine('Platform settings configured', name: 'AppInitializer');

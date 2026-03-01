@@ -2,7 +2,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller_v2.dart';
 import 'package:PiliPlus/features/member_dynamics/domain/repositories/member_dynamics_repository.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Controller for member dynamics page (Clean Architecture with Riverpod)
 ///
@@ -61,7 +61,7 @@ class MemberDynamicsController
           ..removeWhere((item) => item.idStr == dynamicId);
         loadingState = Success(newList);
       }
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }
@@ -85,7 +85,7 @@ class MemberDynamicsController
 
           if (isTop) {
             loadingState = Success(newList);
-            SmartDialog.showToast('取消置顶成功');
+            ToastUtils.showToast('取消置顶成功');
           } else {
             // Set top on selected item and move to top
             final item = newList.firstWhere((item) => item.idStr == dynamicId);
@@ -96,7 +96,7 @@ class MemberDynamicsController
               ..remove(item)
               ..insert(0, item);
             loadingState = Success(newList);
-            SmartDialog.showToast('置顶成功');
+            ToastUtils.showToast('置顶成功');
           }
         }
       }

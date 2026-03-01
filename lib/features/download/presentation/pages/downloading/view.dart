@@ -5,12 +5,12 @@ import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/models/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart'
     show BaseMultiSelectMixin;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/features/download/presentation/pages/detail/item.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class DownloadingPage extends StatefulWidget {
@@ -110,7 +110,7 @@ class _DownloadingPageState extends State<DownloadingPage>
       context: context,
       title: '确定删除选中视频？',
       onConfirm: () async {
-        SmartDialog.showLoading();
+        ToastUtils.showLoading();
         final allChecked = this.allChecked.toSet();
         final isDownloading =
             _downloadService.curDownload.value?.status ==
@@ -130,7 +130,7 @@ class _DownloadingPageState extends State<DownloadingPage>
           rxCount.value = 0;
           enableMultiSelect.value = false;
         }
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       },
     );
   }

@@ -1,6 +1,7 @@
 // edit from package:dio_cookie_manager
 import 'dart:async';
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/api.dart';
 import 'package:PiliPlus/http/constants.dart';
@@ -16,7 +17,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 final _setCookieReg = RegExp('(?<=)(,)(?=[^;]+?=)');
 
@@ -182,7 +182,7 @@ class AccountManager extends Interceptor {
         (url.contains('skipSegments') && err.requestOptions.method == 'GET')) {
       // skip
     } else {
-      dioError(err).then((res) => SmartDialog.showToast(res + url));
+      dioError(err).then((res) => ToastUtils.showToast(res + url));
     }
   }
 

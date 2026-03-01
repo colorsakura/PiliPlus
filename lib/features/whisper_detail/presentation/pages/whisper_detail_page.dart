@@ -1,6 +1,7 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:async';
 import 'dart:io' show File;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/dialog/report.dart';
 import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
@@ -25,7 +26,6 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart' hide TextField;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -354,7 +354,7 @@ class _WhisperDetailPageState
                       );
                       if (pickedFile != null) {
                         final path = pickedFile.path;
-                        SmartDialog.showLoading(msg: '正在上传图片');
+                        ToastUtils.showLoading(msg: '正在上传图片');
                         final result = await MsgHttp.uploadBfs(
                           path: path,
                           biz: 'im',
@@ -373,7 +373,7 @@ class _WhisperDetailPageState
                             'original': 1,
                             'size': response.imgSize,
                           };
-                          SmartDialog.showLoading(msg: '正在发送');
+                          ToastUtils.showLoading(msg: '正在发送');
                           await _whisperDetailController
                               .sendMsg(
                                 picMsg: picMsg,
@@ -385,13 +385,13 @@ class _WhisperDetailPageState
                                 }
                               });
                         } else {
-                          SmartDialog.dismiss();
+                          ToastUtils.dismiss();
                           result.toast();
                           return;
                         }
                       }
                     } catch (e) {
-                      SmartDialog.showToast(e.toString());
+                      ToastUtils.showToast(e.toString());
                     }
                   }
                 },

@@ -2,7 +2,7 @@ import 'package:PiliPlus/shared/widgets/radio_widget.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -107,19 +107,19 @@ Future<void> autoWrapReportDialog(
                 (reasonType == 0 && key.currentState?.validate() != true)) {
               return;
             }
-            SmartDialog.showLoading();
+            ToastUtils.showLoading();
             try {
               final res = await onSuccess(reasonType!, reasonDesc, banUid);
-              SmartDialog.dismiss();
+              ToastUtils.dismiss();
               if (res.isSuccess) {
                 PageUtils.pop();
-                SmartDialog.showToast('举报成功');
+                ToastUtils.showToast('举报成功');
               } else {
                 res.toast();
               }
             } catch (e) {
-              SmartDialog.dismiss();
-              SmartDialog.showToast('提交失败：$e');
+              ToastUtils.dismiss();
+              ToastUtils.showToast('提交失败：$e');
             }
           },
           child: const Text('确定'),

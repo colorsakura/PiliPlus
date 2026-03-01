@@ -6,8 +6,8 @@ import 'package:PiliPlus/models/history/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.dart';
 import 'package:PiliPlus/features/common/presentation/pages/search/common_search_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class HistorySearchController
     extends CommonSearchController<HistoryData, HistoryItemModel>
@@ -35,7 +35,7 @@ class HistorySearchController
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast('已删除');
+      ToastUtils.showToast('已删除');
     } else {
       res.toast();
     }
@@ -48,7 +48,7 @@ class HistorySearchController
       content: '确认删除所选历史记录吗？',
       title: '提示',
       onConfirm: () async {
-        SmartDialog.showLoading(msg: '请求中');
+        ToastUtils.showLoading(msg: '请求中');
         final removeList = allChecked.toSet();
         final response = await UserHttp.delHistory(
           removeList
@@ -58,11 +58,11 @@ class HistorySearchController
         );
         if (response.isSuccess) {
           afterDelete(removeList);
-          SmartDialog.showToast('已删除');
+          ToastUtils.showToast('已删除');
         } else {
           response.toast();
         }
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       },
     );
   }

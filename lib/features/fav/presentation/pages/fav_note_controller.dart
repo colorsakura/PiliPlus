@@ -2,8 +2,8 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_note/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/multi_select/multi_select_controller.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavNoteController
     extends MultiSelectController<List<FavNoteItemModel>?, FavNoteItemModel> {
@@ -44,7 +44,7 @@ class FavNoteController
     );
     if (res.isSuccess) {
       afterDelete(removeList);
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }

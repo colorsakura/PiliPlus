@@ -8,6 +8,7 @@ import 'package:PiliPlus/features/video/presentation/pages/reply_reply/controlle
 import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_grpc.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo, Mode;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/shared/skeleton/video_reply.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
@@ -16,7 +17,6 @@ import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
@@ -375,7 +375,7 @@ class _VideoReplyReplyPanelState extends State<VideoReplyReplyPanel>
       ),
       jumpToDialogue: () {
         if (!_controller.setIndexById(replyItem.parent)) {
-          SmartDialog.showToast('评论可能已被删除');
+          ToastUtils.showToast('评论可能已被删除');
         }
       },
       onCheckReply: (item) => _controller.onCheckReply(item, isManual: true),

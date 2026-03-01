@@ -48,9 +48,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
   // 配置
   late final bool directExitOnBack = Pref.directExitOnBack;
 
-  // 初始化状态
-  bool _isInitialized = false;
-
   @override
   void initState() {
     super.initState();
@@ -83,13 +80,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
 
     // 启动定时检查
     ref.read(periodicCheckSchedulerProvider).start();
-
-    // 标记为已初始化
-    if (mounted) {
-      setState(() {
-        _isInitialized = true;
-      });
-    }
   }
 
   @override
@@ -198,15 +188,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // 如果未初始化，显示加载界面
-    if (!_isInitialized) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     // 监听导航配置
     final navConfigState = ref.watch(navigationConfigControllerProvider);
     final unreadDyn = ref.watch(unreadDynamicControllerProvider);
@@ -244,14 +225,13 @@ class _ShellPageState extends ConsumerState<ShellPage>
     }
 
     child = Scaffold(
-      extendBody: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(toolbarHeight: 0),
       body: Padding(
         padding: EdgeInsets.only(
-          left: PlatformUtils.isDesktop ? 0 : _padding.left,
-          right: _padding.right,
-          bottom: shouldUseBottomNav ? 0.0 : _padding.bottom,
+          left: PlatformUtils.isDesktop ? 0 : _padding.left.clamp(0.0, double.infinity),
+          right: _padding.right.clamp(0.0, double.infinity),
+          bottom: shouldUseBottomNav ? 0.0 : _padding.bottom.clamp(0.0, double.infinity),
         ),
         child: child,
       ),

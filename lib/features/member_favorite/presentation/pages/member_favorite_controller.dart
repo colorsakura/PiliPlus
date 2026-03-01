@@ -7,8 +7,8 @@ import 'package:PiliPlus/models/space/space_fav/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_data_controller.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class MemberFavoriteCtr
     extends CommonDataController<List<SpaceFavData>?, List<SpaceFavData>?> {
@@ -108,10 +108,10 @@ class MemberFavoriteCtr
           favEnd.value = true;
         }
       } else {
-        SmartDialog.showToast(res.data['message']);
+        ToastUtils.showToast(res.data['message']);
       }
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 
@@ -145,10 +145,10 @@ class MemberFavoriteCtr
           subEnd.value = true;
         }
       } else {
-        SmartDialog.showToast(res.data['message']);
+        ToastUtils.showToast(res.data['message']);
       }
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 

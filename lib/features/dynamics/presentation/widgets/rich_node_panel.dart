@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io' show Platform;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/gesture/tap_gesture_recognizer.dart';
 import 'package:PiliPlus/shared/widgets/image/custom_grid_view.dart';
@@ -15,7 +16,6 @@ import 'package:PiliPlus/features/dynamics/presentation/widgets/vote.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 // 富文本
@@ -237,7 +237,7 @@ TextSpan? richNode(
                           );
                         }
                       } catch (err) {
-                        SmartDialog.showToast(err.toString());
+                        ToastUtils.showToast(err.toString());
                       }
                     },
                 ),

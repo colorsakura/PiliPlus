@@ -13,9 +13,9 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class _VideoCustomAction {
   final String title;
@@ -133,17 +133,17 @@ class VideoPopupMenu extends StatelessWidget {
                         AccountType.recommend,
                       ).accessKey;
                       if (accessKey == null || accessKey == "") {
-                        SmartDialog.showToast("请退出账号后重新登录");
+                        ToastUtils.showToast("请退出账号后重新登录");
                         return;
                       }
                       if (videoItem case final RecVideoItemAppModel item) {
                         ThreePoint? tp = item.threePoint;
                         if (tp == null) {
-                          SmartDialog.showToast("未能获取threePoint");
+                          ToastUtils.showToast("未能获取threePoint");
                           return;
                         }
                         if (tp.dislikeReasons == null && tp.feedbacks == null) {
-                          SmartDialog.showToast(
+                          ToastUtils.showToast(
                             "未能获取dislikeReasons或feedbacks",
                           );
                           return;
@@ -153,16 +153,16 @@ class VideoPopupMenu extends StatelessWidget {
                             text: r?.name ?? f?.name ?? '未知',
                             onTap: (_) async {
                               PageUtils.pop();
-                              SmartDialog.showLoading(msg: '正在提交');
+                              ToastUtils.showLoading(msg: '正在提交');
                               final res = await VideoHttp.feedDislike(
                                 reasonId: r?.id,
                                 feedbackId: f?.id,
                                 id: item.param!,
                                 goto: item.goto!,
                               );
-                              SmartDialog.dismiss();
+                              ToastUtils.dismiss();
                               if (res.isSuccess) {
-                                SmartDialog.showToast(
+                                ToastUtils.showToast(
                                   r?.toast ?? f!.toast!,
                                 );
                                 onRemove?.call();
@@ -210,16 +210,14 @@ class VideoPopupMenu extends StatelessWidget {
                                     Center(
                                       child: FilledButton.tonal(
                                         onPressed: () async {
-                                          SmartDialog.showLoading(
-                                            msg: '正在提交',
-                                          );
+                                          ToastUtils.showLoading();
                                           final res =
                                               await VideoHttp.feedDislikeCancel(
                                                 id: item.param!,
                                                 goto: item.goto!,
                                               );
-                                          SmartDialog.dismiss();
-                                          SmartDialog.showToast(
+                                          ToastUtils.dismiss();
+                                          ToastUtils.showToast(
                                             res.isSuccess
                                                 ? "成功"
                                                 : res.toString(),
@@ -255,17 +253,15 @@ class VideoPopupMenu extends StatelessWidget {
                                       FilledButton.tonal(
                                         onPressed: () async {
                                           PageUtils.pop();
-                                          SmartDialog.showLoading(
-                                            msg: '正在提交',
-                                          );
+                                          ToastUtils.showLoading();
                                           final res =
                                               await VideoHttp.dislikeVideo(
                                                 bvid: videoItem.bvid!,
                                                 type: true,
                                               );
-                                          SmartDialog.dismiss();
+                                          ToastUtils.dismiss();
                                           if (res.isSuccess) {
-                                            SmartDialog.showToast('点踩成功');
+                                            ToastUtils.showToast('点踩成功');
                                             onRemove?.call();
                                           } else {
                                             res.toast();
@@ -279,16 +275,14 @@ class VideoPopupMenu extends StatelessWidget {
                                       FilledButton.tonal(
                                         onPressed: () async {
                                           PageUtils.pop();
-                                          SmartDialog.showLoading(
-                                            msg: '正在提交',
-                                          );
+                                          ToastUtils.showLoading();
                                           final res =
                                               await VideoHttp.dislikeVideo(
                                                 bvid: videoItem.bvid!,
                                                 type: false,
                                               );
-                                          SmartDialog.dismiss();
-                                          SmartDialog.showToast(
+                                          ToastUtils.dismiss();
+                                          ToastUtils.showToast(
                                             res.isSuccess
                                                 ? '取消踩'
                                                 : res.toString(),

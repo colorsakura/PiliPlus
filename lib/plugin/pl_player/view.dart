@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/cropped_image.dart';
@@ -72,7 +73,6 @@ import 'package:flutter/rendering.dart'
     show RenderProxyBox, SemanticsConfiguration;
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -358,7 +358,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         ),
         onTap: () {
           if (!introController.prevPlay()) {
-            SmartDialog.showToast('已经是第一集了');
+            ToastUtils.showToast('已经是第一集了');
           }
         },
       ),
@@ -375,7 +375,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         ),
         onTap: () {
           if (!introController.nextPlay()) {
-            SmartDialog.showToast('已经是最后一集了');
+            ToastUtils.showToast('已经是最后一集了');
           }
         },
       ),
@@ -787,7 +787,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         ..currentVideoQa.value = newQa
                         ..updatePlayer();
 
-                      SmartDialog.showToast("画质已变为：${newQa.desc}");
+                      ToastUtils.showToast("画质已变为：${newQa.desc}");
 
                       // update
                       if (!plPlayerController.tempPlayerConf) {
@@ -1003,32 +1003,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         plPlayerController.showPreview.value = false;
         if (plPlayerController.hasToast != true) {
           plPlayerController.hasToast = true;
-          SmartDialog.showAttach(
-            targetContext: context,
-            alignment: Alignment.center,
-            animationTime: const Duration(milliseconds: 200),
-            animationType: SmartAnimationType.fade,
-            displayTime: const Duration(milliseconds: 1500),
-            maskColor: Colors.transparent,
-            builder: (context) => Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(6),
-                ),
-                color: colorScheme.secondaryContainer,
-              ),
-              child: Text(
-                '松开手指，取消进退',
-                style: TextStyle(
-                  color: colorScheme.onSecondaryContainer,
-                ),
-              ),
-            ),
-          );
+          _showCancelSeekToast(context);
         }
       } else {
         if (plPlayerController.cancelSeek == true) {
@@ -1328,6 +1303,44 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       );
       plPlayerController.setVolume(volume);
     }
+  }
+
+  void _showCancelSeekToast(BuildContext context) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).size.height * 0.4,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(6),
+              ),
+              color: colorScheme.secondaryContainer,
+            ),
+            child: Text(
+              '松开手指，取消进退',
+              style: TextStyle(
+                color: colorScheme.onSecondaryContainer,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlay.insert(overlayEntry);
+
+    // Auto-dismiss after 1.5 seconds
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      overlayEntry.remove();
+    });
   }
 
   @override
@@ -2163,29 +2176,27 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
       progress: progress,
       preset: preset,
     );
-    final future = mpv.convert().whenComplete(
-      () => SmartDialog.dismiss(status: SmartStatus.loading),
-    );
+    final future = mpv.convert();
 
-    SmartDialog.showLoading(
-      backType: SmartBackType.normal,
+    showDialog(
+      context: context,
+      barrierDismissible: false,
       builder: (_) => LoadingWidget(progress: progress, msg: '正在保存，可能需要较长时间'),
-      onDismiss: () async {
-        if (progress.value < 1.0) {
-          mpv.dispose();
-        }
-        if (await future) {
-          await ImageUtils.saveFileImg(
-            filePath: file,
-            fileName: name,
-            needToast: true,
-          );
-        } else {
-          SmartDialog.showToast('转码出现错误或已取消');
-        }
-        if (isPlay) ctr.play();
-      },
-    );
+    ).then((_) async {
+      if (progress.value < 1.0) {
+        mpv.dispose();
+      }
+      if (await future) {
+        await ImageUtils.saveFileImg(
+          filePath: file,
+          fileName: name,
+          needToast: true,
+        );
+      } else {
+        ToastUtils.showToast('转码出现错误或已取消');
+      }
+      if (isPlay) ctr.play();
+    });
   }
 
   static const _overlaySpacing = 5.0;

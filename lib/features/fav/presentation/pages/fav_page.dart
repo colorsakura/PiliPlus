@@ -12,8 +12,8 @@ import 'package:PiliPlus/features/fav/presentation/pages/fav_video_controller.da
 import 'package:PiliPlus/features/fav_folder_sort/fav_folder_sort.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavPage extends StatefulWidget {
   const FavPage({super.key, this.initialIndex});
@@ -91,7 +91,7 @@ class _FavPageState extends State<FavPage> with SingleTickerProviderStateMixin {
                     onPressed: () {
                       if (_favController.loadingState.value.isSuccess) {
                         if (!_favController.isEnd) {
-                          SmartDialog.showToast('加载全部收藏夹再排序');
+                          ToastUtils.showToast('加载全部收藏夹再排序');
                           return;
                         }
                         Get.to(

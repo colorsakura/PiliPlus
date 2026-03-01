@@ -1,4 +1,5 @@
 import 'dart:math' show max;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/button/toolbar_icon_button.dart';
@@ -35,7 +36,6 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:flutter/material.dart'
     hide DraggableScrollableSheet, showTimePicker;
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -531,12 +531,12 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
                     if (selectedTime != null) {
                       if (selectedDate.day == nowDate.day) {
                         if (selectedTime.hour < nowTime.hour) {
-                          SmartDialog.showToast('时间设置错误，至少选择6分钟之后');
+                          ToastUtils.showToast('时间设置错误，至少选择6分钟之后');
                           return;
                         } else if (selectedTime.hour == nowTime.hour) {
                           if (selectedTime.minute < nowTime.minute + 6) {
                             if (selectedDate.day == nowDate.day) {
-                              SmartDialog.showToast('时间设置错误，至少选择6分钟之后');
+                              ToastUtils.showToast('时间设置错误，至少选择6分钟之后');
                             }
                             return;
                           }
@@ -744,7 +744,7 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
 
   @override
   Future<void> onCustomPublish({List? pictures}) async {
-    SmartDialog.showLoading(msg: '正在发布');
+    ToastUtils.showLoading(msg: '正在发布');
     List<Map<String, dynamic>>? extraContent = getRichContent();
     final hasRichText = extraContent != null;
 
@@ -761,11 +761,11 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
         topic: _topic.value,
         extraContent: extraContent,
       );
-      SmartDialog.dismiss();
+      ToastUtils.dismiss();
       if (res.isSuccess) {
         hasPub = true;
         PageUtils.pop();
-        SmartDialog.showToast('发布成功');
+        ToastUtils.showToast('发布成功');
         widget.onSuccess?.call();
       } else {
         res.toast();
@@ -797,11 +797,11 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
               },
             },
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       hasPub = true;
       PageUtils.pop();
-      SmartDialog.showToast('发布成功');
+      ToastUtils.showToast('发布成功');
       final id = response?['dyn_id'];
       RequestUtils.insertCreatedDyn(id);
       if (!_isPrivate.value) {

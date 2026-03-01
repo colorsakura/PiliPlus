@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/grpc/bilibili/im/interfaces/v1.pb.dart'
     show EmotionInfo, RspSessionMsg;
@@ -13,7 +14,6 @@ import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class WhisperDetailController extends CommonListController<RspSessionMsg, Msg> {
@@ -77,9 +77,9 @@ class WhisperDetailController extends CommonListController<RspSessionMsg, Msg> {
     if (_isSending) return;
     _isSending = true;
     feedBack();
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (!account.isLogin) {
-      SmartDialog.showToast('请先登录');
+      ToastUtils.showToast('请先登录');
       return;
     }
     final res = await ImGrpc.sendMsg(
@@ -90,17 +90,17 @@ class WhisperDetailController extends CommonListController<RspSessionMsg, Msg> {
           : jsonEncode(picMsg ?? {"content": message!}),
       msgType: MsgType.values[msgType ?? (picMsg != null ? 2 : 1)],
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res.isSuccess) {
       if (msgType == 5) {
         loadingState
           ..value.data![index!].msgStatus = 1
           ..refresh();
-        SmartDialog.showToast('撤回成功');
+        ToastUtils.showToast('撤回成功');
       } else {
         onRefresh();
         onClearText();
-        SmartDialog.showToast('发送成功');
+        ToastUtils.showToast('发送成功');
       }
     } else {
       res.toast();

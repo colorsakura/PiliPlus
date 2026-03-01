@@ -15,8 +15,8 @@ import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class LiveRoomChatPanel extends StatelessWidget {
   const LiveRoomChatPanel({
@@ -347,7 +347,7 @@ class LiveRoomChatPanel extends StatelessWidget {
               type: 1,
             );
             if (res.isSuccess) {
-              SmartDialog.showToast('屏蔽成功');
+              ToastUtils.showToast('屏蔽成功');
             } else {
               res.toast();
             }

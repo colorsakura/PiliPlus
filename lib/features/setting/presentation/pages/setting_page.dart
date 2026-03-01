@@ -18,9 +18,9 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:flutter/material.dart' hide ListTile;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class _SettingsModel {
   final SettingType type;
@@ -279,15 +279,15 @@ class _SettingPageState extends State<SettingPage> {
             ),
             TextButton(
               onPressed: () async {
-                SmartDialog.showLoading();
+                ToastUtils.showLoading();
                 final res = await _loginDataSource.logout(Accounts.main);
                 if (res['status']) {
-                  SmartDialog.dismiss();
+                  ToastUtils.dismiss();
                   logout();
                   PageUtils.pop();
                 } else {
-                  SmartDialog.dismiss();
-                  SmartDialog.showToast(res['msg'].toString());
+                  ToastUtils.dismiss();
+                  ToastUtils.showToast(res['msg'].toString());
                 }
               },
               child: const Text('确认'),

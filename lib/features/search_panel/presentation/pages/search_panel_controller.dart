@@ -1,4 +1,5 @@
 import 'dart:async' show StreamSubscription;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/search.dart';
@@ -10,7 +11,6 @@ import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/search_result/presentation/pages/controller.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -49,12 +49,12 @@ class SearchPanelController<R extends SearchNumData<T>, T>
     String? label,
   }) {
     if (getBack) PageUtils.pop();
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (label != null) {
-      SmartDialog.showToast("「$label」的筛选结果");
+      ToastUtils.showToast("「$label」的筛选结果");
     }
-    SmartDialog.showLoading(msg: 'loading');
-    onReload().whenComplete(SmartDialog.dismiss);
+    ToastUtils.showLoading(msg: 'loading');
+    onReload().whenComplete(ToastUtils.dismiss);
   }
 
   StreamSubscription? _listener;

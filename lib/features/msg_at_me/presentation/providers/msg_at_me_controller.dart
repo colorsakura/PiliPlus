@@ -4,7 +4,7 @@ import 'package:PiliPlus/features/msg_at_me/domain/usecases/remove_msg_item_usec
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/msg_at/data.dart';
 import 'package:PiliPlus/models/msg/msg_at/item.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Controller for @Me notifications page (Clean Architecture with Riverpod)
 ///
@@ -58,7 +58,7 @@ class MsgAtMeController extends CommonListControllerV2<MsgAtData, MsgAtItem> {
         if (currentList != null && index < currentList.length) {
           final newList = List<MsgAtItem>.from(currentList)..removeAt(index);
           loadingState = Success(newList);
-          SmartDialog.showToast('删除成功');
+          ToastUtils.showToast('删除成功');
         }
       } else {
         res.toast();

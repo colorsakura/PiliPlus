@@ -39,10 +39,10 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart' hide SelectionArea;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class UgcIntroPanel extends StatefulWidget {
   const UgcIntroPanel({
@@ -667,7 +667,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                               final bvid = videoDetailCtr.bvid;
                               final cid = videoDetailCtr.cid.value;
 
-                              SmartDialog.showLoading();
+                              ToastUtils.showLoading();
                               final dataSource = SponsorBlockRemoteDataSource();
                               final hasPortVideo =
                                   (await dataSource.getPortVideo(
@@ -675,7 +675,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                                     cid: cid,
                                   )) ==
                                   ytbId;
-                              SmartDialog.dismiss();
+                              ToastUtils.dismiss();
 
                               if (!mounted) return;
                               final confirmed = await showConfirmDialog(
@@ -694,9 +694,9 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
                                     ytbId: ytbId,
                                     videoDuration: (duration / 1000).round(),
                                   );
-                                  SmartDialog.showToast('提交搬运视频成功');
+                                  ToastUtils.showToast('提交搬运视频成功');
                                 } catch (e) {
-                                  SmartDialog.showToast('提交搬运视频失败: $e');
+                                  ToastUtils.showToast('提交搬运视频失败: $e');
                                 }
                                 return;
                               }
@@ -1018,7 +1018,7 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
             if (summary?.isNotEmpty == true || outline?.isNotEmpty == true) {
               widget.showAiBottomSheet();
             } else {
-              SmartDialog.showToast("当前视频不支持AI视频总结");
+              ToastUtils.showToast("当前视频不支持AI视频总结");
             }
           }
         },

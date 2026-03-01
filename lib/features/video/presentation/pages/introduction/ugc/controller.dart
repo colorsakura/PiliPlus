@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
@@ -41,7 +42,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class UgcIntroController extends CommonIntroController with ReloadMixin {
@@ -181,12 +181,12 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   Future<void> actionTriple() async {
     feedBack();
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     if (hasLike.value && hasCoin && hasFav.value) {
       // 已点赞、投币、收藏
-      SmartDialog.showToast('已三连');
+      ToastUtils.showToast('已三连');
       return;
     }
     final result = await VideoHttp.ugcTriple(bvid: bvid);
@@ -207,9 +207,9 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       }
       hasDislike.value = false;
       if (!hasCoin) {
-        SmartDialog.showToast('投币失败');
+        ToastUtils.showToast('投币失败');
       } else {
-        SmartDialog.showToast('三连成功');
+        ToastUtils.showToast('三连成功');
       }
     } else {
       result.toast();
@@ -220,7 +220,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   @override
   Future<void> actionLikeVideo() async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     if (videoDetail.value.stat == null) {
@@ -229,7 +229,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     final newVal = !hasLike.value;
     final result = await VideoHttp.likeVideo(bvid: bvid, type: newVal);
     if (result case Success(:final response)) {
-      SmartDialog.showToast(newVal ? response : '取消赞');
+      ToastUtils.showToast(newVal ? response : '取消赞');
       videoDetail.value.stat?.like += newVal ? 1 : -1;
       hasLike.value = newVal;
       if (newVal) {
@@ -242,7 +242,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
 
   Future<void> actionDislikeVideo() async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final res = await VideoHttp.dislikeVideo(
@@ -251,14 +251,14 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     );
     if (res.isSuccess) {
       if (!hasDislike.value) {
-        SmartDialog.showToast('点踩成功');
+        ToastUtils.showToast('点踩成功');
         hasDislike.value = true;
         if (hasLike.value) {
           videoDetail.value.stat?.like--;
           hasLike.value = false;
         }
       } else {
-        SmartDialog.showToast('取消踩');
+        ToastUtils.showToast('取消踩');
         hasDislike.value = false;
       }
     } else {
@@ -270,18 +270,18 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   @override
   void actionCoinVideo() {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
 
     int copyright = videoDetail.value.copyright ?? 1;
     if ((copyright != 1 && coinNum.value >= 1) || coinNum.value >= 2) {
-      SmartDialog.showToast('达到投币上限啦~');
+      ToastUtils.showToast('达到投币上限啦~');
       return;
     }
 
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
-      SmartDialog.showToast('硬币不足');
+      ToastUtils.showToast('硬币不足');
       // return;
     }
 
@@ -404,7 +404,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
                     },
                   );
                 } catch (e) {
-                  SmartDialog.showToast(e.toString());
+                  ToastUtils.showToast(e.toString());
                 }
               },
             ),
@@ -430,7 +430,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   // 关注/取关up
   Future<void> actionRelationMod(BuildContext context) async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final videoDetail = this.videoDetail.value;
@@ -736,7 +736,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     if (relatedCtr.loadingState.value case Success(:final response)) {
       final firstItem = response?.firstOrNull;
       if (firstItem == null) {
-        SmartDialog.showToast('暂无相关视频，停止连播');
+        ToastUtils.showToast('暂无相关视频，停止连播');
         return false;
       }
       onChangeEpisode(
@@ -760,22 +760,22 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     int? mid,
   ) async {
     if (!Accounts.heartbeat.isLogin) {
-      SmartDialog.showToast("账号未登录");
+      ToastUtils.showToast("账号未登录");
       return null;
     }
-    SmartDialog.showLoading(msg: '正在获取AI总结');
+    ToastUtils.showLoading(msg: '正在获取AI总结');
     final res = await VideoHttp.aiConclusion(
       bvid: bvid,
       cid: cid,
       upMid: mid,
     );
-    SmartDialog.dismiss();
+    ToastUtils.dismiss();
     if (res case Success(:final response)) {
       return response.modelResult;
     } else if (res is Error && res.code == 1) {
-      SmartDialog.showToast("AI处理中，请稍后再试");
+      ToastUtils.showToast("AI处理中，请稍后再试");
     } else {
-      SmartDialog.showToast("当前视频暂不支持AI视频总结");
+      ToastUtils.showToast("当前视频暂不支持AI视频总结");
     }
     return null;
   }

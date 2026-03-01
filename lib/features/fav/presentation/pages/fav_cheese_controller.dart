@@ -4,7 +4,7 @@ import 'package:PiliPlus/models/space/space_cheese/data.dart';
 import 'package:PiliPlus/models/space/space_cheese/item.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavCheeseController
     extends CommonListController<SpaceCheeseData, SpaceCheeseItem> {
@@ -32,7 +32,7 @@ class FavCheeseController
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast('已取消收藏');
+      ToastUtils.showToast('已取消收藏');
     } else {
       res.toast();
     }

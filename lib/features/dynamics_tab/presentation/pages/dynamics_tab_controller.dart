@@ -8,8 +8,8 @@ import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/features/dynamics/presentation/pages/dynamics_controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class DynamicsTabController
     extends CommonListController<DynamicsDataModel, DynamicItemModel>
@@ -66,7 +66,7 @@ class DynamicsTabController
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();
-      SmartDialog.showToast('删除成功');
+      ToastUtils.showToast('删除成功');
     } else {
       res.toast();
     }

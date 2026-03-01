@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/browser_ua.dart';
 import 'package:PiliPlus/models/common/webview_menu_type.dart';
@@ -12,7 +13,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 /// WebView页面
@@ -151,9 +151,9 @@ class _WebviewPageState extends State<WebviewPage> {
                         try {
                           await InAppWebViewController.clearAllCache();
                           await _webViewController?.clearHistory();
-                          SmartDialog.showToast('已清理');
+                          ToastUtils.showToast('已清理');
                         } catch (e) {
-                          SmartDialog.showToast(e.toString());
+                          ToastUtils.showToast(e.toString());
                         }
                         break;
                       case WebviewMenuItem.goBack:
@@ -165,7 +165,7 @@ class _WebviewPageState extends State<WebviewPage> {
                         break;
                       case WebviewMenuItem.resetCookie:
                         await LoginUtils.setWebCookie();
-                        SmartDialog.showToast('设置成功，刷新或重新打开网页');
+                        ToastUtils.showToast('设置成功，刷新或重新打开网页');
                         break;
                     }
                   },

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/grpc/audio.dart';
@@ -39,7 +40,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:fixnum/fixnum.dart' show Int64;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 
@@ -366,7 +366,7 @@ class AudioController extends GetxController
   @override
   Future<void> actionLikeVideo() async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final newVal = !hasLike.value;
@@ -386,7 +386,7 @@ class AudioController extends GetxController
           ..like += newVal ? 1 : -1;
         audioItem.refresh();
       } catch (_) {}
-      SmartDialog.showToast(response.message);
+      ToastUtils.showToast(response.message);
     } else {
       res.toast();
     }
@@ -395,7 +395,7 @@ class AudioController extends GetxController
   @override
   Future<void> actionTriple() async {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     final res = await AudioGrpc.audioTripleLike(
@@ -417,9 +417,9 @@ class AudioController extends GetxController
       }
       hasFav.value = true;
       if (!hasCoin) {
-        SmartDialog.showToast('投币失败');
+        ToastUtils.showToast('投币失败');
       } else {
-        SmartDialog.showToast('三连成功');
+        ToastUtils.showToast('三连成功');
       }
     } else {
       res.toast();
@@ -433,18 +433,18 @@ class AudioController extends GetxController
     }
 
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
 
     final int copyright = audioItem.arc.copyright;
     if ((copyright != 1 && coinNum.value >= 1) || coinNum.value >= 2) {
-      SmartDialog.showToast('达到投币上限啦~');
+      ToastUtils.showToast('达到投币上限啦~');
       return;
     }
 
     if (GlobalData().coins != null && GlobalData().coins! < 1) {
-      SmartDialog.showToast('硬币不足');
+      ToastUtils.showToast('硬币不足');
       // return;
     }
 
@@ -489,7 +489,7 @@ class AudioController extends GetxController
   @override
   void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {
     if (!isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     if (enableQuickFav) {
@@ -619,7 +619,7 @@ class AudioController extends GetxController
                         },
                       );
                     } catch (e) {
-                      SmartDialog.showToast(e.toString());
+                      ToastUtils.showToast(e.toString());
                     }
                   }
                 },

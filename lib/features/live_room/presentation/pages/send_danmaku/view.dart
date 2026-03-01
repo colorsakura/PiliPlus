@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/flutter/text_field/text_field.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
@@ -8,7 +9,6 @@ import 'package:PiliPlus/shared/widgets/publish/common_rich_text_pub_page.dart';
 import 'package:PiliPlus/features/live_emote/live_emote.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:flutter/material.dart' hide TextField;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -173,7 +173,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
     }
     final roomId = liveRoomController.roomId;
     if (roomId == null) {
-      SmartDialog.showToast('直播间ID不存在');
+      ToastUtils.showToast('直播间ID不存在');
       return;
     }
     final res = await LiveHttp.sendLiveMsg(
@@ -190,7 +190,7 @@ class _ReplyPageState extends CommonRichTextPubPageState<LiveSendDmPanel> {
       liveRoomController
         ..savedDanmaku?.clear()
         ..savedDanmaku = null;
-      SmartDialog.showToast('发送成功');
+      ToastUtils.showToast('发送成功');
     } else {
       res.toast();
     }

@@ -1,11 +1,11 @@
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show ThreeDotItem, ThreeDotItemType, IMSettingType;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/features/common/presentation/pages/common_whisper_controller.dart';
 import 'package:PiliPlus/features/contact/contact.dart';
 import 'package:PiliPlus/features/whisper_settings/whisper_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -86,7 +86,7 @@ extension ThreeDotItemTypeExt on ThreeDotItemType {
       case ThreeDotItemType.THREE_DOT_ITEM_TYPE_CONTACTS:
         Get.to(const ContactPage(isFromSelect: false));
       default:
-        SmartDialog.showToast('TODO: $name');
+        ToastUtils.showToast('TODO: $name');
     }
   }
 }

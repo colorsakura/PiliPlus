@@ -9,8 +9,8 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class SubItem extends StatelessWidget {
   final SubItemModel item;
@@ -38,7 +38,7 @@ class SubItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (item.state == 1) {
-            SmartDialog.showToast('该$type已失效');
+            ToastUtils.showToast('该$type已失效');
             return;
           }
           if (item.type == 11) {

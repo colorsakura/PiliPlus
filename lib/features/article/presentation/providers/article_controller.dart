@@ -4,6 +4,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/dynamics/article_content_model.dart'
     show ArticleContentModel;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models/model_avatar.dart';
 import 'package:PiliPlus/models/article/article_view/data.dart';
@@ -14,7 +15,6 @@ import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/url_utils.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class ArticleController extends CommonDynController {
@@ -196,7 +196,7 @@ class ArticleController extends CommonDynController {
         favorite?.count++;
       }
       stats.refresh();
-      SmartDialog.showToast('${isFav ? '取消' : ''}收藏成功');
+      ToastUtils.showToast('${isFav ? '取消' : ''}收藏成功');
     } else {
       res.toast();
     }
@@ -217,7 +217,7 @@ class ArticleController extends CommonDynController {
         like?.count++;
       }
       stats.refresh();
-      SmartDialog.showToast(!isLike ? '点赞成功' : '取消赞');
+      ToastUtils.showToast(!isLike ? '点赞成功' : '取消赞');
     } else {
       res.toast();
     }

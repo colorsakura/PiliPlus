@@ -15,9 +15,9 @@ import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class HistoryItem extends StatelessWidget {
   final HistoryItemModel item;
@@ -64,7 +64,7 @@ class HistoryItem extends StatelessWidget {
                   if (item.liveStatus == 1) {
                     PageUtils.toLiveRoom(item.history.oid);
                   } else {
-                    SmartDialog.showToast('直播未开播');
+                    ToastUtils.showToast('直播未开播');
                   }
                 } else if (business == 'pgc') {
                   PageUtils.viewPgc(epId: item.history.epid);

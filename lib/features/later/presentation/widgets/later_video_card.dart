@@ -9,7 +9,7 @@ import 'package:PiliPlus/models/common/stat_type.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// 稍后再看视频卡片
 class LaterVideoCard extends StatelessWidget {
@@ -263,7 +263,7 @@ class LaterVideoCard extends StatelessWidget {
         title: videoItem.title,
       );
     } else {
-      SmartDialog.showToast('无法播放该视频');
+      ToastUtils.showToast('无法播放该视频');
     }
   }
 

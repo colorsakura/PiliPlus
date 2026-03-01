@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/more_btn.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -19,7 +20,6 @@ import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_mem
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class MemberHome extends StatefulWidget {
@@ -356,7 +356,7 @@ class _MemberHomeState extends State<MemberHome>
                   }
 
                   // else TODO
-                  SmartDialog.showToast('view $param');
+                  ToastUtils.showToast('view $param');
                 }
               },
               color: color,

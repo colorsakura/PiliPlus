@@ -1,6 +1,7 @@
 // 定时关闭服务
 import 'dart:async';
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/introduction/ugc/menu_row.dart';
@@ -9,7 +10,6 @@ import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 enum _ShutdownType with EnumWithLabel {
   pause('暂停视频'),
@@ -54,10 +54,10 @@ class ShutdownTimerService {
   void _startShutdownTimer(int durationInMinutes) {
     reset(durationInMinutes);
     if (durationInMinutes == 0) {
-      SmartDialog.showToast('取消定时关闭');
+      ToastUtils.showToast('取消定时关闭');
       return;
     }
-    SmartDialog.showToast('设置 ${_format(durationInMinutes)} 后定时关闭');
+    ToastUtils.showToast('设置 ${_format(durationInMinutes)} 后定时关闭');
     _shutdownTimer = Timer(
       Duration(minutes: durationInMinutes),
       _handleShutdown,
@@ -76,7 +76,7 @@ class ShutdownTimerService {
           } else {
             _durationInMinutes = 0;
             (onPause ?? player?.pause)?.call();
-            SmartDialog.showToast('定时时间已到，已暂停');
+            ToastUtils.showToast('定时时间已到，已暂停');
           }
         }
       case _ShutdownType.exit:
@@ -99,7 +99,7 @@ class ShutdownTimerService {
       case _ShutdownType.pause:
         _isWaiting = false;
         _durationInMinutes = 0;
-        SmartDialog.showToast('定时时间已到，已暂停');
+        ToastUtils.showToast('定时时间已到，已暂停');
       case _ShutdownType.exit:
         exit(0);
     }

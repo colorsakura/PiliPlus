@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/button/toolbar_icon_button.dart';
@@ -29,7 +30,6 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -194,11 +194,11 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
       case FilePicModel e:
         path = e.path;
       case OpusPicModel e:
-        SmartDialog.showLoading();
+        ToastUtils.showLoading();
         final file = (await DefaultCacheManager().getSingleFile(
           e.url.http2https,
         ));
-        await SmartDialog.dismiss();
+        ToastUtils.dismiss();
         path = file.path;
     }
     if (!mounted || path.isEmpty) return;
@@ -236,7 +236,7 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
           if (pickedFiles.isNotEmpty) {
             for (int i = 0; i < pickedFiles.length; i++) {
               if (imageList.length == limit) {
-                SmartDialog.showToast('最多选择$limit张图片');
+                ToastUtils.showToast('最多选择$limit张图片');
                 break;
               } else {
                 imageList.add(FilePicModel(path: pickedFiles[i].path));
@@ -245,7 +245,7 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
             callback?.call();
           }
         } catch (e) {
-          SmartDialog.showToast(e.toString());
+          ToastUtils.showToast(e.toString());
         }
       },
     );
@@ -516,7 +516,7 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
     feedBack();
     List<Map<String, dynamic>>? pictures;
     if (imageList.isNotEmpty) {
-      SmartDialog.showLoading(msg: '正在上传图片...');
+      ToastUtils.showLoading(msg: '正在上传图片...');
       final cancelToken = CancelToken();
       try {
         pictures = await Future.wait<Map<String, dynamic>>(
@@ -542,11 +542,11 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
           }),
           eagerError: true,
         );
-        SmartDialog.dismiss();
+        ToastUtils.dismiss();
       } on HttpException catch (e) {
         cancelToken.cancel();
-        SmartDialog.dismiss();
-        SmartDialog.showToast(e.message);
+        ToastUtils.dismiss();
+        ToastUtils.showToast(e.message);
         return;
       }
     }

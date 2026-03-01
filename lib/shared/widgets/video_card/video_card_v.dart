@@ -16,8 +16,8 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 // 视频卡片 - 垂直布局
 class VideoCardV extends StatelessWidget {
@@ -56,7 +56,7 @@ class VideoCardV extends StatelessWidget {
         try {
           PiliScheme.routePushFromUrl(videoItem.uri!);
         } catch (err) {
-          SmartDialog.showToast(err.toString());
+          ToastUtils.showToast(err.toString());
         }
         break;
       default:

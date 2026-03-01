@@ -5,7 +5,7 @@ import 'package:PiliPlus/models/msg/msg_like/item.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Like me messages controller - V2 Riverpod version
 class MsgLikeMeController extends ChangeNotifier {
@@ -106,7 +106,7 @@ class MsgLikeMeController extends ChangeNotifier {
           newItems.removeAt(index.toInt());
           _updateState(_state.copyWith(totalItems: newItems));
         }
-        SmartDialog.showToast('删除成功');
+        ToastUtils.showToast('删除成功');
       } else {
         res.toast();
       }
@@ -122,7 +122,7 @@ class MsgLikeMeController extends ChangeNotifier {
     if (res.isSuccess) {
       item.noticeState = noticeState;
       notifyListeners();
-      SmartDialog.showToast('操作成功');
+      ToastUtils.showToast('操作成功');
     } else {
       res.toast();
     }

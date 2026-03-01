@@ -13,10 +13,10 @@ import 'package:PiliPlus/features/common/presentation/pages/slide/common_slide_p
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class MediaListPanel extends CommonSlidePage {
   const MediaListPanel({
@@ -173,7 +173,7 @@ class _MediaListPanelState extends State<MediaListPanel>
           child: InkWell(
             onTap: () {
               if (item.type != 2) {
-                SmartDialog.showToast('不支持播放该类型视频');
+                ToastUtils.showToast('不支持播放该类型视频');
                 return;
               }
               PageUtils.pop();

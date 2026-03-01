@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/search/search_type.dart';
@@ -11,7 +12,6 @@ import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class SearchVideoController
@@ -121,7 +121,7 @@ class SearchVideoController
                       pubEndDate = selectedDate;
                     }
                     pubTimeType = null;
-                    SmartDialog.dismiss();
+                    ToastUtils.dismiss();
                     pubBegin =
                         DateTime(
                           pubBeginDate.year,

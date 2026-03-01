@@ -3,6 +3,7 @@ import 'dart:convert' show ascii;
 import 'dart:io' show Platform;
 import 'dart:math' show max, min;
 import 'dart:ui' as ui;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/browser_ua.dart';
@@ -52,7 +53,6 @@ import 'package:floating/floating.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
@@ -793,17 +793,17 @@ class PlPlayerController with BlockConfigMixin {
       return true;
     }
     if (_videoPlayerController == null) {
-      // SmartDialog.showToast('视频播放器为空，请重新进入本页面');
+      // ToastUtils.showToast('视频播放器为空，请重新进入本页面');
       return false;
     }
     if (dataSource.videoSource.isNullOrEmpty) {
-      SmartDialog.showToast('视频源为空，请重新进入本页面');
+      ToastUtils.showToast('视频源为空，请重新进入本页面');
       return false;
     }
     String? audioUri;
     if (!isLive) {
       if (dataSource.audioSource.isNullOrEmpty) {
-        SmartDialog.showToast('音频源为空');
+        ToastUtils.showToast('音频源为空');
       } else {
         audioUri = Platform.isWindows
             ? dataSource.audioSource!.replaceAll(';', '\\;')
@@ -987,10 +987,7 @@ class PlPlayerController with BlockConfigMixin {
                 //   debugPrint("_buffered.value: ${_buffered.value}");
                 // }
                 if (isBuffering.value && buffered.value == Duration.zero) {
-                  SmartDialog.showToast(
-                    '视频链接打开失败，重试中',
-                    displayTime: const Duration(milliseconds: 500),
-                  );
+                  ToastUtils.showToast('视频链接打开失败，重试中');
                   if (!await refreshPlayer()) {
                     if (kDebugMode) debugPrint("failed");
                   }
@@ -999,7 +996,7 @@ class PlPlayerController with BlockConfigMixin {
             },
           );
         } else if (event.startsWith('Could not open codec')) {
-          SmartDialog.showToast('无法加载解码器, $event，可能会切换至软解');
+          ToastUtils.showToast('无法加载解码器, $event，可能会切换至软解');
         } else if (!onlyPlayAudio.value) {
           if (event.startsWith("error running") ||
               event.startsWith("Failed to open .") ||
@@ -1007,7 +1004,7 @@ class PlPlayerController with BlockConfigMixin {
               event.startsWith("Can not open")) {
             return;
           }
-          SmartDialog.showToast('视频加载错误, $event');
+          ToastUtils.showToast('视频加载错误, $event');
         }
       }),
       // controllerStream.volume.listen((event) {
@@ -1679,10 +1676,10 @@ class PlPlayerController with BlockConfigMixin {
   }
 
   void takeScreenshot() {
-    SmartDialog.showToast('截图中');
+    ToastUtils.showToast('截图中');
     videoPlayerController?.screenshot(format: .png).then((value) {
       if (value != null) {
-        SmartDialog.showToast('点击弹窗保存截图');
+        ToastUtils.showToast('点击弹窗保存截图');
         showDialog(
           context: Get.context!,
           builder: (context) => GestureDetector(
@@ -1719,7 +1716,7 @@ class PlPlayerController with BlockConfigMixin {
           ),
         );
       } else {
-        SmartDialog.showToast('截图失败');
+        ToastUtils.showToast('截图失败');
       }
     });
   }

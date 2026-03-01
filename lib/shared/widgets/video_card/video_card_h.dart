@@ -16,7 +16,7 @@ import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 // 视频卡片 - 水平布局
 class VideoCardH extends StatelessWidget {
@@ -85,7 +85,7 @@ class VideoCardH extends StatelessWidget {
                         PageUtils.toLiveRoom(roomId);
                       }
                     } else {
-                      SmartDialog.showToast(
+                      ToastUtils.showToast(
                         'err: live_room : ${videoItem.runtimeType}',
                       );
                     }
@@ -114,7 +114,7 @@ class VideoCardH extends StatelessWidget {
                       );
                     }
                   } catch (err) {
-                    SmartDialog.showToast(err.toString());
+                    ToastUtils.showToast(err.toString());
                   }
                 },
             child: Padding(

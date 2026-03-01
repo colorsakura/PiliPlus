@@ -1,11 +1,11 @@
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
     show ReplyInfo;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/http/reply.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ZanButtonGrpc extends StatelessWidget {
@@ -38,9 +38,9 @@ class ZanButtonGrpc extends StatelessWidget {
       oid: oid,
       rpid: rpid,
     );
-    // SmartDialog.dismiss();
+    // ToastUtils.dismiss();
     if (res.isSuccess) {
-      SmartDialog.showToast(isDislike ? '取消踩' : '点踩成功');
+      ToastUtils.showToast(isDislike ? '取消踩' : '点踩成功');
       if (action == 2) {
         if (isLike) replyItem.like -= $fixnum.Int64.ONE;
         replyItem.replyControl.action = $fixnum.Int64.TWO;
@@ -80,7 +80,7 @@ class ZanButtonGrpc extends StatelessWidget {
       action: action,
     );
     if (res.isSuccess) {
-      SmartDialog.showToast(isLike ? '取消赞' : '点赞成功');
+      ToastUtils.showToast(isLike ? '取消赞' : '点赞成功');
       if (action == 1) {
         replyItem
           ..like += $fixnum.Int64.ONE

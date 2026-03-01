@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' show exit, Platform;
 import 'dart:math' as math;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/features/common/presentation/pages/common_intro_controller.dart';
 import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/controller.dart';
@@ -11,7 +12,6 @@ import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show KeyDownEvent, KeyUpEvent, LogicalKeyboardKey, HardwareKeyboard;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class PlayerFocus extends StatelessWidget {
@@ -154,7 +154,7 @@ class PlayerFocus extends StatelessWidget {
           if (speed != plPlayerController.playbackSpeed) {
             plPlayerController.setPlaybackSpeed(speed);
           }
-          SmartDialog.showToast('${speed}x播放');
+          ToastUtils.showToast('${speed}x播放');
         }
         return true;
       }
@@ -201,7 +201,7 @@ class PlayerFocus extends StatelessWidget {
               isMuted ? 0 : plPlayerController.volume.value * 100,
             );
             plPlayerController.isMuted = isMuted;
-            SmartDialog.showToast('${isMuted ? '' : '取消'}静音');
+            ToastUtils.showToast('${isMuted ? '' : '取消'}静音');
           }
           return true;
 
@@ -261,7 +261,7 @@ class PlayerFocus extends StatelessWidget {
           case LogicalKeyboardKey.bracketLeft:
             if (introController case final introController?) {
               if (!introController.prevPlay()) {
-                SmartDialog.showToast('已经是第一集了');
+                ToastUtils.showToast('已经是第一集了');
               }
             }
             return true;
@@ -269,7 +269,7 @@ class PlayerFocus extends StatelessWidget {
           case LogicalKeyboardKey.bracketRight:
             if (introController case final introController?) {
               if (!introController.nextPlay()) {
-                SmartDialog.showToast('已经是最后一集了');
+                ToastUtils.showToast('已经是最后一集了');
               }
             }
             return true;

@@ -7,9 +7,9 @@ import 'package:PiliPlus/features/setting/presentation/widgets/switch_item.dart'
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:flutter/material.dart' hide PopupMenuItemSelected;
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 @immutable
 sealed class SettingsModel {
@@ -197,7 +197,7 @@ SettingsModel getBanWordModel({
                 banWord = editValue;
                 setState();
                 onChanged(RegExp(banWord, caseSensitive: false));
-                SmartDialog.showToast('已保存');
+                ToastUtils.showToast('已保存');
                 GStorage.settingRepository.setString(key, banWord);
               },
             ),
@@ -272,7 +272,7 @@ SettingsModel getVideoFilterSelectModel({
                       result = int.parse(valueStr);
                       PageUtils.pop();
                     } catch (e) {
-                      SmartDialog.showToast(e.toString());
+                      ToastUtils.showToast(e.toString());
                     }
                   },
                   child: const Text('确定'),

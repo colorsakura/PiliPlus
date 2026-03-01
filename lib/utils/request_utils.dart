@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/grpc/bilibili/im/type.pbenum.dart';
 import 'package:PiliPlus/grpc/bilibili/main/community/reply/v1.pb.dart'
@@ -36,7 +37,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:gt3_flutter_plugin/gt3_flutter_plugin.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -117,7 +117,7 @@ abstract final class RequestUtils {
         reSrc: 11,
       );
       if (res.isSuccess) {
-        SmartDialog.showToast('关注成功');
+        ToastUtils.showToast('关注成功');
         afterMod?.call(2);
       } else {
         res.toast();
@@ -153,7 +153,7 @@ abstract final class RequestUtils {
                       isAdd: !isSpecialFollowed,
                     );
                     if (res.isSuccess) {
-                      SmartDialog.showToast('$text成功');
+                      ToastUtils.showToast('$text成功');
                       afterMod?.call(isSpecialFollowed ? 2 : -10);
                     } else {
                       res.toast();
@@ -222,7 +222,7 @@ abstract final class RequestUtils {
                       reSrc: 11,
                     );
                     if (res.isSuccess) {
-                      SmartDialog.showToast('取消关注成功');
+                      ToastUtils.showToast('取消关注成功');
                       afterMod?.call(0);
                     } else {
                       res.toast();
@@ -374,7 +374,7 @@ abstract final class RequestUtils {
     int up = status ? 2 : 1;
     final res = await DynamicsHttp.thumbDynamic(dynamicId: dynamicId, up: up);
     if (res.isSuccess) {
-      SmartDialog.showToast(!status ? '点赞成功' : '取消赞');
+      ToastUtils.showToast(!status ? '点赞成功' : '取消赞');
       if (up == 1) {
         like
           ?..count = count + 1
@@ -441,7 +441,7 @@ abstract final class RequestUtils {
                   onPressed: () {
                     if (checkedId != null) {
                       final removeList = ctr.allChecked.toSet();
-                      SmartDialog.showLoading();
+                      ToastUtils.showLoading();
                       FavHttp.copyOrMoveFav(
                         isCopy: isCopy,
                         isFav: ctr is BaseFavController,
@@ -465,11 +465,11 @@ abstract final class RequestUtils {
                               ..value.data!.removeWhere(removeList.contains)
                               ..refresh();
                           }
-                          SmartDialog.dismiss();
-                          SmartDialog.showToast('${isCopy ? '复制' : '移动'}成功');
+                          ToastUtils.dismiss();
+                          ToastUtils.showToast('${isCopy ? '复制' : '移动'}成功');
                           PageUtils.pop();
                         } else {
-                          SmartDialog.dismiss();
+                          ToastUtils.dismiss();
                           res.toast();
                         }
                       });
@@ -498,7 +498,7 @@ abstract final class RequestUtils {
     final dataSource = ValidateRemoteDataSource();
     final resData = await dataSource.gaiaVgateRegister(vVoucher);
     if (resData == null) {
-      SmartDialog.showToast("null data");
+      ToastUtils.showToast("null data");
       return;
     }
 
@@ -516,7 +516,7 @@ abstract final class RequestUtils {
     }
 
     if (!isGeeArgumentValid()) {
-      SmartDialog.showToast("参数为空");
+      ToastUtils.showToast("参数为空");
       return;
     }
 
@@ -535,10 +535,10 @@ abstract final class RequestUtils {
             onSuccess(griskId);
           }
         } else {
-          SmartDialog.showToast('invalid');
+          ToastUtils.showToast('invalid');
         }
       } catch (e) {
-        SmartDialog.showToast('validation failed: $e');
+        ToastUtils.showToast('validation failed: $e');
       }
     }
 
@@ -569,14 +569,14 @@ abstract final class RequestUtils {
     Gt3FlutterPlugin()
       ..addEventHandler(
         onClose: (Map<String, dynamic> message) {
-          SmartDialog.showToast('关闭验证');
+          ToastUtils.showToast('关闭验证');
         },
         onResult: (Map<String, dynamic> message) {
           if (kDebugMode) debugPrint("Captcha result: $message");
           String code = message["code"];
           if (code == "1") {
             // 发送 message["result"] 中的数据向 B 端的业务服务接口进行查询
-            SmartDialog.showToast('验证成功');
+            ToastUtils.showToast('验证成功');
             final result = message['result'];
             captchaData
               ..validate = result?['geetest_validate']
@@ -592,7 +592,7 @@ abstract final class RequestUtils {
           }
         },
         onError: (Map<String, dynamic> message) {
-          SmartDialog.showToast("Captcha onError: $message");
+          ToastUtils.showToast("Captcha onError: $message");
           String code = message["code"];
           // 处理验证中返回的错误 Handling errors returned in verification
           if (Platform.isAndroid) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/appbar/appbar.dart';
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
@@ -15,7 +16,6 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
@@ -114,9 +114,9 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
                     ),
                   );
                   if (res.every((e) => e)) {
-                    SmartDialog.showToast('更新成功');
+                    ToastUtils.showToast('更新成功');
                   } else {
-                    SmartDialog.showToast('更新失败');
+                    ToastUtils.showToast('更新失败');
                   }
                 },
                 child: Text(
@@ -200,7 +200,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
       context: context,
       title: '确定删除选中视频？',
       onConfirm: () async {
-        SmartDialog.showLoading();
+        ToastUtils.showLoading();
         final allChecked = this.allChecked.toSet();
         final isDeleteAll = allChecked.length == _downloadItems.length;
         if (isDeleteAll) {
@@ -218,7 +218,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
         }
         _downloadService.flagNotifier.refresh();
         if (isDeleteAll) {
-          SmartDialog.dismiss();
+          ToastUtils.dismiss();
           if (mounted) {
             PageUtils.pop();
           }
@@ -227,7 +227,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
             rxCount.value = 0;
             enableMultiSelect.value = false;
           }
-          SmartDialog.dismiss();
+          ToastUtils.dismiss();
         }
       },
     );

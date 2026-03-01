@@ -4,9 +4,9 @@ import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_video_controller.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/video/item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class FavFolderSortPage extends StatefulWidget {
   const FavFolderSortPage({super.key, required this.favController});
@@ -38,7 +38,7 @@ class _FavFolderSortPageState extends State<FavFolderSortPage> {
                 sort: sortList.map((item) => item.id).join(','),
               );
               if (res.isSuccess) {
-                SmartDialog.showToast('排序完成');
+                ToastUtils.showToast('排序完成');
                 _favController.loadingState.value = Success(sortList);
                 PageUtils.pop();
               } else {
@@ -56,7 +56,7 @@ class _FavFolderSortPageState extends State<FavFolderSortPage> {
 
   void onReorder(int oldIndex, int newIndex) {
     if (oldIndex == 0 || newIndex == 0) {
-      SmartDialog.showToast('默认收藏夹不支持排序');
+      ToastUtils.showToast('默认收藏夹不支持排序');
       return;
     }
 
@@ -89,7 +89,7 @@ class _FavFolderSortPageState extends State<FavFolderSortPage> {
             heroTag: key,
             item: item,
             onLongPress: index == 0
-                ? () => SmartDialog.showToast('默认收藏夹不支持排序')
+                ? () => ToastUtils.showToast('默认收藏夹不支持排序')
                 : null,
           ),
         );

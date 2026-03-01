@@ -3,7 +3,7 @@ import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/models/msg/msg_reply/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 /// Reply to me messages controller - V2 Riverpod version
 class MsgReplyMeController extends ChangeNotifier {
@@ -73,7 +73,7 @@ class MsgReplyMeController extends ChangeNotifier {
         final newItems = List<MsgReplyItem>.from(_state.items);
         newItems.removeAt(index);
         _updateState(_state.copyWith(items: newItems));
-        SmartDialog.showToast('删除成功');
+        ToastUtils.showToast('删除成功');
       } else {
         res.toast();
       }

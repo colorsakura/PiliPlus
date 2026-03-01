@@ -6,8 +6,8 @@ import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:flutter/material.dart' hide showTimePicker;
 import 'package:flutter/services.dart'
     show TextInputFormatter, LengthLimitingTextInputFormatter;
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 /// Dynamics create reserve page
 class DynCreateReservePage extends ConsumerStatefulWidget {
@@ -127,7 +127,7 @@ class _DynCreateReservePageState extends ConsumerState<DynCreateReservePage> {
                               )
                               .updateDate(newEndtime);
                         } else {
-                          SmartDialog.showToast('至少选择5分钟之后');
+                          ToastUtils.showToast('至少选择5分钟之后');
                         }
                       }
                     }

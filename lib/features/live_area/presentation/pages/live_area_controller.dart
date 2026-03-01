@@ -4,8 +4,8 @@ import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_list.dart';
 import 'package:PiliPlus/core/controllers/common_list_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 class LiveAreaController
     extends CommonListController<List<AreaList>?, AreaList> {
@@ -49,7 +49,7 @@ class LiveAreaController
       );
       if (res.isSuccess) {
         isEditing.value = !isEditing.value;
-        SmartDialog.showToast('设置成功');
+        ToastUtils.showToast('设置成功');
       } else {
         res.toast();
       }

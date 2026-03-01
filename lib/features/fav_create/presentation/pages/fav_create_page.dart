@@ -1,4 +1,5 @@
 import 'dart:io' show File;
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -12,7 +13,6 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -79,7 +79,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
           TextButton(
             onPressed: () {
               if (_titleController.text.isEmpty) {
-                SmartDialog.showToast('名称不能为空');
+                ToastUtils.showToast('名称不能为空');
                 return;
               }
               FavHttp.addOrEditFolder(
@@ -92,7 +92,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
               ).then((res) {
                 if (res case Success(:final response)) {
                   PageUtils.pop(response);
-                  SmartDialog.showToast('${_mediaId != null ? '编辑' : '创建'}成功');
+                  ToastUtils.showToast('${_mediaId != null ? '编辑' : '创建'}成功');
                 } else {
                   res.toast();
                 }
@@ -168,7 +168,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
         });
       }
     } catch (e) {
-      SmartDialog.showToast(e.toString());
+      ToastUtils.showToast(e.toString());
     }
   }
 

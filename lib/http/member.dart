@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/http/api.dart';
@@ -29,7 +30,6 @@ import 'package:PiliPlus/utils/app_sign.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/wbi_sign.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 abstract final class MemberHttp {
   static Future<void> reportMember(
@@ -48,9 +48,9 @@ abstract final class MemberHttp {
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
     if (res.data['status'] == true) {
-      SmartDialog.showToast('举报成功');
+      ToastUtils.showToast('举报成功');
     } else {
-      SmartDialog.showToast('举报失败');
+      ToastUtils.showToast('举报失败');
     }
   }
 

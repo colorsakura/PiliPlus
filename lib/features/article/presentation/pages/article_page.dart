@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
@@ -27,7 +28,6 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart' as parser;
@@ -487,7 +487,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
                     );
                   }
                 } catch (e) {
-                  SmartDialog.showToast(e.toString());
+                  ToastUtils.showToast(e.toString());
                 }
               },
               child: const Row(
@@ -609,7 +609,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
                               onPressed: () {
                                 if (controller.opusData == null &&
                                     controller.articleData?.dynIdStr == null) {
-                                  SmartDialog.showToast(
+                                  ToastUtils.showToast(
                                     'err: ${controller.id}',
                                   );
                                   return;

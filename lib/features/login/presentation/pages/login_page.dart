@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
@@ -16,7 +17,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton.icon(
               onPressed: () async {
-                SmartDialog.showLoading(msg: '正在生成截图');
+                ToastUtils.showLoading(msg: '正在生成截图');
                 RenderRepaintBoundary boundary =
                     globalKey.currentContext!.findRenderObject()!
                         as RenderRepaintBoundary;
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   format: ImageByteFormat.png,
                 );
                 Uint8List pngBytes = byteData!.buffer.asUint8List();
-                SmartDialog.dismiss();
+                ToastUtils.dismiss();
                 String picName =
                     "${Constants.appName}_loginQRCode_${ImageUtils.time}";
                 ImageUtils.saveByteImg(bytes: pngBytes, fileName: picName);

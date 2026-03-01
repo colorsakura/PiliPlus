@@ -6,7 +6,7 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 abstract final class UrlUtils {
   // 302重定向路由截取
@@ -61,7 +61,7 @@ abstract final class UrlUtils {
       if (redirectUrl.isNotEmpty) {
         PageUtils.handleWebview(redirectUrl);
       } else {
-        SmartDialog.showToast('matchUrlPush: $pathSegment');
+        ToastUtils.showToast('matchUrlPush: $pathSegment');
       }
     }
   }

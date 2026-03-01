@@ -1,5 +1,6 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/member.dart';
@@ -19,7 +20,6 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     show ExtendedNestedScrollViewState;
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 
 class MemberController extends CommonDataController<SpaceData, SpaceData?>
@@ -145,7 +145,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
 
   void blockUser(BuildContext context) {
     if (!account.isLogin) {
-      SmartDialog.showToast('账号未登录');
+      ToastUtils.showToast('账号未登录');
       return;
     }
     showDialog(
@@ -196,7 +196,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
       _onBlock();
     } else {
       if (!account.isLogin) {
-        SmartDialog.showToast('账号未登录');
+        ToastUtils.showToast('账号未登录');
         return;
       }
       RequestUtils.actionRelationMod(
@@ -221,7 +221,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
       if (relation.value == 4) {
         relation.value = 2;
       }
-      SmartDialog.showToast('移除成功');
+      ToastUtils.showToast('移除成功');
     } else {
       res.toast();
     }
@@ -241,7 +241,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
   Future<void> vipExpAdd() async {
     final res = await UserHttp.vipExpAdd();
     if (res.isSuccess) {
-      SmartDialog.showToast('领取成功');
+      ToastUtils.showToast('领取成功');
     } else {
       res.toast();
     }

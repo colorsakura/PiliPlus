@@ -1,6 +1,7 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math';
+import 'package:PiliPlus/utils/toast_utils.dart';
 
 import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
@@ -28,7 +29,6 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -309,7 +309,7 @@ class _MusicDetailPageState extends CommonDynPageState<MusicDetailPage> {
                               status: item.wishListen ?? false,
                               onPressed: () async {
                                 if (!Accounts.main.isLogin) {
-                                  SmartDialog.showToast('请先登录');
+                                  ToastUtils.showToast('请先登录');
                                   return;
                                 }
                                 final hasLike = item.wishListen ?? false;
@@ -329,7 +329,7 @@ class _MusicDetailPageState extends CommonDynPageState<MusicDetailPage> {
                                     (context as Element).markNeedsBuild();
                                   }
                                 } catch (e) {
-                                  SmartDialog.showToast(e.toString());
+                                  ToastUtils.showToast(e.toString());
                                 }
                               },
                             ),
