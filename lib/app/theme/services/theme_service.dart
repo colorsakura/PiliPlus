@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 abstract final class ThemeService {
   static ThemeData getThemeData({
     required ColorScheme colorScheme,
-    required bool isDynamic,
     bool isDark = false,
   }) {
     final appFontWeight = Pref.appFontWeight.clamp(
@@ -56,9 +55,7 @@ abstract final class ThemeService {
           fontWeight: fontWeight,
         ),
       ),
-      navigationBarTheme: NavigationBarThemeData(
-        surfaceTintColor: isDynamic ? colorScheme.onSurfaceVariant : null,
-      ),
+      navigationBarTheme: const NavigationBarThemeData(),
       snackBarTheme: SnackBarThemeData(
         actionTextColor: colorScheme.primary,
         backgroundColor: colorScheme.secondaryContainer,
@@ -66,17 +63,11 @@ abstract final class ThemeService {
         contentTextStyle: TextStyle(color: colorScheme.onSecondaryContainer),
         elevation: 20,
       ),
-      popupMenuTheme: PopupMenuThemeData(
-        surfaceTintColor: isDynamic ? colorScheme.onSurfaceVariant : null,
-      ),
+      popupMenuTheme: const PopupMenuThemeData(),
       cardTheme: CardThemeData(
         elevation: 1,
         margin: EdgeInsets.zero,
-        surfaceTintColor: isDynamic
-            ? colorScheme.onSurfaceVariant
-            : isDark
-            ? colorScheme.onSurfaceVariant
-            : null,
+        surfaceTintColor: isDark ? colorScheme.onSurfaceVariant : null,
         shadowColor: Colors.transparent,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(

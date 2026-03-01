@@ -126,7 +126,6 @@ abstract final class UISettingKeys {
   // 主题和外观设置
   static const String themeMode = 'themeMode',
       defaultTextScale = 'textScale',
-      dynamicColor = 'dynamicColor',
       customColor = 'customColor',
       displayMode = 'displayMode',
       smallCardWidth = 'smallCardWidth',

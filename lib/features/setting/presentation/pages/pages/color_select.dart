@@ -20,7 +20,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 // Providers for color selection state
-final dynamicColorProvider = Provider<bool>((ref) => Pref.dynamicColor);
 final currentColorProvider = Provider<int>((ref) => Pref.customColor);
 final themeTypeProvider = Provider<ThemeType>((ref) => Pref.themeType);
 
@@ -29,27 +28,9 @@ class ColorSelectPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dynamicColor = ref.watch(dynamicColorProvider);
     final currentColor = ref.watch(currentColorProvider);
     final themeType = ref.watch(themeTypeProvider);
     FlexSchemeVariant _dynamicSchemeVariant = Pref.schemeVariant;
-
-    Future<void> onChanged(bool? val) async {
-      val ??= !dynamicColor;
-      if (val) {
-        if (await MyApp.initPlatformState()) {
-          Get.forceAppUpdate();
-        } else {
-          ToastUtils.showToast('该设备可能不支持动态取色');
-          return;
-        }
-      } else {
-        Get.forceAppUpdate();
-      }
-      GStorage.settingRepository.setBool(SettingBoxKey.dynamicColor, val);
-      // Invalidate provider to trigger rebuild
-      ref.invalidate(dynamicColorProvider);
-    }
 
     final theme = Theme.of(context);
     TextStyle titleStyle = theme.textTheme.titleMedium!;
@@ -92,7 +73,6 @@ class ColorSelectPage extends ConsumerWidget {
             ),
           ),
           PopupListTile<FlexSchemeVariant>(
-            enabled: !dynamicColor,
             leading: const Icon(Icons.palette_outlined),
             title: const Text('调色板风格'),
             value: () =>
@@ -108,33 +88,11 @@ class ColorSelectPage extends ConsumerWidget {
               Get.forceAppUpdate();
             },
           ),
-          if (!Platform.isIOS)
-            ListTile(
-              title: const Text('动态取色'),
-              leading: ExcludeFocus(
-                child: Checkbox(
-                  value: dynamicColor,
-                  onChanged: (val) => onChanged(val),
-                  materialTapTargetSize: .shrinkWrap,
-                  visualDensity: const VisualDensity(
-                    horizontal: -4,
-                    vertical: -4,
-                  ),
-                ),
-              ),
-              onTap: () => onChanged(null),
-            ),
           Padding(
             padding: padding,
-            child: AnimatedSize(
-              curve: Curves.easeInOut,
-              alignment: Alignment.topCenter,
-              duration: const Duration(milliseconds: 200),
-              child: dynamicColor
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Wrap(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Wrap(
                         alignment: WrapAlignment.center,
                         spacing: 22,
                         runSpacing: 18,
@@ -178,7 +136,6 @@ class ColorSelectPage extends ConsumerWidget {
                         ).toList(),
                       ),
                     ),
-            ),
           ),
           Padding(
             padding: padding,

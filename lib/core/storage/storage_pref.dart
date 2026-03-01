@@ -717,10 +717,6 @@ abstract final class Pref {
   static int get customColor =>
       GStorage.settingRepository.getInt(SettingBoxKey.customColor) ?? 0;
 
-  static bool get dynamicColor =>
-      !Platform.isIOS &&
-      (GStorage.settingRepository.getBool(SettingBoxKey.dynamicColor) ?? true);
-
   static bool get autoClearCache =>
       GStorage.settingRepository.getBool(SettingBoxKey.autoClearCache) ?? false;
 
