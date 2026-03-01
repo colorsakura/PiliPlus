@@ -102,10 +102,38 @@ The unread counts are categorized into:
 
 This feature uses `ImGrpc.sessionMain` and `ImGrpc.getTotalUnread` gRPC endpoints for data fetching. The repository implementations wrap these gRPC calls, providing clean abstraction layers for the application logic.
 
-## State Management
+## Presentation Layer
 
-The presentation layer uses GetX controller (`WhisperController`) that extends `CommonWhisperController`. The controller manages:
-- Session list state with pagination
-- Unread message counts
-- Three-dot menu items
-- Refresh functionality
+**Controllers (GetX - Legacy):**
+- `WhisperController` - GetX controller (extends CommonWhisperController)
+
+**Controllers (Riverpod - New):**
+- `WhisperSessionController` - Riverpod Notifier for session management
+
+**Pages:**
+- `WhisperPage` - GetX version (Legacy)
+- `WhisperPageV2` - Riverpod version (New)
+
+**Widgets:**
+- `WhisperSessionItem` - Session list item widget
+
+## Migration Status
+
+- ✅ Domain Layer Complete
+- ✅ Data Layer Complete
+- ✅ Presentation Layer Complete (GetX + Riverpod)
+- ⏳ Tests (Pending)
+- ✅ Documentation Complete
+
+## Code Quality
+
+- ✅ `flutter analyze` No errors (only unused import warnings)
+- ✅ `dart format` Formatted
+- ✅ Riverpod code generation verified
+- ✅ Clean architecture compliance verified
+
+## Migration Notes
+
+This module has been migrated from GetX to Riverpod while maintaining backward compatibility. Both versions are available:
+- Use `WhisperPage` for GetX version (Legacy)
+- Use `WhisperPageV2` for Riverpod version (Recommended)
