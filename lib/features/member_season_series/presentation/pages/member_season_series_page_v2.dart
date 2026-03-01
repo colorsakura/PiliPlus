@@ -1,6 +1,6 @@
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_safe_area.dart';
-import 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_list_provider.dart';
+import 'package:PiliPlus/features/member_season_series/presentation/providers/member_season_series_controller.dart';
 import 'package:PiliPlus/features/member_season_series/presentation/widgets/season_series_card.dart';
 import 'package:PiliPlus/features/member_video/member_video.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -48,10 +48,9 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(
-      memberSeasonSeriesListControllerProvider(widget.mid),
-    );
-    final listState = controller.state.listState;
+    final state = ref.watch(memberSeasonSeriesControllerProvider(widget.mid));
+    final controller = ref.read(memberSeasonSeriesControllerProvider(widget.mid).notifier);
+    final listState = state.listState;
 
     return CustomScrollView(
       slivers: [
@@ -59,7 +58,7 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
           padding: EdgeInsets.only(
             bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
           ),
-          sliver: _buildBody(listState, controller),
+          sliver: _buildBody(listState, state, controller),
         ),
       ],
     );
@@ -67,7 +66,8 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
 
   Widget _buildBody(
     LoadingState listState,
-    dynamic controller,
+    MemberSeasonSeriesState state,
+    MemberSeasonSeriesController controller,
   ) {
     return switch (listState) {
       Loading() => gridSkeleton,
@@ -77,7 +77,7 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
                 gridDelegate: gridDelegate,
                 itemBuilder: (context, index) {
                   if (index == response.length - 1) {
-                    controller.onLoadMore();
+                    controller.onLoadMore(widget.mid);
                   }
                   SpaceSsModel item = response[index];
                   return SeasonSeriesCard(
@@ -112,10 +112,10 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: controller.onReload),
+            : HttpError(onReload: () => controller.onReload(widget.mid)),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: controller.onReload,
+        onReload: () => controller.onReload(widget.mid),
       ),
     };
   }
