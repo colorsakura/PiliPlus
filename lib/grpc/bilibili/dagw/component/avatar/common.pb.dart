@@ -82,7 +82,7 @@ class ColorConfig extends $pb.GeneratedMessage {
     ColorSpec? night,
   }) {
     final result = create();
-    if (isDarkModeAware != null) result == Brightness.darkModeAware = isDarkModeAware;
+    if (isDarkModeAware != null) result.isDarkModeAware = isDarkModeAware;
     if (day != null) result.day = day;
     if (night != null) result.night = night;
     return result;
