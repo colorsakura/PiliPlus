@@ -349,7 +349,7 @@ class HeaderControlState extends State<HeaderControl>
   @override
   late final horizontalScreen = videoDetailCtr.horizontalScreen;
 
-  Box setting = GStorage.setting;
+  final setting = GStorage.setting;
 
   @override
   void initState() {

@@ -46,7 +46,10 @@ abstract final class DanmakuOptions {
   }
 
   static Future<void>? save(double danmakuOpacity) {
-    GStorage.settingRepository.setStringList(SettingBoxKey.danmakuBlockType, blockTypes.toList());
+    GStorage.settingRepository.setStringList(
+      SettingBoxKey.danmakuBlockType,
+      blockTypes.map((e) => e.toString()).toList(),
+    );
     GStorage.settingRepository.setDouble(SettingBoxKey.danmakuShowArea, danmakuShowArea);
     GStorage.settingRepository.setDouble(SettingBoxKey.danmakuFontScale, danmakuFontScale);
     GStorage.settingRepository.setDouble(SettingBoxKey.danmakuFontScaleFS, danmakuFontScaleFS);

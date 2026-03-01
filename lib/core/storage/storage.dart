@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PiliPlus/core/storage/data/box_compatibility_wrapper.dart';
 import 'package:PiliPlus/core/storage/data/storage_config.dart';
 import 'package:PiliPlus/core/storage/data/storage_factory.dart';
-import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
 import 'package:PiliPlus/models/user/info.dart';
@@ -50,6 +50,46 @@ abstract final class GStorage {
   /// 是否使用 MMKV（默认 true）
   static bool get useMMKV => true;
 
+  // ============ 向后兼容：Box 访问器 ============
+  // TODO: 逐步迁移到 Repository API
+
+  /// 向后兼容：setting Box
+  static BoxCompatibilityWrapper get setting => BoxCompatibilityWrapper(
+        repository: settingRepository,
+        name: 'setting',
+      );
+
+  /// 向后兼容：localCache Box
+  static BoxCompatibilityWrapper get localCache => BoxCompatibilityWrapper(
+        repository: localCacheRepository,
+        name: 'localCache',
+      );
+
+  /// 向后兼容：video Box
+  static BoxCompatibilityWrapper get video => BoxCompatibilityWrapper(
+        repository: videoRepository,
+        name: 'video',
+      );
+
+  /// 向后兼容：historyWord Box
+  static BoxCompatibilityWrapper get historyWord => BoxCompatibilityWrapper(
+        repository: historyWordRepository,
+        name: 'historyWord',
+      );
+
+  /// 向后兼容：userInfo Box
+  static TypedBoxCompatibilityWrapper<UserInfoData> get userInfo =>
+      TypedBoxCompatibilityWrapper<UserInfoData>(
+        repository: userInfoRepository,
+        name: 'userInfo',
+      );
+
+  /// 向后兼容：watchProgress Box
+  static BoxCompatibilityWrapper get watchProgress => BoxCompatibilityWrapper(
+        repository: watchProgressRepository,
+        name: 'watchProgress',
+      );
+
   /// 仅初始化关键 Box (用于阻塞阶段)
   ///
   /// 只打开 setting MMKV，用于读取 UI 缩放等关键设置
@@ -66,9 +106,6 @@ abstract final class GStorage {
       rootDir: path.join(appSupportDirPath, 'mmkv'),
       logLevel: MMKVLogLevel.None,
     );
-
-    // 检查并迁移 setting 数据
-    await _migrateIfNeeded('setting');
 
     // 创建 setting 仓库
     settingRepository = StorageFactory.getRepository(
@@ -93,15 +130,6 @@ abstract final class GStorage {
 
     final stopwatch = Stopwatch()..start();
     AppLog.info('Starting full initialization (MMKV)', name: 'Storage');
-
-    // 迁移所有数据（如果需要）
-    await Future.wait([
-      _migrateIfNeeded('localCache'),
-      _migrateIfNeeded('video'),
-      _migrateIfNeeded('historyWord'),
-      _migrateIfNeeded('userInfo', isTyped: true),
-      _migrateIfNeeded('watchProgress'),
-    ]);
 
     // 创建所有存储仓库
     localCacheRepository = StorageFactory.getRepository(
@@ -135,61 +163,6 @@ abstract final class GStorage {
       'Full initialization completed in ${stopwatch.elapsedMilliseconds}ms',
       name: 'Storage',
     );
-  }
-
-  /// 检查并迁移数据（Hive -> MMKV）
-  static Future<void> _migrateIfNeeded(
-    String boxName, {
-    bool isTyped = false,
-  }) async {
-    // 检查是否已迁移
-    if (StorageMigrator.hasMigrated(boxName)) {
-      return;
-    }
-
-    // 检查 Hive Box 是否存在且有数据
-    bool hasHiveData = false;
-    try {
-      if (!Hive.isBoxOpen(boxName)) {
-        await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
-        _registerAdaptersIfNeeded();
-      }
-
-      if (await Hive.boxExists(boxName)) {
-        final box = await Hive.openBox<dynamic>(boxName);
-        hasHiveData = box.isNotEmpty;
-        // 注意：不要关闭 box，因为迁移工具需要它
-        // 在迁移完成后统一关闭
-      }
-    } catch (e) {
-      AppLog.fine('Failed to check Hive box $boxName: $e', name: 'Storage');
-    }
-
-    // 如果没有 Hive 数据，标记为已迁移并返回
-    if (!hasHiveData) {
-      MMKV(boxName).encodeBool('_mmkv_migration_completed', true);
-      return;
-    }
-
-    // 执行迁移
-    AppLog.info('Migrating $boxName from Hive to MMKV...', name: 'Storage');
-    try {
-      if (isTyped && boxName == 'userInfo') {
-        await StorageMigrator.migrateTypedObjects<UserInfoData>(
-          boxName: boxName,
-          codec: JsonCodec(
-            fromJson: UserInfoData.fromJson,
-            toJson: (data) => data.toJson(),
-          ),
-        );
-      } else {
-        await StorageMigrator.migrateBasicTypes(boxName: boxName);
-      }
-      AppLog.info('Migration completed for $boxName', name: 'Storage');
-    } catch (e) {
-      AppLog.severe('Migration failed for $boxName: $e', name: 'Storage');
-      // 迁移失败时继续使用，下次会重试
-    }
   }
 
   /// 导出所有设置到文件
