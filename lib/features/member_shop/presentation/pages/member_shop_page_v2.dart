@@ -2,7 +2,7 @@ import 'package:PiliPlus/shared/skeleton/space_opus.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/member_shop/presentation/providers/member_shop_list_provider.dart';
+import 'package:PiliPlus/features/member_shop/presentation/providers/member_shop_controller.dart';
 import 'package:PiliPlus/features/member_shop/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_shop/item.dart';
@@ -30,11 +30,12 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(memberShopListControllerProvider(widget.mid));
-    final listState = controller.state.listState;
+    final state = ref.watch(memberShopControllerProvider(widget.mid));
+    final controller = ref.read(memberShopControllerProvider(widget.mid).notifier);
+    final listState = state.listState;
 
     return refreshIndicator(
-      onRefresh: controller.onRefresh,
+      onRefresh: () => controller.onRefresh(widget.mid),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
@@ -45,7 +46,7 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
               right: StyleString.safeSpace,
               bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
             ),
-            sliver: _buildBody(listState, controller),
+            sliver: _buildBody(listState, state, controller),
           ),
         ],
       ),
@@ -66,7 +67,8 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
 
   Widget _buildBody(
     LoadingState listState,
-    dynamic controller,
+    MemberShopState state,
+    MemberShopController controller,
   ) {
     return switch (listState) {
       Loading() => SliverWaterfallFlow(
@@ -79,21 +81,21 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? _buildContent(response, controller)
-            : HttpError(onReload: controller.onReload),
+            : HttpError(onReload: () => controller.onReload(widget.mid)),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: controller.onReload,
+        onReload: () => controller.onReload(widget.mid),
       ),
     };
   }
 
-  Widget _buildContent(List<SpaceShopItem> response, dynamic controller) {
+  Widget _buildContent(List<SpaceShopItem> response, MemberShopController controller) {
     Widget sliver = SliverWaterfallFlow(
       gridDelegate: gridDelegate,
       delegate: SliverChildBuilderDelegate(
         (_, index) {
           if (index == response.length - 1) {
-            controller.onLoadMore();
+            controller.onLoadMore(widget.mid);
           }
           return MemberShopItem(
             item: response[index],
