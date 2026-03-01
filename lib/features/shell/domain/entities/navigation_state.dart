@@ -1,23 +1,15 @@
-/// 导航状态实体
+/// 导航状态
+///
+/// 管理导航栏选中状态
 class NavigationState {
-  /// 页面滚动偏移量（用于隐藏底部导航栏）
-  final double barOffset;
+  /// 当前选中的索引
+  final int selectedIndex;
 
-  /// 是否显示底部导航栏（用于即时隐藏模式）
-  final bool showBottomBar;
+  const NavigationState({this.selectedIndex = 0});
 
-  const NavigationState({
-    this.barOffset = 0.0,
-    this.showBottomBar = true,
-  });
-
-  NavigationState copyWith({
-    double? barOffset,
-    bool? showBottomBar,
-  }) {
+  NavigationState copyWith({int? selectedIndex}) {
     return NavigationState(
-      barOffset: barOffset ?? this.barOffset,
-      showBottomBar: showBottomBar ?? this.showBottomBar,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
     );
   }
 }
