@@ -1,25 +1,15 @@
 import 'package:PiliPlus/features/shell/data/datasources/dynamic_remote_datasource.dart';
 import 'package:PiliPlus/features/shell/data/datasources/message_remote_datasource.dart';
-import 'package:PiliPlus/features/shell/data/datasources/navigation_local_datasource.dart';
 import 'package:PiliPlus/features/shell/data/repositories/dynamic_repository_impl.dart';
 import 'package:PiliPlus/features/shell/data/repositories/message_repository_impl.dart';
-import 'package:PiliPlus/features/shell/data/repositories/navigation_repository_impl.dart';
 import 'package:PiliPlus/features/shell/domain/repositories/dynamic_repository.dart';
 import 'package:PiliPlus/features/shell/domain/repositories/message_repository.dart';
-import 'package:PiliPlus/features/shell/domain/repositories/navigation_repository.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/check_unread_dynamics.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/check_unread_messages.dart';
-import 'package:PiliPlus/features/shell/domain/usecases/get_navigation_config.dart';
 import 'package:PiliPlus/features/shell/domain/usecases/periodic_check_scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 数据源 Providers
-final navigationLocalDataSourceProvider = Provider<NavigationLocalDataSource>((
-  ref,
-) {
-  return NavigationLocalDataSource();
-});
-
 final messageRemoteDataSourceProvider = Provider<MessageRemoteDataSource>((
   ref,
 ) {
@@ -33,12 +23,6 @@ final dynamicRemoteDataSourceProvider = Provider<DynamicRemoteDataSource>((
 });
 
 /// 仓库 Providers
-final navigationRepositoryProvider = Provider<NavigationRepository>((ref) {
-  return NavigationRepositoryImpl(
-    localDataSource: ref.watch(navigationLocalDataSourceProvider),
-  );
-});
-
 final messageRepositoryProvider = Provider<MessageRepository>((ref) {
   return MessageRepositoryImpl(
     remoteDataSource: ref.watch(messageRemoteDataSourceProvider),
@@ -52,14 +36,6 @@ final dynamicRepositoryProvider = Provider<DynamicRepository>((ref) {
 });
 
 /// Use Case Providers
-final getNavigationConfigUseCaseProvider = Provider<GetNavigationConfigUseCase>(
-  (ref) {
-    return GetNavigationConfigUseCase(
-      ref.watch(navigationRepositoryProvider),
-    );
-  },
-);
-
 final checkUnreadMessagesUseCaseProvider = Provider<CheckUnreadMessagesUseCase>(
   (ref) {
     return CheckUnreadMessagesUseCase(

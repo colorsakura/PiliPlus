@@ -10,7 +10,6 @@ import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.d
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/bottom_nav_bar.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/side_nav_bar.dart';
-import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
