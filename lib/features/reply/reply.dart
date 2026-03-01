@@ -15,3 +15,9 @@ export 'package:PiliPlus/features/reply/data/datasources/reply_remote_datasource
     show ReplyRemoteDataSource;
 export 'package:PiliPlus/features/reply/data/repositories/reply_repository_impl.dart'
     show ReplyRepositoryImpl;
+
+// Presentation exports
+export 'package:PiliPlus/features/reply/presentation/providers/reply_list_controller.dart'
+    show ReplyListState, ReplyListController;
+export 'package:PiliPlus/features/reply/presentation/pages/reply_list_page.dart'
+    show ReplyListPage;
