@@ -1,17 +1,16 @@
-import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/pgc/presentation/providers/pgc_providers.dart';
-import 'package:PiliPlus/features/pgc/presentation/providers/pgc_controller.dart';
+import 'package:PiliPlus/features/pgc/presentation/providers/pgc_controller_v2.dart';
+import 'package:PiliPlus/features/pgc/presentation/widgets/pgc_card_v.dart';
+import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_index.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
-import 'package:PiliPlus/features/pgc/presentation/widgets/pgc_card_v.dart';
-import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_index.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:PiliPlus/utils/waterfall.dart';
 
 /// PGC page
 ///
@@ -54,43 +53,41 @@ class _PgcPageState extends ConsumerState<PgcPage>
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
-    final controller = ref.read(pgcControllerProvider(widget.tabType));
+    final state = ref.watch(pgcControllerProvider(widget.tabType));
+    final controller =
+        ref.read(pgcControllerProvider(widget.tabType).notifier);
 
     return refreshIndicator(
       onRefresh: () async {
-        await ref.read(pgcControllerProvider(widget.tabType)).onRefresh();
+        await controller.onRefresh(widget.tabType);
       },
       child: CustomScrollView(
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
-            child: ListenableBuilder(
-              listenable: controller,
-              builder: (context, child) {
-                return Column(
-                  children: [
-                    _buildFollow(controller, theme),
-                    if (_showPgcTimeline)
-                      _buildTimelineSection(controller, theme),
-                  ],
-                );
-              },
+            child: Column(
+              children: [
+                _buildFollow(state, theme, controller),
+                if (_showPgcTimeline)
+                  _buildTimelineSection(state, theme),
+              ],
             ),
           ),
-          _buildMainList(controller, theme),
+          _buildMainList(state, theme),
         ],
       ),
     );
   }
 
-  Widget _buildFollow(PgcController controller, ThemeData theme) {
-    final followState = controller.state.followListState;
+  Widget _buildFollow(PgcState state, ThemeData theme,
+      PgcController controller) {
+    final followState = state.followListState;
 
     return SizedBox(
       height:
           Pref.smallCardWidth / 2 / 0.75 +
-          MediaQuery.textScalerOf(context).scale(112),
+              MediaQuery.textScalerOf(context).scale(112),
       child: switch (followState) {
         Loading() => const SizedBox(),
         Success(:final response) =>
@@ -103,13 +100,13 @@ class _PgcPageState extends ConsumerState<PgcPage>
     );
   }
 
-  Widget _buildTimelineSection(PgcController controller, ThemeData theme) {
-    final timelineState = controller.state.timelineState;
+  Widget _buildTimelineSection(PgcState state, ThemeData theme) {
+    final timelineState = state.timelineState;
 
     return SizedBox(
       height:
           Pref.smallCardWidth / 2 / 0.75 +
-          MediaQuery.textScalerOf(context).scale(96),
+              MediaQuery.textScalerOf(context).scale(96),
       child: switch (timelineState) {
         Loading() => loadingWidget,
         Success(:final response) =>
@@ -122,67 +119,52 @@ class _PgcPageState extends ConsumerState<PgcPage>
     );
   }
 
-  Widget _buildMainList(PgcController controller, ThemeData theme) {
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, child) {
-        // Check if controller is still valid
-        if (!controller.hasListeners) {
-          return const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 200,
-              child: Center(child: Text('Loading...')),
-            ),
-          );
-        }
+  Widget _buildMainList(PgcState state, ThemeData theme) {
+    final mainListState = state.mainListState;
 
-        final mainListState = controller.state.mainListState;
-
-        return switch (mainListState) {
-          Loading() => const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 300,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          ),
-          Success(:final response) =>
-            response != null && response.isNotEmpty
-                ? SliverGrid.builder(
-                    gridDelegate: SliverGridDelegateWithExtentAndRatio(
-                      mainAxisSpacing: StyleString.cardSpace,
-                      crossAxisSpacing: StyleString.cardSpace,
-                      maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
-                      childAspectRatio: 0.75,
-                      mainAxisExtent: MediaQuery.textScalerOf(
-                        context,
-                      ).scale(50),
-                    ),
-                    itemBuilder: (context, index) {
-                      return PgcCardVPgcIndex(item: response[index]);
-                    },
-                    itemCount: response.length,
-                  )
-                : const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 200,
-                      child: Center(child: Text('No data')),
-                    ),
-                  ),
-          Error(:final errMsg) => SliverToBoxAdapter(
-            child: SizedBox(
-              height: 200,
-              child: Center(child: Text('Error loading data: $errMsg')),
-            ),
-          ),
-          _ => const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 200,
-              child: Center(child: Text('Unknown state')),
-            ),
-          ),
-        };
-      },
-    );
+    return switch (mainListState) {
+      Loading() => const SliverToBoxAdapter(
+        child: SizedBox(
+          height: 300,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      ),
+      Success(:final response) =>
+        response != null && response.isNotEmpty
+            ? SliverGrid.builder(
+                gridDelegate: SliverGridDelegateWithExtentAndRatio(
+                  mainAxisSpacing: StyleString.cardSpace,
+                  crossAxisSpacing: StyleString.cardSpace,
+                  maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
+                  childAspectRatio: 0.75,
+                  mainAxisExtent: MediaQuery.textScalerOf(
+                    context,
+                  ).scale(50),
+                ),
+                itemBuilder: (context, index) {
+                  return PgcCardVPgcIndex(item: response[index]);
+                },
+                itemCount: response.length,
+              )
+            : const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 200,
+                  child: Center(child: Text('No data')),
+                ),
+              ),
+      Error(:final errMsg) => SliverToBoxAdapter(
+        child: SizedBox(
+          height: 200,
+          child: Center(child: Text('Error loading data: $errMsg')),
+        ),
+      ),
+      _ => const SliverToBoxAdapter(
+        child: SizedBox(
+          height: 200,
+          child: Center(child: Text('Unknown state')),
+        ),
+      ),
+    };
   }
 
   Widget _buildFollowList(ThemeData theme, List<FavPgcItemModel> items) {

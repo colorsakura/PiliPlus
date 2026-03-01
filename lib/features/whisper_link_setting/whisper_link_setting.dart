@@ -6,8 +6,7 @@ export 'package:PiliPlus/features/whisper_link_setting/presentation/pages/whispe
 export 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_providers.dart'
     show
         whisperLinkSettingRemoteDatasourceProvider,
-        whisperLinkSettingRepositoryProvider,
-        whisperLinkSettingControllerProvider;
+        whisperLinkSettingRepositoryProvider;
 
 // Providers (Riverpod - New)
 export 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_controller_v2.dart';
