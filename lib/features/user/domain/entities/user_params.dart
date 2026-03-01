@@ -1,6 +1,3 @@
-import 'package:PiliPlus/models/user/info.dart';
-import 'package:PiliPlus/models/user/stat.dart';
-
 /// Parameters for fetching user information
 class FetchUserInfoParams {
   final bool forceRefresh;

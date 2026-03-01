@@ -19,3 +19,17 @@ export 'package:PiliPlus/features/user/data/datasources/user_remote_datasource_i
     show UserRemoteDataSourceImpl;
 export 'package:PiliPlus/features/user/data/repositories/user_repository_impl.dart'
     show UserRepositoryImpl;
+
+// Presentation exports
+export 'package:PiliPlus/features/user/presentation/providers/user_info_controller.dart'
+    show UserInfoState, UserInfoController;
+export 'package:PiliPlus/features/user/presentation/providers/user_stat_controller.dart'
+    show UserStatState, UserStatController;
+export 'package:PiliPlus/features/user/presentation/providers/see_you_later_controller.dart'
+    show SeeYouLaterState, SeeYouLaterController;
+export 'package:PiliPlus/features/user/presentation/pages/user_info_page.dart'
+    show UserInfoPage;
+export 'package:PiliPlus/features/user/presentation/pages/user_stat_page.dart'
+    show UserStatPage;
+export 'package:PiliPlus/features/user/presentation/pages/see_you_later_page.dart'
+    show SeeYouLaterPage;
