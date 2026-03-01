@@ -12,6 +12,8 @@ This feature handles live streaming operations including:
 
 ## Architecture
 
+本特性采用**干净架构（Clean Architecture）**设计，遵循依赖倒置原则。
+
 ### Domain Layer
 
 **Repository Interface:**
@@ -29,40 +31,41 @@ This feature handles live streaming operations including:
 **Repositories:**
 - `LiveRepositoryImpl` - Concrete implementation handling errors and converting to LoadingState
 
+### Presentation Layer
+
+**Controllers:**
+- `LiveRoomController` - Manages live room information state
+- `LiveDanmakuController` - Manages danmaku sending state
+
+**Pages:**
+- `LiveRoomPage` - Displays live room information
+- `LiveDanmakuPage` - Test page for sending danmaku
+
 ## Usage
 
 ```dart
 import 'package:PiliPlus/features/live/live.dart';
 
-// Initialize repository and use cases
-final repository = LiveRepositoryImpl(
-  remoteDataSource: LiveRemoteDataSource(),
-);
+// Using controllers with Riverpod
+class MyPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final roomState = ref.watch(liveRoomControllerProvider);
 
-final sendDanmaku = SendLiveDanmaku(repository);
-final getRoomInfo = GetLiveRoomInfo(repository);
+    // Fetch live room info
+    ref.read(liveRoomControllerProvider.notifier).fetchRoomInfo(
+          roomId: 123456,
+          qn: 10000,
+        );
 
-// Send danmaku to live room
-final result = await sendDanmaku(
-  roomId: 123456,
-  msg: 'Hello live room!',
-);
+    // Send danmaku
+    ref.read(liveDanmakuControllerProvider.notifier).sendDanmaku(
+          roomId: 123456,
+          msg: 'Hello live room!',
+        );
 
-if (result case Success()) {
-  print('Danmaku sent successfully');
-} else if (result case Error(:final errorMsg)) {
-  print('Failed to send: $errorMsg');
-}
-
-// Get live room info
-final roomInfoResult = await getRoomInfo(
-  roomId: 123456,
-  qn: 10000, // Quality level
-  onlyAudio: false,
-);
-
-if (roomInfoResult case Success(:final data)) {
-  print('Room quality: ${data['playurl_info']}');
+    return LiveRoomPage(roomId: 123456);
+  }
 }
 ```
 
@@ -84,3 +87,18 @@ The repository catches `ServerException` and general `Exception`, converting the
 ## WBI Signing
 
 All live streaming API requests use WBI (Web Browser Interface) signing for authentication and rate limiting protection.
+
+## Migration Status
+
+- ✅ Domain Layer Complete
+- ✅ Data Layer Complete
+- ✅ Presentation Layer Complete (New)
+- ⏳ Tests (Pending)
+- ✅ Documentation Complete
+
+## Code Quality
+
+- ✅ `flutter analyze` No errors found (only warnings in existing data layer)
+- ✅ `dart format` Formatted
+- ✅ Riverpod code generation verified
+- ✅ Clean architecture compliance verified
