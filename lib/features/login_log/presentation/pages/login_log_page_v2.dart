@@ -1,9 +1,9 @@
+import 'package:PiliPlus/features/login_log/presentation/providers/login_log_controller_v2.dart';
+import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/models/login_log/list.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
-import 'package:PiliPlus/http/loading_state.dart';
-import 'package:PiliPlus/models/login_log/list.dart';
-import 'package:PiliPlus/features/login_log/presentation/providers/login_log_providers.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,15 +14,15 @@ class LoginLogPageV2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(loginLogControllerProvider);
-    final state = controller.state;
+    final state = ref.watch(loginLogControllerProvider);
+    final controller = ref.read(loginLogControllerProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('登录记录')),
       body: refreshIndicator(
-        onRefresh: controller.onRefresh,
+        onRefresh: () => controller.onRefresh(),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
