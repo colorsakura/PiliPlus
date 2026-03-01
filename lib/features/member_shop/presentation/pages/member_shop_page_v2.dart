@@ -6,7 +6,6 @@ import 'package:PiliPlus/features/member_shop/presentation/providers/member_shop
 import 'package:PiliPlus/features/member_shop/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_shop/item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -7,7 +7,6 @@ import 'package:PiliPlus/models/space/space/data.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/providers/member_pgc_providers.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/providers/member_pgc_controller.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_member_pgc.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

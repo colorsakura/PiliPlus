@@ -3,7 +3,6 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/member_article/presentation/providers/member_article_list_provider.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/member_article/presentation/pages/widget/item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

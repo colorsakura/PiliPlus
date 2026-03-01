@@ -16,7 +16,6 @@ import 'package:PiliPlus/features/dynamics_create/dynamics_create.dart';
 import 'package:PiliPlus/features/dynamics_detail/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/dynamics_repost/dynamics_repost.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';

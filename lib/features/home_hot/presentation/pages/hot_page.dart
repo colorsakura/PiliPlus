@@ -8,7 +8,6 @@ import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/home_hot/presentation/providers/hot_video_controller.dart';
 import 'package:PiliPlus/features/home_zone/view_v2.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';

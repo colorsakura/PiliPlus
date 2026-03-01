@@ -5,7 +5,6 @@ import 'package:PiliPlus/features/common/presentation/pages/search/common_search
 import 'package:PiliPlus/features/fav_detail/presentation/pages/widget/fav_video_card.dart';
 import 'package:PiliPlus/features/fav_search/presentation/pages/fav_search_controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';

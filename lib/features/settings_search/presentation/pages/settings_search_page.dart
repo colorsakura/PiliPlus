@@ -10,7 +10,6 @@ import 'package:PiliPlus/features/setting/presentation/pages/models/privacy_sett
 import 'package:PiliPlus/features/setting/presentation/pages/models/recommend_settings.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/style_settings.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/video_settings.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

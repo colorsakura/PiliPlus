@@ -13,7 +13,6 @@ import 'package:PiliPlus/features/live_follow/live_follow.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';

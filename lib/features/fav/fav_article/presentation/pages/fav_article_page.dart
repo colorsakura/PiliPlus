@@ -5,7 +5,6 @@ import 'package:PiliPlus/features/fav/fav_article/presentation/providers/fav_art
 import 'package:PiliPlus/features/fav/fav_article/presentation/widgets/fav_article_item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_article/item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

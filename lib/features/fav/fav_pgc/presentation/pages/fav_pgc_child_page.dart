@@ -9,7 +9,6 @@ import 'package:PiliPlus/features/fav/presentation/pages/pgc/widget/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/shared/skeleton/fav_pgc_item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';

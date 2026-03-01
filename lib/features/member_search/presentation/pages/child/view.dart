@@ -6,7 +6,6 @@ import 'package:PiliPlus/models/common/member/search_type.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/dynamic_panel.dart';
 import 'package:PiliPlus/features/member_search/presentation/pages/child/controller.dart';
 import 'package:PiliPlus/utils/global_data.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -7,7 +7,6 @@ import 'package:PiliPlus/features/member_opus/presentation/widgets/space_opus_it
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_opus/item.dart';
 import 'package:PiliPlus/shared/skeleton/space_opus.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

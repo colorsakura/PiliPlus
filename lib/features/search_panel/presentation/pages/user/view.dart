@@ -4,7 +4,6 @@ import 'package:PiliPlus/features/search_panel/search_panel.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;
 import 'package:get/get.dart';

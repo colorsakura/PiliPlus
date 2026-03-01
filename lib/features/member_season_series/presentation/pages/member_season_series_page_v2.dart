@@ -7,7 +7,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/space/space_season_series/season.dart'
     show SpaceSsModel;
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

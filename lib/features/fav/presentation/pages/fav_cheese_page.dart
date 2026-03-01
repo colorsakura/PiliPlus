@@ -5,7 +5,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/space/space_cheese/item.dart';
 import 'package:PiliPlus/features/fav/presentation/pages/fav_cheese_controller.dart';
 import 'package:PiliPlus/features/member_cheese/presentation/widgets/item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

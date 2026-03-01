@@ -7,7 +7,6 @@ import 'package:PiliPlus/features/search_panel/presentation/widgets/pgc/item.dar
 import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

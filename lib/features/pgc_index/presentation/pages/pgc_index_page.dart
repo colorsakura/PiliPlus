@@ -11,7 +11,6 @@ import 'package:PiliPlus/models/pgc/pgc_index_condition/value.dart';
 import 'package:PiliPlus/models/pgc/pgc_index_result/list.dart';
 import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_index.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

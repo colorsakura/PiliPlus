@@ -7,7 +7,6 @@ import 'package:PiliPlus/features/fav/fav_topic/presentation/providers/fav_topic
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/fav/fav_topic/topic_item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart'
     hide SliverGridDelegateWithMaxCrossAxisExtent;

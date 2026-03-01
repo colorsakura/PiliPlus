@@ -6,7 +6,6 @@ import 'package:PiliPlus/features/member_coin_arc/presentation/providers/member_
 import 'package:PiliPlus/features/member_coin_arc/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -9,7 +9,6 @@ import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/features/pgc/presentation/widgets/pgc_card_v.dart';
 import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_index.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

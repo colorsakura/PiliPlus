@@ -6,7 +6,6 @@ import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/features/home_zone/zone/controller_v2.dart';
 import 'package:PiliPlus/features/home_zone/zone/providers.dart';
 import 'package:PiliPlus/features/home_zone/zone/widget/pgc_rank_item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

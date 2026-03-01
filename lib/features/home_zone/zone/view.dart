@@ -5,7 +5,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/features/home_zone/zone/controller.dart';
 import 'package:PiliPlus/features/home_zone/zone/widget/pgc_rank_item.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

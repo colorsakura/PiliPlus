@@ -3,7 +3,6 @@ import 'package:PiliPlus/models/history/data.dart';
 import 'package:PiliPlus/models/history/list.dart';
 import 'package:PiliPlus/features/common/presentation/pages/search/common_search_page.dart';
 import 'package:PiliPlus/features/history_search/presentation/pages/history_search_controller.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

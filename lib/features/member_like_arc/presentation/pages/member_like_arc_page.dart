@@ -7,7 +7,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/member/coin_like_arc/item.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
