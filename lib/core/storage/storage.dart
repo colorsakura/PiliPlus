@@ -47,9 +47,6 @@ abstract final class GStorage {
   /// 是否已完成关键初始化（仅 setting Box）
   static bool _isCriticalInitialized = false;
 
-  /// Hive 适配器是否已注册
-  static bool _hiveAdaptersRegistered = false;
-
   /// 是否使用 MMKV（默认 true）
   static bool get useMMKV => true;
 
@@ -77,9 +74,6 @@ abstract final class GStorage {
     settingRepository = StorageFactory.getRepository(
       const StorageConfig.mmkv(name: 'setting'),
     );
-
-    // 初始化 Hive（用于向后兼容，只读）
-    await _initHiveForCompatibility();
 
     _isCriticalInitialized = true;
     stopwatch.stop();
@@ -141,84 +135,6 @@ abstract final class GStorage {
       'Full initialization completed in ${stopwatch.elapsedMilliseconds}ms',
       name: 'Storage',
     );
-  }
-
-  /// 初始化 Hive（用于向后兼容）
-  ///
-  /// 注意：账户系统已迁移到 MMKV，不再在此初始化
-  static Future<void> _initHiveForCompatibility() async {
-    try {
-      await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
-      _registerAdaptersIfNeeded();
-
-      // 打开所有 Hive Box（用于向后兼容的只读访问）
-      // 账户系统已迁移到 MMKV，不再在此处理
-      await Future.wait([
-        Hive.boxExists('setting')
-            .then((exists) => Hive.openBox('setting'))
-            .then((box) => setting = box),
-        Hive.boxExists('userInfo')
-            .then((exists) => Hive.openBox<UserInfoData>('userInfo'))
-            .then((box) => userInfo = box),
-        Hive.boxExists('localCache')
-            .then((exists) => Hive.openBox('localCache'))
-            .then((box) => localCache = box),
-        Hive.boxExists('historyWord')
-            .then((exists) => Hive.openBox('historyWord'))
-            .then((box) => historyWord = box),
-        Hive.boxExists(
-          'video',
-        ).then((exists) => Hive.openBox('video')).then((box) => video = box),
-        Hive.boxExists('watchProgress')
-            .then((exists) => Hive.openBox<int>('watchProgress'))
-            .then((box) => watchProgress = box),
-      ]);
-    } catch (e) {
-      AppLog.warning(
-        'Failed to initialize Hive for compatibility: $e',
-        name: 'Storage',
-      );
-      // 即使 Hive 初始化失败，MMKV 仍然可用，所以不抛出错误
-      try {
-        if (!Hive.isBoxOpen('setting')) {
-          await Hive.initFlutter(path.join(appSupportDirPath, 'hive'));
-          _registerAdaptersIfNeeded();
-          setting = await Hive.openBox('setting');
-          userInfo = await Hive.openBox<UserInfoData>('userInfo');
-          localCache = await Hive.openBox('localCache');
-          historyWord = await Hive.openBox('historyWord');
-          video = await Hive.openBox('video');
-          watchProgress = await Hive.openBox<int>('watchProgress');
-        }
-      } catch (e2) {
-        AppLog.warning(
-          'Failed to create empty Hive boxes: $e2',
-          name: 'Storage',
-        );
-      }
-    }
-  }
-
-  /// 注册 Hive 适配器（只注册一次）
-  ///
-  /// 注意：账户相关适配器和 SetIntAdapter 已移除
-  static void _registerAdaptersIfNeeded() {
-    if (_hiveAdaptersRegistered) {
-      return;
-    }
-    Hive
-      ..registerAdapter(OwnerAdapter())
-      ..registerAdapter(UserInfoDataAdapter())
-      ..registerAdapter(LevelInfoAdapter())
-      // 账户相关适配器已移除（账户系统使用 MMKV）
-      // SetIntAdapter 已移除
-      ..registerAdapter(RuleFilterAdapter());
-    _hiveAdaptersRegistered = true;
-  }
-
-  /// 注册 Hive 适配器（公共方法，保持向后兼容）
-  static void regAdapter() {
-    _registerAdaptersIfNeeded();
   }
 
   /// 检查并迁移数据（Hive -> MMKV）
@@ -351,8 +267,6 @@ abstract final class GStorage {
 
   /// 关闭所有 Box
   static Future<void> close() async {
-    await Future.wait([
-      Hive.close().then((_) => _isInitialized = false),
-    ]);
+    _isInitialized = false;
   }
 }
