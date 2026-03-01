@@ -2,7 +2,7 @@ import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/member_coin_arc/presentation/providers/member_coin_arc_list_provider.dart';
+import 'package:PiliPlus/features/member_coin_arc/presentation/providers/member_coin_arc_controller.dart';
 import 'package:PiliPlus/features/member_coin_arc/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/accounts.dart';
@@ -31,10 +31,9 @@ class _MemberCoinArcPageState extends ConsumerState<MemberCoinArcPage> {
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.viewPaddingOf(context);
-    final controller = ref.watch(
-      memberCoinArcListControllerProvider(widget.mid),
-    );
-    final listState = controller.state.listState;
+    final state = ref.watch(memberCoinArcControllerProvider(widget.mid));
+    final controller = ref.read(memberCoinArcControllerProvider(widget.mid).notifier);
+    final listState = state.listState;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -44,7 +43,7 @@ class _MemberCoinArcPageState extends ConsumerState<MemberCoinArcPage> {
         ),
       ),
       body: refreshIndicator(
-        onRefresh: controller.onRefresh,
+        onRefresh: () => controller.onRefresh(widget.mid),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
@@ -55,7 +54,7 @@ class _MemberCoinArcPageState extends ConsumerState<MemberCoinArcPage> {
                 right: StyleString.safeSpace + padding.right,
                 bottom: padding.bottom + 100,
               ),
-              sliver: _buildBody(listState, controller),
+              sliver: _buildBody(listState, state, controller),
             ),
           ],
         ),
@@ -73,7 +72,8 @@ class _MemberCoinArcPageState extends ConsumerState<MemberCoinArcPage> {
 
   Widget _buildBody(
     LoadingState listState,
-    dynamic controller,
+    MemberCoinArcState state,
+    MemberCoinArcController controller,
   ) {
     return switch (listState) {
       Loading() => SliverGrid.builder(
@@ -88,15 +88,15 @@ class _MemberCoinArcPageState extends ConsumerState<MemberCoinArcPage> {
                 itemCount: response.length,
                 itemBuilder: (context, index) {
                   if (index == response.length - 1) {
-                    controller.onLoadMore();
+                    controller.onLoadMore(widget.mid);
                   }
                   return MemberCoinLikeItem(item: response[index]);
                 },
               )
-            : HttpError(onReload: controller.onReload),
+            : HttpError(onReload: () => controller.onReload(widget.mid)),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: controller.onReload,
+        onReload: () => controller.onReload(widget.mid),
       ),
     };
   }
