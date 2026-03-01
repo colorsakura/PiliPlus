@@ -4,7 +4,6 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
-import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
@@ -185,16 +184,6 @@ class _ShellPageState extends ConsumerState<ShellPage>
     final selectedIndex = ref.watch(navigationProvider).selectedIndex;
     final unreadDyn = ref.watch(unreadDynamicControllerProvider);
 
-    // 创建固定的导航配置（临时方案，待 widget 重构后移除）
-    final config = NavigationConfig(
-      navigationBars: _navigationItems,
-      selectedIndex: selectedIndex,
-      hideBottomBar: false,
-      barHideType: BarHideType.instant,
-      useBottomNav: MediaQuery.sizeOf(context).isPortrait,
-      defaultHomePageIndex: 0,
-    );
-
     // 根据当前屏幕尺寸判断是否使用底部导航
     final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
 
@@ -208,20 +197,22 @@ class _ShellPageState extends ConsumerState<ShellPage>
     Widget? bottomNav;
     // 只有在竖屏模式且有至少2个导航项时才使用底部导航栏
     final shouldUseBottomNav =
-        useBottomNav && config.navigationBars.length >= 2;
+        useBottomNav && _navigationItems.length >= 2;
     if (shouldUseBottomNav) {
       bottomNav = ShellBottomNavigationBar(
-        config: config,
+        items: _navigationItems,
+        selectedIndex: selectedIndex,
         dynCount: unreadDyn.count,
         onDestinationSelected: _handleNavTap,
       );
       child = Row(children: [Expanded(child: child)]);
-    } else if (config.navigationBars.isNotEmpty) {
+    } else if (_navigationItems.isNotEmpty) {
       // 只有在有导航项时才显示侧边栏
       child = Row(
         children: [
           SideNavBar(
-            config: config,
+            items: _navigationItems,
+            selectedIndex: selectedIndex,
             dynCount: unreadDyn.count,
             dynamicBadgeMode: dynamicBadgeMode,
             unreadMessage: unreadMsg,
