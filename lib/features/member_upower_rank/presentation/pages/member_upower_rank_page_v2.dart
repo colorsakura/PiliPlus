@@ -1,8 +1,8 @@
-import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
-import 'package:PiliPlus/features/member_upower_rank/presentation/providers/member_upower_rank_list_provider.dart';
+import 'package:PiliPlus/features/member_upower_rank/presentation/providers/member_upower_rank_controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/upower_rank/rank_info.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,10 +29,15 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(
-      memberUpowerRankListControllerProvider(widget.upMid),
-    );
-    final listState = controller.state.listState;
+    final state = ref.watch(memberUpowerRankControllerProvider(
+      widget.upMid,
+      widget.privilegeType,
+    ));
+    final controller = ref.read(memberUpowerRankControllerProvider(
+      widget.upMid,
+      widget.privilegeType,
+    ).notifier);
+    final listState = state.listState;
     final theme = Theme.of(context);
     final padding = MediaQuery.viewPaddingOf(context);
 
@@ -40,13 +45,13 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          controller.state.name == null
+          state.name == null
               ? '充电排行榜'
-              : '${controller.state.name} 充电排行榜${controller.state.memberTotal == 0 ? '' : '(${controller.state.memberTotal})'}',
+              : '${state.name} 充电排行榜${state.memberTotal == 0 ? '' : '(${state.memberTotal})'}',
         ),
       ),
       body: refreshIndicator(
-        onRefresh: controller.onRefresh,
+        onRefresh: () => controller.onRefresh(widget.upMid, widget.privilegeType),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
@@ -56,7 +61,7 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
                 right: padding.right,
                 bottom: padding.bottom + 100,
               ),
-              sliver: _buildBody(theme, listState, controller),
+              sliver: _buildBody(theme, listState, state, controller),
             ),
           ],
         ),
@@ -67,7 +72,8 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
   Widget _buildBody(
     ThemeData theme,
     LoadingState listState,
-    dynamic controller,
+    MemberUpowerRankState state,
+    MemberUpowerRankController controller,
   ) {
     return switch (listState) {
       Loading() => const SliverToBoxAdapter(
@@ -84,10 +90,13 @@ class _MemberUpowerRankPageState extends ConsumerState<MemberUpowerRankPage>
                   childCount: response.length,
                 ),
               )
-            : HttpError(onReload: controller.onReload),
+            : HttpError(
+                onReload: () =>
+                    controller.onReload(widget.upMid, widget.privilegeType),
+              ),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: controller.onReload,
+        onReload: () => controller.onReload(widget.upMid, widget.privilegeType),
       ),
     };
   }
