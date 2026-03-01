@@ -6,9 +6,9 @@ import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:PiliPlus/utils/waterfall.dart';
 
 class RcmdPage extends ConsumerStatefulWidget {
   const RcmdPage({super.key});
@@ -66,27 +66,35 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
     super.build(context);
     final state = ref.watch(recommendationControllerProvider);
 
+    final padding = PlatformUtils.isDesktop ? 40.0 : 0.0;
+
+    Widget child = CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.only(
+            left: padding,
+            right: padding,
+            top: StyleString.cardSpace,
+            bottom: 100,
+          ),
+          sliver: _buildBody(state),
+        ),
+      ],
+    );
+
     return Container(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
       decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-      child: refreshIndicator(
-        onRefresh: () =>
-            ref.read(recommendationControllerProvider.notifier).onRefresh(),
-        child: CustomScrollView(
-          controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.only(
-                top: StyleString.cardSpace,
-                bottom: 100,
-              ),
-              sliver: _buildBody(state),
+      child: PlatformUtils.isDesktop
+          ? Scrollbar(controller: _scrollController, child: child)
+          : refreshIndicator(
+              onRefresh: () => ref
+                  .read(recommendationControllerProvider.notifier)
+                  .onRefresh(),
+              child: child,
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -145,34 +153,6 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
       gridDelegate: gridDelegate,
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          // 显示"上次看到这里"标记
-          if (state.lastRefreshAt != null && index == state.lastRefreshAt) {
-            return GestureDetector(
-              key: ValueKey('refresh_tip_$index'),
-              onTap: () {
-                ref.read(recommendationControllerProvider.notifier).onRefresh();
-                _animateToTop();
-              },
-              child: Card(
-                clipBehavior: Clip.hardEdge,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: StyleString.mdRadius,
-                ),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    '上次看到这里\n点击刷新',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }
-
           // 计算实际视频索引
           final actualIndex =
               state.lastRefreshAt != null && index > state.lastRefreshAt!
