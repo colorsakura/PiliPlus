@@ -4,6 +4,8 @@ Handles user-related operations including fetching user info, statistics, and wa
 
 ## Architecture
 
+本特性采用**干净架构（Clean Architecture）**设计，遵循依赖倒置原则。
+
 ### Domain Layer
 - **Entities**: `FetchUserInfoParams`, `FetchUserStatParams`, `FetchSeeYouLaterParams`
 - **Repository**: `UserRepository`
@@ -12,6 +14,16 @@ Handles user-related operations including fetching user info, statistics, and wa
 ### Data Layer
 - **Remote DataSource**: `UserRemoteDataSource` (base class with HTTP implementation)
 - **Repository Implementation**: `UserRepositoryImpl`
+
+### Presentation Layer
+- **Controllers**:
+  - `UserInfoController`: Manages user navigation information state
+  - `UserStatController`: Manages user statistics state
+  - `SeeYouLaterController`: Manages watch later list state
+- **Pages**:
+  - `UserInfoPage`: Displays user profile information
+  - `UserStatPage`: Displays user statistics (following, follower, etc.)
+  - `SeeYouLaterPage`: Displays watch later video list
 
 ### Key Features
 
@@ -22,17 +34,18 @@ Handles user-related operations including fetching user info, statistics, and wa
 ## Usage
 
 ```dart
-// Fetch user info
-final fetchUserInfo = FetchUserInfo(repository);
-final userInfo = await fetchUserInfo();
+// Using controllers with Riverpod
+class MyPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userInfoState = ref.watch(userInfoControllerProvider);
 
-// Fetch user stats
-final fetchUserStat = FetchUserStat(repository);
-final stats = await fetchUserStat(FetchUserStatParams(isOwner: true));
+    // Fetch user info
+    ref.read(userInfoControllerProvider.notifier).fetchUserInfo();
 
-// Fetch watch later list
-final fetchSeeYouLater = FetchSeeYouLater(repository);
-final laterList = await fetchSeeYouLater(FetchSeeYouLaterParams(page: 1));
+    return UserInfoPage();
+  }
+}
 ```
 
 ## API Notes
@@ -42,3 +55,18 @@ final laterList = await fetchSeeYouLater(FetchSeeYouLaterParams(page: 1));
 - `seeYouLater()`: Supports filtering by viewed status, keyword search, and sorting
 
 The data source is implemented as a base class with all HTTP logic, and the implementation class extends it to satisfy the interface.
+
+## Migration Status
+
+- ✅ Domain Layer Complete
+- ✅ Data Layer Complete
+- ✅ Presentation Layer Complete (New)
+- ⏳ Tests (Pending)
+- ✅ Documentation Complete
+
+## Code Quality
+
+- ✅ `flutter analyze` No issues found
+- ✅ `dart format` Formatted
+- ✅ Riverpod code generation verified
+- ✅ Clean architecture compliance verified
