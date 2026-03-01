@@ -4,12 +4,14 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
 import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/bottom_nav_bar.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/side_nav_bar.dart';
+import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -43,6 +45,13 @@ class _ShellPageState extends ConsumerState<ShellPage>
   // 存储相关
   late EdgeInsets _padding;
 
+  // 固定的导航选项
+  static const List<NavigationBarType> _navigationItems = [
+    NavigationBarType.home,
+    NavigationBarType.dynamics,
+    NavigationBarType.mine,
+  ];
+
   // 配置
   late final bool directExitOnBack = Pref.directExitOnBack;
 
@@ -53,9 +62,9 @@ class _ShellPageState extends ConsumerState<ShellPage>
     // 初始化其他功能
     _initializeApp();
 
-    // 延迟初始化导航配置，避免在 widget 构建期间修改 provider
+    // 延迟启动定时检查，避免在 widget 构建期间修改 provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeNavigationConfig();
+      _initializePeriodicCheck();
     });
   }
 
@@ -64,17 +73,10 @@ class _ShellPageState extends ConsumerState<ShellPage>
     WidgetsBinding.instance.addObserver(this);
   }
 
-  /// 初始化导航配置和未读消息检查
-  ///
-  /// 1. 等待核心阶段完成（数据库初始化）
-  /// 2. 加载导航配置
-  /// 3. 启动定时检查调度器
-  Future<void> _initializeNavigationConfig() async {
+  /// 启动定时检查调度器
+  Future<void> _initializePeriodicCheck() async {
     // 等待核心阶段完成（DatabaseManager 等核心服务）
     await AppInitializer.ensureCoreReady();
-
-    // 初始化配置
-    await ref.read(navigationConfigControllerProvider.notifier).initialize();
 
     // 启动定时检查
     ref.read(periodicCheckSchedulerProvider).start();
@@ -141,8 +143,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
     if (currentIndex != 0) {
       // 返回到首页
       widget.navigationShell.goBranch(0);
-      ref.read(navigationConfigControllerProvider.notifier).updateIndex(0);
-      ref.read(navigationStateControllerProvider.notifier).reset();
+      ref.read(navigationProvider.notifier).updateIndex(0);
       // TODO: setSearchBar
     } else {
       _onBack();
@@ -152,26 +153,20 @@ class _ShellPageState extends ConsumerState<ShellPage>
   /// 处理导航栏点击
   void _handleNavTap(int index) {
     feedBack();
-    final navState = ref.read(navigationConfigControllerProvider);
+
+    // 验证索引范围
+    if (index < 0 || index >= _navigationItems.length) return;
+
     final currentIndex = widget.navigationShell.currentIndex;
-    final config = navState.config;
-
-    if (config == null) return;
-
-    // Validate index bounds
-    if (index < 0 || index >= config.navigationBars.length) return;
-
-    final currentNav = config.navigationBars[index];
+    final currentNav = _navigationItems[index];
 
     if (index != currentIndex) {
       // 切换到新分支
       widget.navigationShell.goBranch(index);
-      ref.read(navigationConfigControllerProvider.notifier).updateIndex(index);
+      ref.read(navigationProvider.notifier).updateIndex(index);
 
       // 根据页面类型执行特定操作
-      if (currentNav == NavigationBarType.home) {
-        // TODO: checkDefaultSearch 和 checkUnread
-      } else if (currentNav == NavigationBarType.dynamics) {
+      if (currentNav == NavigationBarType.dynamics) {
         ref.read(unreadDynamicControllerProvider.notifier).clear();
       }
     } else {
@@ -186,27 +181,27 @@ class _ShellPageState extends ConsumerState<ShellPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // 监听导航配置
-    final navConfigState = ref.watch(navigationConfigControllerProvider);
+    // 监听导航状态
+    final selectedIndex = ref.watch(navigationProvider).selectedIndex;
     final unreadDyn = ref.watch(unreadDynamicControllerProvider);
 
-    final config = navConfigState.config;
-    if (config == null) {
-      // 配置尚未加载，显示加载界面
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+    // 创建固定的导航配置（临时方案，待 widget 重构后移除）
+    final config = NavigationConfig(
+      navigationBars: _navigationItems,
+      selectedIndex: selectedIndex,
+      hideBottomBar: false,
+      barHideType: BarHideType.instant,
+      useBottomNav: MediaQuery.sizeOf(context).isPortrait,
+      defaultHomePageIndex: 0,
+    );
 
     // 根据当前屏幕尺寸判断是否使用底部导航
     final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
 
     // 读取侧边栏需要的数据
-    final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
+    final dynamicBadgeMode = Pref.dynamicBadgeMode;
     final unreadMsg = ref.watch(unreadMessageControllerProvider);
-    final msgBadgeMode = ref.read(msgBadgeModeProvider);
+    final msgBadgeMode = Pref.msgBadgeMode;
 
     Widget child = widget.navigationShell; // 使用 StatefulNavigationShell
 
