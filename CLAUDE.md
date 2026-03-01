@@ -62,7 +62,6 @@ flutter run -d android       # Android 平台运行
 
 ## 📖 相关文档
 
-- [干净架构迁移指南](./docs/CLEAN_ARCHITECTURE_MIGRATION.md) - 架构设计和迁移方案
 
 ## 🎯 开发优先级
 
