@@ -1,14 +1,14 @@
-import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
-import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
-import 'package:PiliPlus/features/live_follow/presentation/providers/live_follow_list_provider.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/features/live_follow/presentation/providers/live_follow_controller.dart';
 import 'package:PiliPlus/features/live_follow/presentation/widgets/live_item_follow.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
+import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
+import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:PiliPlus/utils/waterfall.dart';
-import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class LiveFollowPage extends ConsumerStatefulWidget {
   const LiveFollowPage({super.key});
@@ -20,17 +20,16 @@ class LiveFollowPage extends ConsumerStatefulWidget {
 class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(liveFollowListControllerProvider);
-    final listState = controller.state.listState;
+    final state = ref.watch(liveFollowControllerProvider);
+    final controller = ref.read(liveFollowControllerProvider.notifier);
+    final listState = state.listState;
     final padding = MediaQuery.viewPaddingOf(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          controller.state.count != null
-              ? '${controller.state.count}人正在直播'
-              : '关注直播',
+          state.count != null ? '${state.count}人正在直播' : '关注直播',
         ),
       ),
       body: refreshIndicator(
@@ -44,7 +43,7 @@ class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
                 right: StyleString.safeSpace + padding.right,
                 bottom: padding.bottom + 100,
               ),
-              sliver: _buildBody(listState, controller),
+              sliver: _buildBody(listState, state, controller),
             ),
           ],
         ),
@@ -62,7 +61,8 @@ class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
 
   Widget _buildBody(
     LoadingState listState,
-    dynamic controller,
+    LiveFollowState state,
+    LiveFollowController controller,
   ) {
     return switch (listState) {
       Loading() => SliverGrid.builder(
