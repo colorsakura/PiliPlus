@@ -103,7 +103,12 @@ class _SearchAllPanelState
 
   @override
   Widget get buildLoading => SliverGrid.builder(
-    gridDelegate: Grid.videoCardHDelegate(context),
+    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  ),
     itemBuilder: (context, index) => const VideoCardHSkeleton(),
     itemCount: 10,
   );
