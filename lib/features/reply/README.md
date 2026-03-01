@@ -16,6 +16,8 @@ This feature handles all reply and comment-related operations including:
 
 ## Architecture
 
+本特性采用**干净架构（Clean Architecture）**设计，遵循依赖倒置原则。
+
 ### Domain Layer
 
 **Repository Interface:**
@@ -35,36 +37,31 @@ This feature handles all reply and comment-related operations including:
 **Repositories:**
 - `ReplyRepositoryImpl` - Concrete implementation of `ReplyRepository`
 
+### Presentation Layer
+
+**Controllers:**
+- `ReplyListController` - Manages reply list state
+
+**Pages:**
+- `ReplyListPage` - Displays reply list for content
+
 ## Usage
 
 ```dart
 import 'package:PiliPlus/features/reply/reply.dart';
 
-// Initialize repository and use cases
-final repository = ReplyRepositoryImpl(
-  remoteDataSource: ReplyRemoteDataSource(),
-);
-
-final getReplyList = GetReplyList(repository);
-final likeReply = LikeReply(repository);
-
-// Get replies
-final result = await getReplyList(
-  isLogin: true,
-  oid: 12345,
-  nextOffset: '',
-  type: 1,
-  page: 1,
-  sort: 1,
-);
-
-// Like a reply
-await likeReply(
-  type: 1,
-  oid: 12345,
-  rpid: 67890,
-  action: 1,
-);
+// Using controllers with Riverpod
+class MyPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Navigate to reply list
+    return ReplyListPage(
+      oid: 12345, // Content ID
+      type: 1, // Content type (1=video, etc.)
+      sort: 1, // Sort order
+    );
+  }
+}
 ```
 
 ## API Operations
@@ -82,3 +79,18 @@ The `ReplyRemoteDataSource` provides the following operations:
 | `report` | Report a reply |
 | `replyInteraction` | Get reply interaction info |
 | `replySubjectModify` | Modify reply subject (close/open comments) |
+
+## Migration Status
+
+- ✅ Domain Layer Complete
+- ✅ Data Layer Complete
+- ✅ Presentation Layer Complete (New)
+- ⏳ Tests (Pending)
+- ✅ Documentation Complete
+
+## Code Quality
+
+- ✅ `flutter analyze` No issues found
+- ✅ `dart format` Formatted
+- ✅ Riverpod code generation verified
+- ✅ Clean architecture compliance verified
