@@ -10,6 +10,8 @@ import 'package:PiliPlus/features/shell/presentation/providers/navigation_provid
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
+import 'package:PiliPlus/features/shell/presentation/widgets/bottom_nav_bar.dart';
+import 'package:PiliPlus/features/shell/presentation/widgets/side_nav_bar.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
@@ -205,6 +207,11 @@ class _ShellPageState extends ConsumerState<ShellPage>
     // 根据当前屏幕尺寸判断是否使用底部导航
     final useBottomNav = MediaQuery.sizeOf(context).isPortrait;
 
+    // 读取侧边栏需要的数据
+    final dynamicBadgeMode = ref.read(dynamicBadgeModeProvider);
+    final unreadMsg = ref.watch(unreadMessageControllerProvider);
+    final msgBadgeMode = ref.read(msgBadgeModeProvider);
+
     Widget child = widget.navigationShell; // 使用 StatefulNavigationShell
 
     Widget? bottomNav;
@@ -212,13 +219,30 @@ class _ShellPageState extends ConsumerState<ShellPage>
     final shouldUseBottomNav =
         useBottomNav && config.navigationBars.length >= 2;
     if (shouldUseBottomNav) {
-      bottomNav = _buildBottomNav(config, unreadDyn.count);
+      bottomNav = ShellBottomNavigationBar(
+        config: config,
+        dynCount: unreadDyn.count,
+        onDestinationSelected: _handleNavTap,
+      );
       child = Row(children: [Expanded(child: child)]);
     } else if (config.navigationBars.isNotEmpty) {
       // 只有在有导航项时才显示侧边栏
       child = Row(
         children: [
-          _buildSideBar(config, theme, unreadDyn.count),
+          SideNavBar(
+            config: config,
+            dynCount: unreadDyn.count,
+            dynamicBadgeMode: dynamicBadgeMode,
+            unreadMessage: unreadMsg,
+            msgBadgeMode: msgBadgeMode,
+            theme: theme,
+            onDestinationSelected: _handleNavTap,
+            onSearchPressed: () => PageUtils.goNamed(AppRoutes.search),
+            onMessagePressed: () => PageUtils.goNamed(AppRoutes.whisper),
+            onUserTap: () => widget.navigationShell.goBranch(2),
+            isLogin: Get.find<AccountService>().isLogin.value,
+            faceUrl: Get.find<AccountService>().face.value,
+          ),
           Expanded(child: child),
         ],
       );
