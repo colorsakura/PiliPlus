@@ -1,3 +1,5 @@
+import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/models/common/fav_order_type.dart';
 import 'package:PiliPlus/models/fav/fav_detail/data.dart';
 import 'package:PiliPlus/models/fav/fav_detail/media.dart';
@@ -87,7 +89,12 @@ class _FavSearchPageState
     ),
   ];
 
-  late final gridDelegate = Grid.videoCardHDelegate(context, minHeight: 110);
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
 
   @override
   Widget buildList(List<FavDetailItemModel> list) {

@@ -1,3 +1,5 @@
+import 'package:PiliPlus/core/constants/constants.dart' show StyleString;
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/history/presentation/widgets/item.dart';
 import 'package:PiliPlus/models/history/data.dart';
 import 'package:PiliPlus/models/history/list.dart';
@@ -27,7 +29,12 @@ class _HistorySearchPageState
     tag: Utils.generateRandomString(8),
   );
 
-  late final gridDelegate = Grid.videoCardHDelegate(context, minHeight: 110);
+  late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    mainAxisSpacing: 2,
+    crossAxisSpacing: 0,
+    childAspectRatio: StyleString.aspectRatio * 2.2,
+  );
 
   @override
   Widget buildList(List<HistoryItemModel> list) {
