@@ -34,7 +34,9 @@ class _WhisperPageState extends State<WhisperPage> {
         actions: [
           IconButton(
             tooltip: '新增粉丝',
-            onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
+            onPressed: () => PageUtils.pushNamed(
+              AppRoutes.webview,
+              parameters: {
                 'url':
                     'https://www.bilibili.com/h5/follow/newFans?navhide=1&${Utils.themeUrl(theme.colorScheme == Brightness.dark)}',
               },

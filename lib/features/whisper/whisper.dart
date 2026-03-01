@@ -16,8 +16,14 @@ export 'package:PiliPlus/features/whisper/data/datasources/whisper_remote_dataso
 export 'package:PiliPlus/features/whisper/data/repositories/whisper_repository_impl.dart'
     show WhisperRepositoryImpl;
 
-// Presentation exports
+// Presentation exports (GetX - @deprecated)
 export 'package:PiliPlus/features/whisper/presentation/pages/whisper_page.dart'
     show WhisperPage;
 export 'package:PiliPlus/features/whisper/presentation/pages/whisper_controller.dart'
     show WhisperController;
+
+// Presentation exports (Riverpod - New)
+export 'package:PiliPlus/features/whisper/presentation/providers/whisper_session_controller.dart'
+    show WhisperSessionState, WhisperSessionController;
+export 'package:PiliPlus/features/whisper/presentation/pages/whisper_page_v2.dart'
+    show WhisperPageV2;
