@@ -1,3 +1,5 @@
+import 'package:PiliPlus/core/errors/failures.dart';
+import 'package:PiliPlus/features/login/domain/entities/login_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/login_result_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/qr_code_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/risk_verify_info_entity.dart';
@@ -135,4 +137,17 @@ abstract interface class LoginRepository {
 
   /// 查询验证码
   Future<CaptchaDataModel> queryCaptcha();
+
+  /// 简化的登录方法（用于演示干净架构迁移）
+  ///
+  /// [username] 用户名或邮箱
+  /// [password] 密码
+  ///
+  /// 返回 [LoginEntity] 登录成功后的实体
+  ///
+  /// 抛出 [Failure] 当登录失败时
+  Future<LoginEntity> performLogin({
+    required String username,
+    required String password,
+  });
 }
