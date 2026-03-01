@@ -1,4 +1,7 @@
 import 'package:PiliPlus/features/login/data/datasources/login_api_datasource.dart';
+import 'package:PiliPlus/features/login/data/datasources/login_remote_datasource.dart';
+import 'package:PiliPlus/features/login/data/mappers/login_mapper.dart';
+import 'package:PiliPlus/features/login/domain/entities/login_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/login_result_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/qr_code_entity.dart';
 import 'package:PiliPlus/features/login/domain/entities/risk_verify_info_entity.dart';
@@ -9,10 +12,13 @@ import 'package:PiliPlus/models/login/model.dart';
 /// 登录仓库实现
 class LoginRepositoryImpl implements LoginRepository {
   final LoginRemoteDataSource _remoteDataSource;
+  final LoginRemoteDatasource? _simplifiedDatasource;
 
   LoginRepositoryImpl({
     required LoginRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+    LoginRemoteDatasource? simplifiedDatasource,
+  })  : _remoteDataSource = remoteDataSource,
+        _simplifiedDatasource = simplifiedDatasource;
 
   @override
   Future<QrCodeEntity> getQRCode() async {
@@ -291,5 +297,35 @@ class LoginRepositoryImpl implements LoginRepository {
     } else {
       throw Exception('查询验证码失败: ${result['data']}');
     }
+  }
+
+  @override
+  Future<LoginEntity> performLogin({
+    required String username,
+    required String password,
+  }) async {
+    final datasource = _simplifiedDatasource;
+    if (datasource == null) {
+      throw UnimplementedError(
+        'performLogin requires simplifiedDatasource to be provided',
+      );
+    }
+    final model = await datasource.performLogin(
+      username: username,
+      password: password,
+    );
+    return LoginMapper.toEntity(model);
+  }
+
+  @override
+  Future<LoginEntity> refreshToken(String refreshToken) async {
+    // TODO: 实现令牌刷新逻辑
+    throw UnimplementedError('refreshToken not implemented');
+  }
+
+  @override
+  Future<void> logout() async {
+    // TODO: 实现退出登录逻辑
+    throw UnimplementedError('logout not implemented');
   }
 }
