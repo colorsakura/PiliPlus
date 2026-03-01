@@ -6,8 +6,7 @@ import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/models/common/dm_block_type.dart';
 import 'package:PiliPlus/models/user/danmaku_block.dart';
 import 'package:PiliPlus/models/user/danmaku_rule.dart';
-import 'package:PiliPlus/features/danmaku_block/presentation/providers/danmaku_block_controller.dart';
-import 'package:PiliPlus/features/danmaku_block/presentation/providers/danmaku_block_providers.dart';
+import 'package:PiliPlus/features/danmaku_block/presentation/providers/danmaku_filter_controller.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
@@ -29,54 +28,59 @@ class DanmakuBlockPageV2 extends ConsumerStatefulWidget {
 
 class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
     with SingleTickerProviderStateMixin {
-  late DanmakuBlockController _controller;
+  late TabController _tabController;
   late PlPlayerController plPlayerController;
 
   @override
   void initState() {
     super.initState();
-    _controller = ref.read(danmakuBlockControllerProvider);
-    _controller.initTabController(this);
+    _tabController = TabController(length: 3, vsync: this);
     plPlayerController = Get.arguments as PlPlayerController;
   }
 
   @override
   void dispose() {
-    final ruleFilter = RuleFilter.fromRuleTypeEntries(_controller.state.rules);
+    final controllerState = ref.read(danmakuFilterControllerProvider);
+    final ruleFilter = RuleFilter.fromRuleTypeEntries(controllerState.rules);
     plPlayerController.filters = ruleFilter;
     GStorage.localCacheRepository.setString(
       LocalCacheKey.danmakuFilterRules,
       Utils.jsonEncoder.convert(ruleFilter.toJson()),
     );
+    _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controllerState = ref.watch(danmakuFilterControllerProvider);
+    final controller = ref.read(danmakuFilterControllerProvider.notifier);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('弹幕屏蔽'),
         bottom: TabBar(
-          controller: _controller.tabController,
+          controller: _tabController,
           tabs: DmBlockType.values
               .map(
                 (e) => Tab(
                   text:
-                      '${e.label}(${_controller.getRulesForTab(e.index).length})',
+                      '${e.label}(${controller.getRulesForTab(e.index).length})',
                 ),
               )
               .toList(),
         ),
       ),
       body: tabBarView(
-        controller: _controller.tabController,
+        controller: _tabController,
         children: DmBlockType.values
             .map(
               (e) => KeepAliveWrapper(
                 builder: (context) => tabViewBuilder(
                   e.index,
-                  _controller.getRulesForTab(e.index),
+                  controller.getRulesForTab(e.index),
+                  controller,
                 ),
               ),
             )
@@ -85,14 +89,19 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
       floatingActionButton: FloatingActionButton(
         tooltip: '添加',
         onPressed: () => _showAddDialog(
-          DmBlockType.values[_controller.tabController.index],
+          DmBlockType.values[_tabController.index],
+          controller,
         ),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Widget tabViewBuilder(final int tabIndex, List<SimpleRule> list) {
+  Widget tabViewBuilder(
+    final int tabIndex,
+    List<SimpleRule> list,
+    DanmakuFilterController controller,
+  ) {
     if (list.isEmpty) {
       return scrollErrorWidget();
     }
@@ -110,7 +119,7 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
           onPressed: () => showConfirmDialog(
             context: context,
             title: '确定删除该规则？',
-            onConfirm: () => _controller.deleteRule(
+            onConfirm: () => controller.deleteRule(
               tabIndex,
               itemIndex,
               item.id,
@@ -132,7 +141,8 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
                       tooltip: '编辑',
                       icon: const Icon(Icons.edit_outlined),
                       onPressed: () => _showAddDialog(
-                        DmBlockType.values[_controller.tabController.index],
+                        DmBlockType.values[_tabController.index],
+                        controller,
                         initFilter: item.filter,
                         itemIndex: itemIndex,
                         itemId: item.id,
@@ -147,7 +157,8 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
   }
 
   void _showAddDialog(
-    DmBlockType type, {
+    DmBlockType type,
+    DanmakuFilterController controller, {
     String initFilter = '',
     int? itemIndex,
     int? itemId,
@@ -194,13 +205,13 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
               if (filter != initFilter) {
                 PageUtils.pop();
                 if (itemId != null) {
-                  await _controller.deleteRule(
+                  await controller.deleteRule(
                     type.index,
                     itemIndex!,
                     itemId,
                   );
                 }
-                await _controller.addRule(
+                await controller.addRule(
                   filter: filter,
                   type: type.index,
                 );
