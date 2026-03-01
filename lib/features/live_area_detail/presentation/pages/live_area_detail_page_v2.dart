@@ -1,15 +1,15 @@
-import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
-import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
-import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
-import 'package:PiliPlus/features/live_area_detail/presentation/providers/live_area_detail_list_provider.dart';
+import 'package:PiliPlus/features/live_area_detail/presentation/providers/live_area_detail_controller.dart';
+import 'package:PiliPlus/features/live_area_detail/presentation/pages/child/view.dart';
 import 'package:PiliPlus/features/live_search/live_search.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
-import 'package:PiliPlus/features/live_area_detail/presentation/pages/child/view.dart';
+import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
+import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
+import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:PiliPlus/utils/waterfall.dart';
 
 class LiveAreaDetailPage extends ConsumerStatefulWidget {
   const LiveAreaDetailPage({
@@ -30,15 +30,11 @@ class LiveAreaDetailPage extends ConsumerStatefulWidget {
 class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(
-      liveAreaDetailListControllerProvider(
-        (
-          areaId: widget.areaId,
-          parentAreaId: widget.parentAreaId,
-        ),
-      ),
-    );
-    final listState = controller.state.listState;
+    final state = ref.watch(liveAreaDetailControllerProvider(
+      widget.areaId,
+      widget.parentAreaId,
+    ));
+    final listState = state.listState;
     final theme = Theme.of(context);
     final padding = MediaQuery.viewPaddingOf(context);
 
@@ -58,7 +54,7 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
       ),
       body: Padding(
         padding: EdgeInsets.only(left: padding.left, right: padding.right),
-        child: _buildBody(theme, padding.bottom, listState),
+        child: _buildBody(theme, padding.bottom, listState, state),
       ),
     );
   }
@@ -67,24 +63,14 @@ class _LiveAreaDetailPageState extends ConsumerState<LiveAreaDetailPage> {
     ThemeData theme,
     double bottom,
     LoadingState listState,
+    LiveAreaDetailState state,
   ) {
     return switch (listState) {
       Loading() => const SizedBox.shrink(),
       Success(:final response) =>
         response != null && response.isNotEmpty
             ? DefaultTabController(
-                initialIndex:
-                    ref
-                        .watch(
-                          liveAreaDetailListControllerProvider(
-                            (
-                              areaId: widget.areaId,
-                              parentAreaId: widget.parentAreaId,
-                            ),
-                          ),
-                        )
-                        .state
-                        .initialIndex,
+                initialIndex: state.initialIndex,
                 length: response.length,
                 child: Builder(
                   builder: (context) {
