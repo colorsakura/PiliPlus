@@ -465,9 +465,9 @@ class VideoDetailController extends GetxController
       if (plPlayerController.isFullScreen.value || showVideoSheet) {
         PageUtils.showVideoBottomSheet(
           context,
-          child: plPlayerController.darkVideoPage && MyApp.darkThemeData != null
+          child: plPlayerController.darkVideoPage
               ? Theme(
-                  data: MyApp.darkThemeData!,
+                  data: ThemeData.dark(),
                   child: panel(),
                 )
               : panel(),
@@ -966,9 +966,9 @@ class VideoDetailController extends GetxController
     if (plPlayerController.isFullScreen.value || showVideoSheet) {
       PageUtils.showVideoBottomSheet(
         context,
-        child: plPlayerController.darkVideoPage && MyApp.darkThemeData != null
+        child: plPlayerController.darkVideoPage
             ? Theme(
-                data: MyApp.darkThemeData!,
+                data: ThemeData.dark(),
                 child: PostPanel(
                   enableSlide: false,
                   videoDetailController: this,
@@ -1292,9 +1292,9 @@ class VideoDetailController extends GetxController
     if (plPlayerController.isFullScreen.value || showVideoSheet) {
       PageUtils.showVideoBottomSheet(
         context,
-        child: plPlayerController.darkVideoPage && MyApp.darkThemeData != null
+        child: plPlayerController.darkVideoPage
             ? Theme(
-                data: MyApp.darkThemeData!,
+                data: ThemeData.dark(),
                 child: NoteListPage(
                   oid: aid,
                   enableSlide: false,

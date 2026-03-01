@@ -367,7 +367,7 @@ Future<void> showImportExportDialog<T>(
             showDialog(
               context: context,
               builder: (context) {
-                final isDark = context.isDarkMode;
+                final isDark = Theme.of(context).brightness == Brightness.dark;
                 if (isDark != isDarkMode) {
                   isDarkMode = isDark;
                   renderer = TextSpanRenderer(

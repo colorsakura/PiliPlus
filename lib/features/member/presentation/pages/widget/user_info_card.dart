@@ -18,7 +18,6 @@ import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -50,7 +49,7 @@ class UserInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isLight = colorScheme.isLight;
+    final isLight = colorScheme.brightness == Brightness.light;
     final width = context.width;
     final isPortrait = width < 600;
     return ViewSafeArea(
@@ -168,7 +167,7 @@ class UserInfoCard extends StatelessWidget {
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: (card.vip?.status ?? -1) > 0 && card.vip?.type == 2
-                    ? colorScheme.vipColor
+                    ? Colors.amber
                     : null,
               ),
             ),
@@ -187,7 +186,7 @@ class UserInfoCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
                 borderRadius: StyleString.mdRadius,
-                color: colorScheme.vipColor,
+                color: Colors.amber,
               ),
               child: Text(
                 card.vip?.label?.text ?? '大会员',

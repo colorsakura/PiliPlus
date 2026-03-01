@@ -1,5 +1,4 @@
 import 'package:PiliPlus/shared/widgets/custom_arc.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +36,7 @@ class ActionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    late final primary = !expand && colorScheme.isLight
+    late final primary = !expand && colorScheme.brightness == Brightness.light
         ? colorScheme.inversePrimary
         : colorScheme.primary;
     Widget child = Icon(

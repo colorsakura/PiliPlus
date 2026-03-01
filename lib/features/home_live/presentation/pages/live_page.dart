@@ -13,7 +13,6 @@ import 'package:PiliPlus/features/live_follow/live_follow.dart';
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -297,7 +296,7 @@ class _LivePageState extends ConsumerState<LivePage>
               onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                   'uaType': 'mob',
                   'url':
-                      'https://www.bilibili.com/h5/match/data/home?navhide=1&${theme.brightness.isDark ? 'dark=1' : 'dark=0'}',
+                      'https://www.bilibili.com/h5/match/data/home?navhide=1&${theme.brightness == Brightness.dark ? 'dark=1' : 'dark=0'}',
                 },
               ),
             ),

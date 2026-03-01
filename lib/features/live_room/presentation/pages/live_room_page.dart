@@ -34,7 +34,6 @@ import 'package:PiliPlus/plugin/pl_player/view.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -868,7 +867,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                                   'x$likeClickTime',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: colorScheme.isDark
+                                    color: colorScheme == Brightness.dark
                                         ? colorScheme.primary
                                         : colorScheme.inversePrimary,
                                   ),

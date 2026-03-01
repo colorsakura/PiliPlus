@@ -53,7 +53,6 @@ import 'package:PiliPlus/plugin/pl_player/widgets/mpv_convert_webp.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/play_pause_btn.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
@@ -1347,7 +1346,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
   Widget build(BuildContext context) {
     maxWidth = widget.maxWidth;
     maxHeight = widget.maxHeight;
-    final primary = colorScheme.isLight
+    final primary = colorScheme.brightness == Brightness.light
         ? colorScheme.inversePrimary
         : colorScheme.primary;
     late final thumbGlowColor = primary.withAlpha(80);

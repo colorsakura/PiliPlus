@@ -26,7 +26,6 @@ import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -211,7 +210,7 @@ class ReplyItemGrpc extends StatelessWidget {
                           color:
                               (replyItem.member.vipStatus > 0 &&
                                   replyItem.member.vipType == 2)
-                              ? theme.colorScheme.vipColor
+                              ? Colors.amber
                               : theme.colorScheme.outline,
                           fontSize: 13,
                         ),

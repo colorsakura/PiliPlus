@@ -12,7 +12,6 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/features/whisper_secondary/whisper_secondary.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:fixnum/fixnum.dart';
@@ -51,7 +50,7 @@ class WhisperSessionItem extends StatelessWidget {
       safeArea: true,
       tileColor: item.isPinned
           ? theme.colorScheme.onInverseSurface.withValues(
-              alpha: theme.brightness.isDark ? 0.4 : 0.8,
+              alpha: theme.brightness == Brightness.dark ? 0.4 : 0.8,
             )
           : null,
       onLongPress: () => showDialog(
@@ -245,7 +244,7 @@ class WhisperSessionItem extends StatelessWidget {
                           vipInfo?['status'] != null &&
                               vipInfo!['status'] > 0 &&
                               vipInfo['type'] == 2
-                          ? theme.colorScheme.vipColor
+                          ? Colors.amber
                           : null,
                     ),
                   ),

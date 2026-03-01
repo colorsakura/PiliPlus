@@ -19,7 +19,6 @@ import 'package:PiliPlus/features/video/presentation/pages/introduction/ugc/cont
 import 'package:PiliPlus/features/video/presentation/pages/member/controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
@@ -240,7 +239,7 @@ class _HorizontalMemberPageState extends State<HorizontalMemberPage> {
                 color:
                     (memberInfoModel.vip?.status ?? -1) > 0 &&
                         memberInfoModel.vip?.type == 2
-                    ? theme.colorScheme.vipColor
+                    ? Colors.amber
                     : null,
               ),
             ),

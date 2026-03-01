@@ -20,7 +20,6 @@ import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -765,7 +764,7 @@ class _AudioPageState extends State<AudioPage> {
     final primary = colorScheme.primary;
     final thumbGlowColor = primary.withAlpha(80);
     final bufferedBarColor = primary.withValues(alpha: 0.4);
-    final baseBarColor = colorScheme.brightness.isDark
+    final baseBarColor = colorScheme.brightness == Brightness.dark
         ? const Color(0x33FFFFFF)
         : const Color(0x33999999);
     Widget child = Obx(

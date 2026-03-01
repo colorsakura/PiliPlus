@@ -17,7 +17,6 @@ import 'package:PiliPlus/models/pgc/pgc_review/list.dart';
 import 'package:PiliPlus/shared/skeleton/video_reply.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
@@ -248,7 +247,7 @@ class _PgcReviewPageV2State extends ConsumerState<PgcReviewPageV2>
                                     item.author?.vip?.status != null &&
                                         item.author!.vip!.status > 0 &&
                                         item.author!.vip!.type == 2
-                                    ? theme.colorScheme.vipColor
+                                    ? Colors.amber
                                     : theme.colorScheme.outline,
                                 fontSize: 13,
                               ),

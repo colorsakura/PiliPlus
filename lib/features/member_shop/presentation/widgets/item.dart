@@ -3,7 +3,6 @@ import 'package:PiliPlus/shared/widgets/badge.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/space/space_shop/item.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
@@ -72,7 +71,7 @@ class MemberShopItem extends StatelessWidget {
                     children: [
                       if (item.netPrice case final netPrice?)
                         Text.rich(
-                          style: TextStyle(color: colorScheme.vipColor),
+                          style: TextStyle(color: Colors.amber),
                           TextSpan(
                             children: [
                               if (netPrice.pricePrefix?.isNotEmpty == true)
@@ -110,7 +109,7 @@ class MemberShopItem extends StatelessWidget {
                       '来自${item.itemSourceName}',
                       style: TextStyle(
                         fontSize: 11,
-                        color: colorScheme.freeColor,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                 ],

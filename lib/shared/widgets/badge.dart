@@ -1,6 +1,5 @@
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flutter/material.dart';
 
 class PBadge extends StatelessWidget {
@@ -59,7 +58,7 @@ class PBadge extends StatelessWidget {
         bgColor = Colors.black45;
         color = Colors.white;
       case PBadgeType.error:
-        if (theme.isDark) {
+        if (theme == Brightness.dark) {
           bgColor = theme.errorContainer;
           color = theme.onErrorContainer;
         } else {
@@ -75,7 +74,7 @@ class PBadge extends StatelessWidget {
         bgColor = Colors.transparent;
         borderColor = theme.secondary;
       case PBadgeType.free:
-        bgColor = theme.freeColor;
+        bgColor = Colors.blue;
         color = Colors.white;
       case PBadgeType.shop:
         bgColor = theme.secondaryContainer.withValues(alpha: 0.5);

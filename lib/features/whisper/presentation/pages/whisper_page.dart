@@ -7,7 +7,6 @@ import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/shared/skeleton/whisper_item.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/extension/three_dot_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ class _WhisperPageState extends State<WhisperPage> {
             tooltip: '新增粉丝',
             onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                 'url':
-                    'https://www.bilibili.com/h5/follow/newFans?navhide=1&${Utils.themeUrl(theme.colorScheme.isDark)}',
+                    'https://www.bilibili.com/h5/follow/newFans?navhide=1&${Utils.themeUrl(theme.colorScheme == Brightness.dark)}',
               },
             ),
             icon: const Icon(Icons.account_circle_outlined),

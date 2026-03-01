@@ -18,7 +18,6 @@ import 'package:PiliPlus/features/dynamics_mention/dynamics_mention.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -210,7 +209,7 @@ abstract class CommonRichTextPubPageState<T extends CommonRichTextPubPage>
           toolbarTitle: '裁剪',
           toolbarColor: colorScheme.secondaryContainer,
           toolbarWidgetColor: colorScheme.onSecondaryContainer,
-          statusBarLight: colorScheme.isLight,
+          statusBarLight: colorScheme.brightness == Brightness.light,
         ),
         IOSUiSettings(title: '裁剪'),
       ],

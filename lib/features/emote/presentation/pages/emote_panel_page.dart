@@ -10,7 +10,6 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/emote/emote.dart';
 import 'package:PiliPlus/models/emote/package.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -199,7 +198,7 @@ class _EmotePanelState extends ConsumerState<EmotePanel>
                               .withValues(alpha: 0.8),
                           onPressed: () => PageUtils.pushNamed(AppRoutes.webview, parameters: {
                               'url':
-                                  'https://www.bilibili.com/h5/mall/emoji-package/home?navhide=1&${Utils.themeUrl(theme.colorScheme.isDark)}',
+                                  'https://www.bilibili.com/h5/mall/emoji-package/home?navhide=1&${Utils.themeUrl(theme.colorScheme == Brightness.dark)}',
                             },
                           ),
                           icon: const Icon(Icons.settings),

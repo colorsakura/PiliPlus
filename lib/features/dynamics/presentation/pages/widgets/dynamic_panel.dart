@@ -7,7 +7,6 @@ import 'package:PiliPlus/features/dynamics/presentation/widgets/action_panel.dar
 import 'package:PiliPlus/features/dynamics/presentation/widgets/author_panel.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/dyn_content.dart';
 import 'package:PiliPlus/features/dynamics/presentation/widgets/interaction.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart' hide InkWell;
@@ -264,7 +263,7 @@ class DynamicPanel extends StatelessWidget {
       padding: const .symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondaryContainer.withValues(
-          alpha: theme.brightness.isLight ? 0.5 : 0.7,
+          alpha: theme.brightness != Brightness.dark ? 0.5 : 0.7,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6)),
       ),

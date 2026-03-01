@@ -17,7 +17,6 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -136,7 +135,7 @@ class AuthorPanel extends StatelessWidget {
                             moduleAuthor.vip != null &&
                                 moduleAuthor.vip!.status > 0 &&
                                 moduleAuthor.vip!.type == 2
-                            ? theme.colorScheme.vipColor
+                            ? Colors.amber
                             : theme.colorScheme.onSurface,
                         fontSize: theme.textTheme.titleSmall!.fontSize,
                       ),

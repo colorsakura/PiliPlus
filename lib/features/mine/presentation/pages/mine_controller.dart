@@ -6,7 +6,6 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/user.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
-import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/models/user/info.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/user/stat.dart';
@@ -35,10 +34,8 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   // 用户状态 动态、关注、粉丝
   final Rx<UserStat> userStat = const UserStat().obs;
 
-  Rx<ThemeType> themeType = Pref.themeType.obs;
-
-  ThemeType get nextThemeType =>
-      ThemeType.values[(themeType.value.index + 1) % ThemeType.values.length];
+  // Theme mode tracking
+  Rx<ThemeMode> themeMode = Pref.themeMode.obs;
 
   // 使用可空类型避免未初始化错误
   static RxBool? anonymity;
@@ -244,10 +241,30 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   }
 
   void onChangeTheme() {
-    final newVal = nextThemeType;
-    themeType.value = newVal;
-    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, newVal.index);
-    Get.changeThemeMode(newVal.toThemeMode);
+    // Cycle through theme modes: light -> dark -> system -> light
+    final currentMode = themeMode.value;
+    ThemeMode newMode;
+    switch (currentMode) {
+      case ThemeMode.light:
+        newMode = ThemeMode.dark;
+        break;
+      case ThemeMode.dark:
+        newMode = ThemeMode.system;
+        break;
+      default:
+        newMode = ThemeMode.light;
+    }
+
+    themeMode.value = newMode;
+    GStorage.settingRepository.setInt(SettingBoxKey.themeMode,
+        switch (newMode) {
+          ThemeMode.light => 0,
+          ThemeMode.dark => 1,
+          ThemeMode.system => 2,
+        });
+
+    // Apply theme mode change
+    Get.changeThemeMode(newMode);
   }
 
   void push(String name) {

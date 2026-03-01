@@ -18,7 +18,6 @@ import 'package:PiliPlus/features/video/presentation/widgets/reply/reply_item_gr
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
@@ -512,7 +511,7 @@ class _SavePanelState extends State<SavePanel> {
                                                 padding: const EdgeInsets.all(
                                                   3,
                                                 ),
-                                                color: theme.brightness.isDark
+                                                color: theme.brightness == Brightness.dark
                                                     ? Colors.white
                                                     : theme.colorScheme.surface,
                                                 child: PrettyQrView.data(

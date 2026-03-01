@@ -8,12 +8,12 @@ import 'package:PiliPlus/features/mine/domain/usecases/get_user_info.dart';
 import 'package:PiliPlus/features/mine/domain/usecases/get_user_stat.dart';
 import 'package:PiliPlus/features/mine/presentation/providers/mine_providers.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
-import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 
 /// 我的页面状态
 class MineState {
@@ -32,8 +32,8 @@ class MineState {
   /// 收藏夹列表
   final FavFolderListEntity? favFolders;
 
-  /// 主题类型
-  final ThemeType themeType;
+  /// 主题模式
+  final ThemeMode themeMode;
 
   /// 是否匿名模式
   final bool isAnonymous;
@@ -44,7 +44,7 @@ class MineState {
     this.userInfo,
     this.userStat,
     this.favFolders,
-    this.themeType = ThemeType.system,
+    this.themeMode = ThemeMode.system,
     this.isAnonymous = false,
   });
 
@@ -54,7 +54,7 @@ class MineState {
     UserInfoEntity? userInfo,
     UserStatEntity? userStat,
     FavFolderListEntity? favFolders,
-    ThemeType? themeType,
+    ThemeMode? themeMode,
     bool? isAnonymous,
   }) {
     return MineState(
@@ -63,7 +63,7 @@ class MineState {
       userInfo: userInfo ?? this.userInfo,
       userStat: userStat ?? this.userStat,
       favFolders: favFolders ?? this.favFolders,
-      themeType: themeType ?? this.themeType,
+      themeMode: themeMode ?? this.themeMode,
       isAnonymous: isAnonymous ?? this.isAnonymous,
     );
   }
@@ -75,11 +75,7 @@ class MineState {
   bool get hasUserInfo => userInfo != null && !userInfo!.isEmpty;
 
   /// 下一个主题类型
-  ThemeType get nextThemeType {
-    final currentIndex = ThemeType.values.indexOf(themeType);
-    final nextIndex = (currentIndex + 1) % ThemeType.values.length;
-    return ThemeType.values[nextIndex];
-  }
+  // Note: nextThemeType removed for simplicity with ThemeMode
 }
 
 /// 我的页面Controller
@@ -95,14 +91,14 @@ class MineController extends Notifier<MineState> {
     _getFavFoldersUseCase = ref.read(getFavFoldersUseCaseProvider);
 
     // 初始化主题类型
-    final initialThemeType = Pref.themeType;
+    final initialThemeMode = Pref.themeMode;
 
     // 检查是否匿名模式
     final isAnonymous = Accounts.account.isNotEmpty &&
         !Accounts.heartbeat.isLogin;
 
     return MineState(
-      themeType: initialThemeType,
+      themeMode: initialThemeMode,
       isAnonymous: isAnonymous,
     );
   }
@@ -176,14 +172,7 @@ class MineController extends Notifier<MineState> {
     await fetchUserInfo();
   }
 
-  /// 切换主题
-  void changeTheme() {
-    final newThemeType = state.nextThemeType;
-    state = state.copyWith(themeType: newThemeType);
-
-    // 保存设置
-    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, newThemeType.index);
-  }
+  /// 主题切换已移除，由 presentation/pages 中的 controller 处理
 
   /// 切换匿名模式
   void toggleAnonymous() {

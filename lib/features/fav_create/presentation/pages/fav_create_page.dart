@@ -7,7 +7,6 @@ import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/msg.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/fav_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:easy_debounce/easy_throttle.dart';
@@ -129,7 +128,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
                 toolbarTitle: '裁剪',
                 toolbarColor: theme.colorScheme.secondaryContainer,
                 toolbarWidgetColor: theme.colorScheme.onSecondaryContainer,
-                statusBarLight: theme.colorScheme.isLight,
+                statusBarLight: theme.colorScheme.brightness == Brightness.light,
                 aspectRatioPresets: [CropAspectRatioPreset.ratio16x9],
                 lockAspectRatio: true,
                 hideBottomControls: true,

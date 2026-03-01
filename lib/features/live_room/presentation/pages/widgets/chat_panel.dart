@@ -11,7 +11,6 @@ import 'package:PiliPlus/features/live_room/presentation/pages/controller.dart';
 import 'package:PiliPlus/features/live_room/presentation/pages/superchat/superchat_card.dart';
 import 'package:PiliPlus/features/video/presentation/widgets/header_control.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
@@ -44,7 +43,7 @@ class LiveRoomChatPanel extends StatelessWidget {
         : Colors.white.withValues(alpha: 0.6);
     late final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
     late final colorScheme = ColorScheme.of(context);
-    late final primary = colorScheme.isDark
+    late final primary = colorScheme == Brightness.dark
         ? colorScheme.primary
         : colorScheme.inversePrimary;
     return Stack(

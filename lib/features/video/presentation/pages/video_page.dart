@@ -51,7 +51,6 @@ import 'package:PiliPlus/services/shutdown_timer_service.dart'
     show shutdownTimerService;
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -552,7 +551,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
           : minVideoHeight;
 
     themeData = videoDetailController.plPlayerController.darkVideoPage
-        ? MyApp.darkThemeData ?? Theme.of(context)
+        ? ThemeData.dark()
         : Theme.of(context);
   }
 
@@ -1951,7 +1950,7 @@ class _PlPlayerAppBarWidget extends ConsumerWidget {
                   : SystemUiOverlayStyle(
                       statusBarIconBrightness: Brightness.light,
                       systemNavigationBarIconBrightness:
-                          themeData.brightness.reverse,
+                          themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                     )
               : null,
         ),
@@ -1962,9 +1961,9 @@ class _PlPlayerAppBarWidget extends ConsumerWidget {
             toolbarHeight: 0,
             systemOverlayStyle: Platform.isAndroid
                 ? SystemUiOverlayStyle(
-                    statusBarIconBrightness: themeData.brightness.reverse,
+                    statusBarIconBrightness: themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                     systemNavigationBarIconBrightness:
-                        themeData.brightness.reverse,
+                        themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                   )
                 : null,
           ),

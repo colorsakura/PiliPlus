@@ -15,7 +15,6 @@ import 'package:PiliPlus/features/dynamics/presentation/widgets/vote.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -167,7 +166,7 @@ class OpusContent extends StatelessWidget {
     }
 
     final colorScheme = Theme.of(context).colorScheme;
-    late final isDarkMode = colorScheme.isDark;
+    late final isDarkMode = colorScheme == Brightness.dark;
     double? surfaceLuminance;
     double getSurfaceLuminance() =>
         surfaceLuminance ??= colorScheme.surface.computeLuminance();
@@ -717,7 +716,7 @@ Widget moduleBlockedItem(
   ModuleBlocked moduleBlocked,
   double maxWidth,
 ) {
-  late final isDarkMode = theme.brightness.isDark;
+  late final isDarkMode = theme.brightness == Brightness.dark;
 
   BoxDecoration? bgImg() {
     return moduleBlocked.bgImg == null

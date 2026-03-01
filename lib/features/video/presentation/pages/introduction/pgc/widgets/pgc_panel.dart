@@ -7,7 +7,6 @@ import 'package:PiliPlus/models/video/video_detail/episode.dart'
     hide EpisodeItem;
 import 'package:PiliPlus/features/video/presentation/pages/controller.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +222,7 @@ class _PgcPanelState extends State<PgcPanel> {
                           style: TextStyle(
                             fontSize: 11,
                             color: switch (item.badge) {
-                              '限免' => theme.freeColor,
+                              '限免' => Colors.green,
                               '预告' => theme.onSurfaceVariant,
                               _ => theme.primary,
                             },

@@ -17,7 +17,6 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/app_sign.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/extension/file_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -503,7 +502,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 toolbarTitle: '裁剪',
                 toolbarColor: theme.colorScheme.secondaryContainer,
                 toolbarWidgetColor: theme.colorScheme.onSecondaryContainer,
-                statusBarLight: theme.colorScheme.isLight,
+                statusBarLight: theme.colorScheme.brightness == Brightness.light,
                 aspectRatioPresets: const [CropAspectRatioPresetCustom()],
                 lockAspectRatio: true,
                 hideBottomControls: true,

@@ -15,7 +15,6 @@ import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/mine/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart' hide ListTile;
@@ -180,13 +179,18 @@ class _MediaPageState extends CommonPageState<MinePage> {
         ),
         Obx(
           () {
+            final currentMode = controller.themeMode.value;
             return IconButton(
               iconSize: iconSize,
               padding: padding,
               style: style,
-              tooltip: '切换至${controller.nextThemeType.desc}主题',
+              tooltip: '切换主题 (${currentMode == ThemeMode.light ? '浅色' : currentMode == ThemeMode.dark ? '深色' : '系统'})',
               onPressed: controller.onChangeTheme,
-              icon: controller.themeType.value.icon,
+              icon: Icon(
+                currentMode == ThemeMode.light ? Icons.light_mode_outlined :
+                currentMode == ThemeMode.dark ? Icons.dark_mode_outlined :
+                Icons.brightness_auto_outlined,
+              ),
             );
           },
         ),
@@ -291,7 +295,7 @@ class _MediaPageState extends CommonPageState<MinePage> {
                               style: theme.textTheme.titleMedium!.copyWith(
                                 height: 1,
                                 color: isVip && userInfo.vipType == 2
-                                    ? theme.colorScheme.vipColor
+                                    ? Colors.amber
                                     : null,
                               ),
                               maxLines: 1,

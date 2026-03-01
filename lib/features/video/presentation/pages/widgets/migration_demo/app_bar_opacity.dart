@@ -1,5 +1,4 @@
 import 'package:PiliPlus/features/video/presentation/providers/video_detail_provider.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +59,7 @@ class AppBarOpacityWidget extends ConsumerWidget {
                   : SystemUiOverlayStyle(
                       statusBarIconBrightness: Brightness.light,
                       systemNavigationBarIconBrightness:
-                          themeData.brightness.reverse,
+                          themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                     )
               : null,
         ),
@@ -72,9 +71,9 @@ class AppBarOpacityWidget extends ConsumerWidget {
             systemOverlayStyle: platform == TargetPlatform.android
                 ? SystemUiOverlayStyle(
                     statusBarIconBrightness:
-                        themeData.brightness.reverse,
+                        themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                     systemNavigationBarIconBrightness:
-                        themeData.brightness.reverse,
+                        themeData.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
                   )
                 : null,
           ),

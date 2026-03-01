@@ -17,7 +17,6 @@ import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/skip_type.dart';
 import 'package:PiliPlus/models/common/super_chat_type.dart';
 import 'package:PiliPlus/models/common/super_resolution_type.dart';
-import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/models/common/video/audio_quality.dart';
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
 import 'package:PiliPlus/models/common/video/live_quality.dart';
@@ -112,17 +111,20 @@ abstract final class Pref {
         SettingBoxKey.memberTab,
       ) ?? 0];
 
-  static int get _themeTypeInt => GStorage.settingRepository.getInt(
+  static ThemeMode get themeMode {
+  final themeModeInt = GStorage.settingRepository.getInt(
     SettingBoxKey.themeMode,
-  ) ?? ThemeType.system.index;
+  );
 
-  static ThemeType get themeType => ThemeType.values[_themeTypeInt];
-
-  static ThemeMode get themeMode => switch (_themeTypeInt) {
-    0 => ThemeMode.light,
-    1 => ThemeMode.dark,
-    _ => ThemeMode.system,
-  };
+  if (themeModeInt != null) {
+    return switch (themeModeInt) {
+      0 => ThemeMode.light,
+      1 => ThemeMode.dark,
+      _ => ThemeMode.system,
+    };
+  }
+  return ThemeMode.system;
+}
 
   static List<double> get springDescription {
     final strList = GStorage.settingRepository.getStringList(

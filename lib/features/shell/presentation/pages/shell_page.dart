@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/services/app_initializer/app_initializer.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
@@ -86,7 +85,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
     _padding = MediaQuery.viewPaddingOf(context);
     final brightness = Theme.brightnessOf(context);
     NetworkImgLayer.reduce =
-        NetworkImgLayer.reduceLuxColor != null && brightness.isDark;
+        NetworkImgLayer.reduceLuxColor != null && brightness == Brightness.dark;
     PageUtils.routeObserver.subscribe(
       this,
       ModalRoute.of(context) as PageRoute,
@@ -248,7 +247,7 @@ class _ShellPageState extends ConsumerState<ShellPage>
         value: SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.transparent,
           systemNavigationBarDividerColor: Colors.transparent,
-          systemNavigationBarIconBrightness: theme.brightness.reverse,
+          systemNavigationBarIconBrightness: theme.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
         ),
         child: child,
       );
