@@ -1,4 +1,5 @@
-import 'package:PiliPlus/app/router/app_routes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/shared/widgets/scroll_physics.dart';
 import 'package:PiliPlus/features/fan/fan.dart';
 import 'package:PiliPlus/features/follow/presentation/pages/child/child_view.dart';
@@ -6,19 +7,18 @@ import 'package:PiliPlus/features/follow_search/follow_search.dart';
 import 'package:PiliPlus/features/share/share.dart' show UserModel;
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:PiliPlus/features/contact/presentation/providers/contact_controller.dart';
 
 /// 联系人页面
 ///
 /// 显示关注和粉丝列表,支持用户选择
-class ContactPage extends StatefulWidget {
+class ContactPage extends ConsumerStatefulWidget {
   const ContactPage({super.key, this.isFromSelect = true});
 
   final bool isFromSelect;
 
   @override
-  State<ContactPage> createState() => _ContactPageState();
+  ConsumerState<ContactPage> createState() => _ContactPageState();
 
   /// 导航到联系人页面
   static void toContactPage({bool isFromSelect = true}) => PageUtils.toDupNamed(
@@ -27,15 +27,24 @@ class ContactPage extends StatefulWidget {
   );
 }
 
-class _ContactPageState extends State<ContactPage>
+class _ContactPageState extends ConsumerState<ContactPage>
     with SingleTickerProviderStateMixin {
-  late final mid = Accounts.main.mid;
   late final TabController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
+
+    // Initialize controller with current user ID
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(contactControllerProvider.notifier)
+          .initConfig(
+            isFromSelect: widget.isFromSelect,
+            userId: Accounts.main.mid,
+          );
+    });
   }
 
   @override
@@ -44,12 +53,19 @@ class _ContactPageState extends State<ContactPage>
     super.dispose();
   }
 
-  void onSelect(UserModel userModel) {
-    PageUtils.pop(userModel);
+  void _handleSelect(UserModel userModel) {
+    final result = ref
+        .read(contactControllerProvider.notifier)
+        .onSelect(userModel);
+    if (result != null) {
+      PageUtils.pop(result);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final config = ref.watch(contactControllerProvider);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -65,15 +81,15 @@ class _ContactPageState extends State<ContactPage>
           IconButton(
             onPressed: () async {
               final UserModel? userModel = await Navigator.of(context).push(
-                GetPageRoute(
-                  page: () => FollowSearchPageV2(
-                    mid: mid,
-                    isFromSelect: widget.isFromSelect,
+                MaterialPageRoute(
+                  builder: (context) => FollowSearchPageV2(
+                    mid: config.userId,
+                    isFromSelect: config.isFromSelect,
                   ),
                 ),
               );
               if (userModel != null) {
-                PageUtils.pop(userModel);
+                _handleSelect(userModel);
               }
             },
             icon: const Icon(Icons.search),
@@ -85,12 +101,12 @@ class _ContactPageState extends State<ContactPage>
         controller: _controller,
         children: [
           FollowChildPage(
-            mid: mid,
-            onSelect: widget.isFromSelect ? onSelect : null,
+            mid: config.userId,
+            onSelect: config.isFromSelect ? _handleSelect : null,
           ),
           FanPageV2(
             showName: false,
-            onSelect: widget.isFromSelect ? onSelect : null,
+            onSelect: config.isFromSelect ? _handleSelect : null,
           ),
         ],
       ),
