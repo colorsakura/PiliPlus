@@ -19,3 +19,19 @@ export 'package:PiliPlus/features/auth/data/datasources/auth_remote_datasource_i
     show AuthRemoteDataSourceImpl;
 export 'package:PiliPlus/features/auth/data/repositories/auth_repository_impl.dart'
     show AuthRepositoryImpl;
+
+// Presentation exports
+export 'package:PiliPlus/features/auth/presentation/providers/auth_controller.dart'
+    show
+        TVQRLoginController,
+        TVQRLoginState,
+        TVQRLoginStatus,
+        tvqrLoginControllerProvider;
+export 'package:PiliPlus/features/auth/presentation/providers/auth_providers.dart'
+    show
+        authRepositoryProvider,
+        fetchTVCodeUseCaseProvider,
+        pollQRCodeUseCaseProvider,
+        queryCaptchaUseCaseProvider;
+export 'package:PiliPlus/features/auth/presentation/pages/tv_qr_login_page.dart'
+    show TVQRLoginPage;

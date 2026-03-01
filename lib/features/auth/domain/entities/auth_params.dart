@@ -35,4 +35,10 @@ class QRCodePollResult {
     this.data,
     this.message,
   });
+
+  /// Check if QR code is expired (code 86038)
+  bool get isExpired => code == 86038;
+
+  /// Check if QR code is scanned but not confirmed (code 86090)
+  bool get isScanned => code == 86090;
 }

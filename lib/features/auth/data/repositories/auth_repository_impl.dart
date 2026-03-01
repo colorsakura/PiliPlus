@@ -26,14 +26,16 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<QRCodePollResult> pollQRCode(PollQRCodeParams params) {
-    return remoteDataSource.codePoll(params.authCode).then(
-      (result) => QRCodePollResult(
-        isSuccess: result['status'] == true,
-        code: result['code'],
-        data: result['data'],
-        message: result['msg'],
-      ),
-    );
+    return remoteDataSource
+        .codePoll(params.authCode)
+        .then(
+          (result) => QRCodePollResult(
+            isSuccess: result['status'] == true,
+            code: result['code'],
+            data: result['data'],
+            message: result['msg'],
+          ),
+        );
   }
 
   @override
