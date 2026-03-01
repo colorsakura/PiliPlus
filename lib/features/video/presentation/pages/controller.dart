@@ -71,7 +71,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:media_kit/media_kit.dart' as media_kit;
 
 class VideoDetailController extends GetxController
@@ -138,8 +137,6 @@ class VideoDetailController extends GetxController
   double? brightness;
 
   late final headerCtrKey = GlobalKey<TimeBatteryMixin>();
-
-  Box setting = GStorage.setting;
 
   // 预设的解码格式
   late String cacheDecode = Pref.defaultDecode; // def avc

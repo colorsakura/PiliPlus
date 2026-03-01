@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/init.dart';
@@ -17,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SponsorBlockPage extends StatefulWidget {
@@ -40,8 +41,6 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
   final _serverStatus = Rxn<bool>();
   final _userInfo = LoadingState<UserInfo>.loading().obs;
   final _dataSource = SponsorBlockRemoteDataSource();
-
-  Box setting = GStorage.setting;
 
   @override
   void initState() {
@@ -119,7 +118,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                     try {
                       _blockLimit = double.parse(_textController.text);
                       PageUtils.pop();
-                      setting.put(SettingBoxKey.blockLimit, _blockLimit);
+                      GStorage.settingRepository.setDouble(
+                        SettingBoxKey.blockLimit,
+                        _blockLimit,
+                      );
                       (context as Element).markNeedsBuild();
                     } catch (e) {
                       SmartDialog.showToast(e.toString());
@@ -193,7 +195,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                       _userId = Digest(
                         List.generate(16, (_) => Utils.random.nextInt(256)),
                       ).toString();
-                      setting.put(SettingBoxKey.blockUserID, _userId);
+                      GStorage.settingRepository.setString(
+                        SettingBoxKey.blockUserID,
+                        _userId,
+                      );
                       (context as Element).markNeedsBuild();
                     },
                     child: const Text('随机'),
@@ -212,7 +217,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                       if (key.currentState?.validate() == true) {
                         PageUtils.pop();
                         _userId = _textController.text;
-                        setting.put(SettingBoxKey.blockUserID, _userId);
+                        GStorage.settingRepository.setString(
+                          SettingBoxKey.blockUserID,
+                          _userId,
+                        );
                         (context as Element).markNeedsBuild();
                       }
                     },
@@ -231,7 +239,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
     builder: (context) {
       void update() {
         _blockToast = !_blockToast;
-        setting.put(SettingBoxKey.blockToast, _blockToast);
+        GStorage.settingRepository.setBool(
+          SettingBoxKey.blockToast,
+          _blockToast,
+        );
         (context as Element).markNeedsBuild();
       }
 
@@ -261,7 +272,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
     builder: (context) {
       void update() {
         _blockTrack = !_blockTrack;
-        setting.put(SettingBoxKey.blockTrack, _blockTrack);
+        GStorage.settingRepository.setBool(
+          SettingBoxKey.blockTrack,
+          _blockTrack,
+        );
         (context as Element).markNeedsBuild();
       }
 
@@ -344,7 +358,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                   onPressed: () {
                     PageUtils.pop();
                     _blockServer = HttpString.sponsorBlockBaseUrl;
-                    setting.put(SettingBoxKey.blockServer, _blockServer);
+                    GStorage.settingRepository.setString(
+                      SettingBoxKey.blockServer,
+                      _blockServer,
+                    );
                     Request.accountManager.blockServer = _blockServer;
                     (context as Element).markNeedsBuild();
                   },
@@ -363,7 +380,10 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                   onPressed: () {
                     PageUtils.pop();
                     _blockServer = _textController.text;
-                    setting.put(SettingBoxKey.blockServer, _blockServer);
+                    GStorage.settingRepository.setString(
+                      SettingBoxKey.blockServer,
+                      _blockServer,
+                    );
                     Request.accountManager.blockServer = _blockServer;
                     _checkServerStatus();
                     _getUserInfo();
@@ -458,11 +478,14 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
           showResetBtn: true,
           onChanged: (Color? color) {
             _blockColor[index] = color ?? item.first.color;
-            setting.put(
+            GStorage.settingRepository.setString(
               SettingBoxKey.blockColor,
-              _blockColor
-                  .map((item) => item.toARGB32().toRadixString(16).substring(2))
-                  .toList(),
+              jsonEncode(
+                _blockColor
+                    .map((item) =>
+                        item.toARGB32().toRadixString(16).substring(2))
+                    .toList(),
+              ),
             );
             (context as Element).markNeedsBuild();
           },
@@ -588,9 +611,11 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
                     onSelected: (e) {
                       final updateItem = isDisable || e == SkipType.disable;
                       item.second = e;
-                      setting.put(
+                      GStorage.settingRepository.setString(
                         SettingBoxKey.blockSettings,
-                        _blockSettings.map((e) => e.second.index).toList(),
+                        jsonEncode(
+                          _blockSettings.map((e) => e.second.index).toList(),
+                        ),
                       );
                       if (updateItem) {
                         (context as Element).markNeedsBuild();

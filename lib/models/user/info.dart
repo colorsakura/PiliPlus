@@ -1,9 +1,7 @@
 import 'package:PiliPlus/utils/extension/map_ext.dart';
-import 'package:hive/hive.dart';
 
 part 'info.g.dart';
 
-@HiveType(typeId: 4)
 class UserInfoData {
   UserInfoData({
     this.isLogin,
@@ -32,55 +30,31 @@ class UserInfoData {
     this.shopUrl,
     this.isSeniorMember,
   });
-  @HiveField(0)
+
   bool? isLogin;
-  @HiveField(1)
   int? emailVerified;
-  @HiveField(2)
   String? face;
-  @HiveField(3)
   LevelInfo? levelInfo;
-  @HiveField(4)
   int? mid;
-  @HiveField(5)
   int? mobileVerified;
-  @HiveField(6)
   double? money;
-  @HiveField(7)
   int? moral;
-  @HiveField(8)
   Map? official;
-  @HiveField(9)
   Map? officialVerify;
-  @HiveField(10)
   Map? pendant;
-  @HiveField(11)
   int? scores;
-  @HiveField(12)
   String? uname;
-  @HiveField(13)
   int? vipDueDate;
-  @HiveField(14)
   int? vipStatus;
-  @HiveField(15)
   int? vipType;
-  @HiveField(16)
   int? vipPayType;
-  @HiveField(17)
   int? vipThemeType;
-  @HiveField(18)
   Map? vipLabel;
-  @HiveField(19)
   int? vipAvatarSub;
-  @HiveField(20)
   String? vipNicknameColor;
-  @HiveField(21)
   Map? wallet;
-  @HiveField(22)
   bool? hasShop;
-  @HiveField(23)
   String? shopUrl;
-  @HiveField(24)
   int? isSeniorMember;
 
   UserInfoData.fromJson(Map<String, dynamic> json) {
@@ -160,7 +134,6 @@ class UserInfoData {
   }
 }
 
-@HiveType(typeId: 5)
 class LevelInfo {
   LevelInfo({
     this.currentLevel,
@@ -168,13 +141,10 @@ class LevelInfo {
     this.currentExp,
     this.nextExp,
   });
-  @HiveField(0)
+
   int? currentLevel;
-  @HiveField(1)
   int? currentMin;
-  @HiveField(2)
   int? currentExp;
-  @HiveField(3)
   int? nextExp;
 
   LevelInfo.fromJson(Map<String, dynamic> json) {

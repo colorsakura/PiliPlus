@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:PiliPlus/shared/widgets/flutter/list_tile.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 
 class PlaySpeedPage extends StatefulWidget {
@@ -52,8 +52,6 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
       ),
     ),
   ];
-
-  Box video = GStorage.video;
 
   // 添加自定义倍速
   void onAddSpeed() {
@@ -100,7 +98,10 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
                   speedList
                     ..add(val)
                     ..sort();
-                  video.put(VideoBoxKey.speedsList, speedList);
+                  GStorage.videoRepository.setString(
+                    VideoBoxKey.speedsList,
+                    jsonEncode(speedList),
+                  );
                   setState(() {});
                 }
               } catch (e) {
@@ -161,11 +162,17 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
     if (id == 1) {
       // 设置默认倍速
       playSpeedDefault = speed;
-      video.put(VideoBoxKey.playSpeedDefault, playSpeedDefault);
+      GStorage.videoRepository.setDouble(
+        VideoBoxKey.playSpeedDefault,
+        playSpeedDefault,
+      );
     } else if (id == 2) {
       // 设置默认长按倍速
       longPressSpeedDefault = speed;
-      video.put(VideoBoxKey.longPressSpeedDefault, longPressSpeedDefault);
+      GStorage.videoRepository.setDouble(
+        VideoBoxKey.longPressSpeedDefault,
+        longPressSpeedDefault,
+      );
     } else if (id == -1) {
       if ([
         1.0,
@@ -176,7 +183,10 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
         return;
       }
       speedList.removeAt(index);
-      video.put(VideoBoxKey.speedsList, speedList);
+      GStorage.videoRepository.setString(
+        VideoBoxKey.speedsList,
+        jsonEncode(speedList),
+      );
     }
     setState(() {});
   }
@@ -191,7 +201,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
         actions: [
           TextButton(
             onPressed: () async {
-              await video.delete(VideoBoxKey.speedsList);
+              await GStorage.videoRepository.remove(VideoBoxKey.speedsList);
               speedList = Pref.speedList;
               setState(() {});
             },

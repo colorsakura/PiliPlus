@@ -1309,7 +1309,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
                               final newVal = !enableShowDanmaku;
                               ctr.enableShowDanmaku.value = newVal;
                               if (!ctr.tempPlayerConf) {
-                                GStorage.setting.put(
+                                GStorage.settingRepository.setBool(
                                   SettingBoxKey.enableShowDanmaku,
                                   newVal,
                                 );

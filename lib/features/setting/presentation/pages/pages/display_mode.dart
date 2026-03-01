@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:hive/hive.dart';
 
 class SetDisplayMode extends StatefulWidget {
   const SetDisplayMode({super.key});
@@ -19,8 +18,6 @@ class _SetDisplayModeState extends State<SetDisplayMode> {
   DisplayMode? active;
   DisplayMode? preferred;
 
-  Box setting = GStorage.setting;
-
   @override
   void initState() {
     super.initState();
@@ -31,7 +28,10 @@ class _SetDisplayModeState extends State<SetDisplayMode> {
   Future<void> fetchAll() async {
     preferred = await FlutterDisplayMode.preferred;
     active = await FlutterDisplayMode.active;
-    setting.put(SettingBoxKey.displayMode, preferred.toString());
+    GStorage.settingRepository.setString(
+      SettingBoxKey.displayMode,
+      preferred.toString(),
+    );
     if (mounted) {
       setState(() {});
     }
@@ -45,7 +45,7 @@ class _SetDisplayModeState extends State<SetDisplayMode> {
       if (kDebugMode) debugPrint(e.toString());
     }
 
-    final value = setting.get(SettingBoxKey.displayMode);
+    final value = GStorage.settingRepository.getString(SettingBoxKey.displayMode);
     if (value != null) {
       preferred = modes.firstWhereOrNull((e) => e.toString() == value);
     }

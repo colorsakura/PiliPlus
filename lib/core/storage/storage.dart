@@ -333,6 +333,12 @@ abstract final class GStorage {
           await settingRepository.setDouble(entry.key, value);
         } else if (value is bool) {
           await settingRepository.setBool(entry.key, value);
+        } else if (value is List) {
+          // Handle List types (e.g., List<String>)
+          await settingRepository.setStringList(
+            entry.key,
+            value.map((e) => e.toString()).toList(),
+          );
         }
       }
     }
@@ -348,6 +354,12 @@ abstract final class GStorage {
           await videoRepository.setDouble(entry.key, value);
         } else if (value is bool) {
           await videoRepository.setBool(entry.key, value);
+        } else if (value is List) {
+          // Handle List types (e.g., List<String>)
+          await videoRepository.setStringList(
+            entry.key,
+            value.map((e) => e.toString()).toList(),
+          );
         }
       }
     }

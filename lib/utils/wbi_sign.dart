@@ -11,10 +11,8 @@ import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:crypto/crypto.dart';
-import 'package:hive/hive.dart';
 
 abstract final class WbiSign {
-  static Box get _localCache => GStorage.localCache;
   static final RegExp _chrFilter = RegExp(r"[!\'\(\)\*]");
   static const _mixinKeyEncTab = <int>[
     46,
@@ -85,7 +83,10 @@ abstract final class WbiSign {
             Utils.getFileName(wbiUrls['sub_url'], fileExt: false),
       );
 
-      _localCache.put(LocalCacheKey.mixinKey, mixinKey);
+      GStorage.localCacheRepository.setString(
+        LocalCacheKey.mixinKey,
+        mixinKey,
+      );
 
       return mixinKey;
     } catch (_) {
@@ -95,16 +96,17 @@ abstract final class WbiSign {
 
   static FutureOr<String> getWbiKeys() {
     final nowDate = DateTime.now();
-    if (DateTime.fromMillisecondsSinceEpoch(
-          _localCache.get(LocalCacheKey.timeStamp, defaultValue: 0) as int,
-        ).day ==
-        nowDate.day) {
-      final String? mixinKey = _localCache.get(LocalCacheKey.mixinKey);
+    final timestamp =
+        GStorage.localCacheRepository.getInt(LocalCacheKey.timeStamp) ?? 0;
+    if (DateTime.fromMillisecondsSinceEpoch(timestamp).day == nowDate.day) {
+      final String? mixinKey = GStorage.localCacheRepository.getString(
+        LocalCacheKey.mixinKey,
+      );
       if (mixinKey != null) return mixinKey;
       return _future ??= _getWbiKeys();
     } else {
-      return _future = _localCache
-          .put(LocalCacheKey.timeStamp, nowDate.millisecondsSinceEpoch)
+      return _future = GStorage.localCacheRepository
+          .setInt(LocalCacheKey.timeStamp, nowDate.millisecondsSinceEpoch)
           .then((_) => _getWbiKeys());
     }
   }
