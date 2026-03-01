@@ -4,7 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/member_audio/domain/entities/member_audio_item_entity.dart';
-import 'package:PiliPlus/features/member_audio/presentation/providers/member_audio_list_provider.dart';
+import 'package:PiliPlus/features/member_audio/presentation/providers/member_audio_controller.dart';
 import 'package:PiliPlus/features/member_audio/presentation/widgets/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/audio/audio.dart';
@@ -36,12 +36,13 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(memberAudioListControllerProvider(widget.mid));
-    final listState = controller.state.listState;
+    final state = ref.watch(memberAudioControllerProvider(widget.mid));
+    final controller = ref.read(memberAudioControllerProvider(widget.mid).notifier);
+    final listState = state.listState;
     final colorScheme = ColorScheme.of(context);
 
     return refreshIndicator(
-      onRefresh: controller.onRefresh,
+      onRefresh: () => controller.onRefresh(widget.mid),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
@@ -49,7 +50,7 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
             padding: EdgeInsets.only(
               bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
             ),
-            sliver: _buildBody(colorScheme, listState, controller),
+            sliver: _buildBody(colorScheme, listState, state, controller),
           ),
         ],
       ),
@@ -66,7 +67,8 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
   Widget _buildBody(
     ColorScheme colorScheme,
     LoadingState listState,
-    dynamic controller,
+    MemberAudioState state,
+    MemberAudioController controller,
   ) {
     return switch (listState) {
       Loading() => linearLoading,
@@ -87,7 +89,7 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
                             Padding(
                               padding: const EdgeInsets.only(left: 6),
                               child: Text(
-                                '共${(controller.state.totalSize ?? 0)}首',
+                                '共${state.totalSize ?? 0}首',
                                 style: const TextStyle(fontSize: 13),
                               ),
                             ),
@@ -95,7 +97,7 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
                               height: 35,
                               padding: const EdgeInsets.only(left: 6),
                               child: TextButton.icon(
-                                onPressed: () => _toViewPlayAll(controller),
+                                onPressed: () => _toViewPlayAll(state),
                                 icon: Icon(
                                   Icons.play_circle_outline_rounded,
                                   size: 16,
@@ -119,7 +121,7 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
                     gridDelegate: gridDelegate,
                     itemBuilder: (context, index) {
                       if (index == response.length - 1) {
-                        controller.onLoadMore();
+                        controller.onLoadMore(widget.mid);
                       }
                       return MemberAudioItem(
                         item: response[index],
@@ -129,16 +131,16 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
                   ),
                 ],
               )
-            : HttpError(onReload: controller.onReload),
+            : HttpError(onReload: () => controller.onReload(widget.mid)),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: controller.onReload,
+        onReload: () => controller.onReload(widget.mid),
       ),
     };
   }
 
-  void _toViewPlayAll(dynamic controller) {
-    final listState = controller.state.listState;
+  void _toViewPlayAll(MemberAudioState state) {
+    final listState = state.listState;
     if (listState is Success<List<MemberAudioItemEntity>?>) {
       final items = listState.response;
       if (items != null && items.isNotEmpty) {
