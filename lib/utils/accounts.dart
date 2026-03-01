@@ -1,12 +1,10 @@
 import 'package:PiliPlus/core/storage/data/account_storage_repository.dart';
-import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/http/init.dart';
 import 'package:PiliPlus/models/common/account_type.dart';
 import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/utils/accounts/account.dart';
 import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:get/get.dart';
 
@@ -76,10 +74,7 @@ abstract final class Accounts {
   // static set main(Account account) => set(AccountType.main, account);
 
   static Future<void> init() async {
-    // 1. 尝试从 Hive 迁移账户数据
-    await _migrateAccountsIfNeeded();
-
-    // 2. 初始化 MMKV 账户存储
+    // 初始化 MMKV 账户存储
     final repository = AccountStorageRepository.fromConfig(
       storeName: 'account',
       rootDir: path.join(appSupportDirPath, 'mmkv'),
@@ -88,67 +83,6 @@ abstract final class Accounts {
 
     // 3. 加载账户到内存
     await refresh();
-  }
-
-  /// 迁移账户数据（Hive -> MMKV）
-  static Future<void> _migrateAccountsIfNeeded() async {
-    try {
-      // 检查是否已迁移
-      if (StorageMigrator.hasMigrated('account')) {
-        debugPrint('Account migration already completed');
-        return;
-      }
-
-      // 检查是否有 Hive 数据需要迁移
-      bool hasHiveData = false;
-      try {
-        // 注意：这里需要导入 hive_flutter，但我们暂时使用 try-catch 来处理
-        // 如果 Hive 完全移除后，这段代码可以删除
-        final Hive = _getHive();
-        if (Hive == null) {
-          // Hive 不可用，直接标记为已迁移
-          StorageMigrator.markMigrated('account');
-          return;
-        }
-
-        final boxExists = await Hive.boxExists('account');
-        if (boxExists) {
-          final box = await Hive.openBox('account');
-          hasHiveData = box.isNotEmpty;
-        }
-      } catch (e) {
-        debugPrint('Failed to check Hive account box: $e');
-      }
-
-      // 如果没有 Hive 数据，标记为已迁移
-      if (!hasHiveData) {
-        StorageMigrator.markMigrated('account');
-        return;
-      }
-
-      // 执行迁移
-      debugPrint('Migrating accounts from Hive to MMKV...');
-      final success = await StorageMigrator.migrateAccounts(boxName: 'account');
-
-      if (success) {
-        debugPrint('Account migration completed successfully');
-      } else {
-        debugPrint('Account migration had some errors');
-      }
-    } catch (e) {
-      debugPrint('Account migration error: $e');
-      // 迁移失败不应阻止应用启动
-    }
-  }
-
-  /// 动态获取 Hive 实例（如果可用）
-  static dynamic _getHive() {
-    try {
-      // 尝试动态导入 hive_flutter
-      return null; // 暂时返回 null，后续完全移除 Hive
-    } catch (e) {
-      return null;
-    }
   }
 
   // static Future<void> _migrate() async {
