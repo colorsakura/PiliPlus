@@ -1,4 +1,4 @@
-import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
+import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/nav_icon_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -8,30 +8,27 @@ import 'package:flutter/material.dart';
 class ShellBottomNavigationBar extends StatelessWidget {
   const ShellBottomNavigationBar({
     super.key,
-    required this.config,
+    required this.items,
+    required this.selectedIndex,
     required this.dynCount,
     required this.onDestinationSelected,
   });
 
-  final NavigationConfig config;
+  final List<NavigationBarType> items;
+  final int selectedIndex;
   final int dynCount;
   final ValueChanged<int> onDestinationSelected;
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: config.navigationBars.isEmpty
-          ? 0
-          : config.selectedIndex.clamp(
-              0,
-              config.navigationBars.length - 1,
-            ),
+      currentIndex: selectedIndex,
       onTap: onDestinationSelected,
       iconSize: 16,
       selectedFontSize: 12,
       unselectedFontSize: 12,
       type: BottomNavigationBarType.fixed,
-      items: config.navigationBars
+      items: items
           .map(
             (e) => BottomNavigationBarItem(
               label: e.label,
