@@ -45,7 +45,7 @@ final class FavFolderListControllerProvider
 }
 
 String _$favFolderListControllerHash() =>
-    r'eab20c728bb62eaf30d8b52ab87036c1560d6fb1';
+    r'3a4661aa3b105ea9ba585a4416f18744f236857c';
 
 /// Controller for managing favorite folders
 

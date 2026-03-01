@@ -105,19 +105,47 @@ class _WhisperPageV2State extends ConsumerState<WhisperPageV2> {
   }
 
   Widget _buildSessionItem(Session session) {
+    // Extract avatar URL from gRPC Session model
+    String avatarUrl = '';
+    try {
+      if (session.hasSessionInfo() &&
+          session.sessionInfo.hasAvatar() &&
+          session.sessionInfo.avatar.hasFallbackLayers() &&
+          session.sessionInfo.avatar.fallbackLayers.layers.isNotEmpty) {
+        final resource =
+            session.sessionInfo.avatar.fallbackLayers.layers.first.resource;
+        if (resource.hasResImage()) {
+          avatarUrl = resource.resImage.imageSrc.remote.url;
+        } else if (resource.hasResAnimation()) {
+          avatarUrl = resource.resAnimation.webpSrc.remote.url;
+        }
+      }
+    } catch (_) {
+      avatarUrl = '';
+    }
+
+    final name = session.hasSessionInfo()
+        ? (session.sessionInfo.sessionName.isNotEmpty
+            ? session.sessionInfo.sessionName
+            : 'Unknown')
+        : 'Unknown';
+    final lastMsg = session.hasMsgSummary() ? session.msgSummary.rawMsg : '';
+    final unreadCount = session.hasUnread() ? session.unread.number.toInt() : 0;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(session.face ?? ''),
+          backgroundImage:
+              avatarUrl.isNotEmpty ? NetworkImage(avatarUrl) : null,
         ),
-        title: Text(session.name ?? 'Unknown'),
+        title: Text(name),
         subtitle: Text(
-          session.lastMsg ?? '',
+          lastMsg,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: session.unread?.unreadCount != null
+        trailing: unreadCount > 0
             ? Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -125,10 +153,7 @@ class _WhisperPageV2State extends ConsumerState<WhisperPageV2> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  (session.unread!.unreadCount! > 99
-                          ? '99+'
-                          : session.unread!.unreadCount.toString())
-                      .toString(),
+                  unreadCount > 99 ? '99+' : unreadCount.toString(),
                   style: const TextStyle(color: Colors.white, fontSize: 12),
                 ),
               )

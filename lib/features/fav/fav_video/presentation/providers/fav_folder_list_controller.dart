@@ -5,27 +5,9 @@ import 'package:PiliPlus/features/fav/fav_video/data/repositories/fav_video_repo
 import 'package:PiliPlus/features/fav/fav_video/data/datasources/fav_video_remote_datasource.dart';
 import 'package:PiliPlus/models/fav/fav_folder/list.dart';
 import 'package:PiliPlus/http/loading_state.dart';
+import 'package:PiliPlus/features/fav/fav_video/presentation/providers/fav_video_providers.dart';
 
 part 'fav_folder_list_controller.g.dart';
-
-/// Provider for FavVideoRemoteDatasource
-final favVideoRemoteDataSourceProvider = Provider<FavVideoRemoteDatasource>((
-  ref,
-) {
-  return FavVideoRemoteDatasource();
-});
-
-/// Provider for FavVideoRepository
-final favVideoRepositoryProvider = Provider<FavVideoRepositoryImpl>((ref) {
-  final datasource = ref.watch(favVideoRemoteDataSourceProvider);
-  return FavVideoRepositoryImpl(datasource);
-});
-
-/// Provider for GetFavFoldersUseCase
-final getFavFoldersUseCaseProvider = Provider<GetFavFoldersUseCase>((ref) {
-  final repository = ref.watch(favVideoRepositoryProvider);
-  return GetFavFoldersUseCase(repository);
-});
 
 /// Fav folder list state
 class FavFolderListState {

@@ -4,7 +4,7 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/login_devices/device.dart';
-import 'package:PiliPlus/features/login_devices/presentation/providers/login_devices_providers.dart';
+import 'package:PiliPlus/features/login_devices/presentation/providers/login_devices_list_controller.dart';
 import 'package:PiliPlus/utils/extension/widget_ext.dart';
 import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,15 +15,16 @@ class LoginDevicesPageV2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(loginDevicesControllerProvider);
-    final state = controller.state;
+    final state = ref.watch(loginDevicesListControllerProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('登录设备')),
       body: refreshIndicator(
-        onRefresh: controller.onRefresh,
+        onRefresh: () => ref
+            .read(loginDevicesListControllerProvider.notifier)
+            .onRefresh(),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
