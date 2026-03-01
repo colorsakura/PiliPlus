@@ -1,7 +1,5 @@
 import 'package:PiliPlus/utils/extension/map_ext.dart';
 
-part 'info.g.dart';
-
 class UserInfoData {
   UserInfoData({
     this.isLogin,

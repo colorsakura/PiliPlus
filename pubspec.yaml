@@ -66,8 +66,6 @@ dependencies:
 
   # 存储
   path_provider: ^2.1.5
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   mmkv: ">=2.3.0"
   sqlite3: ^3.1.6
 

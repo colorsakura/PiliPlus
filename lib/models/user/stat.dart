@@ -1,5 +1,3 @@
-part 'stat.g.dart';
-
 class UserStat {
   const UserStat({
     this.following,

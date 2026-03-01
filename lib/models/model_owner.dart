@@ -1,8 +1,6 @@
 import 'package:PiliPlus/models/model_video.dart';
 import 'package:PiliPlus/utils/utils.dart';
 
-part 'model_owner.g.dart';
-
 class Owner implements BaseOwner {
   Owner({
     this.mid,
