@@ -1,9 +1,7 @@
-import 'package:PiliPlus/core/storage/data/datasources/hive_storage_repository_impl.dart';
 import 'package:PiliPlus/core/storage/data/datasources/mmkv_storage_repository_impl.dart';
 import 'package:PiliPlus/core/storage/data/storage_config.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
-import 'package:hive/hive.dart';
 
 /// 存储工厂
 ///
@@ -40,20 +38,11 @@ class StorageFactory {
 
   /// 创建基础类型存储仓库
   static StorageRepository _createRepository(StorageConfig config) {
-    switch (config.type) {
-      case StorageType.mmkv:
-        return MMKVStorageRepository.fromConfig(
-          storeName: config.name,
-          cryptKey: config.cryptKey,
-          rootDir: config.rootDir,
-        );
-      case StorageType.hive:
-        // Hive 需要先打开 Box，这里假设已经在 GStorage 中打开
-        // 实际使用时应该传入已打开的 Box
-        return HiveStorageRepository.fromBox(
-          Hive.box<dynamic>(config.name),
-        );
-    }
+    return MMKVStorageRepository.fromConfig(
+      storeName: config.name,
+      cryptKey: config.cryptKey,
+      rootDir: config.rootDir,
+    );
   }
 
   /// 创建类型化存储仓库
@@ -61,22 +50,15 @@ class StorageFactory {
     StorageConfig config,
     JsonCodec<T>? codec,
   ) {
-    switch (config.type) {
-      case StorageType.mmkv:
-        if (codec == null) {
-          throw ArgumentError('JsonCodec is required for MMKV typed storage');
-        }
-        return MMKVTypedStorageRepository<T>.fromConfig(
-          storeName: config.name,
-          codec: codec,
-          cryptKey: config.cryptKey,
-          rootDir: config.rootDir,
-        );
-      case StorageType.hive:
-        return HiveTypedStorageRepository<T>.fromBox(
-          Hive.box<T>(config.name),
-        );
+    if (codec == null) {
+      throw ArgumentError('JsonCodec is required for MMKV typed storage');
     }
+    return MMKVTypedStorageRepository<T>.fromConfig(
+      storeName: config.name,
+      codec: codec,
+      cryptKey: config.cryptKey,
+      rootDir: config.rootDir,
+    );
   }
 
   /// 清空所有缓存的仓库

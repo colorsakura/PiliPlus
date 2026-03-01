@@ -4,7 +4,7 @@
 library;
 
 /// 存储类型枚举
-enum StorageType { hive, mmkv }
+enum StorageType { mmkv }
 
 /// 存储配置
 ///
@@ -30,21 +30,12 @@ class StorageConfig {
 
   const StorageConfig({
     required this.name,
-    this.type = StorageType.hive,
+    this.type = StorageType.mmkv,
     this.cryptKey,
     this.rootDir,
     this.readOnly = false,
     this.expectedCapacity = 0,
   });
-
-  /// 创建 Hive 存储配置
-  const StorageConfig.hive({
-    required this.name,
-  }) : type = StorageType.hive,
-       cryptKey = null,
-       rootDir = null,
-       readOnly = false,
-       expectedCapacity = 0;
 
   /// 创建 MMKV 存储配置
   const StorageConfig.mmkv({
