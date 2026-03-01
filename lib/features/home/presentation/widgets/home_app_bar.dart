@@ -1,5 +1,4 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
-import 'package:PiliPlus/shared/widgets/custom_height_widget.dart';
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/account/domain/entities/account_state.dart';
@@ -7,15 +6,12 @@ import 'package:PiliPlus/features/account/presentation/providers/account_provide
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/features/home/presentation/providers/search_controller.dart';
-import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
-import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 /// 首页顶部栏
@@ -34,10 +30,6 @@ class HomeAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navConfigState = ref.watch(navigationConfigControllerProvider);
-    final navState = ref.watch(navigationStateControllerProvider);
-    final navConfig = navConfigState.config;
-
     const padding = EdgeInsets.fromLTRB(14, 6, 14, 0);
     final child = Row(
       spacing: 8,
@@ -48,51 +40,10 @@ class HomeAppBar extends ConsumerWidget {
       ],
     );
 
-    // 应用顶部栏隐藏效果
-    if (config.hideTopBar && navConfig != null) {
-      if (navState.barOffset > 0) {
-        return _buildOffsetAppBar(padding, child, navState.barOffset);
-      }
-      if (navConfig.barHideType == BarHideType.instant) {
-        return _buildAnimatedAppBar(padding, child);
-      }
-    }
-
     return Container(
       height: StyleString.topBarHeight,
       padding: padding,
       child: child,
-    );
-  }
-
-  /// 构建带偏移的顶部栏
-  Widget _buildOffsetAppBar(EdgeInsets padding, Widget child, double offset) {
-    return CustomHeightWidget(
-      offset: Offset(0, -offset),
-      height: StyleString.topBarHeight - offset,
-      child: Padding(
-        padding: padding,
-        child: child,
-      ),
-    );
-  }
-
-  /// 构建带动画的顶部栏
-  Widget _buildAnimatedAppBar(EdgeInsets padding, Widget child) {
-    return Consumer(
-      builder: (context, ref, _) {
-        final navState = ref.watch(navigationStateControllerProvider);
-
-        return AnimatedContainer(
-          curve: Curves.easeInOutCubicEmphasized,
-          duration: const Duration(milliseconds: 500),
-          height: navState.barOffset > 0
-              ? StyleString.topBarHeight - navState.barOffset
-              : StyleString.topBarHeight,
-          padding: padding,
-          child: child,
-        );
-      },
     );
   }
 }

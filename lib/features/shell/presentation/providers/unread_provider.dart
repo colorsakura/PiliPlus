@@ -114,6 +114,11 @@ final msgUnreadTypesProvider = Provider<Set<MsgUnReadType>>((ref) {
   return Pref.msgUnReadTypeV2;
 });
 
+/// 消息角标模式配置
+final msgBadgeModeProvider = Provider<DynamicBadgeMode>((ref) {
+  return Pref.msgBadgeMode;
+});
+
 /// 是否显示消息角标
 bool showMsgBadge(DynamicBadgeMode mode) {
   return mode != DynamicBadgeMode.hidden;

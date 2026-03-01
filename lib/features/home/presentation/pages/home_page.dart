@@ -4,9 +4,7 @@ import 'package:PiliPlus/core/constants/constants.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/home_tab_controller.dart';
 import 'package:PiliPlus/features/home/presentation/widgets/home_app_bar.dart';
-import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
-import 'package:PiliPlus/models/common/bar_hide_type.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:flutter/material.dart';
@@ -125,11 +123,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   /// 构建 TabBar
   Widget _buildTabBar(HomeTabConfig config, ThemeData theme) {
-    final navConfigState = ref.watch(navigationConfigControllerProvider);
-    final navConfig = navConfigState.config;
-
-    // 检查是否需要应用顶部栏隐藏效果
-    final hideTopBar = config.hideTopBar;
     Widget tabBarWidget = Padding(
       padding: const EdgeInsets.only(top: 4),
       child: SizedBox(
@@ -152,16 +145,6 @@ class _HomePageState extends ConsumerState<HomePage>
         ),
       ),
     );
-
-    // 应用顶部栏隐藏效果
-    if (hideTopBar && navConfig != null) {
-      if (navConfig.barHideType == BarHideType.instant) {
-        tabBarWidget = Material(
-          color: theme.colorScheme.surface,
-          child: tabBarWidget,
-        );
-      }
-    }
 
     return tabBarWidget;
   }
