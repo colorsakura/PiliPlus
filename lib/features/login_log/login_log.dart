@@ -7,8 +7,7 @@ export 'package:PiliPlus/features/login_log/presentation/providers/login_log_pro
     show
         loginLogRemoteDatasourceProvider,
         loginLogRepositoryProvider,
-        getLoginLogUseCaseProvider,
-        loginLogControllerProvider;
+        getLoginLogUseCaseProvider;
 
 // Providers (Riverpod - New)
 export 'package:PiliPlus/features/login_log/presentation/providers/login_log_controller_v2.dart';
