@@ -6,6 +6,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
 import 'package:PiliPlus/models/live/live_area_list/area_list.dart';
+import 'package:PiliPlus/features/live_area/presentation/providers/live_area_list_controller.dart';
 import 'package:PiliPlus/features/live_area/presentation/providers/live_area_providers.dart';
 import 'package:PiliPlus/features/live_area_detail/live_area_detail.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,9 @@ class LiveAreaPageV2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(liveAreaControllerProvider);
-    final state = controller.state;
+    final state = ref.watch(liveAreaListControllerProvider);
+    final controller = ref.read(liveAreaListControllerProvider.notifier);
+    final isLogin = ref.watch(isLoginProvider);
     final theme = Theme.of(context);
     final padding = MediaQuery.viewPaddingOf(context);
 
@@ -27,7 +29,7 @@ class LiveAreaPageV2 extends ConsumerWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('全部标签'),
-        actions: controller.isLogin
+        actions: isLogin
             ? [
                 TextButton(
                   onPressed: controller.onEdit,
@@ -45,13 +47,13 @@ class LiveAreaPageV2 extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (controller.isLogin)
+            if (isLogin)
               _buildFavWidget(theme, state.favState, controller),
             Expanded(
               child: _buildBody(
                 theme,
                 padding.bottom,
-                state.listState,
+                state,
                 controller,
                 context,
               ),
@@ -65,11 +67,11 @@ class LiveAreaPageV2 extends ConsumerWidget {
   Widget _buildBody(
     ThemeData theme,
     double bottom,
-    LoadingState<List<AreaList>?> loadingState,
+    LiveAreaListState state,
     dynamic controller,
     BuildContext context,
   ) {
-    return switch (loadingState) {
+    return switch (state.listState) {
       Loading() => const SizedBox.shrink(),
       Success(:final response) =>
         response != null && response.isNotEmpty
@@ -111,7 +113,7 @@ class LiveAreaPageV2 extends ConsumerWidget {
                                       return _tagItem(
                                         theme: theme,
                                         item: item,
-                                        isEditing: controller.state.isEditing,
+                                        isEditing: state.isEditing,
                                         onTap: () {
                                           Get.to(
                                             LiveAreaDetailPage(

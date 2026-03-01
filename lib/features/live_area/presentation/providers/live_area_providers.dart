@@ -37,10 +37,15 @@ final setLiveFavTagUseCaseProvider = Provider<SetLiveFavTagUseCase>((ref) {
   return SetLiveFavTagUseCase(repository);
 });
 
+// Login status provider
+final isLoginProvider = Provider<bool>((ref) {
+  return Accounts.main.isLogin;
+});
+
 // Controller Provider
 final liveAreaControllerProvider = Provider<LiveAreaController>((ref) {
   return LiveAreaController(
-    isLogin: Accounts.main.isLogin,
+    isLogin: ref.watch(isLoginProvider),
     getLiveAreaListUseCase: ref.watch(getLiveAreaListUseCaseProvider),
     getLiveFavTagUseCase: ref.watch(getLiveFavTagUseCaseProvider),
     setLiveFavTagUseCase: ref.watch(setLiveFavTagUseCaseProvider),
