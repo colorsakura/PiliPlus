@@ -92,6 +92,7 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
 
   SliverGridDelegateWithExtentAndRatio get gridDelegate {
     // PC端使用更大的卡片宽度，减少每行的卡片数量
+    final recommendCardWidth = Pref.recommendCardWidth;
     return SliverGridDelegateWithExtentAndRatio(
       mainAxisSpacing: PlatformUtils.isDesktop
           ? StyleString.cardSpace * 6
@@ -101,7 +102,7 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
           : StyleString.cardSpace,
       maxCrossAxisExtent: PlatformUtils.isDesktop
           ? 320.0
-          : Pref.recommendCardWidth,
+          : (recommendCardWidth > 0 ? recommendCardWidth : 240.0),
       childAspectRatio: StyleString.aspectRatio,
       mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
     );
