@@ -20,8 +20,6 @@ import 'package:PiliPlus/models/common/dynamic/up_panel_position.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
 import 'package:PiliPlus/models/common/msg/msg_unread_type.dart';
 import 'package:PiliPlus/models/common/nav_bar_config.dart';
-import 'package:PiliPlus/app/theme/entities/theme_colors.dart';
-import 'package:PiliPlus/app/theme/entities/theme_type.dart';
 import 'package:PiliPlus/features/mine/presentation/pages/mine_controller.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/models/model.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/slide_color_picker.dart';
@@ -31,7 +29,6 @@ import 'package:PiliPlus/features/setting/presentation/widgets/select_dialog.dar
 import 'package:PiliPlus/features/setting/presentation/widgets/slider_dialog.dart';
 import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
-import 'package:PiliPlus/app/theme/extensions/theme_extensions.dart';
 import 'package:PiliPlus/utils/global_data.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -103,18 +100,7 @@ List<SettingsModel> get styleSettings => [
         '当前: 主页${Pref.recommendCardWidth.toInt()}dp 其他${Pref.smallCardWidth.toInt()}dp，屏幕宽度:${MediaQuery.widthOf(Get.context!).toPrecision(2)}dp。宽度越小列数越多。',
     onTap: _showCardWidthDialog,
   ),
-  SwitchModel(
-    title: '视频播放页使用深色主题',
-    leading: const Icon(Icons.dark_mode_outlined),
-    setKey: SettingBoxKey.darkVideoPage,
-    defaultVal: false,
-    onChanged: (value) {
-      if (value && MyApp.darkThemeData == null) {
-        Get.forceAppUpdate();
-      }
-    },
-  ),
-  const SwitchModel(
+    const SwitchModel(
     title: '动态页启用瀑布流',
     subtitle: '关闭会显示为单列',
     leading: Icon(Icons.view_array_outlined),
@@ -244,38 +230,7 @@ List<SettingsModel> get styleSettings => [
     ),
     onTap: _showToastDialog,
   ),
-  NormalModel(
-    onTap: _showThemeTypeDialog,
-    leading: const Icon(Icons.flashlight_on_outlined),
-    title: '主题模式',
-    getSubtitle: () => '当前模式：${Pref.themeType.desc}',
-  ),
-  SwitchModel(
-    leading: const Icon(Icons.invert_colors),
-    title: '纯黑主题',
-    setKey: SettingBoxKey.isPureBlackTheme,
-    defaultVal: false,
-    onChanged: (value) {
-      if (Get.isDarkMode || Pref.darkVideoPage) {
-        Get.forceAppUpdate();
-      }
-    },
-  ),
-  NormalModel(
-    onTap: (context, setState) => PageUtils.pushNamed(AppRoutes.colorSetting),
-    leading: const Icon(Icons.color_lens_outlined),
-    title: '应用主题',
-    getTrailing: (theme) => SizedBox.square(
-      dimension: 20,
-      child: ColorPalette(
-        colorScheme: colorThemeTypes[Pref.customColor].color
-            .asColorSchemeSeed(Pref.schemeVariant, theme.brightness),
-        selected: false,
-        showBgColor: false,
-      ),
-    ),
-  ),
-  NormalModel(
+        NormalModel(
     leading: const Icon(Icons.home_outlined),
     title: '默认启动页',
     getSubtitle: () => '当前启动页：${Pref.defaultHomePage.label}',
@@ -812,27 +767,6 @@ Future<void> _showToastDialog(
   }
 }
 
-Future<void> _showThemeTypeDialog(
-  BuildContext context,
-  VoidCallback setState,
-) async {
-  final res = await showDialog<ThemeType>(
-    context: context,
-    builder: (context) => SelectDialog<ThemeType>(
-      title: '主题模式',
-      value: Pref.themeType,
-      values: ThemeType.values.map((e) => (e, e.desc)).toList(),
-    ),
-  );
-  if (res != null) {
-    try {
-      Get.find<MineController>().themeType.value = res;
-    } catch (_) {}
-    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, res.index);
-    Get.changeThemeMode(res.toThemeMode);
-    setState();
-  }
-}
 
 Future<void> _showDefHomeDialog(
   BuildContext context,
