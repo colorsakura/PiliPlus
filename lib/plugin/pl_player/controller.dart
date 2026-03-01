@@ -33,7 +33,6 @@ import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/asset_utils.dart';
-import 'package:PiliPlus/utils/extension/box_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
@@ -56,7 +55,6 @@ import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:path/path.dart' as path;
@@ -176,8 +174,6 @@ class PlPlayerController with BlockConfigMixin {
 
   Timer? _timer;
   StreamSubscription<Duration>? _subForSeek;
-
-  Box setting = GStorage.setting;
 
   // final Durations durations;
 
@@ -483,7 +479,6 @@ class PlPlayerController with BlockConfigMixin {
     return _instance?.setVolume(volumeNew);
   }
 
-  Box video = GStorage.video;
 
   // 添加一个私有构造函数
   PlPlayerController._() {
@@ -1530,15 +1525,13 @@ class PlPlayerController with BlockConfigMixin {
   }
 
   void putSubtitleSettings() {
-    setting.putAllNE({
-      SettingBoxKey.subtitleFontScale: subtitleFontScale,
-      SettingBoxKey.subtitleFontScaleFS: subtitleFontScaleFS,
-      SettingBoxKey.subtitlePaddingH: subtitlePaddingH,
-      SettingBoxKey.subtitlePaddingB: subtitlePaddingB,
-      SettingBoxKey.subtitleBgOpacity: subtitleBgOpacity,
-      SettingBoxKey.subtitleStrokeWidth: subtitleStrokeWidth,
-      SettingBoxKey.subtitleFontWeight: subtitleFontWeight,
-    });
+    GStorage.settingRepository.setDouble(SettingBoxKey.subtitleFontScale, subtitleFontScale);
+    GStorage.settingRepository.setDouble(SettingBoxKey.subtitleFontScaleFS, subtitleFontScaleFS);
+    GStorage.settingRepository.setInt(SettingBoxKey.subtitlePaddingH, subtitlePaddingH);
+    GStorage.settingRepository.setInt(SettingBoxKey.subtitlePaddingB, subtitlePaddingB);
+    GStorage.settingRepository.setDouble(SettingBoxKey.subtitleBgOpacity, subtitleBgOpacity);
+    GStorage.settingRepository.setDouble(SettingBoxKey.subtitleStrokeWidth, subtitleStrokeWidth);
+    GStorage.settingRepository.setInt(SettingBoxKey.subtitleFontWeight, subtitleFontWeight);
   }
 
   bool isCloseAll = false;

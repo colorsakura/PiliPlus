@@ -1,4 +1,3 @@
-import 'package:PiliPlus/utils/extension/box_ext.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
@@ -47,21 +46,20 @@ abstract final class DanmakuOptions {
   }
 
   static Future<void>? save(double danmakuOpacity) {
-    return GStorage.setting.putAllNE({
-      SettingBoxKey.danmakuBlockType: blockTypes.toList(),
-      SettingBoxKey.danmakuShowArea: danmakuShowArea,
-      SettingBoxKey.danmakuFontScale: danmakuFontScale,
-      SettingBoxKey.danmakuFontScaleFS: danmakuFontScaleFS,
-      SettingBoxKey.danmakuDuration: danmakuDuration,
-      SettingBoxKey.danmakuStaticDuration: danmakuStaticDuration,
-      SettingBoxKey.danmakuStrokeWidth: danmakuStrokeWidth,
-      SettingBoxKey.danmakuFontWeight: danmakuFontWeight,
-      SettingBoxKey.danmakuLineHeight: danmakuLineHeight,
-      SettingBoxKey.danmakuMassiveMode: danmakuMassiveMode,
-      SettingBoxKey.danmakuStatic2Scroll: danmakuStatic2Scroll,
-      SettingBoxKey.danmakuFixedV: danmakuFixedV,
-      SettingBoxKey.danmakuWeight: danmakuWeight,
-      SettingBoxKey.danmakuOpacity: danmakuOpacity,
-    });
+    GStorage.settingRepository.setStringList(SettingBoxKey.danmakuBlockType, blockTypes.toList());
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuShowArea, danmakuShowArea);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuFontScale, danmakuFontScale);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuFontScaleFS, danmakuFontScaleFS);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuDuration, danmakuDuration);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuStaticDuration, danmakuStaticDuration);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuStrokeWidth, danmakuStrokeWidth);
+    GStorage.settingRepository.setInt(SettingBoxKey.danmakuFontWeight, danmakuFontWeight);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuLineHeight, danmakuLineHeight);
+    GStorage.settingRepository.setBool(SettingBoxKey.danmakuMassiveMode, danmakuMassiveMode);
+    GStorage.settingRepository.setBool(SettingBoxKey.danmakuStatic2Scroll, danmakuStatic2Scroll);
+    GStorage.settingRepository.setBool(SettingBoxKey.danmakuFixedV, danmakuFixedV);
+    GStorage.settingRepository.setInt(SettingBoxKey.danmakuWeight, danmakuWeight);
+    GStorage.settingRepository.setDouble(SettingBoxKey.danmakuOpacity, danmakuOpacity);
+    return null;
   }
 }
