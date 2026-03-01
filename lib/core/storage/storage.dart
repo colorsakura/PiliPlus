@@ -6,8 +6,6 @@ import 'package:PiliPlus/core/storage/data/storage_factory.dart';
 import 'package:PiliPlus/core/storage/data/storage_migrator.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/typed_storage_repository.dart';
-import 'package:PiliPlus/models/model_owner.dart';
-import 'package:PiliPlus/models/user/danmaku_rule_adapter.dart';
 import 'package:PiliPlus/models/user/info.dart';
 // 账户系统已迁移到 MMKV，需要导入 Accounts 进行初始化
 import 'package:PiliPlus/utils/accounts.dart';
@@ -15,7 +13,6 @@ import 'package:PiliPlus/utils/log.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mmkv/mmkv.dart';
 import 'package:path/path.dart' as path;
 
@@ -24,26 +21,6 @@ import 'package:path/path.dart' as path;
 /// 提供统一的存储接口，内部使用 MMKV 存储后端
 /// 首次启动时自动从 Hive 迁移数据，完全透明
 abstract final class GStorage {
-  // ============ 传统 Hive Box（向后兼容） ============
-
-  /// 用户信息 Box
-  static late final Box<UserInfoData> userInfo;
-
-  /// 搜索历史 Box
-  static late final Box<dynamic> historyWord;
-
-  /// 本地缓存 Box
-  static late final Box<dynamic> localCache;
-
-  /// 设置 Box
-  static late final Box<dynamic> setting;
-
-  /// 视频 Box
-  static late final Box<dynamic> video;
-
-  /// 观看进度 Box
-  static late final Box<int> watchProgress;
-
   // ============ 新架构：存储仓库 ============
 
   /// 设置存储仓库

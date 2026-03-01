@@ -158,7 +158,7 @@ class MyApp extends StatelessWidget {
     if (kDebugMode) {
       AppLog.fine('Dynamic color: Not detected on this device', name: 'App');
     }
-    GStorage.setting.put(SettingBoxKey.dynamicColor, false);
+    await GStorage.settingRepository.setBool(SettingBoxKey.dynamicColor, false);
     return false;
   }
 }
