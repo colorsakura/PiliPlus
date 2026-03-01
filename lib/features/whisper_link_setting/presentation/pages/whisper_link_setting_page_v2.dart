@@ -1,12 +1,11 @@
-import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
-import 'package:PiliPlus/shared/widgets/dialog/report_member.dart';
-import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
+import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_controller_v2.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/msg/im_user_infos/datum.dart';
 import 'package:PiliPlus/models/msg/msg_dnd/uid_setting.dart';
 import 'package:PiliPlus/models/msg/session_ss/data.dart';
-import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_providers.dart';
-import 'package:PiliPlus/features/whisper_link_setting/presentation/providers/whisper_link_setting_controller.dart';
+import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
+import 'package:PiliPlus/shared/widgets/dialog/report_member.dart';
+import 'package:PiliPlus/shared/widgets/pendant_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,10 +20,9 @@ class WhisperLinkSettingPageV2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(
-      whisperLinkSettingControllerProvider(talkerUid),
-    );
-    final state = controller.state;
+    final state = ref.watch(whisperLinkSettingControllerProvider(talkerUid));
+    final controller =
+        ref.read(whisperLinkSettingControllerProvider(talkerUid).notifier);
 
     final theme = Theme.of(context);
     final divider = Divider(
