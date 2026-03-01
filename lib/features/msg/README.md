@@ -12,6 +12,8 @@ This feature handles all message-related operations including:
 
 ## Architecture
 
+本特性采用**干净架构（Clean Architecture）**设计，遵循依赖倒置原则。
+
 ### Domain Layer
 
 **Repository Interface:**
@@ -31,40 +33,34 @@ This feature handles all message-related operations including:
 **Repositories:**
 - `MsgRepositoryImpl` - Concrete implementation wrapping the remote data source
 
+### Presentation Layer
+
+**Controllers:**
+- `MsgUnreadController` - Manages message unread counts
+- `MsgReplyController` - Manages reply messages
+- `MsgAtController` - Manages @ mention messages
+- `MsgLikeController` - Manages like messages
+
+**Pages:**
+- `MsgListPage` - Unified message list with tab switching
+
 ## Usage
 
 ```dart
 import 'package:PiliPlus/features/msg/msg.dart';
 
-// Initialize repository and use cases
-final repository = MsgRepositoryImpl(
-  remoteDataSource: MsgRemoteDataSource(),
-);
+// Using controllers with Riverpod
+class MyPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unreadState = ref.watch(msgUnreadControllerProvider);
 
-final getReplyMessages = GetReplyMessages(repository);
-final getAtMessages = GetAtMessages(repository);
-final getLikeMessages = GetLikeMessages(repository);
-final getMsgFeedUnread = GetMsgFeedUnread(repository);
+    // Display unread counts
+    return Text('Unread: ${unreadState.totalUnread}');
 
-// Get reply messages
-final result = await getReplyMessages(
-  cursor: null,
-  cursorTime: null,
-);
-
-if (result case Success(:final data)) {
-  print('Total reply messages: ${data.total}');
-  for (final item in data.items ?? []) {
-    print('Reply from: ${item.reply.uname}');
+    // Navigate to message list
+    return MsgListPage();
   }
-}
-
-// Get unread counts
-final unreadResult = await getMsgFeedUnread();
-if (unreadResult case Success(:final unreadData)) {
-  print('Reply unread: ${unreadData.reply}');
-  print('At unread: ${unreadData.at}');
-  print('Like unread: ${unreadData.like}');
 }
 ```
 
@@ -99,3 +95,18 @@ The feature supports different message types:
 - **System** - System notifications
 
 Each type has its own unread count that can be retrieved through `getMsgFeedUnread()`.
+
+## Migration Status
+
+- ✅ Domain Layer Complete
+- ✅ Data Layer Complete
+- ✅ Presentation Layer Complete (New)
+- ⏳ Tests (Pending)
+- ✅ Documentation Complete
+
+## Code Quality
+
+- ✅ `flutter analyze` No errors found (only warnings in switch statements)
+- ✅ `dart format` Formatted
+- ✅ Riverpod code generation verified
+- ✅ Clean architecture compliance verified
