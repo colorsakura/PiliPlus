@@ -7,7 +7,11 @@ export 'domain/usecases/get_fav_folders_usecase.dart';
 export 'data/datasources/fav_video_remote_datasource.dart';
 export 'data/repositories/fav_video_repository_impl.dart';
 
-// Presentation
+// Presentation (ChangeNotifier - Legacy)
 export 'presentation/providers/fav_video_list_controller.dart';
 export 'presentation/providers/fav_video_providers.dart';
 export 'presentation/pages/fav_video_page.dart';
+
+// Presentation (Riverpod - New)
+export 'presentation/providers/fav_folder_list_controller.dart';
+export 'presentation/pages/fav_video_page_v2.dart';
