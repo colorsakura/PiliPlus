@@ -2,8 +2,7 @@ import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
-import 'package:PiliPlus/features/popular_series/presentation/providers/popular_series_providers.dart';
-import 'package:PiliPlus/features/popular_series/presentation/providers/popular_series_controller.dart';
+import 'package:PiliPlus/features/popular_series/presentation/providers/popular_series_list_controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
@@ -37,13 +36,14 @@ class _PopularSeriesPageState extends ConsumerState<PopularSeriesPage> {
   );
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(popularSeriesControllerProvider);
+    final state = ref.watch(popularSeriesListControllerProvider);
+    final controller = ref.read(popularSeriesListControllerProvider.notifier);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: controller.state.config?.name != null
-            ? Text(controller.state.config!.name!)
+        title: state.config?.name != null
+            ? Text(state.config!.name!)
             : const Text('每周必看'),
       ),
       body: refreshIndicator(
@@ -52,7 +52,7 @@ class _PopularSeriesPageState extends ConsumerState<PopularSeriesPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             ViewSliverSafeArea(
-              sliver: _buildBody(controller.state.videoListState, controller),
+              sliver: _buildBody(state.videoListState, state, controller),
             ),
           ],
         ),
@@ -62,7 +62,8 @@ class _PopularSeriesPageState extends ConsumerState<PopularSeriesPage> {
 
   Widget _buildBody(
     LoadingState<List<HotVideoItemModel>?> value,
-    PopularSeriesController controller,
+    PopularSeriesListState state,
+    PopularSeriesListController controller,
   ) {
     return switch (value) {
       Loading() => gridSkeleton,
@@ -75,7 +76,7 @@ class _PopularSeriesPageState extends ConsumerState<PopularSeriesPage> {
             return VideoCardH(
               videoItem: item,
               onTap: () {
-                final config = controller.state.config;
+                final config = state.config;
                 PageUtils.toVideoPage(
                   bvid: item.bvid,
                   cid: item.cid!,

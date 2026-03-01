@@ -2,7 +2,7 @@ import 'package:PiliPlus/shared/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/shared/widgets/video_card/video_card_h.dart';
 import 'package:PiliPlus/shared/widgets/view_sliver_safe_area.dart';
-import 'package:PiliPlus/features/popular_precious/presentation/providers/popular_precious_list_provider.dart';
+import 'package:PiliPlus/features/popular_precious/presentation/providers/popular_precious_controller.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -35,8 +35,9 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage> {
   );
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(popularPreciousListControllerProvider);
-    final listState = controller.state.listState;
+    final state = ref.watch(popularPreciousControllerProvider);
+    final controller = ref.read(popularPreciousControllerProvider.notifier);
+    final listState = state.listState;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -47,7 +48,7 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             ViewSliverSafeArea(
-              sliver: _buildBody(listState, controller),
+              sliver: _buildBody(listState, state, controller),
             ),
           ],
         ),
@@ -57,7 +58,8 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage> {
 
   Widget _buildBody(
     LoadingState listState,
-    dynamic controller,
+    PopularPreciousState state,
+    PopularPreciousController controller,
   ) {
     return switch (listState) {
       Loading() => gridSkeleton,
@@ -77,7 +79,7 @@ class _PopularPreciousPageState extends ConsumerState<PopularPreciousPage> {
                         extraArguments: {
                           'sourceType': SourceType.playlist,
                           'favTitle': '入站必刷',
-                          'mediaId': controller.state.mediaId,
+                          'mediaId': state.mediaId,
                           'desc': true,
                           'oid': item.aid,
                           'isContinuePlaying': index != 0,
