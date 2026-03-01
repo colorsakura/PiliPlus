@@ -1,4 +1,4 @@
-import 'package:PiliPlus/features/shell/domain/entities/navigation_config.dart';
+import 'package:PiliPlus/models/common/nav_bar_config.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/nav_icon_builder.dart';
 import 'package:PiliPlus/features/shell/presentation/widgets/user_section.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 class SideNavBar extends StatelessWidget {
   const SideNavBar({
     super.key,
-    required this.config,
+    required this.items,
+    required this.selectedIndex,
     required this.dynCount,
     required this.dynamicBadgeMode,
     required this.unreadMessage,
@@ -25,7 +26,8 @@ class SideNavBar extends StatelessWidget {
     this.faceUrl,
   });
 
-  final NavigationConfig config;
+  final List<NavigationBarType> items;
+  final int selectedIndex;
   final int dynCount;
   final DynamicBadgeMode dynamicBadgeMode;
   final UnreadMessage unreadMessage;
@@ -53,13 +55,8 @@ class SideNavBar extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 labelType: NavigationRailLabelType.all,
                 onDestinationSelected: onDestinationSelected,
-                selectedIndex: config.navigationBars.isEmpty
-                    ? 0
-                    : config.selectedIndex.clamp(
-                        0,
-                        config.navigationBars.length - 1,
-                      ),
-                destinations: config.navigationBars
+                selectedIndex: selectedIndex,
+                destinations: items
                     .map(
                       (e) => NavigationRailDestination(
                         label: Text(e.label),
