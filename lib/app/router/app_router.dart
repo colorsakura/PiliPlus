@@ -49,7 +49,6 @@ import 'package:PiliPlus/features/search_result/search_result.dart';
 import 'package:PiliPlus/features/search_trending/search_trending.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/extra_setting.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/bar_set.dart';
-import 'package:PiliPlus/features/setting/presentation/pages/pages/color_select.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/display_mode.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/pages/play_speed_set.dart';
 import 'package:PiliPlus/features/setting/presentation/pages/play_setting.dart';
@@ -307,12 +306,6 @@ GoRouter goRouter() {
         path: AppRoutes.blackListPage,
         pageBuilder: (context, state) =>
             const MaterialPage(child: BlacklistPage()),
-      ),
-
-      GoRoute(
-        path: AppRoutes.colorSetting,
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: ColorSelectPage()),
       ),
 
       GoRoute(

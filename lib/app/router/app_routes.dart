@@ -27,7 +27,6 @@ abstract class AppRoutes {
   static const String privacySetting = '/privacySetting';
   static const String extraSetting = '/extraSetting';
   static const String blackListPage = '/blackListPage';
-  static const String colorSetting = '/colorSetting';
   static const String displayModeSetting = '/displayModeSetting';
   static const String about = '/about';
   static const String articlePage = '/articlePage';
