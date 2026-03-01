@@ -158,6 +158,5 @@ class _HomePageState extends ConsumerState<HomePage>
   /// 滚动到顶部（双击刷新时触发）
   void _scrollToTop() {
     // TODO: Implement scroll to top for current tab
-    // This should notify the current tab page to scroll to top
   }
 }
