@@ -8,7 +8,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/live/live_emote/datum.dart';
 import 'package:PiliPlus/models/live/live_emote/emoticon.dart';
-import 'package:PiliPlus/features/live_emote/presentation/providers/live_emote_providers.dart';
+import 'package:PiliPlus/features/live_emote/presentation/providers/live_emote_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
@@ -31,27 +31,34 @@ class LiveEmotePanelV2 extends ConsumerStatefulWidget {
 
 class _LiveEmotePanelV2State extends ConsumerState<LiveEmotePanelV2>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  TabController? _tabController;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    // Initialize tab controller after first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        ref
-            .read(liveEmoteControllerProvider(widget.roomId))
-            .initTabController(this);
-      }
-    });
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(liveEmoteControllerProvider(widget.roomId));
-    return _buildBody(controller.state.listState);
+    final state = ref.watch(liveEmoteListControllerProvider(widget.roomId));
+
+    // Initialize tab controller when data is available
+    if (state.listState case Success(:final response) when response != null && response.isNotEmpty) {
+      if (_tabController == null || _tabController!.length != response.length) {
+        _tabController?.dispose();
+        _tabController = TabController(
+          length: response.length,
+          vsync: this,
+        );
+      }
+    }
+
+    return _buildBody(state.listState);
   }
 
   Widget _buildBody(LoadingState<List<LiveEmoteDatum>?> loadingState) {
@@ -70,9 +77,7 @@ class _LiveEmotePanelV2State extends ConsumerState<LiveEmotePanelV2>
                 children: [
                   Expanded(
                     child: tabBarView(
-                      controller: ref
-                          .read(liveEmoteControllerProvider(widget.roomId))
-                          .tabController,
+                      controller: _tabController,
                       children: response.map(
                         (item) {
                           final emote = item.emoticons;
@@ -183,9 +188,7 @@ class _LiveEmotePanelV2State extends ConsumerState<LiveEmotePanelV2>
                     color: theme.dividerColor.withValues(alpha: 0.1),
                   ),
                   TabBar(
-                    controller: ref
-                        .read(liveEmoteControllerProvider(widget.roomId))
-                        .tabController,
+                    controller: _tabController,
                     padding: const EdgeInsets.only(right: 60),
                     dividerColor: Colors.transparent,
                     dividerHeight: 0,
@@ -215,7 +218,7 @@ class _LiveEmotePanelV2State extends ConsumerState<LiveEmotePanelV2>
   Widget _errorWidget([String? errMsg]) => Center(
     child: TextButton.icon(
       onPressed: () {
-        ref.read(liveEmoteControllerProvider(widget.roomId)).queryData();
+        ref.read(liveEmoteListControllerProvider(widget.roomId).notifier).queryData(widget.roomId);
       },
       icon: const Icon(Icons.refresh),
       label: Text(errMsg ?? '没有数据'),
