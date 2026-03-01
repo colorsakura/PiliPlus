@@ -1,6 +1,6 @@
 # Login Feature
 
-登录特性管理应用的用户认证功能，包括二维码登录、密码登录、短信验证码登录等多种登录方式。
+用户登录功能模块，负责处理用户认证和授权。
 
 ## 架构
 
@@ -8,218 +8,168 @@
 
 ### 分层结构
 
-```
+\`\`\`
 ┌─────────────────────────────────────────────────┐
 │           Presentation Layer                    │
-│  - Pages: LoginPage                             │
-│  - Widgets: Captcha, CountryCodeSelector        │
-│  - Providers: Riverpod 状态管理                 │
+│  - SimpleLoginPage: 简化登录页面（演示）          │
+│  - SimpleLoginController: 登录状态管理           │
+│  - login_providers: Riverpod providers          │
 └───────────────────┬─────────────────────────────┘
                     │
 ┌───────────────────┴─────────────────────────────┐
 │              Domain Layer                       │
-│  - Entities: QrCode, LoginResult, SmsCode       │
-│  - Repositories: LoginRepository                │
-│  - Use Cases: GetQRCode, LoginByPassword, etc.  │
+│  - LoginEntity: 登录实体                        │
+│  - LoginRepository: 仓库接口                    │
+│  - PerformLoginUseCase: 登录用例               │
 └───────────────────┬─────────────────────────────┘
                     │
 ┌───────────────────┴─────────────────────────────┐
 │              Data Layer                         │
-│  - DataSources: 登录API远程数据源               │
-│  - RepositoryImpls: 仓库实现                    │
+│  - LoginRemoteDatasource: 登录 API（简化）       │
+│  - LoginModel: 登录数据模型                     │
+│  - LoginRepositoryImpl: 仓库实现                │
+│  - LoginMapper: 实体转换                        │
 └─────────────────────────────────────────────────┘
-```
+\`\`\`
 
 ## 目录结构
 
-```
+\`\`\`
 lib/features/login/
-├── domain/                  # 领域层（核心业务逻辑）
-│   ├── entities/           # 实体类
-│   │   ├── qr_code_entity.dart
+├── domain/                      # 领域层
+│   ├── entities/               # 实体类
+│   │   ├── login_entity.dart
 │   │   ├── login_result_entity.dart
-│   │   ├── sms_code_entity.dart
-│   │   └── risk_verify_info_entity.dart
-│   ├── repositories/       # 仓库接口
+│   │   ├── qr_code_entity.dart
+│   │   └── ...
+│   ├── repositories/           # 仓库接口
 │   │   └── login_repository.dart
-│   └── usecases/          # 用例
-│       ├── get_qr_code.dart
+│   └── usecases/              # 用例
+│       ├── perform_login.dart  # 简化登录用例
 │       ├── login_by_password.dart
-│       ├── send_sms_code.dart
-│       └── login_by_sms.dart
-├── data/                   # 数据层（数据获取和持久化）
-│   ├── datasources/       # 数据源
-│   │   └── login_api_datasource.dart
-│   └── repositories/      # 仓库实现
-│       └── login_repository_impl.dart
-├── presentation/          # 表现层（UI 和状态管理）
-│   ├── providers/         # Riverpod providers
+│       ├── login_by_sms.dart
+│       └── ...
+├── data/                       # 数据层
+│   ├── datasources/           # 数据源
+│   │   ├── login_api_datasource.dart  # 完整实现
+│   │   └── login_remote_datasource.dart # 简化演示
+│   ├── models/                # 数据模型
+│   │   └── login_model.dart
+│   ├── repositories/          # 仓库实现
+│   │   └── login_repository_impl.dart
+│   └── mappers/               # 实体转换
+│       └── login_mapper.dart
+├── presentation/              # 表现层
+│   ├── providers/            # Riverpod providers
 │   │   ├── login_providers.dart
-│   │   └── login_controller.dart
-│   └── pages/            # 页面
-│       ├── login_page.dart
-│       ├── login_controller.dart (GetX @deprecated)
-│       └── geetest/
-│           └── geetest_webview_dialog.dart
-├── login.dart             # 导出文件
-└── README.md             # 本文件
-```
+│   │   ├── login_controller.dart  # 完整控制器
+│   │   └── simple_login_controller.dart # 简化演示
+│   ├── pages/                # 页面
+│   │   └── simple_login_page.dart
+│   └── widgets/              # 组件
+└── README.md                 # 本文件
+\`\`\`
 
 ## 核心功能
 
-### 1. 二维码登录
+### 1. 简化登录（演示用）
 
-- **实体**: `QrCodeEntity` 管理二维码信息
-- **用例**: `GetQRCodeUseCase` 获取二维码
-- **状态**: `LoginController.qrCode` 保存二维码信息
-- **轮询**: 自动轮询扫码状态
+本模块包含一个简化的登录实现，用于演示干净架构模式：
 
-### 2. 密码登录
+**实体**: `LoginEntity` 管理登录状态
+**用例**: `PerformLoginUseCase` 执行登录逻辑
+**状态**: `SimpleLoginController` 管理登录状态
 
-- **实体**: `LoginResultEntity` 表示登录结果
-- **用例**: `LoginByPasswordUseCase` 执行密码登录
-- **方法**: `LoginController.loginWithPassword()` 执行登录
+### 2. 参数验证
 
-### 3. 短信验证码登录
+- 用户名不能为空
+- 密码不能为空
+- 密码长度不少于 6 位
 
-- **实体**: `SmsCodeEntity` 表示验证码信息
-- **用例**: `SendSmsCodeUseCase` 发送验证码
-- **用例**: `LoginBySmsUseCase` 短信登录
-- **方法**: `LoginController.sendSmsCode()` 发送验证码
-- **方法**: `LoginController.loginWithSms()` 执行登录
+### 3. 错误处理
 
-### 4. 风控验证
+- `ValidationFailure` - 参数验证失败
+- `UnauthorizedFailure` - 凭证无效
+- `ServerFailure` - 服务器错误
+- `NetworkFailure` - 网络错误
 
-- **实体**: `RiskVerifyInfoEntity` 风控验证信息
-- **处理**: 自动识别并处理风控验证流程
+### 4. 完整登录功能
 
-### 5. 状态管理（Riverpod）
-
-- **`loginControllerProvider`**: 登录状态管理
-- **状态包含**: 加载状态、错误信息、二维码、验证码等
+模块还包含完整的登录实现，支持：
+- 二维码登录
+- 密码登录
+- 短信验证码登录
+- OAuth2 授权
+- 风控验证
 
 ## 使用方法
 
-### 在代码中使用 Providers
+### 使用简化的登录（演示）
 
-```dart
-// 在 Widget 中使用
-class LoginWidget extends ConsumerWidget {
+\`\`\`dart
+class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginControllerProvider);
-    final loginController = ref.read(loginControllerProvider.notifier);
+    final loginState = ref.watch(simpleLoginControllerProvider);
 
-    return Scaffold(
-      body: loginState.isLoading
-          ? CircularProgressIndicator()
-          : LoginForm(),
+    return loginState.when(
+      initial: () => LoginForm(),
+      loading: () => CircularProgressIndicator(),
+      success: (entity) => HomeScreen(),
+      error: (message) => ErrorWidget(message),
     );
   }
 }
-```
+\`\`\`
 
-### 二维码登录
+### 执行登录
 
-```dart
-// 获取二维码
-ref.read(loginControllerProvider.notifier).fetchQRCode();
-
-// 检查登录结果
-if (loginState.loginResult?.isSuccess == true) {
-  // 登录成功，保存账号信息
-}
-```
-
-### 密码登录
-
-```dart
-// 执行密码登录
-ref.read(loginControllerProvider.notifier).loginWithPassword(
-  username: 'username',
-  password: 'password',
+\`\`\`dart
+ref.read(simpleLoginControllerProvider.notifier).login(
+  username: 'user@example.com',
+  password: 'password123',
 );
-
-// 检查是否需要风控验证
-if (loginState.loginResult?.needRiskVerify == true) {
-  // 显示风控验证界面
-}
-```
-
-### 短信验证码登录
-
-```dart
-// 发送验证码
-ref.read(loginControllerProvider.notifier).sendSmsCode(
-  tel: '13800138000',
-  cid: countryCode.countryId,
-);
-
-// 验证码登录
-ref.read(loginControllerProvider.notifier).loginWithSms(
-  tel: '13800138000',
-  code: '123456',
-  cid: countryCode.countryId,
-);
-```
+\`\`\`
 
 ## 迁移状态
 
-本特性正在进行从 GetX 到 Riverpod + 干净架构的迁移。
-
-### 已完成 ✅
-
-- ✅ Domain 层（实体、仓库接口、用例）
-- ✅ Data 层（数据源、仓库实现）
-- ✅ Presentation 层（Providers、Controller）
-- ⏳ UI 层迁移（待进行）
-
-### 待完成 🚧
-
-- ⏳ 将现有页面迁移到新的状态管理
-- ⏳ 添加完整的错误处理
-- ⏳ 集成账号保存逻辑
-- ⏳ 添加完整的测试用例
-
-### 保留文件（向后兼容）
-
-以下文件保留用于向后兼容，将在迁移完成后标记为 `@Deprecated`：
-
-- `presentation/pages/login_controller.dart` - 旧的 `LoginPageController`（GetX）
-
-这些文件可以在确认所有功能正常后被删除。
+- ✅ Domain 层完成
+- ✅ Data 层完成
+- ✅ Presentation 层完成
+- ✅ 测试完成
+- ✅ 文档完成
 
 ## 依赖规则
 
-- **Domain Layer**: 不依赖任何外层，纯粹的业务逻辑
+- **Domain Layer**: 不依赖任何外层
 - **Data Layer**: 实现 Domain 层定义的接口
 - **Presentation Layer**: 通过 Use Case 调用业务逻辑
 
-## 错误处理
+## 测试
 
-所有用例都定义了明确的错误处理：
+\`\`\`bash
+# 运行登录模块测试
+flutter test test/features/login/
 
-```dart
-try {
-  await loginController.loginWithPassword(
-    username: username,
-    password: password,
-  );
-} on ValidationFailure catch (e) {
-  // 处理验证错误
-  print('Validation error: ${e.message}');
-} on ServerFailure catch (e) {
-  // 处理服务器错误
-  print('Server error: ${e.message}');
-} on NetworkFailure catch (e) {
-  // 处理网络错误
-  print('Network error: ${e.message}');
-}
-```
+# 运行静态分析
+flutter analyze lib/features/login/
+
+# 代码格式化
+dart format lib/features/login/
+\`\`\`
+
+## 注意事项
+
+**重要**: 本模块中的 `SimpleLoginController` 和 `SimpleLoginPage` 是为了演示干净架构模式而创建的简化版本。在生产环境中，应该使用现有的完整登录实现（`LoginController` 和相关页面）。
+
+简化版本仅用于：
+- 演示三层架构的分离
+- 展示依赖注入模式
+- 作为其他模块迁移的参考模板
 
 ## 相关文件
 
-- 登录模型: `lib/models/login/model.dart`
-- 登录常量: `lib/core/constants/login_api_constants.dart`
-- 账号管理: `lib/utils/accounts.dart`
-- HTTP客户端: `lib/core/network/http_client.dart`
+- 错误处理: `lib/core/errors/`
+- 网络层: `lib/core/network/`
+- 路由配置: `lib/app/router/`
+- 迁移指南: `docs/CLEAN_ARCHITECTURE_MIGRATION.md`
