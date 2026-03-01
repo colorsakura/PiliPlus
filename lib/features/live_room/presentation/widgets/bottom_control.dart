@@ -106,7 +106,7 @@ class _BottomControlState extends State<BottomControl> with HeaderMixin {
                   final newVal = !enableShowLiveDanmaku;
                   plPlayerController.enableShowDanmaku.value = newVal;
                   if (!plPlayerController.tempPlayerConf) {
-                    GStorage.setting.put(
+                    GStorage.settingRepository.setBool(
                       SettingBoxKey.enableShowLiveDanmaku,
                       newVal,
                     );

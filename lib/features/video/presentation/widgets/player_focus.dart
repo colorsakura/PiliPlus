@@ -185,7 +185,7 @@ class PlayerFocus extends StatelessWidget {
           final newVal = !plPlayerController.enableShowDanmaku.value;
           plPlayerController.enableShowDanmaku.value = newVal;
           if (!plPlayerController.tempPlayerConf) {
-            GStorage.setting.put(
+            GStorage.settingRepository.setBool(
               plPlayerController.isLive
                   ? SettingBoxKey.enableShowLiveDanmaku
                   : SettingBoxKey.enableShowDanmaku,

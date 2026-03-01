@@ -198,7 +198,7 @@ mixin FavMixin on TripleMixin {
       if (folderInfo != null) {
         return this.quickFavId = quickFavId;
       } else {
-        GStorage.setting.delete(SettingBoxKey.quickFavId);
+        GStorage.settingRepository.remove(SettingBoxKey.quickFavId);
       }
     }
     return this.quickFavId = list.first.id;

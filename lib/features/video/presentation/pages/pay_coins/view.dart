@@ -460,7 +460,7 @@ class _PayCoinsPageState extends State<PayCoinsPage>
                     onTap: () {
                       final newVal = !_coinWithLike.value;
                       _coinWithLike.value = newVal;
-                      GStorage.setting.put(SettingBoxKey.coinWithLike, newVal);
+                      GStorage.settingRepository.setBool(SettingBoxKey.coinWithLike, newVal);
                     },
                     behavior: HitTestBehavior.opaque,
                     child: Row(

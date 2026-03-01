@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:PiliPlus/core/errors/exceptions.dart';
 import 'package:PiliPlus/core/errors/failures.dart';
 import 'package:PiliPlus/features/search/data/datasources/search_remote_datasource.dart';
@@ -239,9 +241,9 @@ class SearchRepositoryImpl implements SearchRepository {
 
   @override
   SearchHistoryEntity getSearchHistory() {
-    final historyList = List<String>.from(
-      GStorage.historyWord.get('cacheList') ?? [],
-    );
+    final historyListJson =
+        GStorage.historyWordRepository.getString('cacheList') ?? '[]';
+    final historyList = List<String>.from(jsonDecode(historyListJson));
     return SearchHistoryEntity(
       historyList: historyList,
       recordHistory: true,
@@ -252,19 +254,25 @@ class SearchRepositoryImpl implements SearchRepository {
   void addSearchHistory(String keyword) {
     final history = getSearchHistory();
     final updatedHistory = history.addHistory(keyword);
-    GStorage.historyWord.put('cacheList', updatedHistory.historyList);
+    GStorage.historyWordRepository.setString(
+      'cacheList',
+      jsonEncode(updatedHistory.historyList),
+    );
   }
 
   @override
   void removeSearchHistory(String keyword) {
     final history = getSearchHistory();
     final updatedHistory = history.removeHistory(keyword);
-    GStorage.historyWord.put('cacheList', updatedHistory.historyList);
+    GStorage.historyWordRepository.setString(
+      'cacheList',
+      jsonEncode(updatedHistory.historyList),
+    );
   }
 
   @override
   void clearSearchHistory() {
-    GStorage.historyWord.delete('cacheList');
+    GStorage.historyWordRepository.remove('cacheList');
   }
 
   SearchTrendingDataEntity _parseTrendingData(Map<String, dynamic> data) {

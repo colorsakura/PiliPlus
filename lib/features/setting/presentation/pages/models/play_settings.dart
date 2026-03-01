@@ -247,9 +247,9 @@ List<SettingsModel> get playSettings => [
     leading: const Icon(Icons.repeat),
     value: () => Pref.playRepeat,
     items: PlayRepeat.values,
-    onSelected: (value, setState) => GStorage.video
-        .put(VideoBoxKey.playRepeat, value.index)
-        .whenComplete(setState),
+    onSelected: (value, setState) => GStorage.videoRepository
+        .setInt(VideoBoxKey.playRepeat, value.index)
+        .whenComplete(() => setState()),
   ),
   const SwitchModel(
     title: '播放器设置仅对当前生效',
@@ -273,7 +273,7 @@ Future<void> _showSubtitleDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.subtitlePreferenceV2,
       res.index,
     );
@@ -294,7 +294,7 @@ Future<void> _showSuperChatDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.superChatType, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.superChatType, res.index);
     setState();
   }
 }
@@ -312,7 +312,7 @@ Future<void> _showFullScreenModeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.fullScreenMode, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.fullScreenMode, res.index);
     setState();
   }
 }
@@ -330,7 +330,7 @@ Future<void> _showProgressBehaviorDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.btmProgressBehavior,
       res.index,
     );

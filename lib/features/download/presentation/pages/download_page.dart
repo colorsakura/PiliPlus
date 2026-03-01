@@ -195,7 +195,7 @@ class _DownloadPageState extends State<DownloadPage> {
                                     entry: entry,
                                     removeList: true,
                                   );
-                                  GStorage.watchProgress.delete(
+                                  GStorage.watchProgressRepository.remove(
                                     entry.cid.toString(),
                                   );
                                 },
@@ -249,9 +249,9 @@ class _DownloadPageState extends State<DownloadPage> {
                         context: context,
                         title: '确定删除？',
                         onConfirm: () async {
-                          await GStorage.watchProgress.deleteAll(
-                            pageInfo.entries.map((e) => e.cid.toString()),
-                          );
+                          for (final entry in pageInfo.entries) {
+                            await GStorage.watchProgressRepository.remove(entry.cid.toString());
+                          }
                           _downloadService.deletePage(
                             pageDirPath: pageInfo.dirPath,
                           );

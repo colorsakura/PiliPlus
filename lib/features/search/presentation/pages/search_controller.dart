@@ -1,8 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:PiliPlus/app/router/app_routes.dart';
 // Note: DebounceStreamMixin and DebounceStreamState are also available from
 // package:PiliPlus/utils/mixins/debounce_stream_mixin.dart for reuse
-import 'dart:async';
-
 import 'package:PiliPlus/shared/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -58,7 +59,7 @@ abstract class DebounceStreamState<T extends StatefulWidget, S> extends State<T>
 
 class BaseSearchController extends GetxController {
   final historyList = List<String>.from(
-    GStorage.historyWord.get('cacheList') ?? [],
+    jsonDecode(GStorage.historyWordRepository.getString('cacheList') ?? '[]'),
   ).obs;
 
   late final Rx<LoadingState<SearchTrendingData>> trendingState;
@@ -180,7 +181,10 @@ class SSearchController extends GetxController
       historyList
         ..remove(controller.text)
         ..insert(0, controller.text);
-      GStorage.historyWord.put('cacheList', historyList);
+      GStorage.historyWordRepository.setString(
+        'cacheList',
+        jsonEncode(historyList),
+      );
     }
 
     searchFocusNode.unfocus();
@@ -229,7 +233,10 @@ class SSearchController extends GetxController
 
   void onLongSelect(String word) {
     historyList.remove(word);
-    GStorage.historyWord.put('cacheList', historyList);
+    GStorage.historyWordRepository.setString(
+      'cacheList',
+      jsonEncode(historyList),
+    );
   }
 
   void onClearHistory() {
@@ -238,7 +245,7 @@ class SSearchController extends GetxController
       title: '确定清空搜索历史？',
       onConfirm: () {
         historyList.clear();
-        GStorage.historyWord.delete('cacheList');
+        GStorage.historyWordRepository.remove('cacheList');
       },
     );
   }

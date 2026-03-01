@@ -77,8 +77,8 @@ List<SettingsModel> get extraSettings => [
     leading: const Icon(MdiIcons.debugStepOver),
     value: () => Pref.pgcSkipType,
     items: SkipType.values,
-    onSelected: (value, setState) => GStorage.setting
-        .put(SettingBoxKey.pgcSkipType, value.index)
+    onSelected: (value, setState) => GStorage.settingRepository
+        .setInt(SettingBoxKey.pgcSkipType, value.index)
         .whenComplete(setState),
   ),
   SwitchModel(
@@ -682,7 +682,7 @@ Future<void> audioNormalization(
             TextButton(
               onPressed: () {
                 PageUtils.pop();
-                GStorage.setting.put(key, param);
+                GStorage.settingRepository.setString(key, param);
                 if (!fallback &&
                     PlPlayerController.loudnormRegExp.hasMatch(param)) {
                   audioNormalization(context, setState, fallback: true);
@@ -695,7 +695,7 @@ Future<void> audioNormalization(
         ),
       );
     } else {
-      GStorage.setting.put(key, res);
+      GStorage.settingRepository.setString(key, res);
       if (res == '2') {
         audioNormalization(context, setState, fallback: true);
       }
@@ -729,7 +729,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
               downloadPath = defPath;
               setState();
               Get.find<DownloadService>().initDownloadList();
-              GStorage.setting.delete(SettingBoxKey.downloadPath);
+              GStorage.settingRepository.remove(SettingBoxKey.downloadPath);
             },
             dense: true,
             title: const Text('重置', style: TextStyle(fontSize: 14)),
@@ -742,7 +742,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
               downloadPath = path;
               setState();
               Get.find<DownloadService>().initDownloadList();
-              GStorage.setting.put(SettingBoxKey.downloadPath, path);
+              GStorage.settingRepository.setString(SettingBoxKey.downloadPath, path);
             },
             dense: true,
             title: const Text('设置新路径', style: TextStyle(fontSize: 14)),
@@ -780,7 +780,7 @@ void _showDynDialog(BuildContext context) {
             try {
               final val = int.parse(dynamicPeriod);
               PageUtils.pop();
-              GStorage.setting.put(SettingBoxKey.dynamicPeriod, val);
+              GStorage.settingRepository.setInt(SettingBoxKey.dynamicPeriod, val);
               // dynamicPeriod is now read directly from storage by providers
             } catch (e) {
               SmartDialog.showToast(e.toString());
@@ -821,7 +821,7 @@ void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
               final val = int.parse(replyLengthLimit);
               PageUtils.pop();
               ReplyItemGrpc.replyLengthLimit = val == 0 ? null : val;
-              await GStorage.setting.put(SettingBoxKey.replyLengthLimit, val);
+              await GStorage.settingRepository.setInt(SettingBoxKey.replyLengthLimit, val);
               setState();
             } catch (e) {
               SmartDialog.showToast(e.toString());
@@ -865,7 +865,7 @@ void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
                 double.parse(danmakuLineHeight).toPrecision(1),
               );
               PageUtils.pop();
-              await GStorage.setting.put(SettingBoxKey.danmakuLineHeight, val);
+              await GStorage.settingRepository.setDouble(SettingBoxKey.danmakuLineHeight, val);
               setState();
             } catch (e) {
               SmartDialog.showToast(e.toString());
@@ -907,7 +907,7 @@ void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
               final val = double.parse(initialValue);
               PageUtils.pop();
               touchSlopH = val;
-              await GStorage.setting.put(SettingBoxKey.touchSlopH, val);
+              await GStorage.settingRepository.setDouble(SettingBoxKey.touchSlopH, val);
               setState();
             } catch (e) {
               SmartDialog.showToast(e.toString());
@@ -938,7 +938,7 @@ Future<void> _showRefreshDragDialog(
   );
   if (res != null) {
     kDragContainerExtentPercentage = res;
-    await GStorage.setting.put(SettingBoxKey.refreshDragPercentage, res);
+    await GStorage.settingRepository.setDouble(SettingBoxKey.refreshDragPercentage, res);
     Get.forceAppUpdate();
   }
 }
@@ -959,7 +959,7 @@ Future<void> _showRefreshDialog(
   );
   if (res != null) {
     displacement = res;
-    await GStorage.setting.put(SettingBoxKey.refreshDisplacement, res);
+    await GStorage.settingRepository.setDouble(SettingBoxKey.refreshDisplacement, res);
     Get.forceAppUpdate();
   }
 }
@@ -977,7 +977,7 @@ Future<void> _showSuperResolutionDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.superResolutionType,
       res.index,
     );
@@ -1005,7 +1005,7 @@ Future<void> _showFavDialog(BuildContext context) async {
             child: RadioGroup(
               onChanged: (value) {
                 PageUtils.pop();
-                GStorage.setting.put(SettingBoxKey.quickFavId, value);
+                GStorage.settingRepository.setInt(SettingBoxKey.quickFavId, value);
                 SmartDialog.showToast('设置成功');
               },
               groupValue: quickFavId,
@@ -1047,7 +1047,7 @@ Future<void> _showReplyCountDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.retryCount, res.toInt());
+    await GStorage.settingRepository.setInt(SettingBoxKey.retryCount, res.toInt());
     setState();
     SmartDialog.showToast('重启生效');
   }
@@ -1070,7 +1070,7 @@ Future<void> _showReplyDelayDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.retryDelay, res.toInt());
+    await GStorage.settingRepository.setInt(SettingBoxKey.retryDelay, res.toInt());
     setState();
     SmartDialog.showToast('重启生效');
   }
@@ -1089,7 +1089,7 @@ Future<void> _showReplySortDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.replySortType, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.replySortType, res.index);
     setState();
   }
 }
@@ -1107,7 +1107,7 @@ Future<void> _showDefDynDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.defaultDynamicType,
       res.index,
     );
@@ -1128,7 +1128,7 @@ Future<void> _showMemberTabDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.memberTab, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.memberTab, res.index);
     setState();
   }
 }
@@ -1183,11 +1183,11 @@ void _showProxyDialog(BuildContext context) {
         TextButton(
           onPressed: () {
             PageUtils.pop();
-            GStorage.setting.put(
+            GStorage.settingRepository.setString(
               SettingBoxKey.systemProxyHost,
               systemProxyHost,
             );
-            GStorage.setting.put(
+            GStorage.settingRepository.setString(
               SettingBoxKey.systemProxyPort,
               systemProxyPort,
             );
@@ -1227,9 +1227,9 @@ void _showCacheDialog(BuildContext context, VoidCallback setState) {
             try {
               final val = num.parse(valueStr);
               PageUtils.pop();
-              await GStorage.setting.put(
+              await GStorage.settingRepository.setInt(
                 SettingBoxKey.maxCacheSize,
-                val * 1024 * 1024,
+                (val * 1024 * 1024).toInt(),
               );
               setState();
             } catch (e) {

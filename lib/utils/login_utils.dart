@@ -62,7 +62,7 @@ abstract final class LoginUtils {
 
         SmartDialog.showToast('main登录成功');
         if (response != Pref.userInfoCache) {
-          await GStorage.userInfo.put('userInfoCache', response);
+          await GStorage.userInfoRepository.set('userInfoCache', response);
         }
       }
     } else {
@@ -85,7 +85,7 @@ abstract final class LoginUtils {
         web.CookieManager.instance(
           webViewEnvironment: AppInitializer.webViewEnvironment,
         ).deleteAllCookies(),
-      GStorage.userInfo.delete('userInfoCache'),
+      GStorage.userInfoRepository.remove('userInfoCache'),
     ]);
   }
 

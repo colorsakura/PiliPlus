@@ -43,10 +43,9 @@ class _SetSwitchItemState extends State<SetSwitchItem> {
     if (widget.setKey == SettingBoxKey.appFontWeight) {
       val = Pref.appFontWeight != -1;
     } else {
-      val = GStorage.setting.get(
+      val = GStorage.settingRepository.getBool(
         widget.setKey,
-        defaultValue: widget.defaultVal,
-      );
+      ) ?? widget.defaultVal;
     }
   }
 
@@ -76,9 +75,12 @@ class _SetSwitchItemState extends State<SetSwitchItem> {
     }
 
     if (widget.setKey == SettingBoxKey.appFontWeight) {
-      await GStorage.setting.put(SettingBoxKey.appFontWeight, val ? 4 : -1);
+      await GStorage.settingRepository.setInt(
+        SettingBoxKey.appFontWeight,
+        val ? 4 : -1,
+      );
     } else {
-      await GStorage.setting.put(widget.setKey, val);
+      await GStorage.settingRepository.setBool(widget.setKey, val);
     }
 
     widget.onChanged?.call(val);

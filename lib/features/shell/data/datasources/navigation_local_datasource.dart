@@ -9,7 +9,7 @@ class NavigationLocalDataSource {
   /// 获取导航栏排序配置
   List<NavigationBarType> getNavBarSort() {
     final List<int>? navBarSort =
-        (GStorage.setting.get(SettingBoxKey.navBarSort) as List?)?.cast<int>();
+        GStorage.settingRepository.getStringList(SettingBoxKey.navBarSort)?.map(int.parse).toList();
 
     if (navBarSort == null || navBarSort.isEmpty) {
       return NavigationBarType.values;
@@ -20,7 +20,10 @@ class NavigationLocalDataSource {
 
   /// 保存导航栏排序
   Future<void> saveNavBarSort(List<int> sortIndices) async {
-    await GStorage.setting.put(SettingBoxKey.navBarSort, sortIndices);
+    await GStorage.settingRepository.setStringList(
+      SettingBoxKey.navBarSort,
+      sortIndices.map((e) => e.toString()).toList(),
+    );
   }
 
   /// 获取默认首页索引

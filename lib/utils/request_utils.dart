@@ -49,7 +49,7 @@ abstract final class RequestUtils {
     }
     final res = await UserHttp.historyStatus(account: account);
     if (res case Success(:final response)) {
-      GStorage.localCache.put(LocalCacheKey.historyPause, response);
+      GStorage.localCacheRepository.setBool(LocalCacheKey.historyPause, response);
     }
   }
 

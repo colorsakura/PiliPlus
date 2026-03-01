@@ -791,7 +791,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
 
                       // update
                       if (!plPlayerController.tempPlayerConf) {
-                        GStorage.setting.put(
+                        await GStorage.settingRepository.setInt(
                           await Utils.isWiFi
                               ? SettingBoxKey.defaultVideoQa
                               : SettingBoxKey.defaultVideoQaCellular,

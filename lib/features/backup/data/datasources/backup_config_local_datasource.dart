@@ -23,11 +23,11 @@ class BackupConfigLocalDataSourceImpl implements BackupConfigLocalDataSource {
 
   @override
   Future<void> saveWebDavConfig(WebDavConfig config) async {
-    await GStorage.setting.putAll({
-      SettingBoxKey.webdavUri: config.uri,
-      SettingBoxKey.webdavUsername: config.username,
-      SettingBoxKey.webdavPassword: config.password,
-      SettingBoxKey.webdavDirectory: config.directory,
-    });
+    await Future.wait([
+      GStorage.settingRepository.setString(SettingBoxKey.webdavUri, config.uri),
+      GStorage.settingRepository.setString(SettingBoxKey.webdavUsername, config.username),
+      GStorage.settingRepository.setString(SettingBoxKey.webdavPassword, config.password),
+      GStorage.settingRepository.setString(SettingBoxKey.webdavDirectory, config.directory),
+    ]);
   }
 }

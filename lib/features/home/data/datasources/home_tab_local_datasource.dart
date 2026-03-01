@@ -8,7 +8,7 @@ class HomeTabLocalDataSource {
   /// 获取标签排序配置
   List<HomeTabType> getTabSort() {
     final List<int>? tabBarSort =
-        (GStorage.setting.get(SettingBoxKey.tabBarSort) as List?)?.cast<int>();
+        GStorage.settingRepository.getStringList(SettingBoxKey.tabBarSort)?.map(int.parse).toList();
 
     if (tabBarSort == null || tabBarSort.isEmpty) {
       return HomeTabType.values;
@@ -19,7 +19,10 @@ class HomeTabLocalDataSource {
 
   /// 保存标签排序
   Future<void> saveTabSort(List<int> sortIndices) async {
-    await GStorage.setting.put(SettingBoxKey.tabBarSort, sortIndices);
+    await GStorage.settingRepository.setStringList(
+      SettingBoxKey.tabBarSort,
+      sortIndices.map((e) => e.toString()).toList(),
+    );
   }
 
   /// 获取是否隐藏顶部栏

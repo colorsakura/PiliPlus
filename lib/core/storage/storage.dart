@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:PiliPlus/core/storage/data/box_compatibility_wrapper.dart';
 import 'package:PiliPlus/core/storage/data/storage_config.dart';
 import 'package:PiliPlus/core/storage/data/storage_factory.dart';
 import 'package:PiliPlus/core/storage/domain/repositories/storage_repository.dart';
@@ -49,46 +48,6 @@ abstract final class GStorage {
 
   /// 是否使用 MMKV（默认 true）
   static bool get useMMKV => true;
-
-  // ============ 向后兼容：Box 访问器 ============
-  // TODO: 逐步迁移到 Repository API
-
-  /// 向后兼容：setting Box
-  static BoxCompatibilityWrapper get setting => BoxCompatibilityWrapper(
-        repository: settingRepository,
-        name: 'setting',
-      );
-
-  /// 向后兼容：localCache Box
-  static BoxCompatibilityWrapper get localCache => BoxCompatibilityWrapper(
-        repository: localCacheRepository,
-        name: 'localCache',
-      );
-
-  /// 向后兼容：video Box
-  static BoxCompatibilityWrapper get video => BoxCompatibilityWrapper(
-        repository: videoRepository,
-        name: 'video',
-      );
-
-  /// 向后兼容：historyWord Box
-  static BoxCompatibilityWrapper get historyWord => BoxCompatibilityWrapper(
-        repository: historyWordRepository,
-        name: 'historyWord',
-      );
-
-  /// 向后兼容：userInfo Box
-  static TypedBoxCompatibilityWrapper<UserInfoData> get userInfo =>
-      TypedBoxCompatibilityWrapper<UserInfoData>(
-        repository: userInfoRepository,
-        name: 'userInfo',
-      );
-
-  /// 向后兼容：watchProgress Box
-  static BoxCompatibilityWrapper get watchProgress => BoxCompatibilityWrapper(
-        repository: watchProgressRepository,
-        name: 'watchProgress',
-      );
 
   /// 仅初始化关键 Box (用于阻塞阶段)
   ///

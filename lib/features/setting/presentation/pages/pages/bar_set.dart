@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:PiliPlus/shared/widgets/pair.dart';
 import 'package:PiliPlus/models/common/enum_with_label.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
@@ -24,7 +26,9 @@ class _BarSetPageState extends State<BarSetPage> {
     final Map<String, dynamic> args = Get.arguments;
     key = args['key'];
     title = args['title'];
-    final List? cache = GStorage.setting.get(key);
+    final cacheJson = GStorage.settingRepository.getString(key);
+    final List? cache =
+        cacheJson != null ? List<dynamic>.from(jsonDecode(cacheJson)) : null;
     list = (args['defaultBars'] as List<EnumWithLabel>)
         .map((e) => Pair(first: e, second: cache?.contains(e.index) ?? true))
         .toList();
@@ -39,16 +43,16 @@ class _BarSetPageState extends State<BarSetPage> {
   }
 
   void saveEdit() {
-    GStorage.setting.put(
+    GStorage.settingRepository.setString(
       key,
-      list.where((e) => e.second).map((e) => e.first.index).toList(),
+      jsonEncode(list.where((e) => e.second).map((e) => e.first.index).toList()),
     );
     SmartDialog.showToast('保存成功，下次启动时生效');
   }
 
   void onReset() {
     PageUtils.pop();
-    GStorage.setting.delete(key);
+    GStorage.settingRepository.remove(key);
     SmartDialog.showToast('重置成功，下次启动时生效');
   }
 

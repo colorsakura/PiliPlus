@@ -1,4 +1,5 @@
 import 'package:PiliPlus/app/router/app_routes.dart';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -189,7 +190,7 @@ List<SettingsModel> get styleSettings => [
       initValue: Pref.picQuality,
       onChanged: (picQuality) async {
         GlobalData().imgQuality = picQuality;
-        await GStorage.setting.put(SettingBoxKey.defaultPicQa, picQuality);
+        await GStorage.settingRepository.setInt(SettingBoxKey.defaultPicQa, picQuality);
         setState();
       },
     ),
@@ -207,7 +208,7 @@ List<SettingsModel> get styleSettings => [
       title: '查看大图质量',
       initValue: Pref.previewQ,
       onChanged: (picQuality) async {
-        await GStorage.setting.put(SettingBoxKey.previewQuality, picQuality);
+        await GStorage.settingRepository.setInt(SettingBoxKey.previewQuality, picQuality);
         setState();
       },
     ),
@@ -425,7 +426,7 @@ void _showUiScaleDialog(
         TextButton(
           onPressed: () {
             Navigator.pop(context);
-            GStorage.setting.delete(SettingBoxKey.uiScale).whenComplete(() {
+            GStorage.settingRepository.remove(SettingBoxKey.uiScale).whenComplete(() {
               setState();
               Get.appUpdate();
               ScaledWidgetsFlutterBinding.instance.scaleFactor = 1.0;
@@ -443,7 +444,7 @@ void _showUiScaleDialog(
         TextButton(
           onPressed: () {
             Navigator.pop(context);
-            GStorage.setting.put(SettingBoxKey.uiScale, uiScale).whenComplete(
+            GStorage.settingRepository.setDouble(SettingBoxKey.uiScale, uiScale).whenComplete(
               () {
                 setState();
                 Get.appUpdate();
@@ -553,7 +554,7 @@ void _showSpringDialog(BuildContext context, _) {
         TextButton(
           onPressed: () {
             PageUtils.pop();
-            GStorage.setting.delete(SettingBoxKey.springDescription);
+            GStorage.settingRepository.remove(SettingBoxKey.springDescription);
             SmartDialog.showToast('重置成功，重启生效');
           },
           child: const Text('重置'),
@@ -573,7 +574,7 @@ void _showSpringDialog(BuildContext context, _) {
               }
               final res = springDescription.map(double.parse).toList();
               PageUtils.pop();
-              GStorage.setting.put(SettingBoxKey.springDescription, res);
+              GStorage.settingRepository.setString(SettingBoxKey.springDescription, jsonEncode(res));
               SmartDialog.showToast('设置成功，重启生效');
             } catch (e) {
               SmartDialog.showToast(e.toString());
@@ -598,7 +599,7 @@ Future<void> _showFontWeightDialog(BuildContext context) async {
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.appFontWeight, res.toInt() - 1);
+    await GStorage.settingRepository.setInt(SettingBoxKey.appFontWeight, res.toInt() - 1);
     Get.forceAppUpdate();
   }
 }
@@ -616,7 +617,7 @@ Future<void> _showTransitionDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.pageTransition, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.pageTransition, res.index);
     SmartDialog.showToast('重启生效');
     setState();
   }
@@ -641,10 +642,14 @@ Future<void> _showCardWidthDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.putAll({
-      SettingBoxKey.recommendCardWidth: res.$1,
-      SettingBoxKey.smallCardWidth: res.$2,
-    });
+    await GStorage.settingRepository.setDouble(
+      SettingBoxKey.recommendCardWidth,
+      res.$1,
+    );
+    await GStorage.settingRepository.setDouble(
+      SettingBoxKey.smallCardWidth,
+      res.$2,
+    );
     SmartDialog.showToast('重启生效');
     setState();
   }
@@ -663,7 +668,7 @@ Future<void> _showUpPosDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.upPanelPosition, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.upPanelPosition, res.index);
     SmartDialog.showToast('重启生效');
     setState();
   }
@@ -682,7 +687,7 @@ Future<void> _showDynBadgeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.dynamicBadgeMode,
       res.index,
     );
@@ -706,7 +711,7 @@ Future<void> _showMsgBadgeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.msgBadgeMode, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.msgBadgeMode, res.index);
     // Refresh unread message count via Riverpod provider
     // This is now handled by PeriodicCheckScheduler
     SmartDialog.showToast('设置成功');
@@ -727,9 +732,9 @@ Future<void> _showMsgUnReadDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setString(
       SettingBoxKey.msgUnReadTypeV2,
-      res.map((item) => item.index).toList()..sort(),
+      jsonEncode(res.map((item) => item.index).toList()..sort()),
     );
     // Refresh unread message count via Riverpod provider
     // This is now handled by PeriodicCheckScheduler
@@ -755,13 +760,13 @@ void _showReduceColorDialog(
           if (color != null && color != reduceLuxColor) {
             if (color == Colors.white) {
               NetworkImgLayer.reduceLuxColor = null;
-              GStorage.setting.delete(SettingBoxKey.reduceLuxColor);
+              GStorage.settingRepository.remove(SettingBoxKey.reduceLuxColor);
               SmartDialog.showToast('设置成功');
               setState();
             } else {
               void onConfirm() {
                 NetworkImgLayer.reduceLuxColor = color;
-                GStorage.setting.put(
+                GStorage.settingRepository.setInt(
                   SettingBoxKey.reduceLuxColor,
                   color.toARGB32(),
                 );
@@ -804,7 +809,7 @@ Future<void> _showToastDialog(
   );
   if (res != null) {
     CustomToast.toastOpacity = res;
-    await GStorage.setting.put(SettingBoxKey.defaultToastOp, res);
+    await GStorage.settingRepository.setDouble(SettingBoxKey.defaultToastOp, res);
     SmartDialog.showToast('设置成功');
     setState();
   }
@@ -826,7 +831,7 @@ Future<void> _showThemeTypeDialog(
     try {
       Get.find<MineController>().themeType.value = res;
     } catch (_) {}
-    GStorage.setting.put(SettingBoxKey.themeMode, res.index);
+    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, res.index);
     Get.changeThemeMode(res.toThemeMode);
     setState();
   }
@@ -845,7 +850,7 @@ Future<void> _showDefHomeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.defaultHomePage, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.defaultHomePage, res.index);
     SmartDialog.showToast('设置成功，重启生效');
     setState();
   }
@@ -864,7 +869,7 @@ Future<void> _showBarHideTypeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.barHideType, res.index);
+    await GStorage.settingRepository.setInt(SettingBoxKey.barHideType, res.index);
     SmartDialog.showToast('重启生效');
     setState();
   }

@@ -176,7 +176,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
                                 removeList: true,
                               );
                             }
-                            GStorage.watchProgress.delete(entry.cid.toString());
+                            GStorage.watchProgressRepository.remove(entry.cid.toString());
                           },
                           controller: this,
                         );
@@ -201,15 +201,14 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
       title: '确定删除选中视频？',
       onConfirm: () async {
         SmartDialog.showLoading();
-        final watchProgress = GStorage.watchProgress;
         final allChecked = this.allChecked.toSet();
         final isDeleteAll = allChecked.length == _downloadItems.length;
         if (isDeleteAll) {
           await _closeSub();
         }
         for (final entry in allChecked) {
-          await watchProgress.deleteAll(
-            allChecked.map((e) => e.cid.toString()),
+          await GStorage.watchProgressRepository.remove(
+            entry.cid.toString(),
           );
           await _downloadService.deleteDownload(
             entry: entry,

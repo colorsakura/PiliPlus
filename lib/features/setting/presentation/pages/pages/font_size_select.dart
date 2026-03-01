@@ -19,7 +19,10 @@ class _FontSizeSelectPageState extends State<FontSizeSelectPage> {
   double currentSize = Pref.defaultTextScale;
 
   void setFontSize() {
-    GStorage.setting.put(SettingBoxKey.defaultTextScale, currentSize);
+    GStorage.settingRepository.setDouble(
+      SettingBoxKey.defaultTextScale,
+      currentSize,
+    );
     Get
       ..back(result: currentSize)
       ..appUpdate();

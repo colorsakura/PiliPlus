@@ -557,7 +557,7 @@ class _AudioPageState extends State<AudioPage> {
         PageUtils.pop();
         if (!isCurr) {
           _controller.playMode.value = playMode;
-          GStorage.setting.put(SettingBoxKey.audioPlayMode, playMode.index);
+          GStorage.settingRepository.setInt(SettingBoxKey.audioPlayMode, playMode.index);
         }
       },
       child: Column(

@@ -46,7 +46,7 @@ class ColorSelectPage extends ConsumerWidget {
       } else {
         Get.forceAppUpdate();
       }
-      GStorage.setting.put(SettingBoxKey.dynamicColor, val);
+      GStorage.settingRepository.setBool(SettingBoxKey.dynamicColor, val);
       // Invalidate provider to trigger rebuild
       ref.invalidate(dynamicColorProvider);
     }
@@ -79,7 +79,7 @@ class ColorSelectPage extends ConsumerWidget {
                 try {
                   Get.find<MineController>().themeType.value = result;
                 } catch (_) {}
-                GStorage.setting.put(SettingBoxKey.themeMode, result.index);
+                GStorage.settingRepository.setInt(SettingBoxKey.themeMode, result.index);
                 Get.changeThemeMode(result.toThemeMode);
                 ref.invalidate(themeTypeProvider);
               }
@@ -104,7 +104,7 @@ class ColorSelectPage extends ConsumerWidget {
                 .toList(),
             onSelected: (value, setState) {
               _dynamicSchemeVariant = value;
-              GStorage.setting.put(SettingBoxKey.schemeVariant, value.index);
+              GStorage.settingRepository.setInt(SettingBoxKey.schemeVariant, value.index);
               Get.forceAppUpdate();
             },
           ),
@@ -145,7 +145,7 @@ class ColorSelectPage extends ConsumerWidget {
                             return GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
-                                GStorage.setting.put(
+                                GStorage.settingRepository.setInt(
                                   SettingBoxKey.customColor,
                                   index,
                                 );

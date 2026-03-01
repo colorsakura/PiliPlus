@@ -219,10 +219,11 @@ class DetailItem extends StatelessWidget {
                     ListenableBuilder(
                       listenable: progress!,
                       builder: (_, _) {
-                        final progress = GStorage.watchProgress.get(
+                        final progressStr = GStorage.watchProgressRepository.getString(
                           cid.toString(),
                         );
-                        if (progress != null) {
+                        if (progressStr != null) {
+                          final progress = int.parse(progressStr);
                           return Positioned(
                             left: 0,
                             right: 0,

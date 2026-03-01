@@ -336,7 +336,7 @@ class _SearchPageState extends State<SearchPage> {
                               enable = !enable;
                               _searchController.recordSearchHistory.value =
                                   enable;
-                              GStorage.setting.put(
+                              GStorage.settingRepository.setBool(
                                 SettingBoxKey.recordSearchHistory,
                                 enable,
                               );
@@ -413,7 +413,10 @@ class _SearchPageState extends State<SearchPage> {
         fromJson: (json) {
           final list = List<String>.from(json);
           _searchController.historyList.value = list;
-          GStorage.historyWord.put('cacheList', list);
+          GStorage.historyWordRepository.setString(
+            'cacheList',
+            jsonEncode(list),
+          );
           return true;
         },
       ),

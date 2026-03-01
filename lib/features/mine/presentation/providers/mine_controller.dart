@@ -182,7 +182,7 @@ class MineController extends Notifier<MineState> {
     state = state.copyWith(themeType: newThemeType);
 
     // 保存设置
-    GStorage.setting.put(SettingBoxKey.themeMode, newThemeType.index);
+    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, newThemeType.index);
   }
 
   /// 切换匿名模式

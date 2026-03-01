@@ -68,21 +68,21 @@ class AboutLocalDataSource {
   /// 重置可导出的设置
   Future<void> resetExportableSettings() async {
     await Future.wait([
-      GStorage.setting.clear(),
-      GStorage.video.clear(),
+      GStorage.settingRepository.clear(),
+      GStorage.videoRepository.clear(),
     ]);
   }
 
   /// 重置所有数据
   Future<void> resetAllData() async {
     await Future.wait([
-      GStorage.userInfo.clear(),
-      GStorage.setting.clear(),
-      GStorage.localCache.clear(),
-      GStorage.video.clear(),
-      GStorage.historyWord.clear(),
+      GStorage.userInfoRepository.clear(),
+      GStorage.settingRepository.clear(),
+      GStorage.localCacheRepository.clear(),
+      GStorage.videoRepository.clear(),
+      GStorage.historyWordRepository.clear(),
       Accounts.clear(),
-      GStorage.watchProgress.clear(),
+      GStorage.watchProgressRepository.clear(),
     ]);
   }
 

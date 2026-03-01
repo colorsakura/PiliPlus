@@ -287,7 +287,7 @@ class AppInitializer {
           downloadPath = customDownPath;
         } catch (e) {
           downloadPath = defDownloadPath;
-          await GStorage.setting.delete(SettingBoxKey.downloadPath);
+          await GStorage.settingRepository.remove(SettingBoxKey.downloadPath);
           if (kDebugMode) {
             AppLog.fine('Download path error: $e', name: 'AppInitializer');
           }
@@ -359,7 +359,7 @@ class AppInitializer {
 
     if (Platform.isAndroid) {
       FlutterDisplayMode.supported.then((mode) {
-        final String? storageDisplay = GStorage.setting.get(
+        final String? storageDisplay = GStorage.settingRepository.getString(
           SettingBoxKey.displayMode,
         );
         DisplayMode? displayMode;

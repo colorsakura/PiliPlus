@@ -796,7 +796,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                           final newVal = !enableShowLiveDanmaku;
                           plPlayerController.enableShowDanmaku.value = newVal;
                           if (!plPlayerController.tempPlayerConf) {
-                            GStorage.setting.put(
+                            GStorage.settingRepository.setBool(
                               SettingBoxKey.enableShowLiveDanmaku,
                               newVal,
                             );

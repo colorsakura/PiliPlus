@@ -3,6 +3,8 @@
 /// 负责所有我的页面相关的网络请求
 library;
 
+import 'dart:convert';
+
 import 'package:PiliPlus/models/fav/fav_folder/data.dart';
 import 'package:PiliPlus/models/user/info.dart';
 import 'package:PiliPlus/models/user/stat.dart';
@@ -33,11 +35,11 @@ class MineRemoteDataSource {
 
   /// 保存用户信息到本地缓存
   Future<void> cacheUserInfo(UserInfoData userInfo) async {
-    await GStorage.userInfo.put('userInfoCache', userInfo);
+    await GStorage.userInfoRepository.set('userInfoCache', userInfo);
   }
 
   /// 从本地缓存获取用户信息
   Future<UserInfoData?> getCachedUserInfo() async {
-    return GStorage.userInfo.get('userInfoCache');
+    return GStorage.userInfoRepository.get('userInfoCache');
   }
 }

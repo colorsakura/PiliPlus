@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert' show jsonDecode, utf8;
+import 'dart:convert' show jsonDecode, jsonEncode, utf8;
 import 'dart:io';
 import 'dart:math';
 
@@ -253,9 +253,9 @@ class HeaderControl extends StatefulWidget {
             final filter = ctr.filters;
             if (filter.dmUid.add(extra.mid)) {
               filter.count++;
-              GStorage.localCache.put(
+              GStorage.localCacheRepository.setString(
                 LocalCacheKey.danmakuFilterRules,
-                filter,
+                jsonEncode(filter.toJson()),
               );
             }
             try {
@@ -347,8 +347,6 @@ class HeaderControlState extends State<HeaderControl>
   bool get isPortrait => widget.isPortrait;
   @override
   late final horizontalScreen = videoDetailCtr.horizontalScreen;
-
-  final setting = GStorage.setting;
 
   @override
   void initState() {
@@ -497,7 +495,7 @@ class HeaderControlState extends State<HeaderControl>
                       );
                       if (result != null) {
                         VideoUtils.cdnService = result;
-                        setting.put(SettingBoxKey.CDNService, result.name);
+                        GStorage.settingRepository.setString(SettingBoxKey.CDNService, result.name);
                         SmartDialog.showToast('已设置为 ${result.desc}，正在重载视频');
                         videoDetailCtr.queryVideoUrl(
                           defaultST: videoDetailCtr.playedTime,
@@ -987,7 +985,7 @@ class HeaderControlState extends State<HeaderControl>
 
                         // update
                         if (!plPlayerController.tempPlayerConf) {
-                          setting.put(
+                          GStorage.settingRepository.setInt(
                             await Utils.isWiFi
                                 ? SettingBoxKey.defaultVideoQa
                                 : SettingBoxKey.defaultVideoQaCellular,
@@ -1067,7 +1065,7 @@ class HeaderControlState extends State<HeaderControl>
 
                         // update
                         if (!plPlayerController.tempPlayerConf) {
-                          setting.put(
+                          GStorage.settingRepository.setInt(
                             await Utils.isWiFi
                                 ? SettingBoxKey.defaultAudioQa
                                 : SettingBoxKey.defaultAudioQaCellular,
@@ -1963,7 +1961,7 @@ class HeaderControlState extends State<HeaderControl>
                           final newVal = !enableShowDanmaku;
                           plPlayerController.enableShowDanmaku.value = newVal;
                           if (!plPlayerController.tempPlayerConf) {
-                            setting.put(
+                            GStorage.settingRepository.setBool(
                               SettingBoxKey.enableShowDanmaku,
                               newVal,
                             );

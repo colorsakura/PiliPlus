@@ -631,7 +631,7 @@ class PlPlayerController with BlockConfigMixin {
     } else {
       superResolutionType.value = type;
       if (isAnim && !tempPlayerConf) {
-        GStorage.setting.put(SettingBoxKey.superResolutionType, type.index);
+        GStorage.settingRepository.setInt(SettingBoxKey.superResolutionType, type.index);
       }
     }
     pp ??= _videoPlayerController!;
@@ -1216,7 +1216,7 @@ class PlPlayerController with BlockConfigMixin {
       volumeIndicator.value = false;
       volumeInterceptEventStream = false;
       if (PlatformUtils.isDesktop) {
-        GStorage.setting.put(SettingBoxKey.desktopVolume, volume.toPrecision(3));
+        GStorage.settingRepository.setDouble(SettingBoxKey.desktopVolume, volume.toPrecision(3));
       }
     });
   }
@@ -1224,7 +1224,7 @@ class PlPlayerController with BlockConfigMixin {
   /// Toggle Change the videofit accordingly
   void toggleVideoFit(VideoFitType value) {
     videoFit.value = value;
-    GStorage.video.put(VideoBoxKey.cacheVideoFit, value.index);
+    GStorage.videoRepository.setInt(VideoBoxKey.cacheVideoFit, value.index);
   }
 
   /// 读取fit
@@ -1257,7 +1257,7 @@ class PlPlayerController with BlockConfigMixin {
   void setBackgroundPlay(bool val) {
     videoPlayerServiceHandler?.enableBackgroundPlay = val;
     if (!tempPlayerConf) {
-      GStorage.setting.put(SettingBoxKey.enableBackgroundPlay, val);
+      GStorage.settingRepository.setBool(SettingBoxKey.enableBackgroundPlay, val);
     }
   }
 
@@ -1521,7 +1521,7 @@ class PlPlayerController with BlockConfigMixin {
 
   void setPlayRepeat(PlayRepeat type) {
     playRepeat = type;
-    if (!tempPlayerConf) GStorage.video.put(VideoBoxKey.playRepeat, type.index);
+    if (!tempPlayerConf) GStorage.videoRepository.setInt(VideoBoxKey.playRepeat, type.index);
   }
 
   void putSubtitleSettings() {
@@ -1602,7 +1602,7 @@ class PlPlayerController with BlockConfigMixin {
   void setContinuePlayInBackground() {
     continuePlayInBackground.value = !continuePlayInBackground.value;
     if (!tempPlayerConf) {
-      GStorage.setting.put(
+      GStorage.settingRepository.setBool(
         SettingBoxKey.continuePlayInBackground,
         continuePlayInBackground.value,
       );

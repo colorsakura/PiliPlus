@@ -84,7 +84,7 @@ abstract final class Update {
                   TextButton(
                     onPressed: () {
                       SmartDialog.dismiss();
-                      GStorage.setting.put(SettingBoxKey.autoUpdate, false);
+                      GStorage.settingRepository.setBool(SettingBoxKey.autoUpdate, false);
                     },
                     child: Text(
                       '不再提醒',

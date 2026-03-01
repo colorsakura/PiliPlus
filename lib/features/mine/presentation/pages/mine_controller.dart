@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:PiliPlus/app/router/app_routes.dart';
 import 'package:PiliPlus/http/fav.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -109,7 +111,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
       if (response.isLogin == true) {
         userInfo.value = response;
         if (response != Pref.userInfoCache) {
-          GStorage.userInfo.put('userInfoCache', response);
+          GStorage.userInfoRepository.set('userInfoCache', response);
         }
         accountService
           ..face.value = response.face!
@@ -272,7 +274,7 @@ class MineController extends CommonDataController<FavFolderData, FavFolderData>
   void onChangeTheme() {
     final newVal = nextThemeType;
     themeType.value = newVal;
-    GStorage.setting.put(SettingBoxKey.themeMode, newVal.index);
+    GStorage.settingRepository.setInt(SettingBoxKey.themeMode, newVal.index);
     Get.changeThemeMode(newVal.toThemeMode);
   }
 

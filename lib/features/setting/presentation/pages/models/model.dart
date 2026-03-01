@@ -155,7 +155,7 @@ SettingsModel getBanWordModel({
   required String key,
   required ValueChanged<RegExp> onChanged,
 }) {
-  String banWord = GStorage.setting.get(key, defaultValue: '');
+  String banWord = GStorage.settingRepository.getString(key) ?? '';
   return NormalModel(
     leading: const Icon(Icons.filter_alt_outlined),
     title: title,
@@ -198,7 +198,7 @@ SettingsModel getBanWordModel({
                 setState();
                 onChanged(RegExp(banWord, caseSensitive: false));
                 SmartDialog.showToast('已保存');
-                GStorage.setting.put(key, banWord);
+                GStorage.settingRepository.setString(key, banWord);
               },
             ),
           ],
@@ -219,7 +219,7 @@ SettingsModel getVideoFilterSelectModel({
   ValueChanged<int>? onChanged,
 }) {
   assert(!isFilter || onChanged != null);
-  int value = GStorage.setting.get(key, defaultValue: defaultValue);
+  int value = GStorage.settingRepository.getInt(key) ?? defaultValue;
   return NormalModel(
     title: '$title${isFilter ? '过滤' : ''}',
     leading: const Icon(Icons.timelapse_outlined),
@@ -285,7 +285,7 @@ SettingsModel getVideoFilterSelectModel({
           value = result!;
           setState();
           onChanged?.call(value);
-          GStorage.setting.put(key, value);
+          GStorage.settingRepository.setInt(key, value);
         }
       }
     },

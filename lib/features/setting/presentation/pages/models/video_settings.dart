@@ -179,7 +179,7 @@ Future<void> _showCDNDialog(BuildContext context, VoidCallback setState) async {
   );
   if (res != null) {
     VideoUtils.cdnService = res;
-    await GStorage.setting.put(SettingBoxKey.CDNService, res.name);
+    await GStorage.settingRepository.setString(SettingBoxKey.CDNService, res.name);
     setState();
   }
 }
@@ -216,12 +216,12 @@ Future<void> _showLiveCDNDialog(
   if (res != null) {
     if (res.isEmpty) {
       res = null;
-      await GStorage.setting.delete(SettingBoxKey.liveCdnUrl);
+      await GStorage.settingRepository.remove(SettingBoxKey.liveCdnUrl);
     } else {
       if (!res.startsWith('http')) {
         res = 'https://$res';
       }
-      await GStorage.setting.put(SettingBoxKey.liveCdnUrl, res);
+      await GStorage.settingRepository.setString(SettingBoxKey.liveCdnUrl, res);
     }
     VideoUtils.liveCdnUrl = res;
     setState();
@@ -241,7 +241,7 @@ Future<void> _showVideoQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.defaultVideoQa, res);
+    await GStorage.settingRepository.setInt(SettingBoxKey.defaultVideoQa, res);
     setState();
   }
 }
@@ -259,7 +259,7 @@ Future<void> _showVideoCellularQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.defaultVideoQaCellular,
       res,
     );
@@ -280,7 +280,7 @@ Future<void> _showAudioQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.defaultAudioQa, res);
+    await GStorage.settingRepository.setInt(SettingBoxKey.defaultAudioQa, res);
     setState();
   }
 }
@@ -298,7 +298,7 @@ Future<void> _showAudioCellularQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setInt(
       SettingBoxKey.defaultAudioQaCellular,
       res,
     );
@@ -319,7 +319,7 @@ Future<void> _showLiveQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.liveQuality, res);
+    await GStorage.settingRepository.setInt(SettingBoxKey.liveQuality, res);
     setState();
   }
 }
@@ -337,7 +337,7 @@ Future<void> _showLiveCellularQaDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.liveQualityCellular, res);
+    await GStorage.settingRepository.setInt(SettingBoxKey.liveQualityCellular, res);
     setState();
   }
 }
@@ -357,7 +357,7 @@ Future<void> _showDecodeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.defaultDecode, res);
+    await GStorage.settingRepository.setString(SettingBoxKey.defaultDecode, res);
     setState();
   }
 }
@@ -377,7 +377,7 @@ Future<void> _showSecondDecodeDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.secondDecode, res);
+    await GStorage.settingRepository.setString(SettingBoxKey.secondDecode, res);
     setState();
   }
 }
@@ -397,7 +397,7 @@ Future<void> _showAudioOutputDialog(
     ),
   );
   if (res != null && res.isNotEmpty) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setString(
       SettingBoxKey.audioOutput,
       res.join(','),
     );
@@ -428,7 +428,7 @@ Future<void> _showVideoSyncDialog(
     ),
   );
   if (res != null) {
-    await GStorage.setting.put(SettingBoxKey.videoSync, res);
+    await GStorage.settingRepository.setString(SettingBoxKey.videoSync, res);
     setState();
   }
 }
@@ -448,7 +448,7 @@ Future<void> _showHwDecDialog(
     ),
   );
   if (res != null && res.isNotEmpty) {
-    await GStorage.setting.put(
+    await GStorage.settingRepository.setString(
       SettingBoxKey.hardwareDecoding,
       res.join(','),
     );
@@ -483,7 +483,7 @@ void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {
               // validate
               int.parse(autosync);
               PageUtils.pop();
-              await GStorage.setting.put(SettingBoxKey.autosync, autosync);
+              await GStorage.settingRepository.setInt(SettingBoxKey.autosync, int.parse(autosync));
               setState();
             } catch (e) {
               SmartDialog.showToast(e.toString());

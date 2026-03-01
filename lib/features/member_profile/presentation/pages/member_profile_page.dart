@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' show File;
 
 import 'package:PiliPlus/shared/widgets/image/network_img_layer.dart';
@@ -96,7 +97,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   UserInfoData userInfo = Pref.userInfoCache!
                     ..uname = data.name
                     ..face = data.face;
-                  GStorage.userInfo.put('userInfoCache', userInfo);
+                  GStorage.userInfoRepository.set(
+                    'userInfoCache',
+                    userInfo,
+                  );
                 } catch (_) {}
                 try {
                   Get.find<MineController>().userInfo
@@ -389,7 +393,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               try {
                 UserInfoData userInfo = Pref.userInfoCache!
                   ..uname = _textController.text;
-                GStorage.userInfo.put('userInfoCache', userInfo);
+                GStorage.userInfoRepository.set(
+                  'userInfoCache',
+                  userInfo,
+                );
               } catch (_) {}
               try {
                 Get.find<MineController>().userInfo

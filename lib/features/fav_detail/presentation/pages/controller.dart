@@ -103,7 +103,7 @@ class FavDetailController
   void setIsPlayAll(bool isPlayAll) {
     if (this.isPlayAll.value == isPlayAll) return;
     this.isPlayAll.value = isPlayAll;
-    GStorage.setting.put(SettingBoxKey.enablePlayAll, isPlayAll);
+    GStorage.settingRepository.setBool(SettingBoxKey.enablePlayAll, isPlayAll);
   }
 
   @override

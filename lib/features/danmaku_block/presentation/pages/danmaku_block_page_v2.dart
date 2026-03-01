@@ -11,6 +11,7 @@ import 'package:PiliPlus/features/danmaku_block/presentation/providers/danmaku_b
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
+import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,7 +44,10 @@ class _DanmakuBlockPageV2State extends ConsumerState<DanmakuBlockPageV2>
   void dispose() {
     final ruleFilter = RuleFilter.fromRuleTypeEntries(_controller.state.rules);
     plPlayerController.filters = ruleFilter;
-    GStorage.localCache.put(LocalCacheKey.danmakuFilterRules, ruleFilter);
+    GStorage.localCacheRepository.setString(
+      LocalCacheKey.danmakuFilterRules,
+      Utils.jsonEncoder.convert(ruleFilter.toJson()),
+    );
     super.dispose();
   }
 

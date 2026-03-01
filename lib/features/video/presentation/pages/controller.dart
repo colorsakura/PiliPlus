@@ -275,12 +275,17 @@ class VideoDetailController extends GetxController
 
   final isLoginVideo = Accounts.get(AccountType.video).isLogin;
 
-  late final watchProgress = GStorage.watchProgress;
   void cacheLocalProgress() {
     if (plPlayerController.playerStatus.isCompleted) {
-      watchProgress.put(cid.value.toString(), entry.totalTimeMilli);
+      GStorage.watchProgressRepository.setInt(
+        cid.value.toString(),
+        entry.totalTimeMilli,
+      );
     } else if (playedTime case final playedTime?) {
-      watchProgress.put(cid.value.toString(), playedTime.inMilliseconds);
+      GStorage.watchProgressRepository.setInt(
+        cid.value.toString(),
+        playedTime.inMilliseconds,
+      );
     }
   }
 
@@ -291,7 +296,8 @@ class VideoDetailController extends GetxController
       width: entry.ep?.width ?? entry.pageData?.width ?? 1,
       height: entry.ep?.height ?? entry.pageData?.height ?? 1,
     );
-    if (watchProgress.get(cid.value.toString()) case final int progress?) {
+    if (GStorage.watchProgressRepository.getInt(cid.value.toString())
+        case final int progress?) {
       if (progress >= entry.totalTimeMilli - 400) {
         defaultST = Duration.zero;
       } else {

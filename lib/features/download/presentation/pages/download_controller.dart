@@ -79,11 +79,10 @@ class DownloadPageController extends GetxController
       title: '确定删除选中视频？',
       onConfirm: () async {
         SmartDialog.showLoading();
-        final watchProgress = GStorage.watchProgress;
         for (final page in allChecked) {
-          await watchProgress.deleteAll(
-            page.entries.map((e) => e.cid.toString()),
-          );
+          for (final entry in page.entries) {
+            await GStorage.watchProgressRepository.remove(entry.cid.toString());
+          }
           await _downloadService.deletePage(
             pageDirPath: page.dirPath,
             refresh: false,

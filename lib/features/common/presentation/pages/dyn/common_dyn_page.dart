@@ -299,9 +299,9 @@ abstract class CommonDynPageState<T extends StatefulWidget> extends State<T>
                   setState(() {});
                 }
               },
-              onChangeEnd: (_) => GStorage.setting.put(
+              onChangeEnd: (_) => GStorage.settingRepository.setStringList(
                 SettingBoxKey.dynamicDetailRatio,
-                controller.ratio,
+                controller.ratio.map((e) => e.toString()).toList(),
               ),
             ),
           ),

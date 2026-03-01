@@ -9,7 +9,6 @@ import 'package:PiliPlus/features/shell/domain/entities/unread_message.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/navigation_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/refresh_provider.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
-import 'package:PiliPlus/features/shell/presentation/providers/shell_providers.dart';
 import 'package:PiliPlus/features/shell/presentation/providers/unread_provider.dart';
 import 'package:PiliPlus/models/common/dynamic/dynamic_badge_mode.dart';
 import 'package:PiliPlus/models/common/image_type.dart';

@@ -32,7 +32,7 @@ class FollowChildController
 
   void setOrderType(FollowOrderType type) {
     orderType.value = type;
-    GStorage.setting.put(SettingBoxKey.followOrderType, type.index);
+    GStorage.settingRepository.setInt(SettingBoxKey.followOrderType, type.index);
   }
 
   @override

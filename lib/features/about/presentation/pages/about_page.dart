@@ -240,7 +240,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
             onTap: () => showImportExportDialog(
               context,
               title: '设置',
-              label: GStorage.setting.name,
+              label: 'setting',
               toJson: GStorage.exportAllSettings,
               fromJson: GStorage.importAllJsonSettings,
             ),
@@ -260,8 +260,8 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                       onTap: () async {
                         PageUtils.pop();
                         await Future.wait([
-                          GStorage.setting.clear(),
-                          GStorage.video.clear(),
+                          GStorage.settingRepository.clear(),
+                          GStorage.videoRepository.clear(),
                         ]);
                         SmartDialog.showToast('重置成功');
                       },
@@ -272,13 +272,13 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                       onTap: () async {
                         PageUtils.pop();
                         await Future.wait([
-                          GStorage.userInfo.clear(),
-                          GStorage.setting.clear(),
-                          GStorage.localCache.clear(),
-                          GStorage.video.clear(),
-                          GStorage.historyWord.clear(),
+                          GStorage.userInfoRepository.clear(),
+                          GStorage.settingRepository.clear(),
+                          GStorage.localCacheRepository.clear(),
+                          GStorage.videoRepository.clear(),
+                          GStorage.historyWordRepository.clear(),
                           Accounts.clear(),
-                          GStorage.watchProgress.clear(),
+                          GStorage.watchProgressRepository.clear(),
                         ]);
                         SmartDialog.showToast('重置成功');
                       },
