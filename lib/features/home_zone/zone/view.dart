@@ -5,10 +5,11 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/model_hot_video_item.dart';
 import 'package:PiliPlus/features/home_zone/zone/controller.dart';
 import 'package:PiliPlus/features/home_zone/zone/widget/pgc_rank_item.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class ZonePage extends StatefulWidget {
   const ZonePage({super.key, this.rid, this.seasonType});
@@ -26,7 +27,7 @@ class _ZonePageState extends State<ZonePage>
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(

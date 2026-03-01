@@ -8,6 +8,7 @@ import 'package:PiliPlus/shared/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class RcmdPage extends ConsumerStatefulWidget {
   const RcmdPage({super.key});
@@ -102,7 +103,7 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
       maxCrossAxisExtent: PlatformUtils.isDesktop
           ? 320.0
           : (recommendCardWidth > 0 ? recommendCardWidth : 240.0),
-      childAspectRatio: StyleString.aspectRatio,
+      childAspectRatio: (16 / 9),
       mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
     );
   }

@@ -540,7 +540,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
     maxHeight = size.height;
 
     final shortestSide = size.shortestSide;
-    final minVideoHeight = shortestSide / StyleString.aspectRatio16x9;
+    final minVideoHeight = shortestSide / (16 / 9);
     final maxVideoHeight = max(size.longestSide * 0.65, shortestSide);
     videoDetailController
       ..isPortrait = isPortrait = maxHeight >= maxWidth
@@ -816,7 +816,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
         enableVerticalExpand &&
         !isPortrait) {
       final double videoHeight = maxHeight - padding.vertical;
-      final double width = videoHeight / StyleString.aspectRatio16x9;
+      final double width = videoHeight / (16 / 9);
       final videoWidth = isFullScreen ? maxWidth : width;
       final introWidth = (maxWidth - padding.horizontal - width) / 2;
       final introHeight = maxHeight - padding.top;
@@ -878,10 +878,10 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       width = maxWidth - clampDouble(maxWidth - width, 280, 425);
     }
     final videoWidth = isFullScreen ? maxWidth : width;
-    final double height = width / StyleString.aspectRatio16x9;
+    final double height = width / (16 / 9);
     final videoHeight = isFullScreen ? maxHeight - padding.top : height;
     if (height > maxHeight) {
-      return childSplit(StyleString.aspectRatio16x9);
+      return childSplit((16 / 9));
     }
     final introHeight = maxHeight - height - padding.top;
     final showIntro =
@@ -1160,7 +1160,7 @@ class _VideoDetailPageVState extends ConsumerState<VideoDetailPageV>
       child = childWhenDisabled;
     } else if (maxWidth / maxHeight >= kScreenRatio) {
       child = childWhenDisabledLandscape;
-    } else if (maxWidth / StyleString.aspectRatio16x9 < 0.4 * maxHeight) {
+    } else if (maxWidth / (16 / 9) < 0.4 * maxHeight) {
       child = childWhenDisabled;
     } else {
       child = childWhenDisabledAlmostSquare;

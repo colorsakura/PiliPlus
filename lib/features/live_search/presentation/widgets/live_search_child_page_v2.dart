@@ -8,8 +8,9 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/live/live_search_type.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:flutter/material.dart';
 
 /// Live Search Child Page V2 (Riverpod version)
 class LiveSearchChildPageV2 extends StatefulWidget {
@@ -77,13 +78,13 @@ class _LiveSearchChildPageV2State extends State<LiveSearchChildPageV2>
   late final roomDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth,
-    childAspectRatio: StyleString.aspectRatio,
+    maxCrossAxisExtent: Pref.smallCardWidth,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(60),
   );
 
   late final userDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisExtent: 60,
   );
 

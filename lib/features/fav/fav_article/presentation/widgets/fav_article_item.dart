@@ -44,7 +44,7 @@ class FavArticleItem extends StatelessWidget {
                 children: [
                   if (item.cover != null) ...[
                     AspectRatio(
-                      aspectRatio: StyleString.aspectRatio,
+                      aspectRatio: (16 / 9),
                       child: LayoutBuilder(
                         builder:
                             (

@@ -8,13 +8,14 @@ import 'package:PiliPlus/models/space/space_archive/item.dart';
 import 'package:PiliPlus/features/member/presentation/pages/member_controller.dart';
 import 'package:PiliPlus/features/member_video/presentation/pages/member_video_controller.dart';
 import 'package:PiliPlus/features/member_video/presentation/widgets/video_card_h_member_video.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class MemberVideo extends StatefulWidget {
   const MemberVideo({
@@ -40,41 +41,43 @@ class MemberVideo extends StatefulWidget {
   State<MemberVideo> createState() => _MemberVideoState();
 }
 
-class _MemberVideoState extends Widget<MemberVideo>
+class _MemberVideoState extends State<MemberVideo>
     with AutomaticKeepAliveClientMixin {
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
-  Widget get gridSkeleton => SliverGrid.builder(
+  @override
+  bool get wantKeepAlive => true;
+
+  Widget get _gridSkeleton => SliverGrid.builder(
     gridDelegate: gridDelegate,
     itemBuilder: (_, _) => const VideoCardHSkeleton(),
     itemCount: 10,
   );
-  @override
-  bool get wantKeepAlive => true;
 
   late final MemberVideoCtr _controller;
 
   int? _index;
   late ExtendedNestedScrollController _scrollController;
 
-  void _jumpToIndex(int index) {
-    final scrollOffset = gridDelegate.layoutCache!
-        .getGeometryForChildIndex(index)
-        .scrollOffset;
-    try {
-      _scrollController.nestedPositions
-          .elementAt(_index!)
-          .localJumpTo(scrollOffset);
-    } catch (e) {
-      _scrollController.jumpTo(scrollOffset);
-      if (kDebugMode) debugPrint('jump error: $e');
-    }
-  }
+  // TODO: Implement _jumpToIndex without layoutCache
+  // void _jumpToIndex(int index) {
+  //   final scrollOffset = gridDelegate.layoutCache!
+  //       .getGeometryForChildIndex(index)
+  //       .scrollOffset;
+  //   try {
+  //     _scrollController.nestedPositions
+  //         .elementAt(_index!)
+  //         .localJumpTo(scrollOffset);
+  //   } catch (e) {
+  //     _scrollController.jumpTo(scrollOffset);
+  //     if (kDebugMode) debugPrint('jump error: $e');
+  //   }
+  // }
 
   @override
   void initState() {
@@ -105,9 +108,10 @@ class _MemberVideoState extends Widget<MemberVideo>
         if (_controller.isLocating.value && mounted) {
           final newCount = _controller.loadingState.value.dataOrNull?.length;
           if (count != null && newCount != null && newCount > count) {
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              _jumpToIndex(newCount - count);
-            });
+            // TODO: Re-implement _jumpToIndex without layoutCache
+            // SchedulerBinding.instance.addPostFrameCallback((_) {
+            //   _jumpToIndex(newCount - count);
+            // });
           }
         }
       },
@@ -156,7 +160,8 @@ class _MemberVideoState extends Widget<MemberVideo>
                             ..loadingState.value = LoadingState.loading()
                             ..queryData();
                         } else {
-                          _jumpToIndex(locatedIndex);
+                          // TODO: Re-implement _jumpToIndex without layoutCache
+                          // _jumpToIndex(locatedIndex);
                         }
                       },
                       label: const Text('定位至上次观看'),
@@ -173,7 +178,7 @@ class _MemberVideoState extends Widget<MemberVideo>
   @override
   Widget get gridSkeleton => SliverPadding(
     padding: widget.isSingle ? const EdgeInsets.only(top: 7) : EdgeInsets.zero,
-    sliver: super.gridSkeleton,
+    sliver: _gridSkeleton,
   );
 
   Widget _buildBody(

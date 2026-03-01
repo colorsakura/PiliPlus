@@ -7,6 +7,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class LiveFollowPage extends ConsumerStatefulWidget {
   const LiveFollowPage({super.key});
@@ -53,8 +55,8 @@ class _LiveFollowPageState extends ConsumerState<LiveFollowPage> {
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth,
-    childAspectRatio: StyleString.aspectRatio,
+    maxCrossAxisExtent: Pref.smallCardWidth,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
   );
 

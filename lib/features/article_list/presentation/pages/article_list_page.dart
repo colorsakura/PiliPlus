@@ -3,11 +3,11 @@ import 'package:PiliPlus/shared/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/features/article_list/presentation/providers/article_list_providers.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/article_list/presentation/widgets/item.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/models/common/item_type.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 /// Article list page
 ///
@@ -24,7 +24,7 @@ class _ArticleListPageState extends ConsumerState<ArticleListPage> {
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(
@@ -32,6 +32,14 @@ class _ArticleListPageState extends ConsumerState<ArticleListPage> {
     itemBuilder: (_, _) => const VideoCardHSkeleton(),
     itemCount: 10,
   );
+
+  Widget get gridSkeletonWithPadding => SliverPadding(
+    padding: EdgeInsets.only(
+      top: padding.top + kToolbarHeight + 120,
+    ),
+    sliver: gridSkeleton,
+  );
+
   late final String _id;
   late EdgeInsets padding;
 
@@ -79,19 +87,11 @@ class _ArticleListPageState extends ConsumerState<ArticleListPage> {
     );
   }
 
-  @override
-  Widget get gridSkeleton => SliverPadding(
-    padding: EdgeInsets.only(
-      top: padding.top + kToolbarHeight + 120,
-    ),
-    sliver: super.gridSkeleton,
-  );
-
   Widget _buildBody(ThemeData theme) {
     final state = ref.watch(articleListControllerProvider);
 
     return switch (state.loadingState) {
-      Loading() => gridSkeleton,
+      Loading() => gridSkeletonWithPadding,
       Success(:final response) =>
         response.items.isNotEmpty
             ? SliverGrid.builder(

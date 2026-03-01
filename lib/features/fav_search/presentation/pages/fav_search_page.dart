@@ -11,6 +11,7 @@ import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class FavSearchPage extends StatefulWidget {
   const FavSearchPage({super.key});
@@ -93,7 +94,7 @@ class _FavSearchPageState
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   @override

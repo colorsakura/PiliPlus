@@ -11,6 +11,7 @@ import 'package:PiliPlus/models/live/live_emote/emoticon.dart';
 import 'package:PiliPlus/features/live_emote/presentation/pages/live_emote_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class LiveEmotePanel extends StatefulWidget {
   final int roomId;

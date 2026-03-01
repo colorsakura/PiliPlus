@@ -18,10 +18,11 @@ import 'package:PiliPlus/features/member_home/presentation/widgets/video_card_v_
 import 'package:PiliPlus/features/member_like_arc/member_like_arc.dart';
 import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_member_pgc.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class MemberHome extends StatefulWidget {
   const MemberHome({super.key, this.heroTag});
@@ -38,7 +39,7 @@ class _MemberHomeState extends State<MemberHome>
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(
@@ -60,22 +61,22 @@ class _MemberHomeState extends State<MemberHome>
   late final gridDelegateV = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth,
-    childAspectRatio: StyleString.aspectRatio,
+    maxCrossAxisExtent: Pref.smallCardWidth,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(55),
   );
 
   late final gridDelegateAudio = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: 2,
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
-    childAspectRatio: StyleString.aspectRatio * 2.6,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    childAspectRatio: (16 / 9) * 2.6,
     minHeight: MediaQuery.textScalerOf(context).scale(90),
   );
 
   late final gridDelegatePgc = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth * 0.6,
+    maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
     childAspectRatio: 0.75,
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(52),
   );

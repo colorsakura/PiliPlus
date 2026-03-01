@@ -11,6 +11,8 @@ import 'package:PiliPlus/models/live/live_feed_index/card_data_list_item.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class LiveAreaChildPage extends StatefulWidget {
   const LiveAreaChildPage({
@@ -68,8 +70,8 @@ class _LiveAreaChildPageState extends State<LiveAreaChildPage>
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth,
-    childAspectRatio: StyleString.aspectRatio,
+    maxCrossAxisExtent: Pref.smallCardWidth,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
   );
 

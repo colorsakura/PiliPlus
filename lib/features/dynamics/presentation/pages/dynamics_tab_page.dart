@@ -14,11 +14,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:waterfall_flow/waterfall_flow.dart' as waterfall_flow;
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 /// Grid delegate for dynamics waterfall flow.
 final dynGridDelegate =
     waterfall_flow.SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: Grid.smallCardWidth * 2,
+      maxCrossAxisExtent: Pref.smallCardWidth * 2,
       crossAxisSpacing: 4,
     );
 
@@ -96,8 +98,8 @@ class _DynamicsTabPageState extends ConsumerState<DynamicsTabPage>
         gridDelegate: SliverGridDelegateWithExtentAndRatio(
           crossAxisSpacing: 4,
           mainAxisSpacing: 4,
-          maxCrossAxisExtent: Grid.smallCardWidth * 2,
-          childAspectRatio: StyleString.aspectRatio,
+          maxCrossAxisExtent: Pref.smallCardWidth * 2,
+          childAspectRatio: (16 / 9),
           mainAxisExtent: 50,
         ),
         itemBuilder: (_, _) => const DynamicCardSkeleton(),

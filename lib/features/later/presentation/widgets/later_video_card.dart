@@ -39,7 +39,7 @@ class LaterVideoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               AspectRatio(
-                aspectRatio: StyleString.aspectRatio,
+                aspectRatio: (16 / 9),
                 child: LayoutBuilder(
                   builder: (context, boxConstraints) {
                     final double maxWidth = boxConstraints.maxWidth;

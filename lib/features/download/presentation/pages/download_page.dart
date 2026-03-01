@@ -19,10 +19,11 @@ import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart' show IterableExt;
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
@@ -178,7 +179,7 @@ class _DownloadPageState extends State<DownloadPage> {
                               SliverGridDelegateWithMaxCrossAxisExtent(
                                 mainAxisSpacing: 2,
                                 mainAxisExtent: 100,
-                                maxCrossAxisExtent: Grid.smallCardWidth * 2,
+                                maxCrossAxisExtent: Pref.smallCardWidth * 2,
                               ),
                           itemBuilder: (context, index) {
                             final item = _controller.pages[index];
@@ -321,7 +322,7 @@ class _DownloadPageState extends State<DownloadPage> {
                 clipBehavior: Clip.none,
                 children: [
                   AspectRatio(
-                    aspectRatio: StyleString.aspectRatio,
+                    aspectRatio: (16 / 9),
                     child: LayoutBuilder(
                       builder: (context, constraints) => NetworkImgLayer(
                         src: pageInfo.cover,

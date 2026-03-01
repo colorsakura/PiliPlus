@@ -45,7 +45,7 @@ class SearchArticleItem extends StatelessWidget {
             children: <Widget>[
               if (item.imageUrls?.isNotEmpty == true)
                 AspectRatio(
-                  aspectRatio: StyleString.aspectRatio,
+                  aspectRatio: (16 / 9),
                   child: LayoutBuilder(
                     builder: (context, boxConstraints) {
                       double maxWidth = boxConstraints.maxWidth;

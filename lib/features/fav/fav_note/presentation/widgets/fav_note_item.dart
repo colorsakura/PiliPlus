@@ -57,7 +57,7 @@ class FavNoteItem extends StatelessWidget {
             children: [
               if (item.pic?.isNotEmpty == true)
                 AspectRatio(
-                  aspectRatio: StyleString.aspectRatio,
+                  aspectRatio: (16 / 9),
                   child: LayoutBuilder(
                     builder: (context, boxConstraints) {
                       return Stack(

@@ -7,10 +7,11 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/member/contribute_type.dart';
 import 'package:PiliPlus/models/space/space_season_series/season.dart'
     show SpaceSsModel;
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class MemberSeasonSeriesPage extends ConsumerStatefulWidget {
   const MemberSeasonSeriesPage({
@@ -33,7 +34,7 @@ class _MemberSeasonSeriesPageState extends ConsumerState<MemberSeasonSeriesPage>
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(

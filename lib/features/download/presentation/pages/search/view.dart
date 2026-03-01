@@ -5,10 +5,11 @@ import 'package:PiliPlus/features/common/presentation/pages/search/common_search
 import 'package:PiliPlus/features/download/presentation/pages/detail/item.dart';
 import 'package:PiliPlus/features/download/presentation/pages/search/controller.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class DownloadSearchPage extends StatefulWidget {
   const DownloadSearchPage({
@@ -86,7 +87,7 @@ class _DownloadSearchPageState
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           mainAxisSpacing: 2,
           mainAxisExtent: 100,
-          maxCrossAxisExtent: Grid.smallCardWidth * 2,
+          maxCrossAxisExtent: Pref.smallCardWidth * 2,
         ),
         itemBuilder: (context, index) {
           final entry = list[index];

@@ -4,9 +4,10 @@ import 'package:PiliPlus/features/search_panel/search_panel.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/pgc/item.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/media_bangumi.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class SearchPgcPanel extends CommonSearchPanel {
   const SearchPgcPanel({
@@ -45,7 +46,7 @@ class _SearchPgcPanelState
   }
 
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisExtent: 160,
   );
 
@@ -67,8 +68,8 @@ class _SearchPgcPanelState
   Widget get buildLoading => SliverGrid.builder(
     gridDelegate: SliverGridDelegateWithExtentAndRatio(
       mainAxisSpacing: 2,
-      maxCrossAxisExtent: Grid.smallCardWidth * 2,
-      childAspectRatio: StyleString.aspectRatio * 1.5,
+      maxCrossAxisExtent: Pref.smallCardWidth * 2,
+      childAspectRatio: (16 / 9) * 1.5,
       minHeight: MediaQuery.textScalerOf(context).scale(155),
     ),
     itemBuilder: (context, index) => const MediaPgcSkeleton(),

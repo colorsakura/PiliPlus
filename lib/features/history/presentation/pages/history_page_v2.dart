@@ -8,6 +8,8 @@ import 'package:PiliPlus/features/history/presentation/widgets/item_v2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:PiliPlus/utils/toast_utils.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 /// 历史记录页面 V2 - Riverpod 版本
 class HistoryPageV2 extends ConsumerStatefulWidget {
@@ -48,7 +50,7 @@ class _HistoryPageV2State extends ConsumerState<HistoryPageV2> {
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
     return Scaffold(

@@ -10,6 +10,7 @@ import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:waterfall_flow/waterfall_flow.dart'
     hide SliverWaterfallFlowDelegateWithMaxCrossAxisExtent;
 
@@ -47,7 +48,7 @@ class _SearchAllPanelState
   Widget buildList(ThemeData theme, List<dynamic> list) {
     return SliverWaterfallFlow(
       gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: Grid.smallCardWidth * 2,
+        maxCrossAxisExtent: Pref.smallCardWidth * 2,
         crossAxisSpacing: StyleString.safeSpace,
       ),
       delegate: SliverChildBuilderDelegate(
@@ -68,7 +69,7 @@ class _SearchAllPanelState
                     )
                   : SizedBox(
                       height:
-                          Grid.smallCardWidth / 2 / 0.75 +
+                          Pref.smallCardWidth / 2 / 0.75 +
                           MediaQuery.textScalerOf(context).scale(60),
                       child: ListView.builder(
                         padding: const EdgeInsets.only(bottom: 7),
@@ -77,7 +78,7 @@ class _SearchAllPanelState
                         itemCount: e.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            width: Grid.smallCardWidth / 2,
+                            width: Pref.smallCardWidth / 2,
                             margin: EdgeInsets.only(
                               left: StyleString.safeSpace,
                               right: index == e.length - 1
@@ -107,7 +108,7 @@ class _SearchAllPanelState
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   ),
     itemBuilder: (context, index) => const VideoCardHSkeleton(),
     itemCount: 10,

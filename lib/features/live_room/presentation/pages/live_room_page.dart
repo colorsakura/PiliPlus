@@ -2,8 +2,8 @@ import 'package:PiliPlus/app/router/app_routes.dart';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-import 'package:PiliPlus/utils/toast_utils.dart';
 
+import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/shared/widgets/button/icon_button.dart';
 import 'package:PiliPlus/shared/widgets/custom_icon.dart';
 import 'package:PiliPlus/shared/widgets/flutter/page/page_view.dart';
@@ -47,6 +47,8 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart' hide PageView;
 import 'package:get/get.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
+
+const double _aspectRatio16x9 = 16 / 9;
 
 class LiveRoomPage extends StatefulWidget {
   const LiveRoomPage({super.key, this.roomId});
@@ -423,7 +425,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
   }
 
   Widget _buildPH(bool isFullScreen) {
-    final height = maxWidth / StyleString.aspectRatio16x9;
+    final height = maxWidth / _aspectRatio16x9;
     final videoHeight = isFullScreen ? maxHeight - padding.top : height;
     final bottomHeight = maxHeight - padding.top - height - kToolbarHeight;
     return Column(

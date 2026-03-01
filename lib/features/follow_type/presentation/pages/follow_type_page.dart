@@ -6,9 +6,10 @@ import 'package:PiliPlus/features/follow_type/presentation/pages/controller.dart
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 abstract class FollowTypePageState<T extends StatefulWidget> extends State<T> {
   FollowTypeController get controller;
@@ -39,7 +40,7 @@ abstract class FollowTypePageState<T extends StatefulWidget> extends State<T> {
   }
 
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisExtent: 66,
   );
 

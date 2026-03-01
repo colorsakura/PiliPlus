@@ -23,6 +23,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class DynamicDetailPage extends StatefulWidget {
   const DynamicDetailPage({
@@ -250,7 +251,7 @@ class _DynamicDetailPageState extends CommonDynPageState<DynamicDetailPage> {
   );
 
   Widget _buildBody(ThemeData theme) {
-    double padding = max(maxWidth / 2 - Grid.smallCardWidth, 0);
+    double padding = max(maxWidth / 2 - Pref.smallCardWidth, 0);
     Widget child;
     if (isPortrait) {
       child = Padding(

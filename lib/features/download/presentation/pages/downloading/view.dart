@@ -8,9 +8,10 @@ import 'package:PiliPlus/features/common/presentation/pages/multi_select/base.da
 import 'package:PiliPlus/utils/toast_utils.dart';
 import 'package:PiliPlus/features/download/presentation/pages/detail/item.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class DownloadingPage extends StatefulWidget {
   const DownloadingPage({super.key});
@@ -70,7 +71,7 @@ class _DownloadingPageState extends State<DownloadingPage>
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         mainAxisSpacing: 2,
                         mainAxisExtent: 100,
-                        maxCrossAxisExtent: Grid.smallCardWidth * 2,
+                        maxCrossAxisExtent: Pref.smallCardWidth * 2,
                       ),
                       itemCount: _waitDownloadQueue.length,
                       itemBuilder: (context, index) {

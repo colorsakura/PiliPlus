@@ -9,6 +9,7 @@ import 'package:PiliPlus/models/space/space_shop/item.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:waterfall_flow/waterfall_flow.dart'
     hide SliverWaterfallFlowDelegateWithMaxCrossAxisExtent;
 
@@ -57,7 +58,7 @@ class _MemberShopPageState extends ConsumerState<MemberShopPage>
   late double _maxWidth;
 
   late final gridDelegate = SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth,
+    maxCrossAxisExtent: Pref.smallCardWidth,
     mainAxisSpacing: StyleString.safeSpace,
     crossAxisSpacing: StyleString.safeSpace,
     afterCalc: (value) => _maxWidth = value,

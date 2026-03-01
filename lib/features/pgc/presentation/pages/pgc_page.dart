@@ -11,6 +11,7 @@ import 'package:PiliPlus/features/pgc/presentation/widgets/pgc_card_v.dart';
 import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 /// PGC page
 ///
@@ -88,7 +89,7 @@ class _PgcPageState extends ConsumerState<PgcPage>
 
     return SizedBox(
       height:
-          Grid.smallCardWidth / 2 / 0.75 +
+          Pref.smallCardWidth / 2 / 0.75 +
           MediaQuery.textScalerOf(context).scale(112),
       child: switch (followState) {
         Loading() => const SizedBox(),
@@ -107,7 +108,7 @@ class _PgcPageState extends ConsumerState<PgcPage>
 
     return SizedBox(
       height:
-          Grid.smallCardWidth / 2 / 0.75 +
+          Pref.smallCardWidth / 2 / 0.75 +
           MediaQuery.textScalerOf(context).scale(96),
       child: switch (timelineState) {
         Loading() => loadingWidget,
@@ -150,7 +151,7 @@ class _PgcPageState extends ConsumerState<PgcPage>
                     gridDelegate: SliverGridDelegateWithExtentAndRatio(
                       mainAxisSpacing: StyleString.cardSpace,
                       crossAxisSpacing: StyleString.cardSpace,
-                      maxCrossAxisExtent: Grid.smallCardWidth * 0.6,
+                      maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
                       childAspectRatio: 0.75,
                       mainAxisExtent: MediaQuery.textScalerOf(
                         context,
@@ -191,7 +192,7 @@ class _PgcPageState extends ConsumerState<PgcPage>
       itemCount: items.length,
       itemBuilder: (context, index) {
         return SizedBox(
-          width: Grid.smallCardWidth * 0.6,
+          width: Pref.smallCardWidth * 0.6,
           child: PgcCardV(item: items[index]),
         );
       },

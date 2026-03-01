@@ -30,6 +30,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class MusicDetailPage extends StatefulWidget {
   const MusicDetailPage({super.key});
@@ -108,7 +109,7 @@ class _MusicDetailPageState extends CommonDynPageState<MusicDetailPage> {
   Widget _buildBody(ThemeData theme) => Obx(() {
     switch (controller.infoState.value) {
       case Success(:final response):
-        double padding = max(maxWidth / 2 - Grid.smallCardWidth, 0);
+        double padding = max(maxWidth / 2 - Pref.smallCardWidth, 0);
         final Widget child;
         if (isPortrait) {
           child = Padding(

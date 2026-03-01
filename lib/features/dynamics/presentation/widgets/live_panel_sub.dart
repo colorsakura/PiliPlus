@@ -42,7 +42,7 @@ Widget livePanelSub(
           children: [
             NetworkImgLayer(
               width: maxWidth,
-              height: maxWidth / StyleString.aspectRatio,
+              height: maxWidth / (16 / 9),
               src: live.cover,
               quality: 40,
             ),

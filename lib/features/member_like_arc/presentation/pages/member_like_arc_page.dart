@@ -10,6 +10,8 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class MemberLikeArcPage extends StatefulWidget {
   const MemberLikeArcPage({
@@ -71,8 +73,8 @@ class _MemberLikeArcPageState extends State<MemberLikeArcPage> {
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth,
-    childAspectRatio: StyleString.aspectRatio,
+    maxCrossAxisExtent: Pref.smallCardWidth,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(75),
   );
 

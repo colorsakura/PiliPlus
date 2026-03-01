@@ -9,11 +9,12 @@ import 'package:PiliPlus/features/fav/presentation/pages/pgc/widget/item.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/fav/fav_pgc/list.dart';
 import 'package:PiliPlus/shared/skeleton/fav_pgc_item.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 /// Adapter to make FavPgcController compatible with MultiSelectBase interface
 class _MultiSelectAdapter implements MultiSelectBase {
@@ -64,7 +65,7 @@ class _FavPgcChildPageState extends ConsumerState<FavPgcChildPage>
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(

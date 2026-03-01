@@ -11,6 +11,7 @@ import 'package:PiliPlus/features/live_area_detail/live_area_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class LiveAreaPageV2 extends ConsumerWidget {
   const LiveAreaPageV2({super.key});

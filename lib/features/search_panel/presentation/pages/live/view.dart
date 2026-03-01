@@ -6,6 +6,8 @@ import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/video_card_v.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class SearchLivePanel extends CommonSearchPanel {
   const SearchLivePanel({
@@ -44,10 +46,10 @@ class _SearchLivePanelState
   }
 
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
-    maxCrossAxisExtent: Grid.smallCardWidth,
+    maxCrossAxisExtent: Pref.smallCardWidth,
     crossAxisSpacing: StyleString.cardSpace,
     mainAxisSpacing: StyleString.cardSpace,
-    childAspectRatio: StyleString.aspectRatio,
+    childAspectRatio: (16 / 9),
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(80),
   );
 

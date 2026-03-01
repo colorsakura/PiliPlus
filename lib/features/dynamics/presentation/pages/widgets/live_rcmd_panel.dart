@@ -36,7 +36,7 @@ Widget liveRcmdPanel(
           children: [
             NetworkImgLayer(
               width: maxWidth,
-              height: maxWidth / StyleString.aspectRatio,
+              height: maxWidth / (16 / 9),
               src: liveRcmd.cover,
               quality: 40,
             ),

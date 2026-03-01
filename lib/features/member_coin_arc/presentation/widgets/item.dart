@@ -58,7 +58,7 @@ class MemberCoinLikeItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AspectRatio(
-              aspectRatio: StyleString.aspectRatio,
+              aspectRatio: (16 / 9),
               child: LayoutBuilder(
                 builder: (context, boxConstraints) {
                   double maxWidth = boxConstraints.maxWidth;

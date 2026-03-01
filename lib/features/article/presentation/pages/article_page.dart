@@ -30,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class ArticlePage extends StatefulWidget {
   const ArticlePage({
@@ -88,7 +89,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage> {
   }
 
   Widget _buildPage(ThemeData theme) {
-    double padding = max(maxWidth / 2 - Grid.smallCardWidth, 0);
+    double padding = max(maxWidth / 2 - Pref.smallCardWidth, 0);
     if (isPortrait) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: padding),

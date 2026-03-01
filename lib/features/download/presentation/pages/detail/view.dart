@@ -13,10 +13,11 @@ import 'package:PiliPlus/features/download/presentation/pages/detail/item.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class DownloadDetailPage extends StatefulWidget {
   const DownloadDetailPage({
@@ -151,7 +152,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         mainAxisSpacing: 2,
                         mainAxisExtent: 100,
-                        maxCrossAxisExtent: Grid.smallCardWidth * 2,
+                        maxCrossAxisExtent: Pref.smallCardWidth * 2,
                       ),
                       itemBuilder: (context, index) {
                         final entry = _downloadItems[index];

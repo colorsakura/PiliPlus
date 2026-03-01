@@ -3,10 +3,11 @@ import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/features/search_panel/presentation/pages/article/controller.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/article/item.dart';
 import 'package:PiliPlus/features/search_panel/search_panel.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class SearchArticlePanel extends CommonSearchPanel {
   const SearchArticlePanel({
@@ -31,7 +32,7 @@ class _SearchArticlePanelState
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(

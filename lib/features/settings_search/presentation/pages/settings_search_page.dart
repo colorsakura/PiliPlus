@@ -13,6 +13,7 @@ import 'package:PiliPlus/features/setting/presentation/pages/models/video_settin
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:waterfall_flow/waterfall_flow.dart'
     hide SliverWaterfallFlowDelegateWithMaxCrossAxisExtent;
 
@@ -98,7 +99,7 @@ class _SettingsSearchPageState
                   : SliverWaterfallFlow(
                       gridDelegate:
                           SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: Grid.smallCardWidth * 2,
+                            maxCrossAxisExtent: Pref.smallCardWidth * 2,
                           ),
                       delegate: SliverChildBuilderDelegate(
                         (_, index) => _list[index].widget,

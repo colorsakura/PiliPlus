@@ -9,6 +9,8 @@ import 'package:PiliPlus/features/member_pgc/presentation/providers/member_pgc_c
 import 'package:PiliPlus/features/member_pgc/presentation/widgets/pgc_card_v_member_pgc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 /// Member PGC (Bangumi) page - V2 with Riverpod
 class MemberPgcPageV2 extends ConsumerStatefulWidget {
@@ -75,7 +77,7 @@ class _MemberPgcPageV2State extends ConsumerState<MemberPgcPageV2>
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth * 0.6,
+    maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
     childAspectRatio: 0.75,
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(52),
   );

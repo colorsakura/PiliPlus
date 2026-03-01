@@ -8,10 +8,11 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/models/fav/fav_topic/topic_item.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 /// Favorite topics page
 class FavTopicPage extends ConsumerStatefulWidget {
@@ -55,7 +56,7 @@ class _FavTopicPageState extends ConsumerState<FavTopicPage>
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
     mainAxisSpacing: 12,
     crossAxisSpacing: 12,
-    maxCrossAxisExtent: Grid.smallCardWidth,
+    maxCrossAxisExtent: Pref.smallCardWidth,
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(30),
   );
 

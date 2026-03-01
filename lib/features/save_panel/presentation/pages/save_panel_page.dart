@@ -411,7 +411,7 @@ class _SavePanelState extends State<SavePanel> {
                                     height: coverSize,
                                     width: coverType == _CoverType.def16_9
                                         ? coverSize *
-                                              StyleString.aspectRatio16x9
+                                              (16 / 9)
                                         : coverSize,
                                     quality: 100,
                                     borderRadius: const BorderRadius.all(

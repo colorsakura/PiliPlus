@@ -8,6 +8,7 @@ import 'package:PiliPlus/features/history_search/presentation/pages/history_sear
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class HistorySearchPage extends StatefulWidget {
   const HistorySearchPage({super.key});
@@ -33,7 +34,7 @@ class _HistorySearchPageState
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   @override

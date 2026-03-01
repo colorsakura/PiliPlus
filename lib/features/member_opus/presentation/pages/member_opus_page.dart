@@ -10,6 +10,7 @@ import 'package:PiliPlus/shared/skeleton/space_opus.dart';
 import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:waterfall_flow/waterfall_flow.dart'
     hide SliverWaterfallFlowDelegateWithMaxCrossAxisExtent;
 
@@ -124,7 +125,7 @@ class _MemberOpusState extends State<MemberOpus>
   }
 
   late final gridDelegate = SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth,
+    maxCrossAxisExtent: Pref.smallCardWidth,
     mainAxisSpacing: StyleString.safeSpace,
     crossAxisSpacing: StyleString.safeSpace,
     afterCalc: (value) => _maxWidth = value,

@@ -9,10 +9,11 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/follow/list.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 /// "Same followed" page - V2 with Riverpod
 ///
@@ -46,7 +47,7 @@ class FollowSamePageV2 extends ConsumerStatefulWidget {
 class _FollowSamePageV2State extends ConsumerState<FollowSamePageV2> {
   late final FollowSameController _controller;
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisExtent: 66,
   );
 

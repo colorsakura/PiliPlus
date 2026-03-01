@@ -9,6 +9,7 @@ import 'package:PiliPlus/models/live/live_area_list/area_item.dart';
 import 'package:PiliPlus/features/live_area_detail/presentation/pages/child/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 class LiveAreaDetailPage extends ConsumerStatefulWidget {
   const LiveAreaDetailPage({

@@ -7,10 +7,11 @@ import 'package:PiliPlus/features/subscription/presentation/providers/subscripti
 import 'package:PiliPlus/features/subscription/presentation/providers/subscription_controller.dart';
 import 'package:PiliPlus/features/subscription/presentation/widgets/item.dart';
 import 'package:PiliPlus/utils/accounts.dart';
-import 'package:PiliPlus/utils/styles/constants.dart';
-import 'package:PiliPlus/shared/widgets/skeleton/video_card_h_skeleton.dart';
+import 'package:PiliPlus/shared/skeleton/video_card_h.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
 
 /// Subscription page - V2 with Riverpod
 class SubscriptionPageV2 extends ConsumerStatefulWidget {
@@ -25,7 +26,7 @@ class _SubscriptionPageV2State extends ConsumerState<SubscriptionPageV2> {
     maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisSpacing: 2,
     crossAxisSpacing: 0,
-    childAspectRatio: StyleString.aspectRatio * 2.2,
+    childAspectRatio: (16 / 9) * 2.2,
   );
 
   Widget get gridSkeleton => SliverGrid.builder(

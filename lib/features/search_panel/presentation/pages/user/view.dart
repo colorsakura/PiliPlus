@@ -4,9 +4,10 @@ import 'package:PiliPlus/features/search_panel/search_panel.dart';
 import 'package:PiliPlus/features/search_panel/presentation/widgets/user/item.dart';
 import 'package:PiliPlus/models/search/result.dart';
 import 'package:PiliPlus/shared/skeleton/msg_feed_top.dart';
-import 'package:flutter/material.dart'
-    hide SliverGridDelegateWithMaxCrossAxisExtent;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 class SearchUserPanel extends CommonSearchPanel {
   const SearchUserPanel({
@@ -96,7 +97,7 @@ class _SearchUserPanelState
   }
 
   late final gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
     mainAxisExtent: 66,
   );
 

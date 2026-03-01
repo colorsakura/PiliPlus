@@ -13,6 +13,8 @@ import 'package:PiliPlus/features/pgc_index/presentation/widgets/pgc_card_v_pgc_
 import 'package:PiliPlus/features/search/presentation/widgets/search_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 
 /// PGC索引页面
 ///
@@ -289,7 +291,7 @@ class _PgcIndexPageState extends ConsumerState<PgcIndexPage>
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: StyleString.cardSpace,
     crossAxisSpacing: StyleString.cardSpace,
-    maxCrossAxisExtent: Grid.smallCardWidth * 0.6,
+    maxCrossAxisExtent: Pref.smallCardWidth * 0.6,
     childAspectRatio: 0.75,
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(50),
   );

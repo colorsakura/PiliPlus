@@ -167,7 +167,7 @@ class DetailItem extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   AspectRatio(
-                    aspectRatio: StyleString.aspectRatio,
+                    aspectRatio: (16 / 9),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final cover = File(

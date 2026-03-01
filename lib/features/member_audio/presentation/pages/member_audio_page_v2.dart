@@ -10,6 +10,8 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/features/audio/audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:PiliPlus/utils/waterfall.dart';
+import 'package:PiliPlus/core/storage/storage_pref.dart';
 import 'package:PiliPlus/grpc/bilibili/app/listener/v1.pbenum.dart'
     show PlaylistSource;
 
@@ -56,8 +58,8 @@ class _MemberAudioPageState extends ConsumerState<MemberAudioPage>
 
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: 2,
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
-    childAspectRatio: StyleString.aspectRatio * 2.6,
+    maxCrossAxisExtent: Pref.smallCardWidth * 2,
+    childAspectRatio: (16 / 9) * 2.6,
     minHeight: MediaQuery.textScalerOf(context).scale(90),
   );
 
