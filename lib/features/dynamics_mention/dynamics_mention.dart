@@ -2,9 +2,12 @@
 ///
 /// Provides functionality for searching and selecting users to mention in dynamic posts.
 
-// Export the main page for easy importing
-export 'presentation/pages/dyn_mention_page.dart';
+// Presentation (ChangeNotifier - Legacy)
+export 'presentation/providers/dyn_mention_providers.dart' show searchMentionsProvider;
 
-// Export the controller
-export 'presentation/providers/dyn_mention_controller.dart'
-    show DynMentionController;
+// Presentation (Riverpod - New)
+export 'presentation/providers/dyn_mention_controller_v2.dart';
+export 'presentation/pages/dyn_mention_page_v2.dart';
+
+// Pages
+export 'presentation/pages/dyn_mention_page.dart';
