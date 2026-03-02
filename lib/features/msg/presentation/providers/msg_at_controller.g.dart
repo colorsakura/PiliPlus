@@ -44,7 +44,7 @@ final class MsgAtControllerProvider
   }
 }
 
-String _$msgAtControllerHash() => r'f6e41f8c8973afac28d491bd8b6ab8cbdb5f4bfd';
+String _$msgAtControllerHash() => r'54b7bd1e6ec7d871a0820f2339b19afd8c54b1bd';
 
 /// Controller for managing at messages
 

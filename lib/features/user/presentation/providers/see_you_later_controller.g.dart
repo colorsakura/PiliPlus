@@ -45,7 +45,7 @@ final class SeeYouLaterControllerProvider
 }
 
 String _$seeYouLaterControllerHash() =>
-    r'bda2833371627a309cf5a50eda8daae7ce783724';
+    r'c2eed2edd756c5ff82d86f0ede4f008a6b9fab21';
 
 /// Controller for managing "See You Later" (watch later) list
 

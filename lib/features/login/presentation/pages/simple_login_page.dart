@@ -25,7 +25,9 @@ class _SimpleLoginPageState extends ConsumerState<SimpleLoginPage> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      ref.read(simpleLoginControllerProvider.notifier).login(
+      ref
+          .read(simpleLoginControllerProvider.notifier)
+          .login(
             username: _usernameController.text,
             password: _passwordController.text,
           );
@@ -167,7 +169,9 @@ class _SimpleLoginPageState extends ConsumerState<SimpleLoginPage> {
                   onPressed: loginState.isLoading
                       ? null
                       : () {
-                          ref.read(simpleLoginControllerProvider.notifier).reset();
+                          ref
+                              .read(simpleLoginControllerProvider.notifier)
+                              .reset();
                           _formKey.currentState?.reset();
                         },
                   style: OutlinedButton.styleFrom(
@@ -190,7 +194,10 @@ class _SimpleLoginPageState extends ConsumerState<SimpleLoginPage> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.check_circle, color: Colors.green.shade700),
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green.shade700,
+                            ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(

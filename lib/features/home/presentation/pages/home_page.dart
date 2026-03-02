@@ -104,20 +104,18 @@ class _HomePageState extends ConsumerState<HomePage>
       tabBar = const SizedBox(height: 6);
     }
 
-    return Scaffold(
-      body: Column(
-        children: [
-          if (MediaQuery.sizeOf(context).isPortrait)
-            HomeAppBar(config: safeConfig),
-          tabBar,
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: safeConfig.tabs.map((e) => e.page).toList(),
-            ),
+    return Column(
+      children: [
+        if (MediaQuery.sizeOf(context).isPortrait)
+          HomeAppBar(config: safeConfig),
+        tabBar,
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: safeConfig.tabs.map((e) => e.page).toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

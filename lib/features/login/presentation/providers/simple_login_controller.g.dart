@@ -45,7 +45,7 @@ final class SimpleLoginControllerProvider
 }
 
 String _$simpleLoginControllerHash() =>
-    r'4174b2d406230b73b762b37c8fb5f37ee0b2c1a7';
+    r'5bce75f221bf95d7ee9d2f98ea2c44cd591d430b';
 
 /// 简化的登录控制器（用于演示干净架构）
 

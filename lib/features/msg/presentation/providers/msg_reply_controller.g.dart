@@ -45,7 +45,7 @@ final class MsgReplyControllerProvider
 }
 
 String _$msgReplyControllerHash() =>
-    r'9462bbfa96b4964bae4b10c76504b06f87fcb640';
+    r'18423e6a8bfd768657af94f999b5fad3f2fae3cb';
 
 /// Controller for managing reply messages
 

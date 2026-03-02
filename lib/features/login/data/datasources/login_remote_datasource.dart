@@ -60,8 +60,7 @@ class LoginRemoteDatasource {
 
       return LoginModel.fromJson(data['data']);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401 ||
-          e.response?.data['code'] == -101) {
+      if (e.response?.statusCode == 401 || e.response?.data['code'] == -101) {
         throw UnauthorizedException();
       }
       throw ServerException(

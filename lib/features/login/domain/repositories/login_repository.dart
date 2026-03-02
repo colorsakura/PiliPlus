@@ -150,4 +150,14 @@ abstract interface class LoginRepository {
     required String username,
     required String password,
   });
+
+  /// 刷新令牌
+  ///
+  /// [refreshToken] 刷新令牌
+  ///
+  /// 返回新的 [LoginEntity]
+  Future<LoginEntity> refreshToken(String refreshToken);
+
+  /// 退出登录
+  Future<void> logout();
 }

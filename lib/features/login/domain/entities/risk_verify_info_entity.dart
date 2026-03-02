@@ -59,7 +59,9 @@ class RiskVerifyInfoEntity {
     final memberInfo = map['member_info'] as Map<String, dynamic>?;
 
     return RiskVerifyInfoEntity(
-      accountInfo: accountInfo != null ? AccountInfo.fromMap(accountInfo) : null,
+      accountInfo: accountInfo != null
+          ? AccountInfo.fromMap(accountInfo)
+          : null,
       memberInfo: memberInfo != null ? MemberInfo.fromMap(memberInfo) : null,
       bindTel: accountInfo?['tel_verify'] as bool? ?? false,
       bindMail: accountInfo?['mail_verify'] as bool? ?? false,

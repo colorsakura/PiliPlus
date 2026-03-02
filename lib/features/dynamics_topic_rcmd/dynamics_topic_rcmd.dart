@@ -7,7 +7,10 @@ export 'domain/usecases/get_dyn_topic_rcmd.dart';
 export 'data/datasources/dyn_topic_rcmd_remote_datasource.dart';
 export 'data/repositories/dyn_topic_rcmd_repository_impl.dart';
 
-// Presentation exports
+// Presentation (ChangeNotifier - Legacy)
 export 'presentation/providers/dyn_topic_rcmd_controller.dart';
 export 'presentation/providers/dyn_topic_rcmd_providers.dart';
+
+// Presentation (Riverpod - New)
+export 'presentation/providers/dyn_topic_rcmd_controller_v2.dart';
 export 'presentation/pages/dyn_topic_rcmd_page.dart';

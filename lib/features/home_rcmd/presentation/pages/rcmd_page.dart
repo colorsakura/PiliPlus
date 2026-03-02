@@ -83,19 +83,13 @@ class _RcmdPageState extends ConsumerState<RcmdPage>
       ],
     );
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-      child: PlatformUtils.isDesktop
-          ? Scrollbar(controller: _scrollController, child: child)
-          : refreshIndicator(
-              onRefresh: () => ref
-                  .read(recommendationControllerProvider.notifier)
-                  .onRefresh(),
-              child: child,
-            ),
-    );
+    return PlatformUtils.isDesktop
+        ? Scrollbar(controller: _scrollController, child: child)
+        : refreshIndicator(
+            onRefresh: () =>
+                ref.read(recommendationControllerProvider.notifier).onRefresh(),
+            child: child,
+          );
   }
 
   SliverGridDelegateWithExtentAndRatio get gridDelegate {

@@ -51,18 +51,21 @@ final loginBySmsUseCaseProvider = Provider<LoginBySmsUseCase>((ref) {
 
 /// Dio HTTP Client Provider（用于简化登录）
 final dioProvider = Provider<Dio>((ref) {
-  return Dio(BaseOptions(
-    baseUrl: 'https://api.bilibili.com',
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-  ));
+  return Dio(
+    BaseOptions(
+      baseUrl: 'https://api.bilibili.com',
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  );
 });
 
 /// 简化的登录远程数据源 Provider
-final simplifiedLoginRemoteDatasourceProvider =
-    Provider<LoginRemoteDatasource>((ref) {
-  return LoginRemoteDatasource(ref.watch(dioProvider));
-});
+final simplifiedLoginRemoteDatasourceProvider = Provider<LoginRemoteDatasource>(
+  (ref) {
+    return LoginRemoteDatasource(ref.watch(dioProvider));
+  },
+);
 
 /// 简化的登录用例 Provider
 final performLoginUseCaseProvider = Provider<PerformLoginUseCase>((ref) {

@@ -44,7 +44,7 @@ final class MsgLikeControllerProvider
   }
 }
 
-String _$msgLikeControllerHash() => r'0a50523a3feac411b8aed1b6020211f16507237b';
+String _$msgLikeControllerHash() => r'7cd33eee4e4b72b39f04ead3b6d5dfacc8a84e12';
 
 /// Controller for managing like messages
 

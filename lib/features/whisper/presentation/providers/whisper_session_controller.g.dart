@@ -45,7 +45,7 @@ final class WhisperSessionControllerProvider
 }
 
 String _$whisperSessionControllerHash() =>
-    r'12d823a68bb611184f446232d03527884a203313';
+    r'cf329b32001f495a1bd01592186248485c713d3a';
 
 /// Controller for managing whisper sessions
 

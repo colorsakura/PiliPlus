@@ -312,7 +312,6 @@ class LoginController extends Notifier<LoginState> {
 }
 
 /// 登录Controller Provider
-final loginControllerProvider =
-    NotifierProvider<LoginController, LoginState>(
+final loginControllerProvider = NotifierProvider<LoginController, LoginState>(
   LoginController.new,
 );

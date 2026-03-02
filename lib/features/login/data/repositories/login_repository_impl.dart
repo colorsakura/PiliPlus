@@ -17,8 +17,8 @@ class LoginRepositoryImpl implements LoginRepository {
   LoginRepositoryImpl({
     required LoginRemoteDataSource remoteDataSource,
     LoginRemoteDatasource? simplifiedDatasource,
-  })  : _remoteDataSource = remoteDataSource,
-        _simplifiedDatasource = simplifiedDatasource;
+  }) : _remoteDataSource = remoteDataSource,
+       _simplifiedDatasource = simplifiedDatasource;
 
   @override
   Future<QrCodeEntity> getQRCode() async {

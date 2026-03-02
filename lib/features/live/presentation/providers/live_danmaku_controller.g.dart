@@ -45,7 +45,7 @@ final class LiveDanmakuControllerProvider
 }
 
 String _$liveDanmakuControllerHash() =>
-    r'e5291db51a030c5efa8b125046afe6648412fae6';
+    r'0cb09d6e879f627cb5748682e883a2913577bbfd';
 
 /// Controller for managing live danmaku (chat messages)
 

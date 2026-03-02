@@ -45,7 +45,7 @@ final class LiveRoomControllerProvider
 }
 
 String _$liveRoomControllerHash() =>
-    r'91e45b08e774c9fb68ff2ffe6dc1665dc6b50715';
+    r'14875a3041e330c08578baafcada43d80b153ce6';
 
 /// Controller for managing live room information
 
