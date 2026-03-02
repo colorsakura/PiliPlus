@@ -6,7 +6,9 @@ export 'domain/usecases/get_dyn_reserve_data.dart';
 export 'data/datasources/dyn_reserve_remote_datasource.dart';
 export 'data/repositories/dyn_reserve_repository_impl.dart';
 
-// Presentation exports
-export 'presentation/providers/dyn_create_reserve_controller.dart';
-export 'presentation/providers/dyn_create_reserve_providers.dart';
+// Presentation (ChangeNotifier - Legacy)
+export 'presentation/providers/dyn_create_reserve_providers.dart' show getReserveInfoUseCaseProvider, createReserveUseCaseProvider, updateReserveUseCaseProvider;
+
+// Presentation (Riverpod - New)
+export 'presentation/providers/dyn_create_reserve_controller_v2.dart';
 export 'presentation/pages/dyn_create_reserve_page.dart';
