@@ -4,7 +4,7 @@ abstract final class StyleString {
   static const double cardSpace = 4;
   static const double safeSpace = 6;
   static const BorderRadius mdRadius = BorderRadius.all(imgRadius);
-  static const Radius imgRadius = Radius.circular(4);
+  static const Radius imgRadius = Radius.circular(6);
   static const double aspectRatio = 16 / 10;
   static const double aspectRatio16x9 = 16 / 9;
   static const double imgMaxRatio = 22 / 9;

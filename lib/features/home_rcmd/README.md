@@ -13,7 +13,6 @@ This feature handles the personalized video feed on the home page. It fetches an
 **Entities:**
 - `VideoRecommendation` - Represents a recommended video with reason
 - `RecommendationResult` - Contains list of recommendations with pagination
-- `PersistedRecommendation` - Persisted recommendation data for offline/cached viewing
 
 **Repository Interface:**
 - `VideoRecommendationRepository` - Abstract contract for recommendation operations
@@ -24,14 +23,13 @@ This feature handles the personalized video feed on the home page. It fetches an
 ### Data Layer
 
 **Data Sources:**
-- `RecommendationRemoteDataSource` - Remote API data source
-- `RecommendationCacheDataSource` - Local cache for recommendations
+- `VideoRecommendationRemoteDataSource` - Remote API data source
 
 **Models:**
 - Various video models (Web/App API formats)
 
 **Repositories:**
-- `VideoRecommendationRepositoryImpl` - Concrete implementation with caching
+- `VideoRecommendationRepositoryImpl` - Concrete implementation
 
 ### Presentation Layer
 
@@ -72,13 +70,11 @@ for (var rec in result.videos) {
 ## Data Flow
 
 1. User opens home page
-2. Presentation layer calls `GetVideoRecommendationsUseCase`
-3. Use case checks cache first
-4. If cache miss or stale, fetches from remote source
-5. Repository handles both Web API and App API formats
-6. Data is transformed to domain entities
-7. Results are cached for subsequent requests
-8. UI displays videos with recommendation reasons
+2. Presentation layer calls `FetchRecommendationsUseCase`
+3. Use case fetches from remote source
+4. Repository handles both Web API and App API formats
+5. Data is transformed to domain entities
+6. UI displays videos with recommendation reasons
 
 ## Entity Structure
 
@@ -112,11 +108,3 @@ Each video may include a reason for recommendation:
 - "Popular in your area"
 - "From creators you follow"
 - And other personalized reasons
-
-## Caching Strategy
-
-- First request fetches from remote
-- Results are cached locally
-- Subsequent requests may use cache
-- Cache is invalidated periodically
-- Ensures offline/cached viewing capability

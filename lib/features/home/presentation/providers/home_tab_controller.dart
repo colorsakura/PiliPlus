@@ -1,10 +1,8 @@
-import 'package:PiliPlus/core/storage/database/sqlite3_storage_provider.dart';
 import 'package:PiliPlus/features/home/data/datasources/home_tab_local_datasource.dart';
 import 'package:PiliPlus/features/home/domain/entities/home_tab_config.dart';
 import 'package:PiliPlus/features/home/domain/usecases/get_home_tab_config.dart';
 import 'package:PiliPlus/features/home/presentation/providers/home_providers.dart';
 import 'package:PiliPlus/models/common/home_tab_type.dart';
-import 'package:flutter_riverpod/experimental/persist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 首页标签配置状态
@@ -41,36 +39,6 @@ class HomeTabConfigController extends Notifier<HomeTabConfigState> {
   HomeTabConfigState build() {
     _useCase = ref.read(getHomeTabConfigUseCaseProvider);
     _localDataSource = ref.read(homeTabLocalDataSourceProvider);
-
-    // 启用离线持久化 - 持久化选中的 tab 索引
-    persist(
-      ref.watch(sqlite3StorageProvider.future),
-      key: 'home_tab_selection',
-      decode: (data) {
-        if (data == null) {
-          throw Exception('No persisted data found');
-        }
-        final json = data as Map<String, dynamic>;
-        final selectedIndex = json['selectedIndex'] as int?;
-        if (selectedIndex == null) {
-          throw Exception('No selectedIndex in persisted data');
-        }
-
-        // 从本地数据源获取配置
-        final config = _loadConfigSync();
-        return HomeTabConfigState(
-          config: config.copyWith(selectedIndex: selectedIndex),
-        );
-      },
-      encode: (state) {
-        return {
-          'selectedIndex': state.config?.selectedIndex ?? 0,
-        };
-      },
-      options: const StorageOptions(
-        cacheTime: StorageCacheTime.unsafe_forever,
-      ),
-    );
 
     // 同步获取初始配置
     final config = _loadConfigSync();

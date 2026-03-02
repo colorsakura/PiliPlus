@@ -1,4 +1,3 @@
-import 'package:PiliPlus/core/storage/database/sqlite3_storage_provider.dart';
 import 'package:PiliPlus/features/home_live/domain/entities/live_stream.dart';
 import 'package:PiliPlus/features/home_live/domain/usecases/fetch_live_area_list.dart';
 import 'package:PiliPlus/features/home_live/domain/usecases/fetch_live_feed.dart';
@@ -6,7 +5,6 @@ import 'package:PiliPlus/features/home_live/presentation/providers/live_provider
 import 'package:PiliPlus/models/live/live_feed_index/card_data_list_item.dart';
 import 'package:PiliPlus/models/live/live_second_list/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/experimental/persist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 直播状态
@@ -127,47 +125,6 @@ class LiveController extends Notifier<LiveControllerState> {
       scrollController.dispose();
     });
 
-    // 启用离线持久化
-    persist(
-      ref.watch(sqlite3StorageProvider.future),
-      key: 'home_live',
-      decode: (data) {
-        if (data == null || data is! Map) {
-          throw Exception('No persisted data found');
-        }
-        final json = data as Map<String, dynamic>;
-        return LiveControllerState(
-          streams: (json['streams'] as List?)
-                  ?.map((e) => LiveStream.fromJson(e as Map<String, dynamic>))
-                  .toList() ??
-              [],
-          isLoading: false,
-          isEnd: json['isEnd'] as bool? ?? false,
-          currentPage: json['currentPage'] as int? ?? 1,
-          areaIndex: json['areaIndex'] as int? ?? 0,
-          areaId: json['areaId'] as int?,
-          parentAreaId: json['parentAreaId'] as int?,
-          tagIndex: json['tagIndex'] as int? ?? 0,
-          sortType: json['sortType'] as String?,
-        );
-      },
-      encode: (state) {
-        return {
-          'streams': state.streams.map((s) => s.toJson()).toList(),
-          'isEnd': state.isEnd,
-          'currentPage': state.currentPage,
-          'areaIndex': state.areaIndex,
-          'areaId': state.areaId,
-          'parentAreaId': state.parentAreaId,
-          'tagIndex': state.tagIndex,
-          'sortType': state.sortType,
-        };
-      },
-      options: const StorageOptions(
-        cacheTime: StorageCacheTime(Duration(minutes: 30)),
-      ),
-    );
-
     return const LiveControllerState(isLoading: true);
   }
 
@@ -189,31 +146,6 @@ class LiveController extends Notifier<LiveControllerState> {
 
   /// 初始化并加载数据
   Future<void> initialize() async {
-    // 尝试从缓存加载数据
-    try {
-      final storage = await ref.read(sqlite3StorageProvider.future);
-      final persistedData = await storage.read('home_live');
-      if (persistedData != null) {
-        final json = persistedData.data as Map<String, dynamic>;
-        state = LiveControllerState(
-          streams: (json['streams'] as List?)
-                  ?.map((e) => LiveStream.fromJson(e as Map<String, dynamic>))
-                  .toList() ??
-              [],
-          isLoading: false,
-          isEnd: json['isEnd'] as bool? ?? false,
-          currentPage: json['currentPage'] as int? ?? 1,
-          areaIndex: json['areaIndex'] as int? ?? 0,
-          areaId: json['areaId'] as int?,
-          parentAreaId: json['parentAreaId'] as int?,
-          tagIndex: json['tagIndex'] as int? ?? 0,
-          sortType: json['sortType'] as String?,
-        );
-      }
-    } catch (e) {
-      // 忽略错误，继续加载网络数据
-    }
-
     // 发起网络请求更新数据
     fetchLive(isRefresh: true);
   }
@@ -266,9 +198,6 @@ class LiveController extends Notifier<LiveControllerState> {
         followingCount: result.followingCount ?? state.followingCount,
         areaItems: result.areaItems ?? state.areaItems,
       );
-
-      // 手动保存到缓存
-      _saveToCache();
     } else {
       if (result.streams.isEmpty) {
         state = state.copyWith(isEnd: true, isLoading: false);
@@ -367,29 +296,6 @@ class LiveController extends Notifier<LiveControllerState> {
   Future<void> onReload() async {
     state = const LiveControllerState(isLoading: true);
     await onRefresh();
-  }
-
-  /// 手动保存到缓存
-  Future<void> _saveToCache() async {
-    try {
-      final storage = await ref.read(sqlite3StorageProvider.future);
-      await storage.write(
-        'home_live',
-        {
-          'streams': state.streams.map((s) => s.toJson()).toList(),
-          'isEnd': state.isEnd,
-          'currentPage': state.currentPage,
-          'areaIndex': state.areaIndex,
-          'areaId': state.areaId,
-          'parentAreaId': state.parentAreaId,
-          'tagIndex': state.tagIndex,
-          'sortType': state.sortType,
-        },
-        const StorageOptions(),
-      );
-    } catch (e) {
-      // 忽略保存错误
-    }
   }
 
   /// 获取顶部模块信息（关注和分区入口）

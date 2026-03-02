@@ -33,13 +33,13 @@ import 'package:PiliPlus/features/live_dm_block/live_dm_block.dart';
 import 'package:PiliPlus/features/live_room/live_room.dart';
 import 'package:PiliPlus/features/login/login.dart';
 import 'package:PiliPlus/features/main_reply/main_reply.dart';
-import 'package:PiliPlus/features/mine/mine.dart' as mine;
 import 'package:PiliPlus/features/match_info/match_info.dart';
 import 'package:PiliPlus/features/member/member.dart';
 import 'package:PiliPlus/features/member_dynamics/member_dynamics.dart';
 import 'package:PiliPlus/features/member_profile/member_profile.dart';
 import 'package:PiliPlus/features/member_search/member_search.dart';
 import 'package:PiliPlus/features/member_upower_rank/member_upower_rank.dart';
+import 'package:PiliPlus/features/mine/mine.dart' as mine;
 import 'package:PiliPlus/features/msg_feed/msg_feed.dart';
 import 'package:PiliPlus/features/music/music.dart';
 import 'package:PiliPlus/features/popular_precious/popular_precious.dart';
@@ -112,6 +112,7 @@ GoRouter goRouter() {
           ),
           // Branch 2: Mine
           StatefulShellBranch(
+            preload: true,
             routes: [
               GoRoute(
                 path: AppRoutes.mine,

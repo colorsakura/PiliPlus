@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:PiliPlus/core/storage/database/database_manager.dart';
 import 'package:PiliPlus/core/storage/storage.dart';
 import 'package:PiliPlus/core/storage/storage_key.dart';
 import 'package:PiliPlus/core/storage/storage_pref.dart';
@@ -85,10 +84,6 @@ class AppInitializer {
       // 完整存储初始化（因为 AccountService.onInit 需要 userInfo）
       await _initFullStorage();
       AppLog.fine('Full storage initialized', name: 'AppInitializer');
-
-      // 数据库初始化（必须在 runApp 前完成，因为 HomePage 立即需要访问）
-      await _initDatabase();
-      AppLog.fine('Database initialized', name: 'AppInitializer');
 
       await _initGetXServices();
       AppLog.fine('GetX services registered', name: 'AppInitializer');
@@ -260,19 +255,6 @@ class AppInitializer {
       _initDownPath(),
       _initTmpPath(),
     ]);
-  }
-
-  static Future<void> _initDatabase() async {
-    try {
-      await DatabaseManager.init();
-      AppLog.info('DatabaseManager initialized', name: 'AppInitializer');
-    } catch (e) {
-      AppLog.severe(
-        'Database initialization failed: $e',
-        name: 'AppInitializer',
-      );
-      // 数据库初始化失败不应阻止应用运行
-    }
   }
 
   /// 初始化下载路径 - 从 main.dart 迁移
